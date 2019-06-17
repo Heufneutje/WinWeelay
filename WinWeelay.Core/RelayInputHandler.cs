@@ -118,6 +118,15 @@ namespace WinWeelay.Core
                     foreach (RelayBuffer updateBuffer in updatedBuffers)
                         updateBuffer.NotifyMessagesUpdated();
                     break;
+                case MessageIds.Upgrade:
+                    _connection.OutputHandler.Desync();
+                    _connection.Buffers.Clear();
+                    _connection.NotifyBuffersChanged();
+                    break;
+                case MessageIds.UpgradeEnded:
+                    _connection.OutputHandler.Sync();
+                    _connection.OutputHandler.RequestBufferList();
+                    break;
             }
         }
     }
