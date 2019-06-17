@@ -12,9 +12,20 @@ namespace WinWeelay.Core
         public string Prefix { get; set; }
         public string PrefixColor { get; set; }
         public int SortIndex { get; set; }
+        public RelayBuffer Buffer { get; set; }
 
-        public RelayNicklistEntry(WeechatHdataEntry entry)
+        public string ListDisplay
         {
+            get
+            {
+                return ToString();
+            }
+        }
+
+        public RelayNicklistEntry(WeechatHdataEntry entry, RelayBuffer buffer)
+        {
+            Buffer = buffer;
+
             IsGroup = entry["group"].AsBoolean();
             IsVisible = entry["visible"].AsBoolean();
             Level = entry["level"].AsInt();
@@ -22,6 +33,7 @@ namespace WinWeelay.Core
             Color = entry["color"].AsString();
             Prefix = entry["prefix"].AsString();
             PrefixColor = entry["prefix_color"].AsString();
+
             SortIndex = PrefixHelper.GetSortIndex(Prefix);
         }
 
@@ -34,6 +46,7 @@ namespace WinWeelay.Core
             Color = entry.Color;
             Prefix = entry.Prefix;
             PrefixColor = entry.PrefixColor;
+
             SortIndex = PrefixHelper.GetSortIndex(Prefix);
         }
 

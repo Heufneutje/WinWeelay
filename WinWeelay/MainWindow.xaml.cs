@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
 using Xceed.Wpf.AvalonDock;
@@ -81,6 +82,31 @@ namespace WinWeelay
         {
             if (_dockingManager.ActiveContent is BufferControl)
                 _buffersListBox.SelectedItem = ((BufferControl)_dockingManager.ActiveContent).Buffer;
+        }
+
+        private void NicklistListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            RelayNicklistEntry nicklistEntry = (RelayNicklistEntry)GetElementFromPoint(_nicklistListBox, e.GetPosition(_nicklistListBox));
+            if (nicklistEntry != null)
+                _connection.OutputHandler.Input(nicklistEntry.Buffer, $@"/query {nicklistEntry.Name}");
+        }
+
+        private object GetElementFromPoint(ListBox box, Point point)
+        {
+            UIElement element = (UIElement)box.InputHitTest(point);
+            while (true)
+            {
+                if (element == box)
+                    return null;
+
+                object item = box.ItemContainerGenerator.ItemFromContainer(element);
+                bool itemFound = !(item.Equals(DependencyProperty.UnsetValue));
+
+                if (itemFound)
+                    return item;
+
+                element = (UIElement)VisualTreeHelper.GetParent(element);
+            }
         }
     }
 }

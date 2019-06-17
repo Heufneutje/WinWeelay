@@ -41,12 +41,11 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False">
-                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>
                 </xcad:LayoutPanel>
-
             </xcad:LayoutRoot>
         </xcad:DockingManager>
     </Grid>

@@ -129,43 +129,43 @@ namespace WinWeelay.Core
                     updatedBuffers = new List<RelayBuffer>();
                     for (int i = 0; i < hdata.Count; i++)
                     {
-                        RelayNicklistEntry nicklistEntry = new RelayNicklistEntry(hdata[i]);
+                        buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[i].GetPointer(0));
+                        if (buffer == null)
+                            continue;
+
+                        RelayNicklistEntry nicklistEntry = new RelayNicklistEntry(hdata[i], buffer);
                         if (nicklistEntry.IsGroup)
                             continue;
 
-                        buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[i].GetPointer(0));
-                        if (buffer != null)
+                        if (!nicklistCleared)
                         {
-                            if (!nicklistCleared)
-                            {
-                                buffer.Nicklist.Clear();
-                                nicklistCleared = true;
-                            }
-
-                            char diffChar = '+';
-                            if (hdata.KeyList.Contains("_diff"))
-                                diffChar = hdata[i]["_diff"].AsChar();
-
-                            switch (diffChar)
-                            {
-                                case '+':
-                                    buffer.Nicklist.Add(nicklistEntry);
-                                    break;
-                                case '-':
-                                    RelayNicklistEntry entryToRemove = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
-                                    if (entryToRemove != null)
-                                        buffer.Nicklist.Remove(entryToRemove);
-                                    break;
-                                case '*':
-                                    RelayNicklistEntry entryToUpdate = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
-                                    if (entryToUpdate != null)
-                                        entryToUpdate.Update(nicklistEntry);
-                                    break;
-                            }
-
-                            if (!updatedBuffers.Contains(buffer))
-                                updatedBuffers.Add(buffer);
+                            buffer.Nicklist.Clear();
+                            nicklistCleared = true;
                         }
+
+                        char diffChar = '+';
+                        if (hdata.KeyList.Contains("_diff"))
+                            diffChar = hdata[i]["_diff"].AsChar();
+
+                        switch (diffChar)
+                        {
+                            case '+':
+                                buffer.Nicklist.Add(nicklistEntry);
+                                break;
+                            case '-':
+                                RelayNicklistEntry entryToRemove = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
+                                if (entryToRemove != null)
+                                    buffer.Nicklist.Remove(entryToRemove);
+                                break;
+                            case '*':
+                                RelayNicklistEntry entryToUpdate = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
+                                if (entryToUpdate != null)
+                                    entryToUpdate.Update(nicklistEntry);
+                                break;
+                        }
+
+                        if (!updatedBuffers.Contains(buffer))
+                            updatedBuffers.Add(buffer);
                     }
                     foreach (RelayBuffer updateBuffer in updatedBuffers)
                         updateBuffer.SortNicklist();
