@@ -35,6 +35,8 @@ namespace WinWeelay.Core
             OutputHandler = new RelayOutputHandler(_networkStream);
 
             OutputHandler.Init(_relayPassword);
+            OutputHandler.RequestBufferList();
+            OutputHandler.Sync();
         }
 
         public void Disconnect()

@@ -29,8 +29,6 @@ namespace WinWeelay
             DataContext = _connection;
 
             _connection.Connect();
-            _connection.OutputHandler.RequestBufferList();
-            _connection.OutputHandler.Sync();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
