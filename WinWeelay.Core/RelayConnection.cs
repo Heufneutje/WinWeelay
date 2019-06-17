@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using WinWeelay.Configuration;
 
@@ -11,24 +12,26 @@ namespace WinWeelay.Core
         private string _hostname;
         private int _port;
         private string _relayPassword;
+        private IBufferView _bufferView;
         
         public RelayInputHandler InputHandler { get; private set; }
         public RelayOutputHandler OutputHandler { get; private set; }
-        public List<RelayBuffer> Buffers { get; private set; }
+        public ObservableCollection<RelayBuffer> Buffers { get; private set; }
         public RelayConfiguration Configuration { get; private set; }
         public RelayBuffer ActiveBuffer { get; set; }
 
         public RelayConnection() { }
 
-        public RelayConnection(RelayConfiguration configuration)
+        public RelayConnection(IBufferView view, RelayConfiguration configuration)
         {
             _tcpClient = new TcpClient();
-            Buffers = new List<RelayBuffer>();
+            Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;
 
             _hostname = configuration.Hostname;
             _port = configuration.Port;
             _relayPassword = configuration.DecryptedRelayPassword;
+            _bufferView = view;
         }
 
         public void Connect()
@@ -48,6 +51,11 @@ namespace WinWeelay.Core
         {
             OutputHandler.Quit();
             _tcpClient.Close();
+        }
+
+        public void NotifyBufferClosed(RelayBuffer buffer)
+        {
+            _bufferView.CloseBuffer(buffer);
         }
 
         public void NotifyBuffersChanged()

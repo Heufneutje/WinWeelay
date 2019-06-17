@@ -12,7 +12,7 @@ using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WinWeelay
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IBufferView
     {
         private RelayConnection _connection;
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
@@ -25,7 +25,7 @@ namespace WinWeelay
             _bufferControls = new Dictionary<RelayBuffer, LayoutDocument>();
 
             _relayConfiguration = ConfigurationHelper.LoadConfiguration();
-            _connection = new RelayConnection(_relayConfiguration);
+            _connection = new RelayConnection(this, _relayConfiguration);
 
             DataContext = _connection;
 
@@ -107,6 +107,12 @@ namespace WinWeelay
 
                 element = (UIElement)VisualTreeHelper.GetParent(element);
             }
+        }
+
+        public void CloseBuffer(RelayBuffer buffer)
+        {
+            if (_bufferControls.ContainsKey(buffer))
+                _bufferControls[buffer].Close();
         }
     }
 }

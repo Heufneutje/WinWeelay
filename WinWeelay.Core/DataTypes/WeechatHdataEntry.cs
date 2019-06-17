@@ -75,5 +75,10 @@ namespace WinWeelay.Core
                 return -1;
             }
         }
+
+        public bool DataContainsKey(string key)
+        {
+            return _data.ContainsKey(key);
+        }
     }
 }

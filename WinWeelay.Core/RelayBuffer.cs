@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace WinWeelay.Core
@@ -15,7 +16,7 @@ namespace WinWeelay.Core
         public int Number { get; set; }
         public string Pointer { get; set; }
         public string Title { get; set; }
-        public List<RelayNicklistEntry> Nicklist { get; private set; }
+        public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
 
         public string MessageBuffer
         {
@@ -28,19 +29,26 @@ namespace WinWeelay.Core
         public RelayBuffer()
         {
             _messages = new List<RelayBufferMessage>();
-            Nicklist = new List<RelayNicklistEntry>();
+            Nicklist = new ObservableCollection<RelayNicklistEntry>();
         }
 
         public RelayBuffer(RelayConnection connection, WeechatHdataEntry entry)
         {
-            Name = entry["name"].AsString();
+            if (entry.DataContainsKey("name"))
+                Name = entry["name"].AsString();
+            else
+            {
+                WeechatHashtable table = (WeechatHashtable)entry["local_variables"];
+                Name = table["name"].AsString();
+            }
+
             Number = entry["number"].AsInt();
             Title = entry["title"].AsString();
             Pointer = entry.GetPointer();
 
             _connection = connection;
             _messages = new List<RelayBufferMessage>();
-            Nicklist = new List<RelayNicklistEntry>();
+            Nicklist = new ObservableCollection<RelayNicklistEntry>();
         }
 
         public override string ToString()
@@ -79,7 +87,7 @@ namespace WinWeelay.Core
 
         public void SortNicklist()
         {
-            Nicklist = Nicklist.OrderBy(x => x.SortIndex).ThenBy(x => x.Name).ToList();
+            Nicklist = new ObservableCollection<RelayNicklistEntry>(Nicklist.OrderBy(x => x.SortIndex).ThenBy(x => x.Name));
         }
     }
 }

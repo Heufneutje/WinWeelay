@@ -78,109 +78,156 @@ namespace WinWeelay.Core
             }
         }
 
-        public void ParseMessage(RelayMessage message)
+        private void ParseMessage(RelayMessage message)
         {
-            WeechatHdata hdata;
-            RelayBuffer buffer;
-            List<RelayBuffer> updatedBuffers;
-
             switch (message.ID)
             {
                 case MessageIds.CustomGetBufferList:
-                    List<RelayBuffer> buffers = new List<RelayBuffer>();
-                    hdata = (WeechatHdata)message.RelayObjects.First();
-                    for (int i = 0; i < hdata.Count; i++)
-                    {
-                        WeechatHdataEntry entry = hdata[i];
-                        buffer = new RelayBuffer(_connection, entry);
-                        buffers.Add(buffer);
-                    }
-                    _connection.Buffers.Clear();
-                    _connection.Buffers.AddRange(buffers);
-                    _connection.NotifyBuffersChanged();
+                    ParseBufferList(message);
                     break;
                 case MessageIds.BufferLineAdded:
                 case MessageIds.CustomGetBufferBacklog:
-                    hdata = (WeechatHdata)message.RelayObjects.First();
-
-                    updatedBuffers = new List<RelayBuffer>();
-                    for (int i = 0; i < hdata.Count; i++)
-                    {
-                        RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i]);
-
-                        buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
-                        if (buffer != null)
-                        {
-                            buffer.AddMessage(bufferMessage);
-                            if (!updatedBuffers.Contains(buffer))
-                                updatedBuffers.Add(buffer);
-                        }
-                    }
-
-                    foreach (RelayBuffer updateBuffer in updatedBuffers)
-                        updateBuffer.NotifyMessagesUpdated();
+                    ParseBufferLines(message);
+                    break;
+                case MessageIds.BufferOpened:
+                    ParseBufferOpened(message);
+                    break;
+                case MessageIds.BufferClosing:
+                    ParseBufferClosing(message);
                     break;
                 case MessageIds.Nicklist:
                 case MessageIds.NicklistDiff:
                 case MessageIds.CustomGetNicklist:
-                    hdata = (WeechatHdata)message.RelayObjects.First();
-
-                    bool nicklistCleared = message.ID != MessageIds.Nicklist;
-                    updatedBuffers = new List<RelayBuffer>();
-                    for (int i = 0; i < hdata.Count; i++)
-                    {
-                        buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[i].GetPointer(0));
-                        if (buffer == null)
-                            continue;
-
-                        RelayNicklistEntry nicklistEntry = new RelayNicklistEntry(hdata[i], buffer);
-                        if (nicklistEntry.IsGroup)
-                            continue;
-
-                        if (!nicklistCleared)
-                        {
-                            buffer.Nicklist.Clear();
-                            nicklistCleared = true;
-                        }
-
-                        char diffChar = '+';
-                        if (hdata.KeyList.Contains("_diff"))
-                            diffChar = hdata[i]["_diff"].AsChar();
-
-                        switch (diffChar)
-                        {
-                            case '+':
-                                buffer.Nicklist.Add(nicklistEntry);
-                                break;
-                            case '-':
-                                RelayNicklistEntry entryToRemove = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
-                                if (entryToRemove != null)
-                                    buffer.Nicklist.Remove(entryToRemove);
-                                break;
-                            case '*':
-                                RelayNicklistEntry entryToUpdate = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
-                                if (entryToUpdate != null)
-                                    entryToUpdate.Update(nicklistEntry);
-                                break;
-                        }
-
-                        if (!updatedBuffers.Contains(buffer))
-                            updatedBuffers.Add(buffer);
-                    }
-                    foreach (RelayBuffer updateBuffer in updatedBuffers)
-                        updateBuffer.SortNicklist();
-                    _connection.NotifyNicklistUpdated();
+                    ParseNicklist(message);
                     break;
                 case MessageIds.Upgrade:
-                    _connection.OutputHandler.Desync();
-                    _connection.Buffers.Clear();
-                    _connection.NotifyBuffersChanged();
+                    ParseUpgrade();
                     break;
                 case MessageIds.UpgradeEnded:
-                    _connection.OutputHandler.Sync();
-                    _connection.OutputHandler.RequestBufferList();
+                    ParseUpgradeEnded();
                     break;
             }
+        }
+
+        private void ParseBufferList(RelayMessage message)
+        {
+            List<RelayBuffer> buffers = new List<RelayBuffer>();
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            for (int i = 0; i < hdata.Count; i++)
+            {
+                WeechatHdataEntry entry = hdata[i];
+                RelayBuffer buffer = new RelayBuffer(_connection, entry);
+                buffers.Add(buffer);
+            }
+            _connection.Buffers.Clear();
+
+            foreach (RelayBuffer addedBuffer in buffers)
+                _connection.Buffers.Add(addedBuffer);
+            _connection.NotifyBuffersChanged();
+        }
+        
+        private void ParseBufferLines(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
+            for (int i = 0; i < hdata.Count; i++)
+            {
+                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i]);
+                RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
+                if (buffer != null)
+                {
+                    buffer.AddMessage(bufferMessage);
+                    if (!updatedBuffers.Contains(buffer))
+                        updatedBuffers.Add(buffer);
+                }
+            }
+
+            foreach (RelayBuffer updateBuffer in updatedBuffers)
+                updateBuffer.NotifyMessagesUpdated();
+        }
+
+        private void ParseBufferOpened(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            RelayBuffer buffer = new RelayBuffer(_connection, hdata[0]);
+            _connection.Buffers.Add(buffer);
+            _connection.NotifyBuffersChanged();
+        }
+
+        private void ParseBufferClosing(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[0].GetPointer());
+            if (buffer != null)
+            {
+                _connection.Buffers.Remove(buffer);
+                _connection.NotifyBufferClosed(buffer);
+                _connection.NotifyBuffersChanged();
+            }
+        }
+
+        private void ParseNicklist(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+
+            bool nicklistCleared = message.ID != MessageIds.Nicklist;
+            List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
+            for (int i = 0; i < hdata.Count; i++)
+            {
+                RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[i].GetPointer(0));
+                if (buffer == null)
+                    continue;
+
+                RelayNicklistEntry nicklistEntry = new RelayNicklistEntry(hdata[i], buffer);
+                if (nicklistEntry.IsGroup)
+                    continue;
+
+                if (!nicklistCleared)
+                {
+                    buffer.Nicklist.Clear();
+                    nicklistCleared = true;
+                }
+
+                char diffChar = '+';
+                if (hdata.KeyList.Contains("_diff"))
+                    diffChar = hdata[i]["_diff"].AsChar();
+
+                switch (diffChar)
+                {
+                    case '+':
+                        buffer.Nicklist.Add(nicklistEntry);
+                        break;
+                    case '-':
+                        RelayNicklistEntry entryToRemove = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
+                        if (entryToRemove != null)
+                            buffer.Nicklist.Remove(entryToRemove);
+                        break;
+                    case '*':
+                        RelayNicklistEntry entryToUpdate = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
+                        if (entryToUpdate != null)
+                            entryToUpdate.Update(nicklistEntry);
+                        break;
+                }
+
+                if (!updatedBuffers.Contains(buffer))
+                    updatedBuffers.Add(buffer);
+            }
+            foreach (RelayBuffer updateBuffer in updatedBuffers)
+                updateBuffer.SortNicklist();
+            _connection.NotifyNicklistUpdated();
+        }
+
+        private void ParseUpgrade()
+        {
+            _connection.OutputHandler.Desync();
+            _connection.Buffers.Clear();
+            _connection.NotifyBuffersChanged();
+        }
+
+        private void ParseUpgradeEnded()
+        {
+            _connection.OutputHandler.Sync();
+            _connection.OutputHandler.RequestBufferList();
         }
     }
 }
