@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WinWeelay.Configuration\WinWeelay.Configuration.csproj" />
     <ProjectReference Include="..\WinWeelay.Utils\WinWeelay.Utils.csproj" />
   </ItemGroup>
 

@@ -34,7 +34,6 @@ namespace WinWeelay.Core
         public void RequestBufferBacklog(RelayBuffer buffer, int backlogSize)
         {
             Hdata($"buffer:{buffer.Pointer}/lines/last_line(-{backlogSize})/data", id: MessageIds.CustomGetBufferBacklog);
-            buffer.HasBacklog = true;
         }
 
         public void Init(string password)
@@ -65,12 +64,12 @@ namespace WinWeelay.Core
                 SendMessage($"infolist {name} {pointer} {arguments}", id);
         }
 
-        public void Nicklist(string buffer = null, string id = null)
+        public void Nicklist(RelayBuffer buffer = null, string id = null)
         {
-            if (string.IsNullOrEmpty(buffer))
+            if (buffer == null)
                 SendMessage("nicklist", id);
             else
-                SendMessage($"nicklist {buffer}", id);
+                SendMessage($"nicklist {buffer.Pointer}", id);
         }
 
         public void Input(RelayBuffer buffer, string message)

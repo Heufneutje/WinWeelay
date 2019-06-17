@@ -41,7 +41,7 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False">
-                                <ListBox x:Name="listBox2"/>
+                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>

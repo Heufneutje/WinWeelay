@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net.Sockets;
+using WinWeelay.Configuration;
 
 namespace WinWeelay.Core
 {
@@ -14,16 +15,20 @@ namespace WinWeelay.Core
         public RelayInputHandler InputHandler { get; private set; }
         public RelayOutputHandler OutputHandler { get; private set; }
         public List<RelayBuffer> Buffers { get; private set; }
+        public RelayConfiguration Configuration { get; private set; }
+        public RelayBuffer ActiveBuffer { get; set; }
 
         public RelayConnection() { }
 
-        public RelayConnection(string hostname, int port, string relayPassword)
+        public RelayConnection(RelayConfiguration configuration)
         {
             _tcpClient = new TcpClient();
-            _hostname = hostname;
-            _port = port;
-            _relayPassword = relayPassword;
             Buffers = new List<RelayBuffer>();
+            Configuration = configuration;
+
+            _hostname = configuration.Hostname;
+            _port = configuration.Port;
+            _relayPassword = configuration.DecryptedRelayPassword;
         }
 
         public void Connect()
@@ -48,6 +53,11 @@ namespace WinWeelay.Core
         public void NotifyBuffersChanged()
         {
             NotifyPropertyChanged(nameof(Buffers));
+        }
+
+        public void NotifyNicklistUpdated()
+        {
+            NotifyPropertyChanged(nameof(ActiveBuffer));
         }
     }
 }

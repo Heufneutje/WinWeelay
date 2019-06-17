@@ -82,6 +82,8 @@ namespace WinWeelay.Core
         {
             WeechatHdata hdata;
             RelayBuffer buffer;
+            List<RelayBuffer> updatedBuffers;
+
             switch (message.ID)
             {
                 case MessageIds.CustomGetBufferList:
@@ -90,7 +92,7 @@ namespace WinWeelay.Core
                     for (int i = 0; i < hdata.Count; i++)
                     {
                         WeechatHdataEntry entry = hdata[i];
-                        buffer = new RelayBuffer(entry);
+                        buffer = new RelayBuffer(_connection, entry);
                         buffers.Add(buffer);
                     }
                     _connection.Buffers.Clear();
@@ -101,7 +103,7 @@ namespace WinWeelay.Core
                 case MessageIds.CustomGetBufferBacklog:
                     hdata = (WeechatHdata)message.RelayObjects.First();
 
-                    List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
+                    updatedBuffers = new List<RelayBuffer>();
                     for (int i = 0; i < hdata.Count; i++)
                     {
                         RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i]);
@@ -117,6 +119,57 @@ namespace WinWeelay.Core
 
                     foreach (RelayBuffer updateBuffer in updatedBuffers)
                         updateBuffer.NotifyMessagesUpdated();
+                    break;
+                case MessageIds.Nicklist:
+                case MessageIds.NicklistDiff:
+                case MessageIds.CustomGetNicklist:
+                    hdata = (WeechatHdata)message.RelayObjects.First();
+
+                    bool nicklistCleared = message.ID != MessageIds.Nicklist;
+                    updatedBuffers = new List<RelayBuffer>();
+                    for (int i = 0; i < hdata.Count; i++)
+                    {
+                        RelayNicklistEntry nicklistEntry = new RelayNicklistEntry(hdata[i]);
+                        if (nicklistEntry.IsGroup)
+                            continue;
+
+                        buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[i].GetPointer(0));
+                        if (buffer != null)
+                        {
+                            if (!nicklistCleared)
+                            {
+                                buffer.Nicklist.Clear();
+                                nicklistCleared = true;
+                            }
+
+                            char diffChar = '+';
+                            if (hdata.KeyList.Contains("_diff"))
+                                diffChar = hdata[i]["_diff"].AsChar();
+
+                            switch (diffChar)
+                            {
+                                case '+':
+                                    buffer.Nicklist.Add(nicklistEntry);
+                                    break;
+                                case '-':
+                                    RelayNicklistEntry entryToRemove = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
+                                    if (entryToRemove != null)
+                                        buffer.Nicklist.Remove(entryToRemove);
+                                    break;
+                                case '*':
+                                    RelayNicklistEntry entryToUpdate = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
+                                    if (entryToUpdate != null)
+                                        entryToUpdate.Update(nicklistEntry);
+                                    break;
+                            }
+
+                            if (!updatedBuffers.Contains(buffer))
+                                updatedBuffers.Add(buffer);
+                        }
+                    }
+                    foreach (RelayBuffer updateBuffer in updatedBuffers)
+                        updateBuffer.SortNicklist();
+                    _connection.NotifyNicklistUpdated();
                     break;
                 case MessageIds.Upgrade:
                     _connection.OutputHandler.Desync();

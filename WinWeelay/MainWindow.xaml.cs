@@ -24,7 +24,7 @@ namespace WinWeelay
             _bufferControls = new Dictionary<RelayBuffer, LayoutDocument>();
 
             _relayConfiguration = ConfigurationHelper.LoadConfiguration();
-            _connection = new RelayConnection(_relayConfiguration.Hostname, _relayConfiguration.Port, _relayConfiguration.DecryptedRelayPassword);
+            _connection = new RelayConnection(_relayConfiguration);
 
             DataContext = _connection;
 
@@ -57,12 +57,12 @@ namespace WinWeelay
 
                 _documentPane.Children.Add(layoutDocument);
                 _bufferControls.Add(buffer, layoutDocument);
-
-                if (!buffer.HasBacklog)
-                    _connection.OutputHandler.RequestBufferBacklog(buffer, _relayConfiguration.BacklogSize);
             }
             else
                 layoutDocument = _bufferControls[buffer];
+
+            buffer.HandleSelected();
+            _connection.NotifyNicklistUpdated();
 
             layoutDocument.IsActive = true;
         }
