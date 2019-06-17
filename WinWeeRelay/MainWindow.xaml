@@ -1,0 +1,53 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WinWeeRelay"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:Core="clr-namespace:WinWeeRelay.Core;assembly=WinWeeRelay.Core" x:Class="WinWeeRelay.MainWindow"
+        mc:Ignorable="d"
+        Title="WinWeeRelay" Height="450" Width="800" Closing="Window_Closing">
+    <Window.DataContext>
+        <Core:RelayConnection/>
+    </Window.DataContext>
+    <Grid>
+        <xcad:DockingManager x:Name="_dockingManager"
+                             AllowMixedOrientation="True"
+                             BorderBrush="Black"
+                             BorderThickness="1"
+                             DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged">
+            <xcad:DockingManager.DocumentHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Title}" />
+                </DataTemplate>
+            </xcad:DockingManager.DocumentHeaderTemplate>
+            <xcad:LayoutRoot x:Name="_layoutRoot">
+
+                <xcad:LayoutRoot.LeftSide>
+                    <xcad:LayoutAnchorSide/>
+                </xcad:LayoutRoot.LeftSide>
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePaneGroup DockWidth="125">
+                        <xcad:LayoutAnchorablePane>
+                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanHide="False" CanDockAsTabbedDocument="False">
+                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Buffers, UpdateSourceTrigger=PropertyChanged}"/>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                    <xcad:LayoutDocumentPaneGroup>
+                        <xcad:LayoutDocumentPane x:Name="_documentPane"/>
+                    </xcad:LayoutDocumentPaneGroup>
+                    <xcad:LayoutAnchorablePaneGroup DockWidth="125">
+                        <xcad:LayoutAnchorablePane>
+                            <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False">
+                                <ListBox x:Name="listBox2"/>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                </xcad:LayoutPanel>
+
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+    </Grid>
+</Window>
