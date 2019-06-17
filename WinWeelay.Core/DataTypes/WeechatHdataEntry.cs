@@ -4,17 +4,17 @@ using System.Linq;
 
 namespace WinWeelay.Core
 {
-    public class WeechatHdataEntry : WinWeelayObject
+    public class WeechatHdataEntry : WeechatRelayObject
     {
         private List<string> _pointers = new List<string>();
-        private Dictionary<string, WinWeelayObject> _data = new Dictionary<string, WinWeelayObject>();
+        private Dictionary<string, WeechatRelayObject> _data = new Dictionary<string, WeechatRelayObject>();
 
         public void AddPointer(string pointer)
         {
             _pointers.Add(pointer);
         }
 
-        public void AddObject(string key, WinWeelayObject value)
+        public void AddObject(string key, WeechatRelayObject value)
         {
             _data.Add(key, value);
         }
@@ -28,13 +28,13 @@ namespace WinWeelay.Core
             string ret = $"{tmp}[HdataEntry]{Environment.NewLine}";
             ret += $"{tmp}  Pointers: {string.Join(", ", _pointers)}{Environment.NewLine}";
 
-            foreach (KeyValuePair<string, WinWeelayObject> pair in _data)
+            foreach (KeyValuePair<string, WeechatRelayObject> pair in _data)
                 ret += $"{tmp}  {pair.Key}={pair.Value}{Environment.NewLine}";
 
             return ret;
         }
 
-        public WinWeelayObject this[string key]
+        public WeechatRelayObject this[string key]
         {
             get
             {

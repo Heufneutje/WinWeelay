@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace WinWeelay.Core
 {
-    public class WeechatArray : WinWeelayObject
+    public class WeechatArray : WeechatRelayObject
     {
-        private readonly List<WinWeelayObject> _array;
+        private readonly List<WeechatRelayObject> _array;
         private readonly WeechatType _arrayType;
 
         public int Length { get; set; }
@@ -13,17 +13,17 @@ namespace WinWeelay.Core
         public WeechatArray(WeechatType arrayType, int size)
         {
             _arrayType = arrayType;
-            _array = new List<WinWeelayObject>();
+            _array = new List<WeechatRelayObject>();
 
             Length = size;
         }
 
-        public void Add(WinWeelayObject value)
+        public void Add(WeechatRelayObject value)
         {
             _array.Add(value);
         }
 
-        public WinWeelayObject this[int index]
+        public WeechatRelayObject this[int index]
         {
             get
             {

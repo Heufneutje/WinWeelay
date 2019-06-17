@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WinWeelay.Core
 {
-    public class WeechatHdata : WinWeelayObject
+    public class WeechatHdata : WeechatRelayObject
     {
         private List<WeechatHdataEntry> _items;
 

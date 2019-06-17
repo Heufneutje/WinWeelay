@@ -2,7 +2,7 @@
 
 namespace WinWeelay.Core
 {
-    public class WeechatInfo : WinWeelayObject
+    public class WeechatInfo : WeechatRelayObject
     {
         public string Value { get; private set; }
         public string Name { get; private set; }

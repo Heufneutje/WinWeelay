@@ -137,8 +137,8 @@ namespace WinWeelay.Core
             WeechatHashtable hta = new WeechatHashtable();
             for (int i = 0; i < count; i++)
             {
-                WinWeelayObject k = GetObject(keyType);
-                WinWeelayObject v = GetObject(valueType);
+                WeechatRelayObject k = GetObject(keyType);
+                WeechatRelayObject v = GetObject(valueType);
                 hta.Add(k, v);
             }
 
@@ -194,12 +194,12 @@ namespace WinWeelay.Core
             for (int i = 0; i < count; i++)
             {
                 int numItems = GetUnsignedInt();
-                Dictionary<string, WinWeelayObject> variables = new Dictionary<string, WinWeelayObject>();
+                Dictionary<string, WeechatRelayObject> variables = new Dictionary<string, WeechatRelayObject>();
                 for (int j = 0; j < numItems; j++)
                 {
                     string itemName = GetString();
                     WeechatType itemType = GetWeechatType();
-                    WinWeelayObject item = GetObject(itemType);
+                    WeechatRelayObject item = GetObject(itemType);
                     variables.Add(itemName, item);
                 }
                 wil.AddItem(variables);
@@ -230,41 +230,41 @@ namespace WinWeelay.Core
             return type;
         }
 
-        public WinWeelayObject GetObject()
+        public WeechatRelayObject GetObject()
         {
             WeechatType type = GetWeechatType();
             return GetObject(type);
         }
 
-        private WinWeelayObject GetObject(WeechatType type)
+        private WeechatRelayObject GetObject(WeechatType type)
         {
-            WinWeelayObject ret = null;
+            WeechatRelayObject ret = null;
 
             switch (type)
             {
                 case WeechatType.CHR:
-                    ret = new WinWeelayObject(GetChar());
+                    ret = new WeechatRelayObject(GetChar());
                     break;
                 case WeechatType.INT:
-                    ret = new WinWeelayObject(GetUnsignedInt());
+                    ret = new WeechatRelayObject(GetUnsignedInt());
                     break;
                 case WeechatType.LON:
-                    ret = new WinWeelayObject(GetLong());
+                    ret = new WeechatRelayObject(GetLong());
                     break;
                 case WeechatType.STR:
-                    ret = new WinWeelayObject(GetString());
+                    ret = new WeechatRelayObject(GetString());
                     break;
                 case WeechatType.BUF:
-                    ret = new WinWeelayObject(GetBuffer());
+                    ret = new WeechatRelayObject(GetBuffer());
                     break;
                 case WeechatType.PTR:
-                    ret = new WinWeelayObject(GetPointer());
+                    ret = new WeechatRelayObject(GetPointer());
                     break;
                 case WeechatType.TIM:
-                    ret = new WinWeelayObject(GetTime());
+                    ret = new WeechatRelayObject(GetTime());
                     break;
                 case WeechatType.ARR:
-                    ret = new WinWeelayObject(GetArray());
+                    ret = new WeechatRelayObject(GetArray());
                     break;
                 case WeechatType.HTB:
                     ret = GetHashtable();

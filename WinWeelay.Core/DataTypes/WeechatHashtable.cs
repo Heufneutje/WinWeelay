@@ -3,16 +3,16 @@ using System.Text;
 
 namespace WinWeelay.Core
 {
-    public class WeechatHashtable : WinWeelayObject
+    public class WeechatHashtable : WeechatRelayObject
     {
-        private Dictionary<string, WinWeelayObject> _dict = new Dictionary<string, WinWeelayObject>();
+        private Dictionary<string, WeechatRelayObject> _dict = new Dictionary<string, WeechatRelayObject>();
 
-        public void Add(WinWeelayObject key, WinWeelayObject value)
+        public void Add(WeechatRelayObject key, WeechatRelayObject value)
         {
             _dict.Add(key.ToString(), value);
         }
 
-        public WinWeelayObject this[string key]
+        public WeechatRelayObject this[string key]
         {
             get
             {
@@ -23,7 +23,7 @@ namespace WinWeelay.Core
         public override string ToString()
         {
             StringBuilder map = new StringBuilder();
-            foreach (KeyValuePair<string, WinWeelayObject> pair in _dict)
+            foreach (KeyValuePair<string, WeechatRelayObject> pair in _dict)
             {
                 map.Append(pair.Key);
                 map.Append(" -> ");

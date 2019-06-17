@@ -4,10 +4,10 @@ using System.Text;
 
 namespace WinWeelay.Core
 {
-    public class WeechatInfoList : WinWeelayObject
+    public class WeechatInfoList : WeechatRelayObject
     {
         public string Name { get; private set; }
-        private List<Dictionary<string, WinWeelayObject>> _items = new List<Dictionary<string, WinWeelayObject>>();
+        private List<Dictionary<string, WeechatRelayObject>> _items = new List<Dictionary<string, WeechatRelayObject>>();
 
         public int Count
         {
@@ -23,12 +23,12 @@ namespace WinWeelay.Core
             Type = WeechatType.INL;
         }
 
-        public void AddItem(Dictionary<string, WinWeelayObject> variables)
+        public void AddItem(Dictionary<string, WeechatRelayObject> variables)
         {
             _items.Add(variables);
         }
 
-        public Dictionary<string, WinWeelayObject> this[int index]
+        public Dictionary<string, WeechatRelayObject> this[int index]
         {
             get
             {
@@ -39,9 +39,9 @@ namespace WinWeelay.Core
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(Name + $":{Environment.NewLine}");
-            foreach (Dictionary<string, WinWeelayObject> item in _items)
+            foreach (Dictionary<string, WeechatRelayObject> item in _items)
             {
-                foreach (KeyValuePair<string, WinWeelayObject> pair in item)
+                foreach (KeyValuePair<string, WeechatRelayObject> pair in item)
                     sb.Append($"  {pair.Key}->{pair.Value}, ");
 
                 sb.Append($"{Environment.NewLine}{Environment.NewLine}");

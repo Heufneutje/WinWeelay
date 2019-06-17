@@ -2,7 +2,7 @@
 
 namespace WinWeelay.Core
 {
-    public class WinWeelayObject
+    public class WeechatRelayObject
     {
         private char _charValue;
         private int _intValue;
@@ -13,42 +13,42 @@ namespace WinWeelay.Core
 
         public WeechatType Type { get; set; } = WeechatType.UNKNOWN;
 
-        public WinWeelayObject()
+        public WeechatRelayObject()
         {
             // Does nothing
         }
 
-        public WinWeelayObject(char c)
+        public WeechatRelayObject(char c)
         {
             _charValue = c;
             Type = WeechatType.CHR;
         }
 
-        public WinWeelayObject(int i)
+        public WeechatRelayObject(int i)
         {
             _intValue = i;
             Type = WeechatType.INT;
         }
 
-        public WinWeelayObject(long l)
+        public WeechatRelayObject(long l)
         {
             _longValue = l;
             Type = WeechatType.LON;
         }
 
-        public WinWeelayObject(string s)
+        public WeechatRelayObject(string s)
         {
             _strValue = s;
             Type = WeechatType.STR;
         }
 
-        public WinWeelayObject(byte[] b)
+        public WeechatRelayObject(byte[] b)
         {
             _baValue = b;
             Type = WeechatType.BUF;
         }
 
-        public WinWeelayObject(WeechatArray array)
+        public WeechatRelayObject(WeechatArray array)
         {
             _arrayValue = array;
             Type = WeechatType.ARR;
