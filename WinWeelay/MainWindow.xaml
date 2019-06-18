@@ -8,15 +8,20 @@
         xmlns:Core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core" x:Class="WinWeelay.MainWindow"
         mc:Ignorable="d"
         Title="WinWeelay" Height="450" Width="800" Closing="Window_Closing">
-    <Window.DataContext>
-        <Core:RelayConnection/>
-    </Window.DataContext>
     <Grid>
-        <xcad:DockingManager x:Name="_dockingManager"
-                             AllowMixedOrientation="True"
-                             BorderBrush="Black"
-                             BorderThickness="1"
-                             DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged">
+        <Menu x:Name="menu" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Connect" Command="{Binding ConnectCommand}"/>
+                <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}"/>
+                <Separator/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Buffer">
+                <MenuItem Header="Hide Buffer" Command="{Binding HideBufferCommand}"/>
+                <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}"/>
+            </MenuItem>
+        </Menu>
+        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,5" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
             <xcad:DockingManager.DocumentHeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />
@@ -31,7 +36,7 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanHide="False" CanDockAsTabbedDocument="False">
-                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Buffers, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>
@@ -41,7 +46,7 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False">
-                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick"/>
+                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>

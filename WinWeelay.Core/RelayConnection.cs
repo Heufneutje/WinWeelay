@@ -19,12 +19,12 @@ namespace WinWeelay.Core
         public ObservableCollection<RelayBuffer> Buffers { get; private set; }
         public RelayConfiguration Configuration { get; private set; }
         public RelayBuffer ActiveBuffer { get; set; }
+        public bool IsConnected { get; private set; }
 
         public RelayConnection() { }
 
         public RelayConnection(IBufferView view, RelayConfiguration configuration)
         {
-            _tcpClient = new TcpClient();
             Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;
 
@@ -36,8 +36,12 @@ namespace WinWeelay.Core
 
         public void Connect()
         {
+            _tcpClient = new TcpClient();
             _tcpClient.Connect(_hostname, _port);
             _networkStream = _tcpClient.GetStream();
+
+            IsConnected = true;
+            NotifyPropertyChanged(nameof(IsConnected));
 
             InputHandler = new RelayInputHandler(this, _networkStream);
             OutputHandler = new RelayOutputHandler(_networkStream);
@@ -51,6 +55,23 @@ namespace WinWeelay.Core
         {
             OutputHandler.Quit();
             _tcpClient.Close();
+
+            foreach (RelayBuffer buffer in Buffers)
+                CloseBuffer(buffer);
+
+            Buffers.Clear();
+            NotifyBuffersChanged();
+
+            ActiveBuffer = null;
+            NotifyNicklistUpdated();
+
+            IsConnected = false;
+            NotifyPropertyChanged(nameof(IsConnected));
+        }
+
+        public void CloseBuffer(RelayBuffer buffer)
+        {
+            _bufferView.CloseBuffer(buffer);
         }
 
         public void NotifyBufferClosed(RelayBuffer buffer)

@@ -4,8 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
-using WinWeelay.Configuration;
 using WinWeelay.Core;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -14,27 +14,17 @@ namespace WinWeelay
 {
     public partial class MainWindow : Window, IBufferView
     {
-        private RelayConnection _connection;
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
-        private RelayConfiguration _relayConfiguration;
-
+        
         public MainWindow()
         {
             InitializeComponent();
-
             _bufferControls = new Dictionary<RelayBuffer, LayoutDocument>();
-
-            _relayConfiguration = ConfigurationHelper.LoadConfiguration();
-            _connection = new RelayConnection(this, _relayConfiguration);
-
-            DataContext = _connection;
-
-            _connection.Connect();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            _connection.Disconnect();
+            ((BufferViewModel)DataContext).DisconnectCommand.Execute(null);
         }
 
         private void BuffersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -46,7 +36,7 @@ namespace WinWeelay
             LayoutDocument layoutDocument;
             if (!_bufferControls.ContainsKey(buffer))
             {
-                BufferControl bufferControl = new BufferControl(_connection, buffer);
+                BufferControl bufferControl = new BufferControl(((BufferViewModel)DataContext).Connection, buffer);
                 layoutDocument = new LayoutDocument
                 {
                     Title = buffer.Name,
@@ -63,9 +53,10 @@ namespace WinWeelay
                 layoutDocument = _bufferControls[buffer];
 
             buffer.HandleSelected();
-            _connection.NotifyNicklistUpdated();
+            ((BufferViewModel)DataContext).Connection.NotifyNicklistUpdated();
 
             layoutDocument.IsActive = true;
+            ((BufferViewModel)DataContext).UpdateBufferCommands();
         }
 
         private void DockingManager_DocumentClosed(object sender, DocumentClosedEventArgs e)
@@ -84,11 +75,11 @@ namespace WinWeelay
                 _buffersListBox.SelectedItem = ((BufferControl)_dockingManager.ActiveContent).Buffer;
         }
 
-        private void NicklistListBox_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void NicklistListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             RelayNicklistEntry nicklistEntry = (RelayNicklistEntry)GetElementFromPoint(_nicklistListBox, e.GetPosition(_nicklistListBox));
             if (nicklistEntry != null)
-                _connection.OutputHandler.Input(nicklistEntry.Buffer, $@"/query {nicklistEntry.Name}");
+                ((BufferViewModel)DataContext).Connection.OutputHandler.Input(nicklistEntry.Buffer, $@"/query {nicklistEntry.Name}");
         }
 
         private object GetElementFromPoint(ListBox box, Point point)

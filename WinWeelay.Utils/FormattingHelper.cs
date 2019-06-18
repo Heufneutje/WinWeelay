@@ -5,6 +5,10 @@
         public static string StripWeechatFormatting(string formattedString)
         {
             string result = string.Empty;
+
+            if (string.IsNullOrEmpty(formattedString))
+                return result;
+
             bool isInFormatting = false;
             bool isFirstFormattingCharacter = false;
 

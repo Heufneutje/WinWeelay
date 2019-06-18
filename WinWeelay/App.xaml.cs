@@ -13,5 +13,15 @@ namespace WinWeelay
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            MainWindow window = new MainWindow();
+            BufferViewModel model = new BufferViewModel(window);
+            window.DataContext = model;
+
+            window.Show();
+        }
     }
 }
