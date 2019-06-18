@@ -66,7 +66,12 @@ namespace WinWeelay
                 _bufferControls.Remove(buffer);
 
             if (_buffersListBox.SelectedItem == buffer)
+            {
                 _buffersListBox.SelectedItem = null;
+                buffer.HandleUnselected();
+            }
+
+            ((BufferViewModel)DataContext).UpdateBufferCommands();
         }
 
         private void DockingManager_ActiveContentChanged(object sender, EventArgs e)

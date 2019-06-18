@@ -85,6 +85,12 @@ namespace WinWeelay.Core
             }
         }
 
+        public void HandleUnselected()
+        {
+            _connection.ActiveBuffer = null;
+            _connection.NotifyNicklistUpdated();
+        }
+
         public void SortNicklist()
         {
             Nicklist = new ObservableCollection<RelayNicklistEntry>(Nicklist.OrderBy(x => x.SortIndex).ThenBy(x => x.Name));
