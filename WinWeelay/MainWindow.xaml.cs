@@ -105,5 +105,21 @@ namespace WinWeelay
             if (_bufferControls.ContainsKey(buffer))
                 _bufferControls[buffer].Close();
         }
+
+        private void LayoutAnchorable_Hiding(object sender, CancelEventArgs e)
+        {
+            _nicklistMenuItem.IsChecked = false;
+        }
+
+        private void NicklistMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (_nicklistLayoutAnchorable == null)
+                return;
+
+            if (_nicklistMenuItem.IsChecked)
+                _nicklistLayoutAnchorable.Show();
+            else
+                _nicklistLayoutAnchorable.Hide();
+        }
     }
 }

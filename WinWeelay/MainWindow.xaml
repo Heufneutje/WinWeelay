@@ -16,6 +16,9 @@
                 <Separator/>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click"/>
+            </MenuItem>
             <MenuItem Header="Buffer">
                 <MenuItem Header="Hide Buffer" Command="{Binding HideBufferCommand}"/>
                 <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}"/>
@@ -44,8 +47,8 @@
                         <xcad:LayoutDocumentPane x:Name="_documentPane"/>
                     </xcad:LayoutDocumentPaneGroup>
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
-                        <xcad:LayoutAnchorablePane>
-                            <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False">
+                        <xcad:LayoutAnchorablePane >
+                            <xcad:LayoutAnchorable x:Name="_nicklistLayoutAnchorable" ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False" Hiding="LayoutAnchorable_Hiding">
                                 <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
