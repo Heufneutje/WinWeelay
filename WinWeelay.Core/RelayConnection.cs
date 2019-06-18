@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Net.Sockets;
 using WinWeelay.Configuration;
 
@@ -67,6 +68,11 @@ namespace WinWeelay.Core
 
             IsConnected = false;
             NotifyPropertyChanged(nameof(IsConnected));
+        }
+
+        public void SortBuffers()
+        {
+            Buffers = new ObservableCollection<RelayBuffer>(Buffers.OrderBy(x => x.Number));
         }
 
         public void CloseBuffer(RelayBuffer buffer)

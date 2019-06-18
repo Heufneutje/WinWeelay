@@ -121,6 +121,7 @@ namespace WinWeelay.Core
 
             foreach (RelayBuffer addedBuffer in buffers)
                 _connection.Buffers.Add(addedBuffer);
+            _connection.SortBuffers();
             _connection.NotifyBuffersChanged();
         }
         
@@ -149,6 +150,7 @@ namespace WinWeelay.Core
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
             RelayBuffer buffer = new RelayBuffer(_connection, hdata[0]);
             _connection.Buffers.Add(buffer);
+            _connection.SortBuffers();
             _connection.NotifyBuffersChanged();
         }
 
