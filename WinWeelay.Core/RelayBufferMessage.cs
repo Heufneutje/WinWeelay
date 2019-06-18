@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using WinWeelay.Utils;
 
@@ -15,6 +16,7 @@ namespace WinWeelay.Core
         public string[] Tags { get; private set; }
         public string Prefix { get; private set; }
         public string Message { get; private set; }
+        public string Nick { get; private set; }
 
         private string _unformattedPrefix;
         public string UnformattedPrefix
@@ -48,6 +50,11 @@ namespace WinWeelay.Core
             Tags = entry["tags_array"].AsArray().ToStringArray();
             Prefix = entry["prefix"].AsString();
             Message = entry["message"].AsString();
+
+            string[] tags = entry["tags_array"].AsArray().ToStringArray();
+            string nickTag = tags.FirstOrDefault(x => x.StartsWith("nick_"));
+            if (nickTag != null)
+                Nick = nickTag.Substring(5);
         }
 
         public override string ToString()

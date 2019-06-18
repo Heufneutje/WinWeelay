@@ -12,7 +12,7 @@
     </UserControl.DataContext>
     <DockPanel LastChildFill="True">
         <TextBox x:Name="_titleTextBox" TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" Text="{Binding Title}" DockPanel.Dock="Top" />
-        <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" />
+        <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" TextChanged="MessageTextBox_TextChanged" />
         <TextBox x:Name="_conversationTextBox" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Margin="0,5" VerticalScrollBarVisibility="Visible" Text="{Binding MessageBuffer, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ConversationTextBox_TextChanged" />
     </DockPanel>
 </UserControl>

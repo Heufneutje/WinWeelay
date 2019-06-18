@@ -95,5 +95,12 @@ namespace WinWeelay.Core
         {
             Nicklist = new ObservableCollection<RelayNicklistEntry>(Nicklist.OrderBy(x => x.SortIndex).ThenBy(x => x.Name));
         }
+
+        public IEnumerable<string> GetSortedUniqueNicks()
+        {
+            List<string> nicks = _messages.Where(x => !string.IsNullOrEmpty(x.Nick)).OrderByDescending(x => x.Date).Select(x => x.Nick).ToList();
+            nicks.AddRange(Nicklist.Select(x => x.Name));
+            return nicks.Distinct();
+        }
     }
 }

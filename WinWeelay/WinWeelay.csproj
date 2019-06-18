@@ -136,6 +136,10 @@
       <Project>{a619ae7a-9a67-4b21-a2e1-7dc1890a3dd4}</Project>
       <Name>WinWeelay.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WinWeelay.Utils\WinWeelay.Utils.csproj">
+      <Project>{f96faf7d-1565-48f5-825d-fa8a0cea89af}</Project>
+      <Name>WinWeelay.Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
