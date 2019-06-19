@@ -12,7 +12,6 @@ namespace WinWeelay
         private RelayConfiguration _relayConfiguration;
         private Timer _retryTimer;
         private bool _isRetryingConnection;
-        private bool _isConnecting;
 
         public RelayConnection Connection { get; private set; }
         public string ConnectionStatus { get; set; }
@@ -52,22 +51,10 @@ namespace WinWeelay
                 Connect(null);
         }
 
-        private bool CanStopConnecting(object parameter)
-        {
-            return _isRetryingConnection;
-        }
-
-        private void StopConnecting(object parameter)
-        {
-            _isRetryingConnection = true;
-            _retryTimer.Stop();
-        }
-
         private void Connection_ConnectionLost(object sender, ConnectionLostEventArgs args)
         {
             _mainWindow.Dispatcher.Invoke(() => 
             {
-                _isConnecting = false;
                 bool wasConnected = Connection.IsConnected || _isRetryingConnection;
 
                 if (wasConnected)
@@ -113,9 +100,50 @@ namespace WinWeelay
             }
         }
 
-        private void Exit(object parameter)
+        private bool CanConnect(object parameter)
         {
-            _mainWindow.Close();
+            return !Connection.IsConnected;
+        }
+
+        private async void Connect(object parameter)
+        {
+            UpdateConnectionCommands();
+            SetStatusText($"Attempting to connect to {_relayConfiguration.ConnectionAddress}...");
+
+            if (await Connection.Connect())
+            {
+                _isRetryingConnection = false;
+                UpdateConnectionCommands();
+                SetStatusText($"Connected to {_relayConfiguration.ConnectionAddress}{(_relayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl ? " (secure connection)" : "")}.");
+            }
+            else if (_isRetryingConnection)
+                _retryTimer.Start();
+        }
+
+        private bool CanDisconnect(object parameter)
+        {
+            return Connection.IsConnected;
+        }
+
+        private void Disconnect(object parameter)
+        {
+            if (CanDisconnect(parameter))
+                Connection.Disconnect(true);
+            UpdateConnectionCommands();
+            SetStatusText($"Disconnected.");
+        }
+
+        private bool CanStopConnecting(object parameter)
+        {
+            return _isRetryingConnection;
+        }
+
+        private void StopConnecting(object parameter)
+        {
+            _isRetryingConnection = false;
+            _retryTimer.Stop();
+            UpdateConnectionCommands();
+            SetStatusText("Disconnected.");
         }
 
         private bool CanCloseHide(object parameter)
@@ -133,39 +161,9 @@ namespace WinWeelay
             Connection.CloseBuffer(Connection.ActiveBuffer);
         }
 
-        private bool CanConnect(object parameter)
+        private void Exit(object parameter)
         {
-            return !Connection.IsConnected;
-        }
-
-        private async void Connect(object parameter)
-        {
-            _isConnecting = true;
-            UpdateConnectionCommands();
-            SetStatusText($"Attempting to connect to {_relayConfiguration.ConnectionAddress}...");
-
-            if (await Connection.Connect())
-            {
-                _isRetryingConnection = false;
-                _isConnecting = false;
-                UpdateConnectionCommands();
-                SetStatusText($"Connected to {_relayConfiguration.ConnectionAddress}.");
-            }
-            else if (_isRetryingConnection)
-                _retryTimer.Start();
-        }
-
-        private bool CanDisconnect(object parameter)
-        {
-            return Connection.IsConnected;
-        }
-
-        private void Disconnect(object parameter)
-        {
-            if (CanDisconnect(parameter))
-                Connection.Disconnect(true);
-            UpdateConnectionCommands();
-            SetStatusText($"Disconnected.");
+            _mainWindow.Close();
         }
 
         private void UpdateConnectionCommands()
