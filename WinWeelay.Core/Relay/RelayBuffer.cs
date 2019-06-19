@@ -74,6 +74,11 @@ namespace WinWeelay.Core
             _messages.Add(message);
         }
 
+        public void ClearMessages()
+        {
+            _messages.Clear();
+        }
+
         public void NotifyMessagesUpdated()
         {
             NotifyPropertyChanged(nameof(MessageBuffer));

@@ -7,6 +7,7 @@
         public const string CustomGetNicklist = "getnicklist";
         public const string BufferOpened = "_buffer_opened";
         public const string BufferTitleChanged = "_buffer_title_changed";
+        public const string BufferCleared = "_buffer_cleared";
         public const string BufferLineAdded = "_buffer_line_added";
         public const string BufferClosing = "_buffer_closing";
         public const string Nicklist = "_nicklist";
