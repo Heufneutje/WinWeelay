@@ -13,6 +13,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}"/>
                 <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}"/>
+                <MenuItem Header="Stop Connecting" Command="{Binding StopConnectingCommand}"/>
                 <Separator/>
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
@@ -27,7 +28,7 @@
                 <MenuItem Header="Settings" Command="{Binding SettingsCommand}"/>
             </MenuItem>
         </Menu>
-        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,5" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
+        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,22" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
             <xcad:DockingManager.DocumentHeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />
@@ -59,5 +60,18 @@
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>
+        <StatusBar Height="22" VerticalAlignment="Bottom">
+            <StatusBarItem x:Name="_connectionStatusBarItem">
+                <StatusBarItem.Content>
+                    <TextBlock TextTrimming="WordEllipsis" Text="{Binding ConnectionStatus}"/>
+                </StatusBarItem.Content>
+                <StatusBarItem.ToolTip>
+                    <StackPanel MaxWidth="500">
+                        <TextBlock FontWeight="Bold" Text="Connection Status" />
+                        <TextBlock Text="{Binding ConnectionStatus}" TextWrapping="Wrap" Padding="5,5,5,0" />
+                    </StackPanel>
+                </StatusBarItem.ToolTip>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

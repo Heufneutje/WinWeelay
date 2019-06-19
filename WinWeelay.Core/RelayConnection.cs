@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Timers;
 using WinWeelay.Configuration;
 using WinWeelay.Utils;
 
@@ -11,17 +14,17 @@ namespace WinWeelay.Core
     {
         private TcpClient _tcpClient;
         private NetworkStream _networkStream;
-        private string _hostname;
-        private int _port;
-        private string _relayPassword;
         private IBufferView _bufferView;
+        private Timer _pingTimer;
         
         public RelayInputHandler InputHandler { get; private set; }
         public RelayOutputHandler OutputHandler { get; private set; }
         public ObservableCollection<RelayBuffer> Buffers { get; private set; }
-        public RelayConfiguration Configuration { get; private set; }
+        public RelayConfiguration Configuration { get; set; }
         public RelayBuffer ActiveBuffer { get; set; }
         public bool IsConnected { get; private set; }
+
+        public event ConnectionLostHandler ConnectionLost;
 
         public RelayConnection() { }
 
@@ -30,33 +33,54 @@ namespace WinWeelay.Core
             Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;
 
-            _hostname = configuration.Hostname;
-            _port = configuration.Port;
-            _relayPassword = Cipher.Decrypt(configuration.RelayPassword);
             _bufferView = view;
+            _pingTimer = new Timer(30000) { AutoReset = true };
+            _pingTimer.Elapsed += PingTimer_Elapsed;
         }
 
-        public void Connect()
+        public bool Connect()
         {
             _tcpClient = new TcpClient();
-            _tcpClient.Connect(_hostname, _port);
-            _networkStream = _tcpClient.GetStream();
+
+            try
+            {
+                _tcpClient.Connect(Configuration.Hostname, Configuration.Port);
+                _networkStream = _tcpClient.GetStream();
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                return false;
+            }
 
             IsConnected = true;
             NotifyPropertyChanged(nameof(IsConnected));
 
             InputHandler = new RelayInputHandler(this, _networkStream);
-            OutputHandler = new RelayOutputHandler(_networkStream);
+            OutputHandler = new RelayOutputHandler(this, _networkStream);
 
-            OutputHandler.Init(_relayPassword);
+            OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
             OutputHandler.RequestBufferList();
             OutputHandler.Sync();
+
+            _pingTimer.Start();
+            return true;
         }
 
-        public void Disconnect()
+        public void Disconnect(bool cleanDisconnect)
         {
-            OutputHandler.Quit();
-            _tcpClient.Close();
+            IsConnected = false;
+            if (cleanDisconnect)
+            {
+                try
+                {
+                    OutputHandler.Quit();
+                    _tcpClient.Close();
+                }
+                catch (IOException) { } // Ignore this since we want to disconnect anyway.
+            }
+
+            InputHandler.CancelInputWorker();
 
             foreach (RelayBuffer buffer in Buffers)
                 CloseBuffer(buffer);
@@ -67,7 +91,7 @@ namespace WinWeelay.Core
             ActiveBuffer = null;
             NotifyNicklistUpdated();
 
-            IsConnected = false;
+            _pingTimer.Stop();
             NotifyPropertyChanged(nameof(IsConnected));
         }
 
@@ -94,6 +118,26 @@ namespace WinWeelay.Core
         public void NotifyNicklistUpdated()
         {
             NotifyPropertyChanged(nameof(ActiveBuffer));
+        }
+
+        public void HandleException(Exception ex)
+        {
+            Exception error = ex;
+            while (error.InnerException != null)
+                error = ex.InnerException;
+
+            if (ex is IOException || ex is SocketException)
+                ConnectionLost?.Invoke(this, new ConnectionLostEventArgs(error));
+            else
+                throw ex;
+        }
+
+        private void PingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!IsConnected)
+                _pingTimer.Stop();
+            else
+                OutputHandler.Ping();
         }
     }
 }

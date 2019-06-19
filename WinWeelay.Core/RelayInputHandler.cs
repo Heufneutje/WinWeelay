@@ -65,9 +65,10 @@ namespace WinWeelay.Core
                         _inputWorker.ReportProgress(0, bytes.ToArray());
                     }
                 }
-                catch (IOException)
+                catch (Exception ex)
                 {
-                    // TODO: Handle this properly.
+                    if (_connection.IsConnected)
+                        _connection.HandleException(ex);
                     break;
                 }
 
@@ -228,6 +229,11 @@ namespace WinWeelay.Core
         {
             _connection.OutputHandler.Sync();
             _connection.OutputHandler.RequestBufferList();
+        }
+
+        public void CancelInputWorker()
+        {
+            _inputWorker.CancelAsync();
         }
     }
 }

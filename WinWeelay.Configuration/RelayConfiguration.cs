@@ -12,6 +12,15 @@ namespace WinWeelay.Configuration
         public string RelayPassword { get; set; }
         public int BacklogSize { get; set; }
         public bool AutoConnect { get; set; }
+        
+        [JsonIgnore]
+        public string ConnectionAddress
+        {
+            get
+            {
+                return $"{Hostname}:{Port}";
+            }
+        }
 
         public RelayConfiguration()
         {
