@@ -7,20 +7,31 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
-        Title="Settings" Height="186.174" Width="520.27">
+        Title="Settings" Height="277.857" Width="520.27">
     <Window.DataContext>
         <Configuration:RelayConfiguration/>
     </Window.DataContext>
     <Grid>
-        <TextBox Height="23" Margin="159,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Hostname}"/>
-        <xctk:IntegerUpDown Height="23" Margin="159,38,10,0" Text="TextBox" VerticalAlignment="Top" Value="{Binding Port}"/>
-        <PasswordBox x:Name="_passwordBox" Height="23" Margin="159,66,10,0" VerticalAlignment="Top"/>
-        <xctk:IntegerUpDown Height="23" Margin="159,94,10,0" Text="TextBox" VerticalAlignment="Top" Value="{Binding BacklogSize}"/>
-        <Button x:Name="_okButton" Content="OK" Margin="0,0,90,9" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="OkButton_Click"/>
-        <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10,9" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click"/>
-        <Label Content="WeeChat Relay Hostname" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top"/>
-        <Label Content="WeeChat Relay Port" HorizontalAlignment="Left" Margin="10,37,0,0" VerticalAlignment="Top"/>
-        <Label Content="WeeChat Relay Password" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"/>
-        <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="10,94,0,0" VerticalAlignment="Top"/>
+
+        <Button x:Name="_okButton" Content="OK" Margin="0,0,90,9" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="OkButton_Click" Grid.Column="1"/>
+        <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10,9" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click" Grid.Column="1"/>
+
+        <GroupBox Header="Connection Settings" HorizontalAlignment="Left" Height="132" Margin="10,10,0,0" VerticalAlignment="Top" Width="487">
+            <Grid>
+                <Label Content="WeeChat Relay Hostname" HorizontalAlignment="Left" Margin="-1,5,0,0" VerticalAlignment="Top"/>
+                <Label Content="WeeChat Relay Port" HorizontalAlignment="Left" Margin="-1,33,0,0" VerticalAlignment="Top"/>
+                <Label Content="WeeChat Relay Password" HorizontalAlignment="Left" Margin="-1,61,0,0" VerticalAlignment="Top"/>
+                <TextBox Height="23" Margin="148,6,10,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Hostname}"/>
+                <xctk:IntegerUpDown Height="23" Margin="148,34,10,0" Text="TextBox" VerticalAlignment="Top" Value="{Binding Port}"/>
+                <PasswordBox x:Name="_passwordBox" Height="23" Margin="148,62,10,0" VerticalAlignment="Top"/>
+                <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="3,92,0,0" VerticalAlignment="Top" IsChecked="{Binding AutoConnect}"/>
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="Content Settings" HorizontalAlignment="Left" Height="58" Margin="10,147,0,0" VerticalAlignment="Top" Width="487">
+            <Grid>
+                <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="-1,5,0,0" VerticalAlignment="Top"/>
+                <xctk:IntegerUpDown Height="23" Margin="148,6,10,0" Text="TextBox" VerticalAlignment="Top" Value="{Binding BacklogSize}"/>
+            </Grid>
+        </GroupBox>
     </Grid>
 </Window>

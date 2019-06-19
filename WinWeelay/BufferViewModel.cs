@@ -34,6 +34,9 @@ namespace WinWeelay
             CloseBufferCommand = new DelegateCommand(CloseBuffer, CanCloseHide);
             ExitCommand = new DelegateCommand(Exit);
             SettingsCommand = new DelegateCommand(ShowSettingsForm);
+
+            if (_relayConfiguration.AutoConnect)
+                Connect(null);
         }
 
         private void ShowSettingsForm(object parameter)
