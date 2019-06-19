@@ -12,6 +12,7 @@ namespace WinWeelay
         private RelayConfiguration _relayConfiguration;
         private Timer _retryTimer;
         private bool _isRetryingConnection;
+        private bool _isConnecting;
 
         public RelayConnection Connection { get; private set; }
         public string ConnectionStatus { get; set; }
@@ -66,12 +67,13 @@ namespace WinWeelay
         {
             _mainWindow.Dispatcher.Invoke(() => 
             {
+                _isConnecting = false;
                 bool wasConnected = Connection.IsConnected || _isRetryingConnection;
 
                 if (wasConnected)
-                    SetStatusText($"Connection lost, reason: {args.Error.Message}. Retrying in 10 seconds...");
+                    SetStatusText($"Connection lost, reason: {args.Error.Message}{(args.Error.Message.EndsWith(".") ? "" : ".")} Retrying in 10 seconds...");
                 else
-                    SetStatusText($"Connection failed, reason: {args.Error.Message}.");
+                    SetStatusText($"Connection failed, reason: {args.Error.Message}{(args.Error.Message.EndsWith(".") ? "" : ".")}");
 
                 if (CanDisconnect(null))
                     Connection.Disconnect(false);
@@ -136,12 +138,16 @@ namespace WinWeelay
             return !Connection.IsConnected;
         }
 
-        private void Connect(object parameter)
+        private async void Connect(object parameter)
         {
+            _isConnecting = true;
+            UpdateConnectionCommands();
             SetStatusText($"Attempting to connect to {_relayConfiguration.ConnectionAddress}...");
-            if (Connection.Connect())
+
+            if (await Connection.Connect())
             {
                 _isRetryingConnection = false;
+                _isConnecting = false;
                 UpdateConnectionCommands();
                 SetStatusText($"Connected to {_relayConfiguration.ConnectionAddress}.");
             }

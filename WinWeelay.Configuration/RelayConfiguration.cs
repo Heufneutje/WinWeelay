@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using WinWeelay.Utils;
 
@@ -12,6 +13,7 @@ namespace WinWeelay.Configuration
         public string RelayPassword { get; set; }
         public int BacklogSize { get; set; }
         public bool AutoConnect { get; set; }
+        public RelayConnectionType ConnectionType { get; set; }
         
         [JsonIgnore]
         public string ConnectionAddress
@@ -19,6 +21,15 @@ namespace WinWeelay.Configuration
             get
             {
                 return $"{Hostname}:{Port}";
+            }
+        }
+
+        [JsonIgnore]
+        public IEnumerable<ConnectionTypeWrapper> ConnectionTypes
+        {
+            get
+            {
+                return ConnectionTypeWrapper.GetTypes();
             }
         }
 
