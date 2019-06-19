@@ -5,7 +5,7 @@ using WinWeelay.Utils;
 namespace WinWeelay.Configuration
 {
     [Serializable]
-    public class RelayConfiguration
+    public class RelayConfiguration : BaseChangeTrackable
     {
         public string Hostname { get; set; }
         public int Port { get; set; }
@@ -15,23 +15,6 @@ namespace WinWeelay.Configuration
         public RelayConfiguration()
         {
             BacklogSize = -1;
-        }
-
-        [JsonIgnore]
-        public string DecryptedRelayPassword
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(RelayPassword))
-                    return null;
-
-                return Cipher.Decrypt(RelayPassword);
-            }
-            set
-            {
-                if (!string.IsNullOrEmpty(value))
-                    RelayPassword = Cipher.Encrypt(value);
-            }
         }
     }
 }

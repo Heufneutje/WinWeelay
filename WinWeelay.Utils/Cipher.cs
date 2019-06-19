@@ -13,6 +13,9 @@ namespace WinWeelay.Utils
 
         public static string Encrypt(string plainText)
         {
+            if (string.IsNullOrEmpty(plainText))
+                return null;
+
             return Encrypt(plainText, GetUniqueID());
         }
 
@@ -63,6 +66,9 @@ namespace WinWeelay.Utils
 
         public static string Decrypt(string cipherText)
         {
+            if (string.IsNullOrEmpty(cipherText))
+                return null;
+
             return Decrypt(cipherText, GetUniqueID());
         }
 

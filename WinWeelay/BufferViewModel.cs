@@ -1,6 +1,7 @@
 ﻿using System;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
+using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -16,6 +17,7 @@ namespace WinWeelay
         public DelegateCommand HideBufferCommand { get; private set; }
         public DelegateCommand CloseBufferCommand { get; private set; }
         public DelegateCommand ExitCommand { get; private set; }
+        public DelegateCommand SettingsCommand { get; private set; }
 
         public BufferViewModel() { }
 
@@ -31,6 +33,23 @@ namespace WinWeelay
             HideBufferCommand = new DelegateCommand(HideBuffer, CanCloseHide);
             CloseBufferCommand = new DelegateCommand(CloseBuffer, CanCloseHide);
             ExitCommand = new DelegateCommand(Exit);
+            SettingsCommand = new DelegateCommand(ShowSettingsForm);
+        }
+
+        private void ShowSettingsForm(object parameter)
+        {
+            RelayConfiguration config = CloneHelper.DeepCopy(_relayConfiguration);
+            SettingsWindow settingsWindow = new SettingsWindow(config);
+            if (settingsWindow.ShowDialog() == true)
+            {
+                _relayConfiguration = settingsWindow.Configuration;
+
+                if (Connection.IsConnected)
+                {
+                    Disconnect(parameter);
+                    Connect(parameter);
+                }
+            }
         }
 
         private void Exit(object parameter)

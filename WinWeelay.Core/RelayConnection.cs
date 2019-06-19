@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net.Sockets;
 using WinWeelay.Configuration;
+using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
@@ -31,7 +32,7 @@ namespace WinWeelay.Core
 
             _hostname = configuration.Hostname;
             _port = configuration.Port;
-            _relayPassword = configuration.DecryptedRelayPassword;
+            _relayPassword = Cipher.Decrypt(configuration.RelayPassword);
             _bufferView = view;
         }
 
