@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Security;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 using System.Timers;
 using WinWeelay.Configuration;
 using WinWeelay.Utils;
@@ -13,7 +14,7 @@ namespace WinWeelay.Core
     public class RelayConnection : NotifyPropertyChangedBase
     {
         private TcpClient _tcpClient;
-        private NetworkStream _networkStream;
+        private Stream _networkStream;
         private IBufferView _bufferView;
         private Timer _pingTimer;
         
@@ -38,14 +39,30 @@ namespace WinWeelay.Core
             _pingTimer.Elapsed += PingTimer_Elapsed;
         }
 
-        public bool Connect()
+        public async Task<bool> Connect()
         {
             _tcpClient = new TcpClient();
 
             try
             {
-                _tcpClient.Connect(Configuration.Hostname, Configuration.Port);
-                _networkStream = _tcpClient.GetStream();
+                await _tcpClient.ConnectAsync(Configuration.Hostname, Configuration.Port);
+                switch (Configuration.ConnectionType)
+                {
+                    case RelayConnectionType.PlainText:
+                        _networkStream = _tcpClient.GetStream();
+                        break;
+                    case RelayConnectionType.WeechatSsl:
+                        _networkStream = new SslStream(_tcpClient.GetStream());
+                        SslStream sslStream = _networkStream as SslStream;
+
+                        await Task.WhenAny(sslStream.AuthenticateAsClientAsync(Configuration.Hostname), Task.Delay(5000));
+                        if (!sslStream.IsAuthenticated)
+                        {
+                            HandleException(new IOException("SSL authentication timed out."));
+                            return false;
+                        }
+                        break;
+                }
             }
             catch (Exception ex)
             {
@@ -75,7 +92,8 @@ namespace WinWeelay.Core
                 try
                 {
                     OutputHandler.Quit();
-                    _tcpClient.Close();
+                    _networkStream.Dispose();
+                    _tcpClient.Dispose();
                 }
                 catch (IOException) { } // Ignore this since we want to disconnect anyway.
             }

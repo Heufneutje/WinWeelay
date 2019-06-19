@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 
 namespace WinWeelay.Core
@@ -10,9 +9,9 @@ namespace WinWeelay.Core
     public class RelayOutputHandler
     {
         private RelayConnection _connection;
-        private NetworkStream _networkStream;
+        private Stream _networkStream;
 
-        public RelayOutputHandler(RelayConnection connection, NetworkStream networkStream)
+        public RelayOutputHandler(RelayConnection connection, Stream networkStream)
         {
             _connection = connection;
             _networkStream = networkStream;

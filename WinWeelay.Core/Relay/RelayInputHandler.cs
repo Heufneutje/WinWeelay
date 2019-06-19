@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using WinWeelay.Utils;
 
 namespace WinWeelay.Core
@@ -11,10 +10,10 @@ namespace WinWeelay.Core
     public class RelayInputHandler
     {
         private RelayConnection _connection;
-        private NetworkStream _networkStream;
+        private Stream _networkStream;
         private BackgroundWorker _inputWorker;
 
-        public RelayInputHandler(RelayConnection connection, NetworkStream networkStream)
+        public RelayInputHandler(RelayConnection connection, Stream networkStream)
         {
             _connection = connection;
             _networkStream = networkStream;
@@ -36,7 +35,18 @@ namespace WinWeelay.Core
 
         private void InputWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            BufferedStream reader = new BufferedStream(_networkStream);
+            BufferedStream reader = null;
+            try
+            {
+                reader = new BufferedStream(_networkStream);
+            }
+            catch (Exception ex)
+            {
+                if (_connection.IsConnected)
+                    _connection.HandleException(ex);
+                return;
+            }
+
             while (true)
             {
                 try
