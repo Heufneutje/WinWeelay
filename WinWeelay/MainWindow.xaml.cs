@@ -117,6 +117,11 @@ namespace WinWeelay
             _nicklistMenuItem.IsChecked = false;
         }
 
+        private void BuffersLayoutAnchorable_Hiding(object sender, CancelEventArgs e)
+        {
+            _buffersMenuItem.IsChecked = false;
+        }
+
         private void NicklistMenuItem_Click(object sender, RoutedEventArgs e)
         {
             if (_nicklistLayoutAnchorable == null)
@@ -126,6 +131,17 @@ namespace WinWeelay
                 _nicklistLayoutAnchorable.Show();
             else
                 _nicklistLayoutAnchorable.Hide();
+        }
+
+        private void BuffersMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (_buffersLayoutAnchorable == null)
+                return;
+
+            if (_buffersMenuItem.IsChecked)
+                _buffersLayoutAnchorable.Show();
+            else
+                _buffersLayoutAnchorable.Hide();
         }
     }
 }

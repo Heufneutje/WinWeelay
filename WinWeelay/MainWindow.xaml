@@ -18,6 +18,7 @@
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
             </MenuItem>
             <MenuItem Header="View">
+                <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click"/> 
                 <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click"/>
             </MenuItem>
             <MenuItem Header="Buffer">
@@ -42,7 +43,7 @@
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
-                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanHide="False" CanDockAsTabbedDocument="False">
+                            <xcad:LayoutAnchorable x:Name="_buffersLayoutAnchorable" ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True" Hiding="BuffersLayoutAnchorable_Hiding">
                                 <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
@@ -52,7 +53,7 @@
                     </xcad:LayoutDocumentPaneGroup>
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane >
-                            <xcad:LayoutAnchorable x:Name="_nicklistLayoutAnchorable" ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False" Hiding="LayoutAnchorable_Hiding">
+                            <xcad:LayoutAnchorable x:Name="_nicklistLayoutAnchorable" ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False" Hiding="LayoutAnchorable_Hiding" CanHide="True">
                                 <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick"/>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
