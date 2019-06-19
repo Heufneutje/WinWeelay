@@ -57,15 +57,14 @@ namespace WinWeelay.Core
 
                         await Task.WhenAny(sslStream.AuthenticateAsClientAsync(Configuration.Hostname), Task.Delay(5000));
                         if (!sslStream.IsAuthenticated)
-                        {
-                            HandleException(new IOException("SSL authentication timed out."));
-                            return false;
-                        }
+                            throw new IOException("SSL authentication timed out.");
                         break;
                 }
             }
             catch (Exception ex)
             {
+                _networkStream.Dispose();
+                _tcpClient.Dispose();
                 HandleException(ex);
                 return false;
             }
