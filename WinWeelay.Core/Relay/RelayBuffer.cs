@@ -15,7 +15,20 @@ namespace WinWeelay.Core
         public string Name { get; set; }
         public int Number { get; set; }
         public string Pointer { get; set; }
-        public string Title { get; set; }
+
+        private string _title;
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                _title = value;
+                NotifyPropertyChanged(nameof(Title));
+            }
+        }
         public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
 
         public string MessageBuffer

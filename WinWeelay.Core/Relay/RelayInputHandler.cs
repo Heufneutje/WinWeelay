@@ -104,6 +104,9 @@ namespace WinWeelay.Core
                 case MessageIds.BufferClosing:
                     ParseBufferClosing(message);
                     break;
+                case MessageIds.BufferTitleChanged:
+                    ParseBufferTitleChanged(message);
+                    break;
                 case MessageIds.Nicklist:
                 case MessageIds.NicklistDiff:
                 case MessageIds.CustomGetNicklist:
@@ -174,6 +177,18 @@ namespace WinWeelay.Core
                 _connection.Buffers.Remove(buffer);
                 _connection.NotifyBufferClosed(buffer);
                 _connection.NotifyBuffersChanged();
+            }
+        }
+
+        private void ParseBufferTitleChanged(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            WeechatHdataEntry entry = hdata[0];
+            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == entry.GetPointer());
+            if (buffer != null)
+            {
+                buffer.Title = entry["title"].AsString();
+                _connection.NotifyNicklistUpdated();
             }
         }
 
