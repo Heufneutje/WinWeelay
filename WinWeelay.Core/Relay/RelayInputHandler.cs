@@ -148,7 +148,7 @@ namespace WinWeelay.Core
             List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
             for (int i = 0; i < hdata.Count; i++)
             {
-                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i]);
+                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], message.ID == MessageIds.BufferLineAdded);
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
                 if (buffer != null)
                 {

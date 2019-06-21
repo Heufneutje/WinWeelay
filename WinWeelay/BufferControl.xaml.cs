@@ -1,9 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
 using WinWeelay.Core;
-using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -59,6 +59,19 @@ namespace WinWeelay
             {
                 _conversationTextBox.CaretIndex = _conversationTextBox.Text.Length;
                 _conversationTextBox.ScrollToEnd();
+            }
+
+            foreach (RelayBufferMessage message in Buffer.MessagesToHighlight)
+            {
+                message.IsNotified = true;
+
+                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+                XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+                stringElements[0].AppendChild(toastXml.CreateTextNode(Buffer.Name));
+                stringElements[1].AppendChild(toastXml.CreateTextNode(message.ToString().Replace("\u001c", "")));
+
+                ToastNotification toast = new ToastNotification(toastXml);
+                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
             }
         }
 

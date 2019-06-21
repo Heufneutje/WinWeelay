@@ -18,6 +18,7 @@ namespace WinWeelay.Core
         public string Message { get; private set; }
         public string Nick { get; private set; }
         public string MessageType { get; private set; }
+        public bool IsNotified { get; set; }
 
         private string _unformattedPrefix;
         public string UnformattedPrefix
@@ -41,7 +42,7 @@ namespace WinWeelay.Core
             }
         }
 
-        public RelayBufferMessage(WeechatHdataEntry entry)
+        public RelayBufferMessage(WeechatHdataEntry entry, bool showNotifications)
         {
             BufferPointer = entry["buffer"].AsPointer();
             Date = entry["date"].AsTime();
@@ -60,13 +61,16 @@ namespace WinWeelay.Core
             string messageTypeTag = tags.LastOrDefault(x => x.StartsWith("irc_"));
             if (messageTypeTag != null)
                 MessageType = messageTypeTag.Substring(4);
+
+            if (!showNotifications)
+                IsNotified = true;
         }
 
         public override string ToString()
         {
             if (MessageType == "privmsg")
-                return $"{Date:HH:mm:ss}{(IsHighlighted ? " (HIGHLIGHT) " : "")} <{UnformattedPrefix}> {UnformattedMessage}";
-            return $"{Date:HH:mm:ss}{(IsHighlighted ? " (HIGHLIGHT) " : "")} {UnformattedPrefix} {UnformattedMessage}";
+                return $"{Date:HH:mm:ss} <{UnformattedPrefix}> {UnformattedMessage}";
+            return $"{Date:HH:mm:ss} {UnformattedPrefix} {UnformattedMessage}";
         }
     }
 }

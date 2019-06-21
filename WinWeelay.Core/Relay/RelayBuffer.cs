@@ -39,6 +39,14 @@ namespace WinWeelay.Core
             }
         }
 
+        public IEnumerable<RelayBufferMessage> MessagesToHighlight
+        {
+            get
+            {
+                return _messages.Where(x => x.IsHighlighted && !x.IsNotified);
+            }
+        }
+
         public RelayBuffer()
         {
             _messages = new List<RelayBufferMessage>();
