@@ -1,4 +1,5 @@
-﻿using WinWeelay.Utils;
+﻿using System.Collections.Generic;
+using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
@@ -53,6 +54,31 @@ namespace WinWeelay.Core
         public override string ToString()
         {
             return $"{Prefix}{Name}";
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RelayNicklistEntry entry &&
+                   Name == entry.Name &&
+                   EqualityComparer<RelayBuffer>.Default.Equals(Buffer, entry.Buffer);
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 1972309649;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<RelayBuffer>.Default.GetHashCode(Buffer);
+            return hashCode;
+        }
+
+        public static bool operator ==(RelayNicklistEntry left, RelayNicklistEntry right)
+        {
+            return EqualityComparer<RelayNicklistEntry>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(RelayNicklistEntry left, RelayNicklistEntry right)
+        {
+            return !(left == right);
         }
     }
 }

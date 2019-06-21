@@ -235,7 +235,8 @@ namespace WinWeelay.Core
                 switch (diffChar)
                 {
                     case '+':
-                        buffer.Nicklist.Add(nicklistEntry);
+                        if (!buffer.Nicklist.Contains(nicklistEntry))
+                            buffer.Nicklist.Add(nicklistEntry);
                         break;
                     case '-':
                         RelayNicklistEntry entryToRemove = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
