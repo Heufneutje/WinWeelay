@@ -6,7 +6,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using WinWeelay.Core;
 using Xceed.Wpf.AvalonDock;
 using Xceed.Wpf.AvalonDock.Layout;
@@ -16,16 +15,24 @@ namespace WinWeelay
     public partial class MainWindow : Window, IBufferView
     {
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
-        
+
         public MainWindow()
         {
             InitializeComponent();
             _bufferControls = new Dictionary<RelayBuffer, LayoutDocument>();
         }
 
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            DockingManagerLayoutHelper.RestoreLayout(_dockingManager);
+            GetPanel("buffers").Hiding += BuffersLayoutAnchorable_Hiding;
+            GetPanel("nicklist").Hiding += NicklistLayoutAnchorable_Hiding;
+        }
+
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             ((BufferViewModel)DataContext).DisconnectCommand.Execute(null);
+            DockingManagerLayoutHelper.SaveLayout(_dockingManager);
         }
 
         private void BuffersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -47,7 +54,8 @@ namespace WinWeelay
                     CanClose = true
                 };
 
-                _documentPane.Children.Add(layoutDocument);
+                LayoutDocumentPane documentPane = _dockingManager.Layout.Descendents().OfType<LayoutDocumentPane>().SingleOrDefault();
+                documentPane.Children.Add(layoutDocument);
                 _bufferControls.Add(buffer, layoutDocument);
             }
             else
@@ -112,7 +120,7 @@ namespace WinWeelay
                 _bufferControls[buffer].Close();
         }
 
-        private void LayoutAnchorable_Hiding(object sender, CancelEventArgs e)
+        private void NicklistLayoutAnchorable_Hiding(object sender, CancelEventArgs e)
         {
             _nicklistMenuItem.IsChecked = false;
         }
@@ -124,24 +132,31 @@ namespace WinWeelay
 
         private void NicklistMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (_nicklistLayoutAnchorable == null)
+            LayoutAnchorable nicklistLayoutAnchorable = GetPanel("nicklist");
+            if (nicklistLayoutAnchorable == null)
                 return;
 
             if (_nicklistMenuItem.IsChecked)
-                _nicklistLayoutAnchorable.Show();
+                nicklistLayoutAnchorable.Show();
             else
-                _nicklistLayoutAnchorable.Hide();
+                nicklistLayoutAnchorable.Hide();
         }
 
         private void BuffersMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (_buffersLayoutAnchorable == null)
+            LayoutAnchorable buffersLayoutAnchorable = GetPanel("buffers");
+            if (buffersLayoutAnchorable == null)
                 return;
 
             if (_buffersMenuItem.IsChecked)
-                _buffersLayoutAnchorable.Show();
+                buffersLayoutAnchorable.Show();
             else
-                _buffersLayoutAnchorable.Hide();
+                buffersLayoutAnchorable.Hide();
+        }
+
+        private LayoutAnchorable GetPanel(string contentID)
+        {
+            return _dockingManager.Layout.Descendents().OfType<LayoutAnchorable>().SingleOrDefault(x => x.ContentId == contentID);
         }
     }
 }

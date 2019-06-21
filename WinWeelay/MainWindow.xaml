@@ -4,29 +4,29 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinWeelay"
-        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:Core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core" x:Class="WinWeelay.MainWindow"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         mc:Ignorable="d"
-        Title="WinWeelay" Height="450" Width="800" Closing="Window_Closing">
+        Title="WinWeelay" Height="450" Width="800" Closing="Window_Closing" Loaded="Window_Loaded">
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Connect" Command="{Binding ConnectCommand}"/>
-                <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}"/>
-                <MenuItem Header="Stop Connecting" Command="{Binding StopConnectingCommand}"/>
-                <Separator/>
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}"/>
+                <MenuItem Header="Connect" Command="{Binding ConnectCommand}" />
+                <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" />
+                <MenuItem Header="Stop Connecting" Command="{Binding StopConnectingCommand}" />
+                <Separator />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click"/> 
-                <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click"/>
+                <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click" />
+                <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click" />
             </MenuItem>
             <MenuItem Header="Buffer">
-                <MenuItem Header="Hide Buffer" Command="{Binding HideBufferCommand}"/>
-                <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}"/>
+                <MenuItem Header="Hide Buffer" Command="{Binding HideBufferCommand}" />
+                <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}" />
             </MenuItem>
             <MenuItem Header="Tools">
-                <MenuItem Header="Settings" Command="{Binding SettingsCommand}"/>
+                <MenuItem Header="Settings" Command="{Binding SettingsCommand}" />
             </MenuItem>
         </Menu>
         <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,22" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
@@ -38,23 +38,23 @@
             <xcad:LayoutRoot x:Name="_layoutRoot">
 
                 <xcad:LayoutRoot.LeftSide>
-                    <xcad:LayoutAnchorSide/>
+                    <xcad:LayoutAnchorSide />
                 </xcad:LayoutRoot.LeftSide>
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
-                            <xcad:LayoutAnchorable x:Name="_buffersLayoutAnchorable" ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True" Hiding="BuffersLayoutAnchorable_Hiding">
-                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}"/>
+                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True">
+                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}" />
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>
                     <xcad:LayoutDocumentPaneGroup>
-                        <xcad:LayoutDocumentPane x:Name="_documentPane"/>
+                        <xcad:LayoutDocumentPane/>
                     </xcad:LayoutDocumentPaneGroup>
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
-                        <xcad:LayoutAnchorablePane >
-                            <xcad:LayoutAnchorable x:Name="_nicklistLayoutAnchorable" ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False" Hiding="LayoutAnchorable_Hiding" CanHide="True">
-                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick"/>
+                        <xcad:LayoutAnchorablePane>
+                            <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False" CanHide="True">
+                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick" />
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>
@@ -64,7 +64,7 @@
         <StatusBar Height="22" VerticalAlignment="Bottom">
             <StatusBarItem x:Name="_connectionStatusBarItem">
                 <StatusBarItem.Content>
-                    <TextBlock TextTrimming="WordEllipsis" Text="{Binding ConnectionStatus}"/>
+                    <TextBlock TextTrimming="WordEllipsis" Text="{Binding ConnectionStatus}" />
                 </StatusBarItem.Content>
                 <StatusBarItem.ToolTip>
                     <StackPanel MaxWidth="500">

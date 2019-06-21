@@ -4,35 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Configuration="clr-namespace:WinWeelay.Configuration;assembly=WinWeelay.Configuration"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:controllib="clr-namespace:ControlLib;assembly=NumericUpDown"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
         Title="Settings" Height="305.585" Width="520.27" ResizeMode="NoResize">
     <Window.DataContext>
-        <Configuration:RelayConfiguration/>
+        <Configuration:RelayConfiguration />
     </Window.DataContext>
     <Grid>
-
-        <Button x:Name="_okButton" Content="OK" Margin="0,0,90,9" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="OkButton_Click" Grid.Column="1"/>
-        <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10,9" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click" Grid.Column="1"/>
+        <Button x:Name="_okButton" Content="OK" Margin="0,0,90,9" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="OkButton_Click" Grid.Column="1" />
+        <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10,9" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click" Grid.Column="1" />
 
         <GroupBox Header="Connection Settings" HorizontalAlignment="Left" Height="160" Margin="10,10,0,0" VerticalAlignment="Top" Width="487">
             <Grid>
-                <Label Content="WeeChat Relay Hostname" HorizontalAlignment="Left" Margin="6,30,0,0" VerticalAlignment="Top"/>
-                <Label Content="WeeChat Relay Port" HorizontalAlignment="Left" Margin="6,58,0,0" VerticalAlignment="Top"/>
-                <Label Content="WeeChat Relay Password" HorizontalAlignment="Left" Margin="6,86,0,0" VerticalAlignment="Top"/>
-                <TextBox Height="23" Margin="155,32,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Hostname}"/>
-                <xctk:IntegerUpDown Height="23" Margin="155,60,3,0" Text="TextBox" VerticalAlignment="Top" Value="{Binding Port}"/>
-                <PasswordBox x:Name="_passwordBox" Height="23" Margin="155,88,3,0" VerticalAlignment="Top"/>
-                <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top" IsChecked="{Binding AutoConnect}"/>
-                <ComboBox x:Name="_connectionTypeComboBox" HorizontalAlignment="Left" Margin="155,5,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding ConnectionType}"/>
-                <Label Content="Connection Type" HorizontalAlignment="Left" Margin="6,3,0,0" VerticalAlignment="Top"/>
+                <Label Content="WeeChat Relay Hostname" HorizontalAlignment="Left" Margin="6,30,0,0" VerticalAlignment="Top" />
+                <Label Content="WeeChat Relay Port" HorizontalAlignment="Left" Margin="6,58,0,0" VerticalAlignment="Top" />
+                <Label Content="WeeChat Relay Password" HorizontalAlignment="Left" Margin="6,86,0,0" VerticalAlignment="Top" />
+                <TextBox Height="23" Margin="155,32,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Hostname}" />
+                <controllib:NumericUpDown Height="23" Margin="155,60,3,0" VerticalAlignment="Top" Value="{Binding Port}" BorderBrush="#FFACACAC" Width="Auto" MaxValue="99999" />
+                <PasswordBox x:Name="_passwordBox" Height="23" Margin="155,88,3,0" VerticalAlignment="Top" />
+                <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top" IsChecked="{Binding AutoConnect}" />
+                <ComboBox x:Name="_connectionTypeComboBox" HorizontalAlignment="Left" Margin="155,5,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding ConnectionType}" />
+                <Label Content="Connection Type" HorizontalAlignment="Left" Margin="6,3,0,0" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
         <GroupBox Header="Content Settings" HorizontalAlignment="Left" Height="58" Margin="10,175,0,0" VerticalAlignment="Top" Width="487">
             <Grid>
-                <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="-1,5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2"/>
-                <xctk:IntegerUpDown Height="23" Margin="155,5,3,0" Text="TextBox" VerticalAlignment="Top" Value="{Binding BacklogSize}"/>
+                <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="-1,5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <controllib:NumericUpDown Height="23" Margin="155,5,3,0" VerticalAlignment="Top" Value="{Binding BacklogSize}" BorderBrush="#FFACACAC" Width="Auto" MaxValue="200" Increment="10" />
             </Grid>
         </GroupBox>
     </Grid>
