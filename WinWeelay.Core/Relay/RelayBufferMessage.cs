@@ -17,6 +17,7 @@ namespace WinWeelay.Core
         public string Prefix { get; private set; }
         public string Message { get; private set; }
         public string Nick { get; private set; }
+        public string MessageType { get; private set; }
 
         private string _unformattedPrefix;
         public string UnformattedPrefix
@@ -55,11 +56,17 @@ namespace WinWeelay.Core
             string nickTag = tags.FirstOrDefault(x => x.StartsWith("nick_"));
             if (nickTag != null)
                 Nick = nickTag.Substring(5);
+
+            string messageTypeTag = tags.LastOrDefault(x => x.StartsWith("irc_"));
+            if (messageTypeTag != null)
+                MessageType = messageTypeTag.Substring(4);
         }
 
         public override string ToString()
         {
-            return $"{Date:HH:mm:ss} <{UnformattedPrefix}> {UnformattedMessage}";
+            if (MessageType == "privmsg")
+                return $"{Date:HH:mm:ss}{(IsHighlighted ? " (HIGHLIGHT) " : "")} <{UnformattedPrefix}> {UnformattedMessage}";
+            return $"{Date:HH:mm:ss}{(IsHighlighted ? " (HIGHLIGHT) " : "")} {UnformattedPrefix} {UnformattedMessage}";
         }
     }
 }
