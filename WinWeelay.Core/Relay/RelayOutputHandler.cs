@@ -41,6 +41,20 @@ namespace WinWeelay.Core
             Hdata("buffer:gui_buffers(*)", "number,name,title", MessageIds.CustomGetBufferList);
         }
 
+        public void RequestHotlist()
+        {
+            Infolist("hotlist", id: MessageIds.CustomGetHotlist);
+        }
+
+        public void MarkBufferAsRead(RelayBuffer buffer)
+        {
+            if (_connection.Configuration.SyncReadMessages)
+            {
+                Input(buffer, "/buffer set hotlist -1");
+                Input(buffer, "/input set_unread_current_buffer");
+            }
+        }
+
         public void RequestBufferBacklog(RelayBuffer buffer, int backlogSize)
         {
             Hdata($"buffer:{buffer.Pointer}/lines/last_line(-{backlogSize})/data", id: MessageIds.CustomGetBufferBacklog);

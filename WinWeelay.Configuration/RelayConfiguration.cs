@@ -14,6 +14,7 @@ namespace WinWeelay.Configuration
         public int BacklogSize { get; set; }
         public bool AutoConnect { get; set; }
         public RelayConnectionType ConnectionType { get; set; }
+        public bool SyncReadMessages { get; set; }
         
         [JsonIgnore]
         public string ConnectionAddress

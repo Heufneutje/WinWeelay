@@ -8,6 +8,9 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         mc:Ignorable="d"
         Title="WinWeelay" Height="450" Width="800" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Window.Resources>
+        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
             <MenuItem Header="File">
@@ -44,7 +47,23 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True">
-                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}" />
+                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
+                                                </Grid.ColumnDefinitions>
+                                                <Label Content="{Binding Name}" Grid.Column="0" Padding="1" HorizontalAlignment="Left"/>
+                                                <Grid HorizontalAlignment="Right" Grid.Column="1" Visibility="{Binding IsBadgeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                                                    <Border BorderThickness="0" CornerRadius="2,2,2,2" Background="{Binding BadgeBackground}" Padding="5,0,5,0"/>
+                                                    <Label Content="{Binding DisplayCount}" Padding="5,0,5,0"/>
+                                                </Grid>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>

@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
 namespace WinWeelay.Core
 {
-    public class WeechatInfoList : WeechatRelayObject
+    public class WeechatInfoList : WeechatRelayObject, IEnumerable
     {
         public string Name { get; private set; }
         private List<Dictionary<string, WeechatRelayObject>> _items = new List<Dictionary<string, WeechatRelayObject>>();
@@ -47,6 +48,12 @@ namespace WinWeelay.Core
                 sb.Append($"{Environment.NewLine}{Environment.NewLine}");
             }
             return sb.ToString();
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            for (int index = 0; index < _items.Count; index++)
+                yield return _items[index];
         }
     }
 }

@@ -7,7 +7,7 @@
     xmlns:controllib="clr-namespace:ControlLib;assembly=NumericUpDown"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
-        Title="Settings" Height="305.585" Width="520.27" ResizeMode="NoResize">
+        Title="Settings" Height="326.55" Width="520.27" ResizeMode="NoResize">
     <Window.DataContext>
         <Configuration:RelayConfiguration />
     </Window.DataContext>
@@ -28,10 +28,11 @@
                 <Label Content="Connection Type" HorizontalAlignment="Left" Margin="6,3,0,0" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="Content Settings" HorizontalAlignment="Left" Height="58" Margin="10,175,0,0" VerticalAlignment="Top" Width="487">
+        <GroupBox Header="Content Settings" HorizontalAlignment="Left" Height="89" Margin="10,175,0,0" VerticalAlignment="Top" Width="487">
             <Grid>
-                <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="-1,5,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="6,5,0,0" VerticalAlignment="Top" />
                 <controllib:NumericUpDown Height="23" Margin="155,5,3,0" VerticalAlignment="Top" Value="{Binding BacklogSize}" BorderBrush="#FFACACAC" Width="Auto" MaxValue="1000" Increment="10" />
+                <CheckBox Content="Sync read messages with WeeChat" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" IsChecked="{Binding SyncReadMessages}" />
             </Grid>
         </GroupBox>
     </Grid>

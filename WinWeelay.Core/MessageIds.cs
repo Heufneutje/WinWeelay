@@ -5,6 +5,8 @@
         public const string CustomGetBufferList = "getbuflist";
         public const string CustomGetBufferBacklog = "getbufbacklog";
         public const string CustomGetNicklist = "getnicklist";
+        public const string CustomGetHotlist = "gethotlist";
+
         public const string BufferOpened = "_buffer_opened";
         public const string BufferTitleChanged = "_buffer_title_changed";
         public const string BufferCleared = "_buffer_cleared";

@@ -94,6 +94,9 @@ namespace WinWeelay.Core
                 case MessageIds.CustomGetBufferList:
                     ParseBufferList(message);
                     break;
+                case MessageIds.CustomGetHotlist:
+                    ParseHotlist(message);
+                    break;
                 case MessageIds.BufferLineAdded:
                 case MessageIds.CustomGetBufferBacklog:
                     ParseBufferLines(message);
@@ -141,18 +144,62 @@ namespace WinWeelay.Core
             _connection.SortBuffers();
             _connection.NotifyBuffersChanged();
         }
-        
+
+        private void ParseHotlist(RelayMessage message)
+        {
+            WeechatInfoList list = (WeechatInfoList)message.RelayObjects.First();
+            foreach (Dictionary<string, WeechatRelayObject> listItem in list)
+            {
+                RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == listItem["buffer_pointer"].AsPointer());
+                if (buffer == null)
+                    continue;
+
+                buffer.HighlightedMessagesCount = 0;
+                buffer.UnreadMessagesCount = 0;
+
+                int priority = listItem["priority"].AsInt();
+                switch (priority)
+                {
+                    case 0: // Join/part messages. Don't need to display a buffer update for that.
+                        break;
+                    case 1: // Normal message.
+                        buffer.UnreadMessagesCount += listItem["count_01"].AsInt();
+                        break;
+                    case 2: // Private message.
+                        buffer.HighlightedMessagesCount += listItem["count_02"].AsInt();
+                        break;
+                    case 3: // Highlight.
+                        buffer.HighlightedMessagesCount = listItem["count_03"].AsInt();
+                        goto case 2;
+                }
+
+                buffer.NotifyMessageCountUpdated();
+            }
+        }
+
         private void ParseBufferLines(RelayMessage message)
         {
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
             List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
             for (int i = 0; i < hdata.Count; i++)
             {
-                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], message.ID == MessageIds.BufferLineAdded);
+                bool isSingleLineUpdate = message.ID == MessageIds.BufferLineAdded;
+                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], isSingleLineUpdate);
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
                 if (buffer != null)
                 {
-                    buffer.AddMessage(bufferMessage);
+                    bool updateMessageCount = isSingleLineUpdate;
+
+                    if (updateMessageCount && !bufferMessage.Tags.Contains("irc_privmsg") && !bufferMessage.Tags.Contains("irc_notice"))
+                        updateMessageCount = false;
+
+                    if (_connection.ActiveBuffer == buffer)
+                    {
+                        updateMessageCount = false;
+                        _connection.OutputHandler.MarkBufferAsRead(buffer);
+                    }
+
+                    buffer.AddMessage(bufferMessage, updateMessageCount);
                     if (!updatedBuffers.Contains(buffer))
                         updatedBuffers.Add(buffer);
                 }

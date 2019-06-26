@@ -15,6 +15,8 @@ namespace WinWeelay.Core
         public string Name { get; set; }
         public int Number { get; set; }
         public string Pointer { get; set; }
+        public int UnreadMessagesCount { get; set; }
+        public int HighlightedMessagesCount { get; set; }
 
         private string _title;
         public string Title
@@ -31,6 +33,7 @@ namespace WinWeelay.Core
         }
         public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
 
+        #region View Model
         public string MessageBuffer
         {
             get
@@ -46,6 +49,37 @@ namespace WinWeelay.Core
                 return _messages.Where(x => x.IsHighlighted && !x.IsNotified);
             }
         }
+
+        public int DisplayCount
+        {
+            get
+            {
+                if (HighlightedMessagesCount == 0)
+                    return UnreadMessagesCount;
+
+                return HighlightedMessagesCount;
+            }
+        }
+
+        public bool IsBadgeVisible
+        {
+            get
+            {
+                return UnreadMessagesCount != 0 || HighlightedMessagesCount != 0;
+            }
+        }
+
+        public string BadgeBackground
+        {
+            get
+            {
+                if (HighlightedMessagesCount != 0)
+                    return "#FFFF0000";
+
+                return "#FF42CEF5";
+            }
+        }
+        #endregion
 
         public RelayBuffer()
         {
@@ -74,12 +108,20 @@ namespace WinWeelay.Core
 
         public override string ToString()
         {
-            return Name;
+            return Name + UnreadMessagesCount;
         }
 
-        public void AddMessage(RelayBufferMessage message)
+        public void AddMessage(RelayBufferMessage message, bool updateCount)
         {
             _messages.Add(message);
+
+            if (updateCount)
+            {
+                UnreadMessagesCount++;
+
+                if (message.IsHighlighted)
+                    HighlightedMessagesCount++;
+            }
         }
 
         public void ClearMessages()
@@ -90,6 +132,14 @@ namespace WinWeelay.Core
         public void NotifyMessagesUpdated()
         {
             NotifyPropertyChanged(nameof(MessageBuffer));
+            NotifyMessageCountUpdated();
+        }
+
+        public void NotifyMessageCountUpdated()
+        {
+            NotifyPropertyChanged(nameof(DisplayCount));
+            NotifyPropertyChanged(nameof(IsBadgeVisible));
+            NotifyPropertyChanged(nameof(BadgeBackground));
         }
 
         public void HandleSelected()
@@ -109,6 +159,14 @@ namespace WinWeelay.Core
                 _connection.OutputHandler.Nicklist(this, MessageIds.CustomGetNicklist);
                 _hasNicklist = true;
             }
+
+            UnreadMessagesCount = 0;
+            HighlightedMessagesCount = 0;
+
+            if (_connection.IsConnected)
+                _connection.OutputHandler.MarkBufferAsRead(this);
+
+            NotifyMessageCountUpdated();
         }
 
         public void HandleUnselected()

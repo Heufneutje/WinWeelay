@@ -63,8 +63,8 @@ namespace WinWeelay.Core
             }
             catch (Exception ex)
             {
-                _networkStream.Dispose();
-                _tcpClient.Dispose();
+                _networkStream?.Dispose();
+                _tcpClient?.Dispose();
                 HandleException(ex);
                 return false;
             }
@@ -77,6 +77,7 @@ namespace WinWeelay.Core
 
             OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
             OutputHandler.RequestBufferList();
+            OutputHandler.RequestHotlist();
             OutputHandler.Sync();
 
             _pingTimer.Start();
