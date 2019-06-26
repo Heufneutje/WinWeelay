@@ -25,6 +25,31 @@ namespace WinWeelay.Core
         public RelayBuffer ActiveBuffer { get; set; }
         public bool IsConnected { get; private set; }
 
+        private string _weeChatVersion;
+        public string WeeChatVersion
+        {
+            get
+            {
+                return _weeChatVersion;
+            }
+            set
+            {
+                _weeChatVersion = value;
+                NotifyPropertyChanged(nameof(Description));
+            }
+        }
+
+        public string Description
+        {
+            get
+            {
+                if (!IsConnected || string.IsNullOrEmpty(WeeChatVersion))
+                    return "WinWeelay";
+
+                return $"WinWeelay - WeeChat {WeeChatVersion}";
+            }
+        }
+
         public event ConnectionLostHandler ConnectionLost;
 
         public RelayConnection() { }
@@ -79,6 +104,7 @@ namespace WinWeelay.Core
             OutputHandler.RequestBufferList();
             OutputHandler.RequestHotlist();
             OutputHandler.Sync();
+            OutputHandler.Info("version", MessageIds.CustomGetVersion);
 
             _pingTimer.Start();
             return true;
@@ -87,6 +113,9 @@ namespace WinWeelay.Core
         public void Disconnect(bool cleanDisconnect)
         {
             IsConnected = false;
+            WeeChatVersion = null;
+            NotifyPropertyChanged(nameof(Description));
+
             if (cleanDisconnect)
             {
                 try

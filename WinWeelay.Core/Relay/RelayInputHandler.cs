@@ -91,6 +91,9 @@ namespace WinWeelay.Core
         {
             switch (message.ID)
             {
+                case MessageIds.CustomGetVersion:
+                    ParseVersion(message);
+                    break;
                 case MessageIds.CustomGetBufferList:
                     ParseBufferList(message);
                     break;
@@ -125,6 +128,12 @@ namespace WinWeelay.Core
                     ParseUpgradeEnded();
                     break;
             }
+        }
+
+        private void ParseVersion(RelayMessage message)
+        {
+            WeechatInfo versionInfo = (WeechatInfo)message.RelayObjects.First();
+            _connection.WeeChatVersion = versionInfo.Value;
         }
 
         private void ParseBufferList(RelayMessage message)
