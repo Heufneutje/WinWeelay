@@ -35,7 +35,8 @@ namespace WinWeelay.Configuration
 
         public RelayConfiguration()
         {
-            BacklogSize = -1;
+            BacklogSize = 256;
+            Port = 9001;
         }
     }
 }

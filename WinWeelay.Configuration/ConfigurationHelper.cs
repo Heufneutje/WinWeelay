@@ -14,7 +14,6 @@ namespace WinWeelay.Configuration
                 relayConfiguration = JsonConvert.DeserializeObject<RelayConfiguration>(File.ReadAllText(ConfigPath));
             else
                 relayConfiguration = new RelayConfiguration();
-            LoadDefaults(relayConfiguration);
 
             return relayConfiguration;
         }
@@ -24,12 +23,6 @@ namespace WinWeelay.Configuration
             JsonSerializer serializer = new JsonSerializer { Formatting = Formatting.Indented };
             using (StreamWriter writer = File.CreateText(ConfigPath))
                 serializer.Serialize(writer, relayConfiguration);
-        }
-
-        private static void LoadDefaults(RelayConfiguration relayConfiguration)
-        {
-            if (relayConfiguration.BacklogSize == -1)
-                relayConfiguration.BacklogSize = 100;
         }
     }
 }

@@ -107,6 +107,12 @@ namespace WinWeelay
 
         private async void Connect(object parameter)
         {
+            if (string.IsNullOrEmpty(_relayConfiguration.Hostname) || _relayConfiguration.Port == 0)
+            {
+                SetStatusText($"Connection failed, reason: configuration is invalid.");
+                return;
+            }
+
             UpdateConnectionCommands();
             SetStatusText($"Attempting to connect to {_relayConfiguration.ConnectionAddress}...");
 
