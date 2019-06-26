@@ -1,8 +1,12 @@
 ﻿using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
+
+#if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+#endif
+
 using WinWeelay.Core;
 
 namespace WinWeelay
@@ -65,6 +69,7 @@ namespace WinWeelay
             {
                 message.IsNotified = true;
 
+#if WINDOWS10_SDK
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
                 XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
                 stringElements[0].AppendChild(toastXml.CreateTextNode(Buffer.Name));
@@ -72,6 +77,7 @@ namespace WinWeelay
 
                 ToastNotification toast = new ToastNotification(toastXml);
                 ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
+#endif
             }
         }
 
