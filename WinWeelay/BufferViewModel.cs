@@ -91,12 +91,6 @@ namespace WinWeelay
             {
                 _relayConfiguration = settingsWindow.Configuration;
                 Connection.Configuration = _relayConfiguration;
-
-                if (Connection.IsConnected)
-                {
-                    Disconnect(parameter);
-                    Connect(parameter);
-                }
             }
         }
 
