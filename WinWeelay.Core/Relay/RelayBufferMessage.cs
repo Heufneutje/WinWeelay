@@ -72,5 +72,42 @@ namespace WinWeelay.Core
                 return $"{Date:HH:mm:ss} <{UnformattedPrefix}> {UnformattedMessage}";
             return $"{Date:HH:mm:ss} {UnformattedPrefix} {UnformattedMessage}";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RelayBufferMessage message &&
+                   BufferPointer == message.BufferPointer &&
+                   Date == message.Date &&
+                   DatePrinted == message.DatePrinted &&
+                   IsDisplayed == message.IsDisplayed &&
+                   IsHighlighted == message.IsHighlighted &&
+                   Message == message.Message &&
+                   Nick == message.Nick &&
+                   MessageType == message.MessageType;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1396436438;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BufferPointer);
+            hashCode = hashCode * -1521134295 + Date.GetHashCode();
+            hashCode = hashCode * -1521134295 + DatePrinted.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsDisplayed.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsHighlighted.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Message);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Nick);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(MessageType);
+            return hashCode;
+        }
+
+        public static bool operator ==(RelayBufferMessage left, RelayBufferMessage right)
+        {
+            return EqualityComparer<RelayBufferMessage>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(RelayBufferMessage left, RelayBufferMessage right)
+        {
+            return !(left == right);
+        }
     }
 }

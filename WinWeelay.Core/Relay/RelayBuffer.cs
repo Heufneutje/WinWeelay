@@ -124,6 +124,11 @@ namespace WinWeelay.Core
             }
         }
 
+        public bool HasMessage(RelayBufferMessage message)
+        {
+            return _messages.Contains(message);
+        }
+
         public void ClearMessages()
         {
             _messages.Clear();

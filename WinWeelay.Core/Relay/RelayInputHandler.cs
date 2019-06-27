@@ -195,7 +195,7 @@ namespace WinWeelay.Core
                 bool isSingleLineUpdate = message.ID == MessageIds.BufferLineAdded;
                 RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], isSingleLineUpdate);
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
-                if (buffer != null)
+                if (buffer != null && !buffer.HasMessage(bufferMessage))
                 {
                     bool updateMessageCount = isSingleLineUpdate;
 
