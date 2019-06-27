@@ -10,11 +10,32 @@ namespace WinWeelay.Core
     {
         private RelayConnection _connection;
         private Stream _networkStream;
+        private bool _useBatch;
+        private List<byte> _messageBatch;
 
         public RelayOutputHandler(RelayConnection connection, Stream networkStream)
         {
             _connection = connection;
             _networkStream = networkStream;
+            _messageBatch = new List<byte>();
+        }
+
+        public void BeginMessageBatch()
+        {
+            if (_useBatch)
+                throw new InvalidOperationException("The output handler is already handling a batch.");
+
+            _useBatch = true;
+        }
+
+        public void EndMessageBatch()
+        {
+            if (!_useBatch)
+                throw new InvalidOperationException("The output handler not currently handling a batch.");
+
+            _useBatch = false;
+            SendMessage(_messageBatch.ToArray());
+            _messageBatch.Clear();
         }
 
         public void SendMessage(string message, string id = null)
@@ -24,11 +45,18 @@ namespace WinWeelay.Core
 
             List<byte> msgBytes = new UTF8Encoding().GetBytes(message).ToList();
             msgBytes.Add(0x0A);
-            byte[] msgByteArray = msgBytes.ToArray();
 
+            if (_useBatch)
+                _messageBatch.AddRange(msgBytes);
+            else
+                SendMessage(msgBytes.ToArray());
+        }
+
+        private void SendMessage(byte[] msgBytes)
+        {
             try
             {
-                _networkStream.Write(msgByteArray, 0, msgByteArray.Length);
+                _networkStream.Write(msgBytes, 0, msgBytes.Length);
             }
             catch (Exception ex)
             {
@@ -50,8 +78,10 @@ namespace WinWeelay.Core
         {
             if (_connection.Configuration.SyncReadMessages)
             {
+                BeginMessageBatch();
                 Input(buffer, "/buffer set hotlist -1");
                 Input(buffer, "/input set_unread_current_buffer");
+                EndMessageBatch();
             }
         }
 

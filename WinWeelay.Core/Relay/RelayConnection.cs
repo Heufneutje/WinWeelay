@@ -100,11 +100,13 @@ namespace WinWeelay.Core
             InputHandler = new RelayInputHandler(this, _networkStream);
             OutputHandler = new RelayOutputHandler(this, _networkStream);
 
+            OutputHandler.BeginMessageBatch();
             OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
             OutputHandler.RequestBufferList();
             OutputHandler.RequestHotlist();
             OutputHandler.Sync();
             OutputHandler.Info("version", MessageIds.CustomGetVersion);
+            OutputHandler.EndMessageBatch();
 
             _pingTimer.Start();
             return true;
