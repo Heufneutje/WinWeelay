@@ -16,15 +16,15 @@ namespace WinWeelay
     /// </summary>
     public partial class BufferControl : UserControl
     {
-        private RelayConnection _connection;
         private NickCompleter _nickCompleter;
+        private MessageHistory _history;
 
         public RelayBuffer Buffer { get; private set; }
 
-        public BufferControl(RelayConnection connection, RelayBuffer buffer)
+        public BufferControl(RelayBuffer buffer)
         {
-            _connection = connection;
             _nickCompleter = new NickCompleter(buffer);
+            _history = new MessageHistory(buffer.Connection.Configuration);
             Buffer = buffer;
 
             InitializeComponent();
@@ -39,7 +39,8 @@ namespace WinWeelay
                 case Key.Enter:
                     if (!string.IsNullOrEmpty(_messageTextBox.Text))
                     {
-                        _connection.OutputHandler.Input(Buffer, _messageTextBox.Text);
+                        Buffer.SendMessage(_messageTextBox.Text);
+                        _history.AddHistoryEntry(_messageTextBox.Text);
                         _messageTextBox.Text = string.Empty;
                     }
                     break;
@@ -51,6 +52,21 @@ namespace WinWeelay
                     _nickCompleter.IsNickCompleting = false;
                     break;
             }
+        }
+
+        private void MessageTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    _messageTextBox.Text = _history.GetPreviousHistoryEntry();
+                    break;
+                case Key.Down:
+                    _messageTextBox.Text = _history.GetNextHistoryEntry();
+                    break;
+            }
+
+            _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
         }
 
         private void ConversationTextBox_TextChanged(object sender, TextChangedEventArgs e)

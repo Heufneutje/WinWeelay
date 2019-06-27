@@ -8,10 +8,10 @@ namespace WinWeelay.Core
     public class RelayBuffer : NotifyPropertyChangedBase
     {
         private List<RelayBufferMessage> _messages;
-        private RelayConnection _connection;
         private bool _hasBacklog;
         private bool _hasNicklist;
 
+        public RelayConnection Connection { get; private set; }
         public string Name { get; set; }
         public int Number { get; set; }
         public string Pointer { get; set; }
@@ -101,7 +101,7 @@ namespace WinWeelay.Core
             Title = entry["title"].AsString();
             Pointer = entry.GetPointer();
 
-            _connection = connection;
+            Connection = connection;
             _messages = new List<RelayBufferMessage>();
             Nicklist = new ObservableCollection<RelayNicklistEntry>();
         }
@@ -144,35 +144,35 @@ namespace WinWeelay.Core
 
         public void HandleSelected()
         {
-            _connection.ActiveBuffer = this;
+            Connection.ActiveBuffer = this;
             if (_hasNicklist)
-                _connection.NotifyNicklistUpdated();
+                Connection.NotifyNicklistUpdated();
 
             if (!_hasBacklog)
             {
-                _connection.OutputHandler.RequestBufferBacklog(this, _connection.Configuration.BacklogSize);
+                Connection.OutputHandler.RequestBufferBacklog(this, Connection.Configuration.BacklogSize);
                 _hasBacklog = true;
             }
 
             if (!_hasNicklist)
             {
-                _connection.OutputHandler.Nicklist(this, MessageIds.CustomGetNicklist);
+                Connection.OutputHandler.Nicklist(this, MessageIds.CustomGetNicklist);
                 _hasNicklist = true;
             }
 
             UnreadMessagesCount = 0;
             HighlightedMessagesCount = 0;
 
-            if (_connection.IsConnected)
-                _connection.OutputHandler.MarkBufferAsRead(this);
+            if (Connection.IsConnected)
+                Connection.OutputHandler.MarkBufferAsRead(this);
 
             NotifyMessageCountUpdated();
         }
 
         public void HandleUnselected()
         {
-            _connection.ActiveBuffer = null;
-            _connection.NotifyNicklistUpdated();
+            Connection.ActiveBuffer = null;
+            Connection.NotifyNicklistUpdated();
         }
 
         public void SortNicklist()
@@ -185,6 +185,11 @@ namespace WinWeelay.Core
             List<string> nicks = _messages.Where(x => !string.IsNullOrEmpty(x.Nick)).OrderByDescending(x => x.Date).Select(x => x.Nick).ToList();
             nicks.AddRange(Nicklist.Select(x => x.Name));
             return nicks.Distinct();
+        }
+
+        public void SendMessage(string message)
+        {
+            Connection.OutputHandler.Input(this, message);
         }
     }
 }

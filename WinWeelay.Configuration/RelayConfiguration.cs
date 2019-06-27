@@ -15,6 +15,7 @@ namespace WinWeelay.Configuration
         public bool AutoConnect { get; set; }
         public RelayConnectionType ConnectionType { get; set; }
         public bool SyncReadMessages { get; set; }
+        public int HistorySize { get; set; }
         
         [JsonIgnore]
         public string ConnectionAddress
@@ -36,8 +37,9 @@ namespace WinWeelay.Configuration
 
         public RelayConfiguration()
         {
-            BacklogSize = 256;
             Port = 9001;
+            BacklogSize = 256;
+            HistorySize = 50;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace WinWeelay
             LayoutDocument layoutDocument;
             if (!_bufferControls.ContainsKey(buffer))
             {
-                BufferControl bufferControl = new BufferControl(((BufferViewModel)DataContext).Connection, buffer);
+                BufferControl bufferControl = new BufferControl(buffer);
                 layoutDocument = new LayoutDocument
                 {
                     Title = buffer.Name,

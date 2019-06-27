@@ -7,7 +7,7 @@
         xmlns:CustomControls="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
-        Title="Settings" Height="326.55" Width="520.27" ResizeMode="NoResize">
+        Title="Settings" Height="357.779" Width="520.27" ResizeMode="NoResize">
     <Window.DataContext>
         <Configuration:RelayConfiguration />
     </Window.DataContext>
@@ -28,11 +28,13 @@
                 <Label Content="Connection Type" HorizontalAlignment="Left" Margin="6,3,0,0" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="Content Settings" HorizontalAlignment="Left" Height="77" Margin="10,175,0,0" VerticalAlignment="Top" Width="487">
+        <GroupBox Header="Content Settings" HorizontalAlignment="Left" Height="110" Margin="10,175,0,0" VerticalAlignment="Top" Width="487">
             <Grid>
                 <Label Content="Initial Buffer Size" HorizontalAlignment="Left" Margin="6,5,0,0" VerticalAlignment="Top" />
-                <CustomControls:NumericUpDown Height="23" Margin="155,5,3,0" VerticalAlignment="Top" Value="{Binding BacklogSize, Mode=TwoWay}" Width="Auto" MaxValue="1000" />
-                <CheckBox Content="Sync read messages with WeeChat" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" IsChecked="{Binding SyncReadMessages}" />
+                <CustomControls:NumericUpDown Height="23" Margin="155,5,3,0" VerticalAlignment="Top" Value="{Binding BacklogSize, Mode=TwoWay}" Width="Auto" MaxValue="1000" MinValue="0" />
+                <CheckBox Content="Sync read messages with WeeChat" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" IsChecked="{Binding SyncReadMessages}" />
+                <CustomControls:NumericUpDown Height="23" Margin="155,33,3,0" VerticalAlignment="Top" Value="{Binding HistorySize}" Width="Auto" MaxValue="50" MinValue="1" />
+                <Label Content="Message History Size" HorizontalAlignment="Left" Margin="6,31,0,0" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
     </Grid>
