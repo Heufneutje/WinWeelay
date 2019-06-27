@@ -61,9 +61,6 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NumericUpDown, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NumericUpDown.3.0.2\lib\NumericUpDown.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -158,6 +155,10 @@
     <ProjectReference Include="..\WinWeelay.Core\WinWeelay.Core.csproj">
       <Project>{a619ae7a-9a67-4b21-a2e1-7dc1890a3dd4}</Project>
       <Name>WinWeelay.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WinWeelay.CustomControls\WinWeelay.CustomControls.csproj">
+      <Project>{a0525056-7804-4bad-9cdc-c7c2e078fc14}</Project>
+      <Name>WinWeelay.CustomControls</Name>
     </ProjectReference>
     <ProjectReference Include="..\WinWeelay.Utils\WinWeelay.Utils.csproj">
       <Project>{f96faf7d-1565-48f5-825d-fa8a0cea89af}</Project>
