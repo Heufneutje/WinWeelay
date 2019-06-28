@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
-    public class RelayBufferMessage
+    public class RelayBufferMessage : IComparer
     {
         public string BufferPointer { get; private set; }
         public DateTime Date { get; private set; }
@@ -100,14 +101,17 @@ namespace WinWeelay.Core
             return hashCode;
         }
 
-        public static bool operator ==(RelayBufferMessage left, RelayBufferMessage right)
+        public int Compare(object x, object y)
         {
-            return EqualityComparer<RelayBufferMessage>.Default.Equals(left, right);
-        }
+            RelayBufferMessage m1 = (RelayBufferMessage)x;
+            RelayBufferMessage m2 = (RelayBufferMessage)y;
 
-        public static bool operator !=(RelayBufferMessage left, RelayBufferMessage right)
-        {
-            return !(left == right);
+            if (m1.Date < m2.Date)
+                return -1;
+            if (m1.Date > m2.Date)
+                return 2;
+
+            return 0;
         }
     }
 }

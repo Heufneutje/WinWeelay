@@ -33,15 +33,9 @@ namespace WinWeelay.Core
         }
         public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
 
-        #region View Model
-        public string MessageBuffer
-        {
-            get
-            {
-                return string.Join(Environment.NewLine, _messages.OrderBy(x => x.Date));
-            }
-        }
+        public event MessageAddedHandler MessageAdded;
 
+        #region View Model
         public IEnumerable<RelayBufferMessage> MessagesToHighlight
         {
             get
@@ -122,6 +116,8 @@ namespace WinWeelay.Core
                 if (message.IsHighlighted)
                     HighlightedMessagesCount++;
             }
+
+            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, message.Date >= _messages.Max(x => x.Date)));
         }
 
         public bool HasMessage(RelayBufferMessage message)
@@ -136,7 +132,6 @@ namespace WinWeelay.Core
 
         public void NotifyMessagesUpdated()
         {
-            NotifyPropertyChanged(nameof(MessageBuffer));
             NotifyMessageCountUpdated();
         }
 

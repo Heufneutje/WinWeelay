@@ -6,13 +6,21 @@
              xmlns:local="clr-namespace:WinWeelay"
              xmlns:localcore="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Loaded="BufferControl_Loaded" Unloaded="BufferControl_Unloaded">
     <UserControl.DataContext>
         <localcore:RelayBuffer/>
     </UserControl.DataContext>
     <DockPanel LastChildFill="True">
         <TextBox x:Name="_titleTextBox" TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" Text="{Binding Title}" DockPanel.Dock="Top" />
         <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" TextChanged="MessageTextBox_TextChanged" PreviewKeyDown="MessageTextBox_PreviewKeyDown" />
-        <TextBox x:Name="_conversationTextBox" TextWrapping="Wrap" AcceptsReturn="True" IsReadOnly="True" Margin="0,5" VerticalScrollBarVisibility="Visible" Text="{Binding MessageBuffer, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextChanged="ConversationTextBox_TextChanged" />
+        <RichTextBox x:Name="_conversationRichTextBox" AcceptsReturn="True" IsReadOnly="True" Margin="0,5" VerticalScrollBarVisibility="Visible">
+            <FlowDocument x:Name="_messageDocument">
+                <FlowDocument.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </FlowDocument.Resources>
+            </FlowDocument>
+        </RichTextBox>
     </DockPanel>
 </UserControl>
