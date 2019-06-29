@@ -38,6 +38,8 @@ namespace WinWeelay
             DataContext = buffer;
 
             Buffer.MessageAdded += Buffer_MessageAdded;
+
+            InitBufferMessages();
         }
 
         private void BufferControl_Loaded(object sender, RoutedEventArgs e)
@@ -53,24 +55,7 @@ namespace WinWeelay
 
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
         {
-            bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
-            Block block = new Paragraph(new Run(args.Message.ToString()));
-
-            if (args.AddToEnd || !_blocks.Any())
-                _messageDocument.Blocks.Add(block);
-            else
-            {
-                RelayBufferMessage previousMessage = _blocks.Keys.LastOrDefault(x => x.Date < args.Message.Date);
-                if (previousMessage == null)
-                    _messageDocument.Blocks.InsertBefore(_messageDocument.Blocks.FirstBlock, block);
-                else
-                    _messageDocument.Blocks.InsertAfter(_blocks[previousMessage], block);
-            }
-
-            _blocks.Add(args.Message, block);
-
-            if (!args.AddToEnd || scrollToEnd)
-                _conversationRichTextBox.ScrollToEnd();
+            AddMessage(args.Message, args.AddToEnd);
         }
 
         private void MessageTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -142,6 +127,39 @@ namespace WinWeelay
         {
             if (!_nickCompleter.IsNickCompleting)
                 _nickCompleter.Reset();
+        }
+
+        private void InitBufferMessages()
+        {
+            _conversationRichTextBox.BeginChange();
+            foreach (RelayBufferMessage message in Buffer.Messages)
+                AddMessage(message, false);
+
+            _conversationRichTextBox.EndChange();
+            _isScrolledToBottom = true;
+        }
+
+        private void AddMessage(RelayBufferMessage message, bool addToEnd)
+        {
+            bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
+            Block block = new Paragraph(new Run(message.ToString()));
+
+            if (addToEnd || !_blocks.Any())
+                _messageDocument.Blocks.Add(block);
+            else
+            {
+                RelayBufferMessage previousMessage = _blocks.Keys.LastOrDefault(x => x.Date < message.Date);
+                if (previousMessage == null)
+                    _messageDocument.Blocks.InsertBefore(_messageDocument.Blocks.FirstBlock, block);
+                else
+                    _messageDocument.Blocks.InsertAfter(_blocks[previousMessage], block);
+            }
+
+            _blocks.Add(message, block);
+            _blocks.SortKeys();
+
+            if (!addToEnd || scrollToEnd)
+                _conversationRichTextBox.ScrollToEnd();
         }
     }
 }

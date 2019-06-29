@@ -7,7 +7,7 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
-    public class RelayBufferMessage : IComparer
+    public class RelayBufferMessage : IComparable
     {
         public string BufferPointer { get; private set; }
         public DateTime Date { get; private set; }
@@ -101,17 +101,10 @@ namespace WinWeelay.Core
             return hashCode;
         }
 
-        public int Compare(object x, object y)
+        public int CompareTo(object obj)
         {
-            RelayBufferMessage m1 = (RelayBufferMessage)x;
-            RelayBufferMessage m2 = (RelayBufferMessage)y;
-
-            if (m1.Date < m2.Date)
-                return -1;
-            if (m1.Date > m2.Date)
-                return 2;
-
-            return 0;
+            RelayBufferMessage message = (RelayBufferMessage)obj;
+            return Date.CompareTo(message.Date);
         }
     }
 }

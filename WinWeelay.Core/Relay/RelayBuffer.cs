@@ -17,6 +17,13 @@ namespace WinWeelay.Core
         public string Pointer { get; set; }
         public int UnreadMessagesCount { get; set; }
         public int HighlightedMessagesCount { get; set; }
+        public ReadOnlyCollection<RelayBufferMessage> Messages
+        {
+            get
+            {
+                return _messages.AsReadOnly();
+            }
+        }
 
         private string _title;
         public string Title
