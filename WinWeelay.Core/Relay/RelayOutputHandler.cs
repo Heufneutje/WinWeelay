@@ -90,9 +90,12 @@ namespace WinWeelay.Core
             Hdata($"buffer:{buffer.Pointer}/lines/last_line(-{backlogSize})/data", id: MessageIds.CustomGetBufferBacklog);
         }
 
-        public void Init(string password)
+        public void Init(string password, bool useCompression)
         {
-            SendMessage($"init password={password},compression=off");
+            if (useCompression)
+                SendMessage($"init password={password}");
+            else
+                SendMessage($"init password={password},compression=off");
         }
 
         public void Hdata(string path, string keys = null, string id = null)

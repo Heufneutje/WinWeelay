@@ -153,7 +153,7 @@
       <Name>WinWeelay.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\WinWeelay.Core\WinWeelay.Core.csproj">
-      <Project>{a619ae7a-9a67-4b21-a2e1-7dc1890a3dd4}</Project>
+      <Project>{B3A2C222-510B-41B8-95B7-DD28E0DFE3B2}</Project>
       <Name>WinWeelay.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\WinWeelay.CustomControls\WinWeelay.CustomControls.csproj">

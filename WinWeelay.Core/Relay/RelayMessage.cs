@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Ionic.Zlib;
 
 namespace WinWeelay.Core
 {
@@ -21,6 +22,11 @@ namespace WinWeelay.Core
             int c = wd.GetByte();
             if (c == 0x00)
                 Compressed = false;
+            else if (c == 0x01)
+            {
+                Compressed = true;
+                wd = new WeechatData(ZlibStream.UncompressBuffer(wd.GetByteArray()));
+            }
 
             ID = wd.GetString();
 
