@@ -158,5 +158,14 @@ namespace WinWeelay
         {
             return _dockingManager.Layout.Descendents().OfType<LayoutAnchorable>().SingleOrDefault(x => x.ContentId == contentID);
         }
+
+        public void UpdateFont()
+        {
+            foreach (LayoutDocument document in _bufferControls.Values)
+            {
+                BufferControl bufferControl = (BufferControl)document.Content;
+                bufferControl.UpdateFont();
+            }
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Reflection;
 namespace WinWeelay.Utils
 {
     [Serializable]
-    public abstract class BaseChangeTrackable
+    public abstract class BaseChangeTrackable : NotifyPropertyChangedBase
     {
         [NonSerialized]
         private Dictionary<string, object> _originalValues;

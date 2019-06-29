@@ -85,12 +85,17 @@ namespace WinWeelay
 
         private void ShowSettingsForm(object parameter)
         {
-            RelayConfiguration config = CloneHelper.DeepCopy(_relayConfiguration);
+            RelayConfiguration config = new RelayConfiguration();
+            _relayConfiguration.CopyPropertiesTo(config);
+
             SettingsWindow settingsWindow = new SettingsWindow(config);
             if (settingsWindow.ShowDialog() == true)
             {
                 _relayConfiguration = settingsWindow.Configuration;
                 Connection.Configuration = _relayConfiguration;
+
+                if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
+                    _mainWindow.UpdateFont();
             }
         }
 

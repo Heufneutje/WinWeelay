@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
@@ -160,6 +161,15 @@ namespace WinWeelay
 
             if (!addToEnd || scrollToEnd)
                 _conversationRichTextBox.ScrollToEnd();
+        }
+
+        public void UpdateFont()
+        {
+            foreach (Block block in _messageDocument.Blocks)
+            {
+                block.FontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
+                block.FontSize = Buffer.Connection.Configuration.FontSize;
+            }
         }
     }
 }

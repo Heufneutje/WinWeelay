@@ -60,7 +60,6 @@
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />
     <Compile Include="NickCompleter.cs" />
-    <Compile Include="NotifyPropertyChangedBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayBufferMessageEventArgs.cs" />
     <Compile Include="Relay\RelayBuffer.cs" />

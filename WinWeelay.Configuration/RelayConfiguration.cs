@@ -16,6 +16,8 @@ namespace WinWeelay.Configuration
         public RelayConnectionType ConnectionType { get; set; }
         public bool SyncReadMessages { get; set; }
         public int HistorySize { get; set; }
+        public int FontSize { get; set; }
+        public string FontFamily { get; set; }
         
         [JsonIgnore]
         public string ConnectionAddress
@@ -40,6 +42,14 @@ namespace WinWeelay.Configuration
             Port = 9001;
             BacklogSize = 256;
             HistorySize = 50;
+            FontFamily = "Calibri";
+            FontSize = 12;
+        }
+
+        public void NotifyThemeChanged()
+        {
+            NotifyPropertyChanged(nameof(FontSize));
+            NotifyPropertyChanged(nameof(FontFamily));
         }
     }
 }

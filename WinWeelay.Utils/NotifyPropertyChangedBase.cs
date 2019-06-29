@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
-namespace WinWeelay.Core
+namespace WinWeelay.Utils
 {
     public class NotifyPropertyChangedBase : INotifyPropertyChanged
     {
