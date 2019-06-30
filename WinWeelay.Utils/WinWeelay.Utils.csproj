@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="ArrayHelper.cs" />
     <Compile Include="BaseChangeTrackable.cs" />
     <Compile Include="ChangeTrackingIgnoreAttribute.cs" />
