@@ -40,7 +40,7 @@ namespace WinWeelay.Configuration
         public RelayConfiguration()
         {
             Port = 9001;
-            BacklogSize = 256;
+            BacklogSize = 100;
             HistorySize = 50;
             FontFamily = "Calibri";
             FontSize = 12;
