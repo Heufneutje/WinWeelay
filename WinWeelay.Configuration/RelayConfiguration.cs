@@ -20,6 +20,7 @@ namespace WinWeelay.Configuration
         public string FontFamily { get; set; }
         public double WindowWidth { get; set; }
         public double WindowHeight { get; set; }
+        public string TimestampFormat { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -50,6 +51,7 @@ namespace WinWeelay.Configuration
             FontSize = 12;
             WindowWidth = 800;
             WindowHeight = 500;
+            TimestampFormat = "HH:mm";
         }
 
         public void NotifyThemeChanged()

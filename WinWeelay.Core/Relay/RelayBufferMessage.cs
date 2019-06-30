@@ -67,13 +67,6 @@ namespace WinWeelay.Core
                 IsNotified = true;
         }
 
-        public override string ToString()
-        {
-            if (MessageType == "privmsg")
-                return $"{Date:HH:mm:ss} <{UnformattedPrefix}> {UnformattedMessage}";
-            return $"{Date:HH:mm:ss} {UnformattedPrefix} {UnformattedMessage}";
-        }
-
         public override bool Equals(object obj)
         {
             return obj is RelayBufferMessage message &&

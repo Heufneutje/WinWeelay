@@ -143,7 +143,13 @@ namespace WinWeelay
         private void AddMessage(RelayBufferMessage message, bool addToEnd)
         {
             bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
-            Block block = new Paragraph(new Run(message.ToString()));
+            string formattedDate = $"[{message.Date.ToString(Buffer.Connection.Configuration.TimestampFormat)}]";
+
+            Block block;
+            if (message.MessageType == "privmsg")
+                block = new Paragraph(new Run($"{formattedDate} <{message.UnformattedPrefix}> {message.UnformattedMessage}"));
+            else
+                block = new Paragraph(new Run($"{formattedDate} {message.UnformattedPrefix} {message.UnformattedMessage}"));
 
             if (addToEnd || !_blocks.Any())
                 _messageDocument.Blocks.Add(block);
