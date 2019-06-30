@@ -23,6 +23,8 @@ namespace WinWeelay
             DataContext = relayConfiguration;
             _passwordBox.Password = Cipher.Decrypt(relayConfiguration.RelayPassword);
             relayConfiguration.StartTrackingChanges();
+
+            _fontComboBox.ItemsSource = FormattingHelper.GetInstalledFonts();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

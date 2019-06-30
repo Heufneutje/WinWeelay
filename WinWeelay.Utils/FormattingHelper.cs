@@ -1,4 +1,9 @@
-﻿namespace WinWeelay.Utils
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Text;
+using System.Linq;
+
+namespace WinWeelay.Utils
 {
     public static class FormattingHelper
     {
@@ -32,6 +37,19 @@
             }
 
             return result;
+        }
+
+        public static List<string> GetInstalledFonts()
+        {
+            List<string> fonts = new List<string>();
+            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
+            {
+                FontFamily[] fontFamilies = fontsCollection.Families;
+                foreach (FontFamily font in fontFamilies.Where(x => !string.IsNullOrEmpty(x.Name)))
+                    fonts.Add(font.Name);
+            }
+
+            return fonts;
         }
     }
 }

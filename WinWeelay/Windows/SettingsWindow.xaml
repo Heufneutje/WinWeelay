@@ -49,7 +49,7 @@
                         <Label Content="Font Family" HorizontalAlignment="Left" Margin="6,3,0,0" VerticalAlignment="Top" />
                         <Label Content="Font Size" HorizontalAlignment="Left" Margin="6,30,0,0" VerticalAlignment="Top" />
                         <Label Content="Timestamp Format" HorizontalAlignment="Left" Margin="6,57,0,0" VerticalAlignment="Top" />
-                        <ComboBox Margin="155,5,0,0" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource fonts}}" SelectedValue="{Binding FontFamily}" SelectedValuePath="Source">
+                        <ComboBox x:Name="_fontComboBox" Margin="155,5,0,0" VerticalAlignment="Top" SelectedValue="{Binding FontFamily}">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel />

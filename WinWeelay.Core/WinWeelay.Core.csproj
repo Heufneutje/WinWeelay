@@ -73,17 +73,17 @@
     <Compile Include="Relay\RelayOutputHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\WinWeelay.Configuration\WinWeelay.Configuration.csproj">
-      <Project>{7f23d684-9a18-4b35-9560-14648c23275c}</Project>
+      <Project>{d4dd4dc1-ca91-4b06-b229-3e9bd1c20784}</Project>
       <Name>WinWeelay.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\WinWeelay.Utils\WinWeelay.Utils.csproj">
-      <Project>{f96faf7d-1565-48f5-825d-fa8a0cea89af}</Project>
+      <Project>{f4928b72-c1a5-4e2e-9ae7-9fcdaafd6b49}</Project>
       <Name>WinWeelay.Utils</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
