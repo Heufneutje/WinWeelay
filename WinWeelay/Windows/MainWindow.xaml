@@ -76,7 +76,21 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="nicklist" Title="Nicklist" CanDockAsTabbedDocument="False" CanHide="True">
-                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick" />
+                                <ListBox x:Name="_nicklistListBox" ItemsSource="{Binding Connection.ActiveBuffer.Nicklist, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="NicklistListBox_MouseDoubleClick" SelectionChanged="NicklistListBox_SelectionChanged">
+                                    <ListBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Query" Command="{Binding QueryCommand}" />
+                                            <MenuItem Header="Info">
+                                                <MenuItem Header="/WHOIS" Command="{Binding WhoisCommand}" />
+                                            </MenuItem>
+                                            <MenuItem Header="Control">
+                                                <MenuItem Header="Kick" Command="{Binding KickCommand}"/>
+                                                <MenuItem Header="Ban" Command="{Binding BanCommand}"/>
+                                                <MenuItem Header="Kickban" Command="{Binding KickbanCommand}"/>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </ListBox.ContextMenu>
+                                </ListBox>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>

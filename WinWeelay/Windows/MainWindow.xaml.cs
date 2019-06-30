@@ -70,6 +70,12 @@ namespace WinWeelay
             ((BufferViewModel)DataContext).UpdateBufferCommands();
         }
 
+        private void NicklistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RelayNicklistEntry nick = (RelayNicklistEntry)_nicklistListBox.SelectedItem;
+            ((BufferViewModel)DataContext).UpdateActiveNicklistEntry(nick);
+        }
+
         private void DockingManager_DocumentClosed(object sender, DocumentClosedEventArgs e)
         {
             RelayBuffer buffer = _bufferControls.FirstOrDefault(x => x.Value == e.Document).Key;

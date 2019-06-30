@@ -16,6 +16,7 @@ namespace WinWeelay.Core
         public string Name { get; set; }
         public int Number { get; set; }
         public string Pointer { get; set; }
+        public RelayNicklistEntry ActiveNicklistEntry { get; set; }
         public int UnreadMessagesCount { get; set; }
         public int HighlightedMessagesCount { get; set; }
         public ReadOnlyCollection<RelayBufferMessage> Messages
@@ -198,6 +199,30 @@ namespace WinWeelay.Core
         public void SendMessage(string message)
         {
             Connection.OutputHandler.Input(this, message);
+        }
+
+        public void SendWhois()
+        {
+            if (ActiveNicklistEntry != null)
+                SendMessage($"/whois {ActiveNicklistEntry.Name}");
+        }
+
+        public void SendKick()
+        {
+            if (ActiveNicklistEntry != null)
+                SendMessage($"/kick {ActiveNicklistEntry.Name}");
+        }
+
+        public void SendBan()
+        {
+            if (ActiveNicklistEntry != null)
+                SendMessage($"/ban {ActiveNicklistEntry.Name}");
+        }
+
+        public void SendKickban()
+        {
+            if (ActiveNicklistEntry != null)
+                SendMessage($"/kickban {ActiveNicklistEntry.Name}");
         }
     }
 }

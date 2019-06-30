@@ -24,6 +24,11 @@ namespace WinWeelay
         public DelegateCommand SettingsCommand { get; private set; }
         public DelegateCommand StopConnectingCommand { get; private set; }
         public DelegateCommand AboutCommand { get; private set; }
+        public DelegateCommand WhoisCommand { get; private set; }
+        public DelegateCommand QueryCommand { get; private set; }
+        public DelegateCommand KickCommand { get; private set; }
+        public DelegateCommand BanCommand { get; private set; }
+        public DelegateCommand KickbanCommand { get; private set; }
 
         public BufferViewModel() { }
 
@@ -46,6 +51,11 @@ namespace WinWeelay
             SettingsCommand = new DelegateCommand(ShowSettingsWindow);
             StopConnectingCommand = new DelegateCommand(StopConnecting, CanStopConnecting);
             AboutCommand = new DelegateCommand(ShowAboutWindow);
+            WhoisCommand = new DelegateCommand(SendWhois, IsNickSelected);
+            QueryCommand = new DelegateCommand(OpenQuery, IsNickSelected);
+            KickCommand = new DelegateCommand(SendKick, IsNickSelected);
+            BanCommand = new DelegateCommand(SendBan, IsNickSelected);
+            KickbanCommand = new DelegateCommand(SendKickban, IsNickSelected);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
 
@@ -179,6 +189,37 @@ namespace WinWeelay
             aboutWindow.ShowDialog();
         }
 
+        private bool IsNickSelected(object parameter)
+        {
+            return Connection.ActiveBuffer?.ActiveNicklistEntry != null;
+        }
+
+        private void SendWhois(object parameter)
+        {
+            Connection.ActiveBuffer?.SendWhois();
+        }
+
+        private void OpenQuery(object parameter)
+        {
+            if (Connection.ActiveBuffer != null && Connection.ActiveBuffer.ActiveNicklistEntry != null)
+                Connection.OutputHandler.Input(Connection.ActiveBuffer, $"/query {Connection.ActiveBuffer?.ActiveNicklistEntry?.Name}");
+        }
+
+        private void SendKick(object parameter)
+        {
+            Connection.ActiveBuffer?.SendKick();
+        }
+
+        private void SendBan(object parameter)
+        {
+            Connection.ActiveBuffer?.SendBan();
+        }
+
+        private void SendKickban(object parameter)
+        {
+            Connection.ActiveBuffer?.SendKickban();
+        }
+
         private void UpdateConnectionCommands()
         {
             ConnectCommand.OnCanExecuteChanged();
@@ -190,6 +231,19 @@ namespace WinWeelay
         {
             HideBufferCommand.OnCanExecuteChanged();
             CloseBufferCommand.OnCanExecuteChanged();
+        }
+
+        public void UpdateActiveNicklistEntry(RelayNicklistEntry nick)
+        {
+            if (Connection.ActiveBuffer != null)
+            {
+                Connection.ActiveBuffer.ActiveNicklistEntry = nick;
+                WhoisCommand.OnCanExecuteChanged();
+                QueryCommand.OnCanExecuteChanged();
+                KickCommand.OnCanExecuteChanged();
+                BanCommand.OnCanExecuteChanged();
+                KickbanCommand.OnCanExecuteChanged();
+            }
         }
 
         public void SaveWindowSize()
