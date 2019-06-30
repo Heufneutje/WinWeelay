@@ -55,5 +55,12 @@ namespace WinWeelay.Utils
         {
             return GetChanges(refreshChanges).Any();
         }
+
+        public void ResetTrackingChanges()
+        {
+            _originalValues.Clear();
+            _changedValues.Clear();
+            _hasChangesCache = false;
+        }
     }
 }

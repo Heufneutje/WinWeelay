@@ -31,7 +31,9 @@ namespace WinWeelay
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            ((BufferViewModel)DataContext).DisconnectCommand.Execute(null);
+            BufferViewModel vm = (BufferViewModel)DataContext;
+            vm.DisconnectCommand.Execute(null);
+            vm.SaveWindowSize();
             DockingManagerLayoutHelper.SaveLayout(_dockingManager);
         }
 

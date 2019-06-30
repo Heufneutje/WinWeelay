@@ -18,8 +18,11 @@ namespace WinWeelay.Configuration
         public int HistorySize { get; set; }
         public int FontSize { get; set; }
         public string FontFamily { get; set; }
+        public double WindowWidth { get; set; }
+        public double WindowHeight { get; set; }
         
         [JsonIgnore]
+        [ChangeTrackingIgnore]
         public string ConnectionAddress
         {
             get
@@ -29,6 +32,7 @@ namespace WinWeelay.Configuration
         }
 
         [JsonIgnore]
+        [ChangeTrackingIgnore]
         public IEnumerable<ConnectionTypeWrapper> ConnectionTypes
         {
             get
@@ -44,6 +48,8 @@ namespace WinWeelay.Configuration
             HistorySize = 50;
             FontFamily = "Calibri";
             FontSize = 12;
+            WindowWidth = 800;
+            WindowHeight = 500;
         }
 
         public void NotifyThemeChanged()

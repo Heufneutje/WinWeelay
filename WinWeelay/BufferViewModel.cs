@@ -88,7 +88,7 @@ namespace WinWeelay
             RelayConfiguration config = new RelayConfiguration();
             _relayConfiguration.CopyPropertiesTo(config);
 
-            SettingsWindow settingsWindow = new SettingsWindow(config);
+            SettingsWindow settingsWindow = new SettingsWindow(config) { Owner = _mainWindow };
             if (settingsWindow.ShowDialog() == true)
             {
                 _relayConfiguration = settingsWindow.Configuration;
@@ -182,6 +182,13 @@ namespace WinWeelay
         {
             HideBufferCommand.OnCanExecuteChanged();
             CloseBufferCommand.OnCanExecuteChanged();
+        }
+
+        public void SaveWindowSize()
+        {
+            if (_relayConfiguration.HasPropertyChanged(nameof(_relayConfiguration.WindowWidth)) ||
+                _relayConfiguration.HasPropertyChanged(nameof(_relayConfiguration.WindowHeight)))
+                ConfigurationHelper.SaveConfiguration(_relayConfiguration);
         }
 
         private void SetStatusText(string message)

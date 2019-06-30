@@ -7,7 +7,7 @@
         xmlns:CustomControls="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
-        Title="Settings" Height="289.576" Width="520.27" ResizeMode="NoResize">
+        Title="Settings" Height="289.576" Width="520.27" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Window.DataContext>
         <Configuration:RelayConfiguration />
     </Window.DataContext>
@@ -15,7 +15,7 @@
         <CollectionViewSource Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}" x:Key="fonts"/>
     </Window.Resources>
     <Grid>
-        <TabControl Margin="0,0,0.5,34.5">
+        <TabControl Margin="0,0,0.5,35" Grid.ColumnSpan="2">
             <TabItem Header="Connection">
                 <GroupBox Header="Connection Settings" Margin="10,5">
                     <Grid>
@@ -64,8 +64,8 @@
                 </GroupBox>
             </TabItem>
         </TabControl>
-        <Button x:Name="_okButton" Content="OK" Margin="0,0,90.5,9.5" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="74" Click="OkButton_Click" Grid.Column="1" />
-        <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10.5,9.5" HorizontalAlignment="Right" Width="74" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click" Grid.Column="1" />
+        <Button x:Name="_okButton" Content="OK" Margin="0,0,90.5,9" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="74" Click="OkButton_Click" Grid.Column="1" />
+        <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10.5,9" HorizontalAlignment="Right" Width="74" Height="20" VerticalAlignment="Bottom" Click="CancelButton_Click" Grid.Column="1" />
     </Grid>
 
 </Window>

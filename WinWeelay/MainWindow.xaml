@@ -7,7 +7,7 @@
         xmlns:Core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core" x:Class="WinWeelay.MainWindow"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         mc:Ignorable="d"
-        Title="{Binding Connection.Description}" Height="450" Width="800" Closing="Window_Closing" Loaded="Window_Loaded">
+        Title="{Binding Connection.Description}" Height="{Binding Connection.Configuration.WindowHeight, Mode=TwoWay}" Width="{Binding Connection.Configuration.WindowWidth, Mode=TwoWay}" Closing="Window_Closing" Loaded="Window_Loaded">
     <Window.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
