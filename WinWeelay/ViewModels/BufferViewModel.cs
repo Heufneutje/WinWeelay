@@ -23,6 +23,7 @@ namespace WinWeelay
         public DelegateCommand ExitCommand { get; private set; }
         public DelegateCommand SettingsCommand { get; private set; }
         public DelegateCommand StopConnectingCommand { get; private set; }
+        public DelegateCommand AboutCommand { get; private set; }
 
         public BufferViewModel() { }
 
@@ -42,8 +43,9 @@ namespace WinWeelay
             HideBufferCommand = new DelegateCommand(HideBuffer, CanCloseHide);
             CloseBufferCommand = new DelegateCommand(CloseBuffer, CanCloseHide);
             ExitCommand = new DelegateCommand(Exit);
-            SettingsCommand = new DelegateCommand(ShowSettingsForm);
+            SettingsCommand = new DelegateCommand(ShowSettingsWindow);
             StopConnectingCommand = new DelegateCommand(StopConnecting, CanStopConnecting);
+            AboutCommand = new DelegateCommand(ShowAboutWindow);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
 
@@ -81,22 +83,6 @@ namespace WinWeelay
                 _retryTimer.Stop();
                 Connect(null);
             });
-        }
-
-        private void ShowSettingsForm(object parameter)
-        {
-            RelayConfiguration config = new RelayConfiguration();
-            _relayConfiguration.CopyPropertiesTo(config);
-
-            SettingsWindow settingsWindow = new SettingsWindow(config) { Owner = _mainWindow };
-            if (settingsWindow.ShowDialog() == true)
-            {
-                _relayConfiguration = settingsWindow.Configuration;
-                Connection.Configuration = _relayConfiguration;
-
-                if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
-                    _mainWindow.UpdateFont();
-            }
         }
 
         private bool CanConnect(object parameter)
@@ -169,6 +155,28 @@ namespace WinWeelay
         private void Exit(object parameter)
         {
             _mainWindow.Close();
+        }
+
+        private void ShowSettingsWindow(object parameter)
+        {
+            RelayConfiguration config = new RelayConfiguration();
+            _relayConfiguration.CopyPropertiesTo(config);
+
+            SettingsWindow settingsWindow = new SettingsWindow(config) { Owner = _mainWindow };
+            if (settingsWindow.ShowDialog() == true)
+            {
+                _relayConfiguration = settingsWindow.Configuration;
+                Connection.Configuration = _relayConfiguration;
+
+                if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
+                    _mainWindow.UpdateFont();
+            }
+        }
+
+        private void ShowAboutWindow(object obj)
+        {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
         }
 
         private void UpdateConnectionCommands()

@@ -31,6 +31,9 @@
             <MenuItem Header="Tools">
                 <MenuItem Header="Settings" Command="{Binding SettingsCommand}" />
             </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="About" Command="{Binding AboutCommand}" />
+            </MenuItem>
         </Menu>
         <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,22" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
             <xcad:DockingManager.DocumentHeaderTemplate>
