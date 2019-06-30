@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinWeelay"
         mc:Ignorable="d"
-        Title="About WinWeelay" Height="505" Width="680" MinHeight="505" MinWidth="680">
+        Title="About WinWeelay" Height="505" Width="680" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <GroupBox Header="Information" Margin="10,0" VerticalAlignment="Top" RenderTransformOrigin="0.499,-0.052" Height="73">
             <Grid>

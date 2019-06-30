@@ -173,9 +173,9 @@ namespace WinWeelay
             }
         }
 
-        private void ShowAboutWindow(object obj)
+        private void ShowAboutWindow(object parameter)
         {
-            AboutWindow aboutWindow = new AboutWindow();
+            AboutWindow aboutWindow = new AboutWindow() { Owner = _mainWindow };
             aboutWindow.ShowDialog();
         }
 
