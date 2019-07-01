@@ -171,9 +171,13 @@ namespace WinWeelay
 
         public void UpdateFont()
         {
+            FontFamily fontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
+
+            _messageDocument.FontFamily = fontFamily;
+            _messageDocument.FontSize = Buffer.Connection.Configuration.FontSize;
             foreach (Block block in _messageDocument.Blocks)
             {
-                block.FontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
+                block.FontFamily = fontFamily;
                 block.FontSize = Buffer.Connection.Configuration.FontSize;
             }
         }

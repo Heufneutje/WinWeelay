@@ -180,6 +180,9 @@ namespace WinWeelay
 
                 if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
                     _mainWindow.UpdateFont();
+
+                _relayConfiguration.ResetTrackingChanges();
+                _relayConfiguration.StartTrackingChanges();
             }
         }
 

@@ -24,9 +24,6 @@ namespace WinWeelay.Configuration
             JsonSerializer serializer = new JsonSerializer { Formatting = Formatting.Indented };
             using (StreamWriter writer = File.CreateText(ConfigPath))
                 serializer.Serialize(writer, relayConfiguration);
-
-            relayConfiguration.ResetTrackingChanges();
-            relayConfiguration.StartTrackingChanges();
         }
     }
 }
