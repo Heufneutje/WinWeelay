@@ -59,6 +59,8 @@ namespace WinWeelay
                 LayoutDocumentPane documentPane = _dockingManager.Layout.Descendents().OfType<LayoutDocumentPane>().SingleOrDefault();
                 documentPane.Children.Add(layoutDocument);
                 _bufferControls.Add(buffer, layoutDocument);
+
+                buffer.NameChanged += delegate { layoutDocument.Title = buffer.Name; };
             }
             else
                 layoutDocument = _bufferControls[buffer];

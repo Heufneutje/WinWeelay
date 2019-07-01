@@ -13,6 +13,7 @@
         public const string BufferCleared = "_buffer_cleared";
         public const string BufferLineAdded = "_buffer_line_added";
         public const string BufferClosing = "_buffer_closing";
+        public const string BufferRenamed = "_buffer_renamed";
         public const string Nicklist = "_nicklist";
         public const string NicklistDiff = "_nicklist_diff";
         public const string Upgrade = "_upgrade";

@@ -13,7 +13,18 @@ namespace WinWeelay.Core
         private bool _hasNicklist;
 
         public RelayConnection Connection { get; private set; }
-        public string Name { get; set; }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                NameChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         public int Number { get; set; }
         public string Pointer { get; set; }
         public RelayNicklistEntry ActiveNicklistEntry { get; set; }
@@ -28,6 +39,8 @@ namespace WinWeelay.Core
         }
 
         private string _title;
+        
+
         public string Title
         {
             get
@@ -82,6 +95,8 @@ namespace WinWeelay.Core
                 return "#FF42CEF5";
             }
         }
+
+        public event EventHandler NameChanged;
         #endregion
 
         public RelayBuffer()
@@ -109,11 +124,6 @@ namespace WinWeelay.Core
             Nicklist = new ObservableCollection<RelayNicklistEntry>();
         }
 
-        public override string ToString()
-        {
-            return Name + UnreadMessagesCount;
-        }
-
         public void AddMessage(RelayBufferMessage message, bool updateCount)
         {
             _messages.Add(message);
@@ -139,9 +149,9 @@ namespace WinWeelay.Core
             _messages.Clear();
         }
 
-        public void NotifyMessagesUpdated()
+        public void NotifyNameUpdated()
         {
-            NotifyMessageCountUpdated();
+            NotifyPropertyChanged(nameof(Name));
         }
 
         public void NotifyMessageCountUpdated()

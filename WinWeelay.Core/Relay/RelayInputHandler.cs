@@ -113,6 +113,9 @@ namespace WinWeelay.Core
                 case MessageIds.BufferTitleChanged:
                     ParseBufferTitleChanged(message);
                     break;
+                case MessageIds.BufferRenamed:
+                    ParseBufferRenamed(message);
+                    break;
                 case MessageIds.BufferCleared:
                     ParseBufferCleared(message);
                     break;
@@ -215,7 +218,7 @@ namespace WinWeelay.Core
             }
 
             foreach (RelayBuffer updateBuffer in updatedBuffers)
-                updateBuffer.NotifyMessagesUpdated();
+                updateBuffer.NotifyMessageCountUpdated();
         }
 
         private void ParseBufferOpened(RelayMessage message)
@@ -258,7 +261,20 @@ namespace WinWeelay.Core
             if (buffer != null)
             {
                 buffer.ClearMessages();
-                buffer.NotifyMessagesUpdated();
+                buffer.NotifyMessageCountUpdated();
+            }
+        }
+
+        private void ParseBufferRenamed(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[0].GetPointer());
+
+            if (buffer != null)
+            {
+                WeechatHashtable table = (WeechatHashtable)hdata[0]["local_variables"];
+                buffer.Name = table["name"].ToString();
+                buffer.NotifyNameUpdated();
             }
         }
 
