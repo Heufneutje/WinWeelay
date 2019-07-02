@@ -4,6 +4,7 @@
     {
         public const string CustomGetBufferList = "getbuflist";
         public const string CustomGetBufferBacklog = "getbufbacklog";
+        public const string CustomGetBufferBacklogExtra = "getbufbacklogextra";
         public const string CustomGetNicklist = "getnicklist";
         public const string CustomGetHotlist = "gethotlist";
         public const string CustomGetVersion = "getversion";

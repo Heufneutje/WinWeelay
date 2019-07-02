@@ -29,6 +29,7 @@ namespace WinWeelay
         public DelegateCommand KickCommand { get; private set; }
         public DelegateCommand BanCommand { get; private set; }
         public DelegateCommand KickbanCommand { get; private set; }
+        public DelegateCommand LoadMoreMessagesCommand { get; private set; }
 
         public BufferViewModel() { }
 
@@ -45,8 +46,8 @@ namespace WinWeelay
 
             ConnectCommand = new DelegateCommand(Connect, CanConnect);
             DisconnectCommand = new DelegateCommand(Disconnect, CanDisconnect);
-            HideBufferCommand = new DelegateCommand(HideBuffer, CanCloseHide);
-            CloseBufferCommand = new DelegateCommand(CloseBuffer, CanCloseHide);
+            HideBufferCommand = new DelegateCommand(HideBuffer, IsBufferSelected);
+            CloseBufferCommand = new DelegateCommand(CloseBuffer, IsBufferSelected);
             ExitCommand = new DelegateCommand(Exit);
             SettingsCommand = new DelegateCommand(ShowSettingsWindow);
             StopConnectingCommand = new DelegateCommand(StopConnecting, CanStopConnecting);
@@ -56,6 +57,7 @@ namespace WinWeelay
             KickCommand = new DelegateCommand(SendKick, IsNickSelected);
             BanCommand = new DelegateCommand(SendBan, IsNickSelected);
             KickbanCommand = new DelegateCommand(SendKickban, IsNickSelected);
+            LoadMoreMessagesCommand = new DelegateCommand(LoadMoreMessages, IsBufferSelected);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
 
@@ -147,7 +149,7 @@ namespace WinWeelay
             SetStatusText("Disconnected.");
         }
 
-        private bool CanCloseHide(object parameter)
+        private bool IsBufferSelected(object parameter)
         {
             return Connection.ActiveBuffer != null;
         }
@@ -223,6 +225,11 @@ namespace WinWeelay
             Connection.ActiveBuffer?.SendKickban();
         }
 
+        private void LoadMoreMessages(object parameter)
+        {
+            Connection.ActiveBuffer?.LoadMoreMessages();
+        }
+
         private void UpdateConnectionCommands()
         {
             ConnectCommand.OnCanExecuteChanged();
@@ -234,6 +241,7 @@ namespace WinWeelay
         {
             HideBufferCommand.OnCanExecuteChanged();
             CloseBufferCommand.OnCanExecuteChanged();
+            LoadMoreMessagesCommand.OnCanExecuteChanged();
         }
 
         public void UpdateActiveNicklistEntry(RelayNicklistEntry nick)

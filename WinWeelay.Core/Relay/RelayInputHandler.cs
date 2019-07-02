@@ -102,6 +102,7 @@ namespace WinWeelay.Core
                     break;
                 case MessageIds.BufferLineAdded:
                 case MessageIds.CustomGetBufferBacklog:
+                case MessageIds.CustomGetBufferBacklogExtra:
                     ParseBufferLines(message);
                     break;
                 case MessageIds.BufferOpened:
@@ -211,7 +212,7 @@ namespace WinWeelay.Core
                         _connection.OutputHandler.MarkBufferAsRead(buffer);
                     }
 
-                    buffer.AddMessage(bufferMessage, updateMessageCount);
+                    buffer.AddMessage(bufferMessage, updateMessageCount, message.ID == MessageIds.CustomGetBufferBacklogExtra);
                     if (!updatedBuffers.Contains(buffer))
                         updatedBuffers.Add(buffer);
                 }

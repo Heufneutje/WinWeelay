@@ -11,6 +11,7 @@ namespace WinWeelay.Core
         private List<RelayBufferMessage> _messages;
         private bool _hasBacklog;
         private bool _hasNicklist;
+        private int _backlogOffset;
 
         public RelayConnection Connection { get; private set; }
 
@@ -124,7 +125,7 @@ namespace WinWeelay.Core
             Nicklist = new ObservableCollection<RelayNicklistEntry>();
         }
 
-        public void AddMessage(RelayBufferMessage message, bool updateCount)
+        public void AddMessage(RelayBufferMessage message, bool updateCount, bool isExpandedBacklog)
         {
             _messages.Add(message);
 
@@ -136,7 +137,7 @@ namespace WinWeelay.Core
                     HighlightedMessagesCount++;
             }
 
-            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, message.Date >= _messages.Max(x => x.Date)));
+            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, message.Date >= _messages.Max(x => x.Date), isExpandedBacklog));
         }
 
         public bool HasMessage(RelayBufferMessage message)
@@ -169,7 +170,7 @@ namespace WinWeelay.Core
 
             if (!_hasBacklog)
             {
-                Connection.OutputHandler.RequestBufferBacklog(this, Connection.Configuration.BacklogSize);
+                LoadMoreMessages();
                 _hasBacklog = true;
             }
 
@@ -233,6 +234,21 @@ namespace WinWeelay.Core
         {
             if (ActiveNicklistEntry != null)
                 SendMessage($"/kickban {ActiveNicklistEntry.Name}");
+        }
+
+        public void LoadMoreMessages()
+        {
+            int size = Connection.Configuration.BacklogSize;
+            string messageId = MessageIds.CustomGetBufferBacklog;
+
+            if (_hasBacklog)
+            {
+                _backlogOffset += 100;
+                size += _backlogOffset;
+                messageId = MessageIds.CustomGetBufferBacklogExtra;
+            }
+
+            Connection.OutputHandler.RequestBufferBacklog(this, size, messageId);
         }
     }
 }

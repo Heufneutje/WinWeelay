@@ -56,7 +56,7 @@ namespace WinWeelay
 
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
         {
-            AddMessage(args.Message, args.AddToEnd);
+            AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog);
         }
 
         private void MessageTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -134,13 +134,13 @@ namespace WinWeelay
         {
             _conversationRichTextBox.BeginChange();
             foreach (RelayBufferMessage message in Buffer.Messages)
-                AddMessage(message, false);
+                AddMessage(message, false, false);
 
             _conversationRichTextBox.EndChange();
             _isScrolledToBottom = true;
         }
 
-        private void AddMessage(RelayBufferMessage message, bool addToEnd)
+        private void AddMessage(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
         {
             bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
             string formattedDate = $"[{message.Date.ToString(Buffer.Connection.Configuration.TimestampFormat)}]";
@@ -165,7 +165,9 @@ namespace WinWeelay
             _blocks.Add(message, block);
             _blocks.SortKeys();
 
-            if (!addToEnd || scrollToEnd)
+            if (isExpandedBacklog)
+                _conversationRichTextBox.ScrollToHome();
+            else if (!addToEnd || scrollToEnd)
                 _conversationRichTextBox.ScrollToEnd();
         }
 

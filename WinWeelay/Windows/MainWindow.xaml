@@ -25,6 +25,7 @@
                 <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click" />
             </MenuItem>
             <MenuItem Header="Buffer">
+                <MenuItem Header="Load More Messages" Command="{Binding LoadMoreMessagesCommand}" />
                 <MenuItem Header="Hide Buffer" Command="{Binding HideBufferCommand}" />
                 <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}" />
             </MenuItem>

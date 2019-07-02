@@ -6,11 +6,13 @@ namespace WinWeelay.Core
     {
         public RelayBufferMessage Message { get; private set; }
         public bool AddToEnd { get; private set; }
+        public bool IsExpandedBacklog { get; private set; }
 
-        public RelayBufferMessageEventArgs(RelayBufferMessage message, bool addToEnd)
+        public RelayBufferMessageEventArgs(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
         {
             Message = message;
             AddToEnd = addToEnd;
+            IsExpandedBacklog = isExpandedBacklog;
         }
     }
 }
