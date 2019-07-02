@@ -5,11 +5,17 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Data structure for a WeeChat reply.
+    /// </summary>
     public class WeechatData
     {
         private readonly byte[] _data;
         private int _pointer;
 
+        /// <summary>
+        /// Check whether there is any data left to parse.
+        /// </summary>
         public bool IsEmpty
         {
             get
@@ -18,12 +24,20 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// Initialize a new data structure.
+        /// </summary>
+        /// <param name="data">De data received on the input on the relay stream.</param>
         public WeechatData(byte[] data)
         {
             _data = data;
             _pointer = 0;
         }
 
+        /// <summary>
+        /// Read an unsigned 32-bit integer from the raw data.
+        /// </summary>
+        /// <returns>An unsigned 32-bit integer</returns>
         public int GetUnsignedInt()
         {
             if (_pointer + 4 > _data.Length)
@@ -36,6 +50,10 @@ namespace WinWeelay.Core
             return ret;
         }
 
+        /// <summary>
+        /// Read a single byte from the raw data.
+        /// </summary>
+        /// <returns>A byte.</returns>
         public int GetByte()
         {
             int ret = _data[_pointer] & 0xFF;
@@ -44,11 +62,19 @@ namespace WinWeelay.Core
             return ret;
         }
 
+        /// <summary>
+        /// Read a character from the raw data.
+        /// </summary>
+        /// <returns>A character.</returns>
         public char GetChar()
         {
             return (char)GetByte();
         }
 
+        /// <summary>
+        /// Read a 64-bit integer from the raw data.
+        /// </summary>
+        /// <returns>A 64-bit integer.</returns>
         public long GetLong()
         {
             int length = GetByte();
@@ -66,6 +92,10 @@ namespace WinWeelay.Core
             return Convert.ToInt64(sb.ToString());
         }
 
+        /// <summary>
+        /// Read a string from the raw data.
+        /// </summary>
+        /// <returns>A string.</returns>
         public string GetString()
         {
             int length = GetUnsignedInt();
@@ -85,6 +115,10 @@ namespace WinWeelay.Core
             return Encoding.UTF8.GetString(bytes);
         }
 
+        /// <summary>
+        /// Read a byte buffer from the raw data.
+        /// </summary>
+        /// <returns>A byte buffer.</returns>
         public byte[] GetBuffer()
         {
             int length = GetUnsignedInt();
@@ -103,6 +137,10 @@ namespace WinWeelay.Core
             return ret;
         }
 
+        /// <summary>
+        /// Read a pointer from the raw data.
+        /// </summary>
+        /// <returns>A pointer.</returns>
         public string GetPointer()
         {
             int length = GetByte();
@@ -122,12 +160,20 @@ namespace WinWeelay.Core
             return "0x" + sb.ToString();
         }
 
+        /// <summary>
+        /// Read a timestamp from the raw data.
+        /// </summary>
+        /// <returns>A timestamp.</returns>
         public long GetTime()
         {
             long time = GetLong();
             return time;
         }
 
+        /// <summary>
+        /// Read a hashtable from the raw data.
+        /// </summary>
+        /// <returns>A hashtable.</returns>
         public WeechatHashtable GetHashtable()
         {
             WeechatType keyType = GetWeechatType();
@@ -145,6 +191,10 @@ namespace WinWeelay.Core
             return hta;
         }
 
+        /// <summary>
+        /// Read an Hdata from the raw data.
+        /// </summary>
+        /// <returns>An Hdata.</returns>
         public WeechatHdata GetHdata()
         {
             WeechatHdata whd = new WeechatHdata();
@@ -177,6 +227,10 @@ namespace WinWeelay.Core
             return whd;
         }
 
+        /// <summary>
+        /// Read an info object from the raw data.
+        /// </summary>
+        /// <returns>An info object.</returns>
         public WeechatInfo GetInfo()
         {
             string name = GetString();
@@ -184,6 +238,10 @@ namespace WinWeelay.Core
             return new WeechatInfo(name, value);
         }
 
+        /// <summary>
+        /// Read an info list from the raw data.
+        /// </summary>
+        /// <returns>An info list.</returns>
         public WeechatInfoList GetInfolist()
         {
             string name = GetString();
@@ -208,6 +266,10 @@ namespace WinWeelay.Core
             return wil;
         }
 
+        /// <summary>
+        /// Read an array from the raw data.
+        /// </summary>
+        /// <returns>An array.</returns>
         public WeechatArray GetArray()
         {
             WeechatType arrayType = GetWeechatType();
@@ -220,6 +282,10 @@ namespace WinWeelay.Core
             return arr;
         }
 
+        /// <summary>
+        /// Read a data type from the raw data.
+        /// </summary>
+        /// <returns>A data type.</returns>
         private WeechatType GetWeechatType()
         {
             char a = GetChar();
@@ -230,12 +296,21 @@ namespace WinWeelay.Core
             return type;
         }
 
+        /// <summary>
+        /// Read a type and matching relay object from the raw data.
+        /// </summary>
+        /// <returns>A relay object.</returns>
         public WeechatRelayObject GetObject()
         {
             WeechatType type = GetWeechatType();
             return GetObject(type);
         }
 
+        /// <summary>
+        /// Read a relay object with a given type from the raw data.
+        /// </summary>
+        /// <param name="type">A given data type.</param>
+        /// <returns>A relay object.</returns>
         private WeechatRelayObject GetObject(WeechatType type)
         {
             WeechatRelayObject ret = null;
@@ -286,6 +361,10 @@ namespace WinWeelay.Core
             return ret;
         }
 
+        /// <summary>
+        /// Retrieve the unparsed data.
+        /// </summary>
+        /// <returns>A byte array of unparsed data.</returns>
         public byte[] GetByteArray()
         {
             return ArrayHelper.CopyOfRange(_data, _pointer, _data.Length);
