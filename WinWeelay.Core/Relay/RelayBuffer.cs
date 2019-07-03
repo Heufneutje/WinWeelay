@@ -67,14 +67,14 @@ namespace WinWeelay.Core
             }
         }
 
-        public int DisplayCount
+        public string DisplayCount
         {
             get
             {
                 if (HighlightedMessagesCount == 0)
-                    return UnreadMessagesCount;
+                    return $"  {UnreadMessagesCount}  ";
 
-                return HighlightedMessagesCount;
+                return $"  {HighlightedMessagesCount}  ";
             }
         }
 
@@ -93,7 +93,7 @@ namespace WinWeelay.Core
                 if (HighlightedMessagesCount != 0)
                     return "#FFFF0000";
 
-                return "#FF42CEF5";
+                return "#FF2163FF";
             }
         }
 

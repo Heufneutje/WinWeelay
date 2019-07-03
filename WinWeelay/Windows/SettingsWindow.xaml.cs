@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using MWindowLib;
 using WinWeelay.Configuration;
 using WinWeelay.Utils;
 
@@ -7,7 +8,7 @@ namespace WinWeelay
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : MetroWindow
     {
         public RelayConfiguration Configuration
         {

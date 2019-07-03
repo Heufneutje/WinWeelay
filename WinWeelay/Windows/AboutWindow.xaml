@@ -1,22 +1,22 @@
-﻿<Window x:Class="WinWeelay.AboutWindow"
+﻿<MWindow:MetroWindow x:Class="WinWeelay.AboutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinWeelay"
+        xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
         mc:Ignorable="d"
-        Title="About WinWeelay" Height="505" Width="680" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="About WinWeelay" Height="584.792" Width="680" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
     <Grid>
-        <GroupBox Header="Information" Margin="10,0" VerticalAlignment="Top" RenderTransformOrigin="0.499,-0.052" Height="73">
+        <GroupBox Header="Information" Margin="10,0" VerticalAlignment="Top" RenderTransformOrigin="0.499,-0.052" Height="73" Grid.ColumnSpan="2">
             <Grid>
                 <Label x:Name="_versionLabel" Content="WinWeelay" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-1,0,0,0"/>
                 <Label Content="A WeeChat relay for Windows." HorizontalAlignment="Left" Margin="0,20,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.018,0.45"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="License" Margin="10,78,10,35">
+        <GroupBox Header="License" Margin="10,78,10,40">
             <RichTextBox x:Name="_richTextBox" Margin="0,10,-2,-2" FontFamily="Courier New" IsReadOnly="True"/>
         </GroupBox>
-        <Button x:Name="_closeButton" Content="Close" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Click="CloseButton_Click"/>
-
+        <Button x:Name="_closeButton" Content="Close" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" VerticalAlignment="Bottom" Click="CloseButton_Click" Height="25"/>
     </Grid>
-</Window>
+</MWindow:MetroWindow>

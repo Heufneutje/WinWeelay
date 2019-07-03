@@ -12,7 +12,8 @@ namespace WinWeelay
         private RelayConfiguration _relayConfiguration;
         private Timer _retryTimer;
         private bool _isRetryingConnection;
-
+        private ThemeManager _themeManager;
+        
         public RelayConnection Connection { get; private set; }
         public string ConnectionStatus { get; set; }
 
@@ -43,6 +44,9 @@ namespace WinWeelay
 
             _relayConfiguration = ConfigurationHelper.LoadConfiguration();
             Connection = new RelayConnection(window, _relayConfiguration);
+
+            _themeManager = new ThemeManager();
+            _themeManager.InitializeThemes(_relayConfiguration);
 
             ConnectCommand = new DelegateCommand(Connect, CanConnect);
             DisconnectCommand = new DelegateCommand(Disconnect, CanDisconnect);
@@ -179,6 +183,9 @@ namespace WinWeelay
             {
                 _relayConfiguration = settingsWindow.Configuration;
                 Connection.Configuration = _relayConfiguration;
+
+                if (config.HasPropertyChanged(nameof(config.Theme)))
+                    _themeManager.UpdateTheme(config.Theme);
 
                 if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
                     _mainWindow.UpdateFont();

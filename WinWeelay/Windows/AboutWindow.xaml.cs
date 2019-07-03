@@ -4,13 +4,14 @@ using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Documents;
+using MWindowLib;
 
 namespace WinWeelay
 {
     /// <summary>
     /// Interaction logic for AboutWindow.xaml
     /// </summary>
-    public partial class AboutWindow : Window
+    public partial class AboutWindow : MetroWindow
     {
         public AboutWindow()
         {

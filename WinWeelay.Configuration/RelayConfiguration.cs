@@ -21,6 +21,7 @@ namespace WinWeelay.Configuration
         public double WindowWidth { get; set; }
         public double WindowHeight { get; set; }
         public string TimestampFormat { get; set; }
+        public string Theme { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -52,6 +53,7 @@ namespace WinWeelay.Configuration
             WindowWidth = 800;
             WindowHeight = 500;
             TimestampFormat = "HH:mm";
+            Theme = Themes.Light;
         }
 
         public void NotifyThemeChanged()

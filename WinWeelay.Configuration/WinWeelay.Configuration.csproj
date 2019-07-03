@@ -52,6 +52,7 @@
     <Compile Include="ConnectionTypeWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayConfiguration.cs" />
+    <Compile Include="Themes.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WinWeelay.Utils\WinWeelay.Utils.csproj">

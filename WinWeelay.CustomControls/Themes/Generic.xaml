@@ -15,9 +15,9 @@
                             <RowDefinition Height="11" />
                             <RowDefinition Height="11" />
                         </Grid.RowDefinitions>
-                        <RepeatButton Grid.Column="1" Grid.Row="0" Name="PART_UpButton" FontSize="5" VerticalContentAlignment="Top">▲</RepeatButton>
+                        <RepeatButton Grid.Column="1" Grid.Row="0" Name="PART_UpButton" FontSize="3" VerticalContentAlignment="Top">▲</RepeatButton>
                         <ContentPresenter Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"></ContentPresenter>
-                        <RepeatButton Grid.Column="1" Grid.Row="1" Name="PART_DownButton" FontSize="5" VerticalContentAlignment="Bottom">▼</RepeatButton>
+                        <RepeatButton Grid.Column="1" Grid.Row="1" Name="PART_DownButton" FontSize="3" VerticalContentAlignment="Bottom">▼</RepeatButton>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

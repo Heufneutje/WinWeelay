@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using WinWeelay.Configuration;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
@@ -47,6 +48,8 @@ namespace WinWeelay
         {
             if (_isScrolledToBottom)
                 _conversationRichTextBox.ScrollToEnd();
+
+            UpdateFont();
         }
 
         private void BufferControl_Unloaded(object sender, RoutedEventArgs e)
@@ -98,30 +101,30 @@ namespace WinWeelay
 
         private void ConversationTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-//            TextChange change = e.Changes.FirstOrDefault();
-//            int addedLength = (change?.AddedLength) ?? 0;
+            //            TextChange change = e.Changes.FirstOrDefault();
+            //            int addedLength = (change?.AddedLength) ?? 0;
 
-//            bool scrollToEnd = _conversationTextBox.CaretIndex >= _conversationTextBox.Text.Length - addedLength;
-//            if (scrollToEnd)
-//            {
-//                _conversationTextBox.CaretIndex = _conversationTextBox.Text.Length;
-//                _conversationTextBox.ScrollToEnd();
-//            }
+            //            bool scrollToEnd = _conversationTextBox.CaretIndex >= _conversationTextBox.Text.Length - addedLength;
+            //            if (scrollToEnd)
+            //            {
+            //                _conversationTextBox.CaretIndex = _conversationTextBox.Text.Length;
+            //                _conversationTextBox.ScrollToEnd();
+            //            }
 
-//            foreach (RelayBufferMessage message in Buffer.MessagesToHighlight)
-//            {
-//                message.IsNotified = true;
+            //            foreach (RelayBufferMessage message in Buffer.MessagesToHighlight)
+            //            {
+            //                message.IsNotified = true;
 
-//#if WINDOWS10_SDK
-//                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
-//                XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-//                stringElements[0].AppendChild(toastXml.CreateTextNode(Buffer.Name));
-//                stringElements[1].AppendChild(toastXml.CreateTextNode(message.ToString().Replace("\u001c", "")));
+            //#if WINDOWS10_SDK
+            //                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+            //                XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+            //                stringElements[0].AppendChild(toastXml.CreateTextNode(Buffer.Name));
+            //                stringElements[1].AppendChild(toastXml.CreateTextNode(message.ToString().Replace("\u001c", "")));
 
-//                ToastNotification toast = new ToastNotification(toastXml);
-//                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
-//#endif
-//            }
+            //                ToastNotification toast = new ToastNotification(toastXml);
+            //                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
+            //#endif
+            //            }
         }
 
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -177,6 +180,12 @@ namespace WinWeelay
 
             _messageDocument.FontFamily = fontFamily;
             _messageDocument.FontSize = Buffer.Connection.Configuration.FontSize;
+            _messageDocument.Foreground = new SolidColorBrush()
+            {
+                // The themes automatically set the text color to gray because editing is not enabled, which is not ideal. Override this behavior.
+                Color = Buffer.Connection.Configuration.Theme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0)
+            };
+
             foreach (Block block in _messageDocument.Blocks)
             {
                 block.FontFamily = fontFamily;
