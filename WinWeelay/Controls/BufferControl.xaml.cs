@@ -87,13 +87,13 @@ namespace WinWeelay
             {
                 case Key.Up:
                     _messageTextBox.Text = _history.GetPreviousHistoryEntry();
+                    _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
                     break;
                 case Key.Down:
                     _messageTextBox.Text = _history.GetNextHistoryEntry();
+                    _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
                     break;
             }
-
-            _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
         }
 
         private void ConversationTextBox_TextChanged(object sender, TextChangedEventArgs e)
