@@ -120,6 +120,9 @@ namespace WinWeelay.Core
                 case MessageIds.BufferCleared:
                     ParseBufferCleared(message);
                     break;
+                case MessageIds.BufferMoved:
+                    ParseBufferMoved(message);
+                    break;
                 case MessageIds.Nicklist:
                 case MessageIds.NicklistDiff:
                 case MessageIds.CustomGetNicklist:
@@ -142,18 +145,31 @@ namespace WinWeelay.Core
 
         private void ParseBufferList(RelayMessage message)
         {
-            List<RelayBuffer> buffers = new List<RelayBuffer>();
+            List<RelayBuffer> newBuffers = new List<RelayBuffer>();
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
             for (int i = 0; i < hdata.Count; i++)
             {
                 WeechatHdataEntry entry = hdata[i];
-                RelayBuffer buffer = new RelayBuffer(_connection, entry);
-                buffers.Add(buffer);
-            }
-            _connection.Buffers.Clear();
+                RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == entry.GetPointer());
 
-            foreach (RelayBuffer addedBuffer in buffers)
+                if (buffer == null)
+                {
+                    buffer = new RelayBuffer(_connection, entry);
+                    newBuffers.Add(buffer);
+                }
+                else
+                    buffer.UpdateBufferProperties(entry);
+            }
+            
+            foreach (RelayBuffer existingBuffer in _connection.Buffers.ToList())
+            {
+                if (!hdata.Any(x => x.GetPointer() == existingBuffer.Pointer))
+                    _connection.Buffers.Remove(existingBuffer);
+            }
+
+            foreach (RelayBuffer addedBuffer in newBuffers)
                 _connection.Buffers.Add(addedBuffer);
+
             _connection.SortBuffers();
             _connection.NotifyBuffersChanged();
         }
@@ -277,6 +293,15 @@ namespace WinWeelay.Core
                 buffer.Name = table["name"].ToString();
                 buffer.NotifyNameUpdated();
             }
+        }
+
+        private void ParseBufferMoved(RelayMessage message)
+        {
+            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[0].GetPointer());
+
+            if (buffer != null)
+                _connection.OutputHandler.RequestBufferList();
         }
 
         private void ParseNicklist(RelayMessage message)

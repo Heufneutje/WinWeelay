@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace WinWeelay.Core
@@ -6,7 +7,7 @@ namespace WinWeelay.Core
     /// <summary>
     /// Hdata representation of a relay object.
     /// </summary>
-    public class WeechatHdata : WeechatRelayObject
+    public class WeechatHdata : WeechatRelayObject, IEnumerable<WeechatHdataEntry>
     {
         private List<WeechatHdataEntry> _items;
         
@@ -99,6 +100,16 @@ namespace WinWeelay.Core
             foreach (WeechatHdataEntry hde in _items)
                 s += hde.ToString(2) + Environment.NewLine;
             return s;
+        }
+
+        public IEnumerator<WeechatHdataEntry> GetEnumerator()
+        {
+            return _items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

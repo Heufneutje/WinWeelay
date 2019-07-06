@@ -108,6 +108,15 @@ namespace WinWeelay.Core
 
         public RelayBuffer(RelayConnection connection, WeechatHdataEntry entry)
         {
+            UpdateBufferProperties(entry);
+
+            Connection = connection;
+            _messages = new List<RelayBufferMessage>();
+            Nicklist = new ObservableCollection<RelayNicklistEntry>();
+        }
+
+        public void UpdateBufferProperties(WeechatHdataEntry entry)
+        {
             if (entry.DataContainsKey("name"))
                 Name = entry["name"].AsString();
             else
@@ -119,10 +128,6 @@ namespace WinWeelay.Core
             Number = entry["number"].AsInt();
             Title = entry["title"].AsString();
             Pointer = entry.GetPointer();
-
-            Connection = connection;
-            _messages = new List<RelayBufferMessage>();
-            Nicklist = new ObservableCollection<RelayNicklistEntry>();
         }
 
         public void AddMessage(RelayBufferMessage message, bool updateCount, bool isExpandedBacklog)
