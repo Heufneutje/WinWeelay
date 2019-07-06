@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;

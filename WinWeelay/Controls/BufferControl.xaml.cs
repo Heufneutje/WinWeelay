@@ -110,8 +110,8 @@ namespace WinWeelay
             }
         }
 
-        private void ConversationTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
+        //private void ConversationTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        //{
             //            TextChange change = e.Changes.FirstOrDefault();
             //            int addedLength = (change?.AddedLength) ?? 0;
 
@@ -136,7 +136,7 @@ namespace WinWeelay
             //                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
             //#endif
             //            }
-        }
+        //}
 
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -160,14 +160,14 @@ namespace WinWeelay
             Paragraph paragraph = _formattingHelper.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat);           
 
             if (addToEnd || !_blocks.Any())
-                _messageDocument.Blocks.Add(paragraph);
+                _conversationDocument.Blocks.Add(paragraph);
             else
             {
                 RelayBufferMessage previousMessage = _blocks.Keys.LastOrDefault(x => x.Date < message.Date);
                 if (previousMessage == null)
-                    _messageDocument.Blocks.InsertBefore(_messageDocument.Blocks.FirstBlock, paragraph);
+                    _conversationDocument.Blocks.InsertBefore(_conversationDocument.Blocks.FirstBlock, paragraph);
                 else
-                    _messageDocument.Blocks.InsertAfter(_blocks[previousMessage], paragraph);
+                    _conversationDocument.Blocks.InsertAfter(_blocks[previousMessage], paragraph);
             }
 
             _blocks.Add(message, paragraph);
@@ -183,7 +183,10 @@ namespace WinWeelay
         {
             FontFamily fontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
             UpdateFlowDocument(_titleDocument, fontFamily);
-            UpdateFlowDocument(_messageDocument, fontFamily);
+            UpdateFlowDocument(_conversationDocument, fontFamily);
+
+            _messageTextBox.FontFamily = fontFamily;
+            _messageTextBox.FontSize = Buffer.Connection.Configuration.FontSize;
         }
 
         private void UpdateFlowDocument(FlowDocument document, FontFamily fontFamily)

@@ -20,9 +20,9 @@
                 </FlowDocument.Resources>
             </FlowDocument>
         </RichTextBox>
-        <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" TextChanged="MessageTextBox_TextChanged" PreviewKeyDown="MessageTextBox_PreviewKeyDown" />
+        <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" TextChanged="MessageTextBox_TextChanged" PreviewKeyDown="MessageTextBox_PreviewKeyDown" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}" />
         <RichTextBox x:Name="_conversationRichTextBox" AcceptsReturn="True" Margin="0,5" VerticalScrollBarVisibility="Visible" IsDocumentEnabled="True" IsReadOnly="True" IsUndoEnabled="False">
-            <FlowDocument x:Name="_messageDocument" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}">
+            <FlowDocument x:Name="_conversationDocument" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}">
                 <FlowDocument.Resources>
                     <Style TargetType="{x:Type Paragraph}">
                         <Setter Property="Margin" Value="0"/>
