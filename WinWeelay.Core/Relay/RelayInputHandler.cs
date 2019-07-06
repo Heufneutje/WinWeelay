@@ -121,7 +121,9 @@ namespace WinWeelay.Core
                     ParseBufferCleared(message);
                     break;
                 case MessageIds.BufferMoved:
-                    ParseBufferMoved(message);
+                case MessageIds.BufferHidden:
+                case MessageIds.BufferUnhidden:
+                    ParseBuffersChanged();
                     break;
                 case MessageIds.Nicklist:
                 case MessageIds.NicklistDiff:
@@ -152,18 +154,18 @@ namespace WinWeelay.Core
                 WeechatHdataEntry entry = hdata[i];
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == entry.GetPointer());
 
-                if (buffer == null)
+                if (buffer == null && !entry["hidden"].AsBoolean())
                 {
                     buffer = new RelayBuffer(_connection, entry);
                     newBuffers.Add(buffer);
                 }
-                else
+                else if (buffer != null)
                     buffer.UpdateBufferProperties(entry);
             }
             
             foreach (RelayBuffer existingBuffer in _connection.Buffers.ToList())
             {
-                if (!hdata.Any(x => x.GetPointer() == existingBuffer.Pointer))
+                if (!hdata.Any(x => x.GetPointer() == existingBuffer.Pointer && !x["hidden"].AsBoolean()))
                     _connection.Buffers.Remove(existingBuffer);
             }
 
@@ -295,13 +297,9 @@ namespace WinWeelay.Core
             }
         }
 
-        private void ParseBufferMoved(RelayMessage message)
+        private void ParseBuffersChanged()
         {
-            WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
-            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[0].GetPointer());
-
-            if (buffer != null)
-                _connection.OutputHandler.RequestBufferList();
+            _connection.OutputHandler.RequestBufferList();
         }
 
         private void ParseNicklist(RelayMessage message)

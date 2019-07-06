@@ -66,7 +66,7 @@ namespace WinWeelay.Core
 
         public void RequestBufferList()
         {
-            Hdata("buffer:gui_buffers(*)", "number,name,title", MessageIds.CustomGetBufferList);
+            Hdata("buffer:gui_buffers(*)", "number,name,title,hidden", MessageIds.CustomGetBufferList);
         }
 
         public void RequestHotlist()

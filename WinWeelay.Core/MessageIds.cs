@@ -16,6 +16,8 @@
         public const string BufferClosing = "_buffer_closing";
         public const string BufferRenamed = "_buffer_renamed";
         public const string BufferMoved = "_buffer_moved";
+        public const string BufferHidden = "_buffer_hidden";
+        public const string BufferUnhidden = "_buffer_unhidden";
         public const string Nicklist = "_nicklist";
         public const string NicklistDiff = "_nicklist_diff";
         public const string Upgrade = "_upgrade";
