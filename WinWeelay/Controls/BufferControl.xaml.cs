@@ -44,8 +44,10 @@ namespace WinWeelay
             DataContext = buffer;
 
             Buffer.MessageAdded += Buffer_MessageAdded;
+            Buffer.TitleChanged += Buffer_TitleChanged;
 
             InitBufferMessages();
+            UpdateTitle();
         }
 
         private void BufferControl_Loaded(object sender, RoutedEventArgs e)
@@ -64,6 +66,11 @@ namespace WinWeelay
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
         {
             AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog);
+        }
+
+        private void Buffer_TitleChanged(object sender, EventArgs e)
+        {
+            UpdateTitle();
         }
 
         private void MessageTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -175,20 +182,31 @@ namespace WinWeelay
         public void UpdateFont()
         {
             FontFamily fontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
+            UpdateFlowDocument(_titleDocument, fontFamily);
+            UpdateFlowDocument(_messageDocument, fontFamily);
+        }
 
-            _messageDocument.FontFamily = fontFamily;
-            _messageDocument.FontSize = Buffer.Connection.Configuration.FontSize;
-            _messageDocument.Foreground = new SolidColorBrush()
+        private void UpdateFlowDocument(FlowDocument document, FontFamily fontFamily)
+        {
+            document.FontFamily = fontFamily;
+            document.FontSize = Buffer.Connection.Configuration.FontSize;
+            document.Foreground = new SolidColorBrush()
             {
                 // The themes automatically set the text color to gray because editing is not enabled, which is not ideal. Override this behavior.
                 Color = Buffer.Connection.Configuration.Theme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0)
             };
 
-            foreach (Block block in _messageDocument.Blocks)
+            foreach (Block block in document.Blocks)
             {
                 block.FontFamily = fontFamily;
                 block.FontSize = Buffer.Connection.Configuration.FontSize;
             }
+        }
+
+        private void UpdateTitle()
+        {
+            _titleDocument.Blocks.Clear();
+            _titleDocument.Blocks.Add(_formattingHelper.FormatString(Buffer.Title));
         }
     }
 }

@@ -51,12 +51,10 @@ namespace WinWeelay.Core
             set
             {
                 _title = value;
-                NotifyPropertyChanged(nameof(Title));
+                TitleChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
-
-        public event MessageAddedHandler MessageAdded;
 
         #region View Model
         public IEnumerable<RelayBufferMessage> MessagesToHighlight
@@ -98,6 +96,8 @@ namespace WinWeelay.Core
         }
 
         public event EventHandler NameChanged;
+        public event MessageAddedHandler MessageAdded;
+        public event EventHandler TitleChanged;
         #endregion
 
         public RelayBuffer()

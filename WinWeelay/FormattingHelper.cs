@@ -43,11 +43,15 @@ namespace WinWeelay
                 prefix = $"<{prefix}\u0019\u001c>";
             prefix += ' ';
 
-            paragraph.Inlines.AddRange(new FormattingHelper().HandleFormatting(prefix));
+            paragraph.Inlines.AddRange(HandleFormatting(prefix));
+            paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(message.Message)));
+            return paragraph;
+        }
 
-            string urlParsedMessage = _urlRegex.Replace(message.Message, "\u001a\u0010$1\u001b\u0010");
-
-            paragraph.Inlines.AddRange(new FormattingHelper().HandleFormatting(urlParsedMessage));
+        public Paragraph FormatString(string formattedString)
+        {
+            Paragraph paragraph = new Paragraph();
+            paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(formattedString)));
             return paragraph;
         }
 
@@ -305,6 +309,11 @@ namespace WinWeelay
             if (_colorHelper.IsExtendedColor(colorCode))
                 return _colorHelper.GetExtendedColor(colorCode);
             return _colorHelper.GetWeechatColor(colorCode);
+        }
+
+        private string ParseUrls(string message)
+        {
+            return _urlRegex.Replace(message, "\u001a\u0010$1\u001b\u0010");
         }
 
         public static List<string> GetInstalledFonts()
