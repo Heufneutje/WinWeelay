@@ -13,7 +13,7 @@
     <DockPanel LastChildFill="True">
         <TextBox x:Name="_titleTextBox" TextWrapping="Wrap" VerticalAlignment="Top" IsReadOnly="True" Text="{Binding Title}" DockPanel.Dock="Top" />
         <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" TextChanged="MessageTextBox_TextChanged" PreviewKeyDown="MessageTextBox_PreviewKeyDown" />
-        <RichTextBox x:Name="_conversationRichTextBox" AcceptsReturn="True" Margin="0,5" VerticalScrollBarVisibility="Visible" IsReadOnly="True" IsReadOnlyCaretVisible="True">
+        <RichTextBox x:Name="_conversationRichTextBox" AcceptsReturn="True" Margin="0,5" VerticalScrollBarVisibility="Visible" IsDocumentEnabled="True" IsReadOnlyCaretVisible="True" IsReadOnly="True">
             <FlowDocument x:Name="_messageDocument" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}">
                 <FlowDocument.Resources>
                     <Style TargetType="{x:Type Paragraph}">

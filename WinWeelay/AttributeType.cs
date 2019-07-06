@@ -2,6 +2,6 @@
 {
     public enum AttributeType
     {
-        None, Bold, Reverse, Italic, Underline, KeepExistingAttributes, ForeColor, BackColor
+        None, Bold, Reverse, Italic, Underline, KeepExistingAttributes, ForeColor, BackColor, Hyperlink
     }
 }

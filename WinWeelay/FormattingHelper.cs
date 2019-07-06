@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing.Text;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using WinWeelay.Core;
 
 namespace WinWeelay
@@ -20,10 +23,12 @@ namespace WinWeelay
         private List<AttributeType> _attributes;
         private int _foreColor;
         private int _backColor;
+        private Regex _urlRegex;
 
         public FormattingHelper()
         {
             _colorHelper = new ColorHelper();
+            _urlRegex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
         public Paragraph FormatMessage(RelayBufferMessage message, string timestampFormat)
@@ -39,7 +44,10 @@ namespace WinWeelay
             prefix += ' ';
 
             paragraph.Inlines.AddRange(new FormattingHelper().HandleFormatting(prefix));
-            paragraph.Inlines.AddRange(new FormattingHelper().HandleFormatting(message.Message));
+
+            string urlParsedMessage = _urlRegex.Replace(message.Message, "\u001a\u0010$1\u001b\u0010");
+
+            paragraph.Inlines.AddRange(new FormattingHelper().HandleFormatting(urlParsedMessage));
             return paragraph;
         }
 
@@ -73,6 +81,8 @@ namespace WinWeelay
                 case '_':
                 case '\u0004':
                     return AttributeType.Underline;
+                case '\u0010': // Custom, might need to be replaced with something better.
+                    return AttributeType.Hyperlink;
                 case '|':
                     return AttributeType.KeepExistingAttributes;
                 default:
@@ -251,6 +261,13 @@ namespace WinWeelay
                 inline = new Italic(inline);
             if (_attributes.Contains(AttributeType.Underline))
                 inline = new Underline(inline);
+            if (_attributes.Contains(AttributeType.Hyperlink) && IsValidUri())
+            {
+                Hyperlink link = new Hyperlink(inline);
+                link.NavigateUri = new Uri(_messagePart);
+                link.RequestNavigate += Link_RequestNavigate;
+                inline = link;
+            }
 
             Color color = GetColor(_foreColor);
             if (color != default)
@@ -262,6 +279,25 @@ namespace WinWeelay
 
             _messagePart = string.Empty;
             _inlines.Add(inline);
+        }
+
+        private void Link_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
+
+        private bool IsValidUri()
+        {
+            try
+            {
+                new Uri(_messagePart);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private Color GetColor(int colorCode)
