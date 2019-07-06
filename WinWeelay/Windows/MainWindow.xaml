@@ -27,7 +27,7 @@
             </MenuItem>
             <MenuItem Header="Buffer">
                 <MenuItem Header="Load More Messages" Command="{Binding LoadMoreMessagesCommand}" />
-                <MenuItem Header="Hide Buffer" Command="{Binding HideBufferCommand}" />
+                <MenuItem Header="Hide Buffer Tab" Command="{Binding HideBufferCommand}" />
                 <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}" />
             </MenuItem>
             <MenuItem Header="Tools">
