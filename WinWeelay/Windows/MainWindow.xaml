@@ -7,34 +7,106 @@
         xmlns:Core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core" x:Class="WinWeelay.MainWindow"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
-        mc:Ignorable="d"
+    xmlns:customcontrols="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
+    mc:Ignorable="d"
         Title="{Binding Connection.Description}" Height="{Binding Connection.Configuration.WindowHeight, Mode=TwoWay}" Width="{Binding Connection.Configuration.WindowWidth, Mode=TwoWay}" Closing="Window_Closing" Loaded="Window_Loaded" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
     <Window.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <BitmapImage x:Key="connectImage" UriSource="/WinWeelay;component/Resources/connect.png" />
+        <BitmapImage x:Key="disconnectImage" UriSource="/WinWeelay;component/Resources/disconnect.png" />
+        <BitmapImage x:Key="exitImage" UriSource="/WinWeelay;component/Resources/Application-cancel.png" />
+        <BitmapImage x:Key="loadMoreMessagesImage" UriSource="/WinWeelay;component/Resources/comments_add.png" />
+        <BitmapImage x:Key="hideBufferTabImage" UriSource="/WinWeelay;component/Resources/tab_delete.png" />
+        <BitmapImage x:Key="closeBufferImage" UriSource="/WinWeelay;component/Resources/table_delete.png" />
+        <BitmapImage x:Key="settingsImage" UriSource="/WinWeelay;component/Resources/cog.png" />
+        <BitmapImage x:Key="aboutImage" UriSource="/WinWeelay;component/Resources/Info.png" />
     </Window.Resources>
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
-            <MenuItem Header="File">
-                <MenuItem Header="Connect" Command="{Binding ConnectCommand}" />
-                <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}" />
-                <MenuItem Header="Stop Connecting" Command="{Binding StopConnectingCommand}" />
+            <MenuItem Header="File" >
+                <MenuItem Header="Connect" Command="{Binding ConnectCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource connectImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Connect" Description="Connect to a WeeChat relay with the current settings."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource disconnectImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Stop Connecting" Command="{Binding StopConnectingCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource disconnectImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Stop Connecting" Description="Stop trying to connect after a connection attempt fails."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
                 <Separator />
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource exitImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Exit" Description="Close WinWeelay."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click" />
                 <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click" />
             </MenuItem>
             <MenuItem Header="Buffer">
-                <MenuItem Header="Load More Messages" Command="{Binding LoadMoreMessagesCommand}" />
-                <MenuItem Header="Hide Buffer Tab" Command="{Binding HideBufferCommand}" />
-                <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}" />
+                <MenuItem Header="Load More Messages" Command="{Binding LoadMoreMessagesCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource loadMoreMessagesImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Load More Messages" Description="Retrieve messages that are older than the current backlog. Note: due to a limitation in WeeChat this could be slow due to needing to reprocess all current messages in the buffer."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Hide Buffer Tab" Command="{Binding HideBufferCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource hideBufferTabImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Hide Buffer Tab" Description="Close the active buffer in the relay only. It can be reopened at any time by clicking the buffer in the buffers list."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource closeBufferImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Close Buffer" Description="Close the active buffer in both the relay and WeeChat. The /CLOSE command will be sent to the buffer."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Tools">
-                <MenuItem Header="Settings" Command="{Binding SettingsCommand}" />
+                <MenuItem Header="Settings" Command="{Binding SettingsCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource settingsImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
-                <MenuItem Header="About" Command="{Binding AboutCommand}" />
+                <MenuItem Header="About" Command="{Binding AboutCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource aboutImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="About" Description="Show information about WinWeelay."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
         </Menu>
         <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,22" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">

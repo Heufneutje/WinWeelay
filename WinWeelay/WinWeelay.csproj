@@ -222,5 +222,29 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Application-cancel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\connect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\comments_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tab_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\table_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Info.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
