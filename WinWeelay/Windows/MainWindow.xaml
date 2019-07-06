@@ -20,6 +20,8 @@
         <BitmapImage x:Key="closeBufferImage" UriSource="/WinWeelay;component/Resources/table_delete.png" />
         <BitmapImage x:Key="settingsImage" UriSource="/WinWeelay;component/Resources/cog.png" />
         <BitmapImage x:Key="aboutImage" UriSource="/WinWeelay;component/Resources/Info.png" />
+        <BitmapImage x:Key="sourceCodeImage" UriSource="/WinWeelay;component/Resources/page_code.png" />
+        <BitmapImage x:Key="issueTrackerImage" UriSource="/WinWeelay;component/Resources/bug.png" />
     </Window.Resources>
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
@@ -99,6 +101,23 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
+                <MenuItem Header="Issue Tracker" Command="{Binding IssueTrackerCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource issueTrackerImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Issue Tracker" Description="Open WinWeelay's issue tracker on GitHub."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem Header="Source Code" Command="{Binding SourceCodeCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource sourceCodeImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <Separator/>
                 <MenuItem Header="About" Command="{Binding AboutCommand}">
                     <MenuItem.Icon>
                         <customcontrols:AutoGreyableImage Source="{StaticResource aboutImage}"/>

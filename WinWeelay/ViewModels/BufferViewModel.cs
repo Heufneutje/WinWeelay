@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Timers;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
@@ -31,6 +32,8 @@ namespace WinWeelay
         public DelegateCommand BanCommand { get; private set; }
         public DelegateCommand KickbanCommand { get; private set; }
         public DelegateCommand LoadMoreMessagesCommand { get; private set; }
+        public DelegateCommand SourceCodeCommand { get; private set; }
+        public DelegateCommand IssueTrackerCommand { get; private set; }
 
         public BufferViewModel() { }
 
@@ -62,6 +65,8 @@ namespace WinWeelay
             BanCommand = new DelegateCommand(SendBan, IsNickSelected);
             KickbanCommand = new DelegateCommand(SendKickban, IsNickSelected);
             LoadMoreMessagesCommand = new DelegateCommand(LoadMoreMessages, IsBufferSelected);
+            SourceCodeCommand = new DelegateCommand(OpenSourceCode);
+            IssueTrackerCommand = new DelegateCommand(OpenIssueTracker);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
 
@@ -235,6 +240,16 @@ namespace WinWeelay
         private void LoadMoreMessages(object parameter)
         {
             Connection.ActiveBuffer?.LoadMoreMessages();
+        }
+
+        private void OpenSourceCode(object parameter)
+        {
+            Process.Start("https://github.com/Heufneutje/WinWeelay");
+        }
+
+        private void OpenIssueTracker(object parameter)
+        {
+            Process.Start("https://github.com/Heufneutje/WinWeelay/issues");
         }
 
         private void UpdateConnectionCommands()
