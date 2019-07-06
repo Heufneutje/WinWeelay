@@ -67,6 +67,7 @@ namespace WinWeelay.Core
                 IsNotified = true;
         }
 
+
         public override bool Equals(object obj)
         {
             return obj is RelayBufferMessage message &&

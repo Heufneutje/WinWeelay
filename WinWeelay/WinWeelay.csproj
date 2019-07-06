@@ -110,11 +110,14 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AttributeType.cs" />
+    <Compile Include="ColorHelper.cs" />
     <Compile Include="ThemeManager.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Convert\BoolToVisibilityConverter.cs" />
+    <Compile Include="FormattingHelper.cs" />
     <Compile Include="Layout\DockingManagerLayoutHelper.cs" />
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>

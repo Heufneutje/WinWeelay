@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -23,6 +25,7 @@ namespace WinWeelay
     {
         private NickCompleter _nickCompleter;
         private MessageHistory _history;
+        private FormattingHelper _formattingHelper;
         private OrderedDictionary<RelayBufferMessage, Block> _blocks;
         private bool _isScrolledToBottom;
 
@@ -33,6 +36,7 @@ namespace WinWeelay
             _nickCompleter = new NickCompleter(buffer);
             _history = new MessageHistory(buffer.Connection.Configuration);
             _blocks = new OrderedDictionary<RelayBufferMessage, Block>();
+            _formattingHelper = new FormattingHelper();
             Buffer = buffer;
 
             InitializeComponent();
@@ -146,26 +150,20 @@ namespace WinWeelay
         private void AddMessage(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
         {
             bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
-            string formattedDate = $"[{message.Date.ToString(Buffer.Connection.Configuration.TimestampFormat)}]";
-
-            Block block;
-            if (message.MessageType == "privmsg")
-                block = new Paragraph(new Run($"{formattedDate} <{message.UnformattedPrefix}> {message.UnformattedMessage}"));
-            else
-                block = new Paragraph(new Run($"{formattedDate} {message.UnformattedPrefix} {message.UnformattedMessage}"));
+            Paragraph paragraph = _formattingHelper.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat);           
 
             if (addToEnd || !_blocks.Any())
-                _messageDocument.Blocks.Add(block);
+                _messageDocument.Blocks.Add(paragraph);
             else
             {
                 RelayBufferMessage previousMessage = _blocks.Keys.LastOrDefault(x => x.Date < message.Date);
                 if (previousMessage == null)
-                    _messageDocument.Blocks.InsertBefore(_messageDocument.Blocks.FirstBlock, block);
+                    _messageDocument.Blocks.InsertBefore(_messageDocument.Blocks.FirstBlock, paragraph);
                 else
-                    _messageDocument.Blocks.InsertAfter(_blocks[previousMessage], block);
+                    _messageDocument.Blocks.InsertAfter(_blocks[previousMessage], paragraph);
             }
 
-            _blocks.Add(message, block);
+            _blocks.Add(message, paragraph);
             _blocks.SortKeys();
 
             if (isExpandedBacklog)

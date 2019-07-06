@@ -12,5 +12,10 @@
             string result = source.Remove(place, wordToReplace.Length).Insert(place, replacement);
             return result;
         }
+
+        public static bool ContainsIrcFormatting(this string source)
+        {
+            return source.Contains("\u0019") || source.Contains("\u001a");
+        }
     }
 }
