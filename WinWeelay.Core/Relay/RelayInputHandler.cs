@@ -233,6 +233,9 @@ namespace WinWeelay.Core
                     buffer.AddMessage(bufferMessage, updateMessageCount, message.ID == MessageIds.CustomGetBufferBacklogExtra);
                     if (!updatedBuffers.Contains(buffer))
                         updatedBuffers.Add(buffer);
+
+                    if (isSingleLineUpdate && bufferMessage.IsHighlighted && !bufferMessage.IsNotified)
+                        _connection.OnHighlighted(bufferMessage, buffer);
                 }
             }
 

@@ -1,12 +1,24 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Drawing.Text;
 using System.Linq;
 
 namespace WinWeelay.Utils
 {
-    public static class FormattingHelper
+    public static class FormattingUtils
     {
+        public static List<string> GetInstalledFonts()
+        {
+            List<string> fonts = new List<string>();
+            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
+            {
+                System.Drawing.FontFamily[] fontFamilies = fontsCollection.Families;
+                foreach (System.Drawing.FontFamily font in fontFamilies.Where(x => !string.IsNullOrEmpty(x.Name)))
+                    fonts.Add(font.Name);
+            }
+
+            return fonts;
+        }
+
         public static string StripWeechatFormatting(string formattedString)
         {
             string result = string.Empty;
@@ -19,7 +31,7 @@ namespace WinWeelay.Utils
 
             foreach (char prefixChar in formattedString)
             {
-                if (prefixChar == '\u0019')
+                if (prefixChar == '\u0019' || prefixChar == '\u001a' || prefixChar == '\u001c')
                 {
                     isInFormatting = true;
                     isFirstFormattingCharacter = true;
@@ -37,19 +49,6 @@ namespace WinWeelay.Utils
             }
 
             return result;
-        }
-
-        public static List<string> GetInstalledFonts()
-        {
-            List<string> fonts = new List<string>();
-            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
-            {
-                FontFamily[] fontFamilies = fontsCollection.Families;
-                foreach (FontFamily font in fontFamilies.Where(x => !string.IsNullOrEmpty(x.Name)))
-                    fonts.Add(font.Name);
-            }
-
-            return fonts;
         }
     }
 }

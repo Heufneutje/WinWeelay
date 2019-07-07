@@ -27,7 +27,7 @@ namespace WinWeelay.Core
             get
             {
                 if (_unformattedPrefix == null)
-                    _unformattedPrefix = FormattingHelper.StripWeechatFormatting(Prefix);
+                    _unformattedPrefix = FormattingUtils.StripWeechatFormatting(Prefix);
                 return _unformattedPrefix;
             }
         }
@@ -38,7 +38,7 @@ namespace WinWeelay.Core
             get
             {
                 if (_unformattedMessage == null)
-                    _unformattedMessage = FormattingHelper.StripWeechatFormatting(Message);
+                    _unformattedMessage = FormattingUtils.StripWeechatFormatting(Message);
                 return _unformattedMessage;
             }
         }

@@ -4,6 +4,14 @@ using System.Timers;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
 using WinWeelay.Utils;
+using WinWeelay.Properties;
+using System.IO;
+using System.Reflection;
+
+#if WINDOWS10_SDK
+using Windows.Data.Xml.Dom;
+using Windows.UI.Notifications;
+#endif
 
 namespace WinWeelay
 {
@@ -69,9 +77,35 @@ namespace WinWeelay
             IssueTrackerCommand = new DelegateCommand(OpenIssueTracker);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
+            Connection.Highlighted += Connection_Highlighted;
 
             if (_relayConfiguration.AutoConnect)
                 Connect(null);
+        }
+
+        private void Connection_Highlighted(object sender, HighlightEventArgs args)
+        {
+            args.Message.IsNotified = true;
+
+#if WINDOWS10_SDK
+            if (args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive)
+            {
+                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
+                XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+                stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.Name));
+                stringElements[1].AppendChild(toastXml.CreateTextNode(args.Message.UnformattedMessage));
+
+                string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
+                if (!File.Exists(tempPath))
+                    Resources.weechat.Save(tempPath);
+
+                XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
+                imageElements[0].Attributes.GetNamedItem("src").NodeValue = tempPath;
+
+                ToastNotification toast = new ToastNotification(toastXml);
+                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
+            }
+#endif
         }
 
         private void Connection_ConnectionLost(object sender, ConnectionLostEventArgs args)

@@ -51,7 +51,7 @@
     <Compile Include="ChangeTrackingIgnoreAttribute.cs" />
     <Compile Include="Cipher.cs" />
     <Compile Include="CloneHelper.cs" />
-    <Compile Include="FormattingHelper.cs" />
+    <Compile Include="FormattingUtils.cs" />
     <Compile Include="IOrderedDictionaryGeneric.cs" />
     <Compile Include="NotifyPropertyChangedBase.cs" />
     <Compile Include="OrderedDictionaryGeneric.cs" />

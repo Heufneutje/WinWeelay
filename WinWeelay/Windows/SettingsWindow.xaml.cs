@@ -25,7 +25,7 @@ namespace WinWeelay
             _passwordBox.Password = Cipher.Decrypt(relayConfiguration.RelayPassword);
             relayConfiguration.StartTrackingChanges();
 
-            _fontComboBox.ItemsSource = FormattingHelper.GetInstalledFonts();
+            _fontComboBox.ItemsSource = FormattingUtils.GetInstalledFonts();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

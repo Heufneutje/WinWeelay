@@ -61,6 +61,7 @@
     <Compile Include="DataTypes\WeechatSignalType.cs" />
     <Compile Include="DataTypes\WeechatType.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="HighlightEventArgs.cs" />
     <Compile Include="Interfaces\IBufferView.cs" />
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />

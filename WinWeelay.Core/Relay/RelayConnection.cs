@@ -51,6 +51,7 @@ namespace WinWeelay.Core
         }
 
         public event ConnectionLostHandler ConnectionLost;
+        public event HighlightHandler Highlighted;
 
         public RelayConnection() { }
 
@@ -179,6 +180,11 @@ namespace WinWeelay.Core
                 ConnectionLost?.Invoke(this, new ConnectionLostEventArgs(error));
             else
                 throw ex;
+        }
+
+        public void OnHighlighted(RelayBufferMessage message, RelayBuffer buffer)
+        {
+            Highlighted?.Invoke(this, new HighlightEventArgs(message, buffer));
         }
 
         private void PingTimer_Elapsed(object sender, ElapsedEventArgs e)

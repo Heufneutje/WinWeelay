@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing.Text;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -11,7 +9,7 @@ using WinWeelay.Core;
 
 namespace WinWeelay
 {
-    public class FormattingHelper
+    public class FormattingParser
     {
         private ColorHelper _colorHelper;
 
@@ -24,7 +22,7 @@ namespace WinWeelay
         private int _backColor;
         private Regex _urlRegex;
 
-        public FormattingHelper()
+        public FormattingParser()
         {
             _colorHelper = new ColorHelper();
             _urlRegex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
@@ -313,19 +311,6 @@ namespace WinWeelay
         private string ParseUrls(string message)
         {
             return _urlRegex.Replace(message, "\u001a\u0010$1\u001b\u0010");
-        }
-
-        public static List<string> GetInstalledFonts()
-        {
-            List<string> fonts = new List<string>();
-            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
-            {
-                System.Drawing.FontFamily[] fontFamilies = fontsCollection.Families;
-                foreach (System.Drawing.FontFamily font in fontFamilies.Where(x => !string.IsNullOrEmpty(x.Name)))
-                    fonts.Add(font.Name);
-            }
-
-            return fonts;
         }
     }
 }

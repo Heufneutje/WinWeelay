@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,12 +6,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using WinWeelay.Configuration;
-
-#if WINDOWS10_SDK
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
-#endif
-
 using WinWeelay.Core;
 using WinWeelay.Utils;
 
@@ -25,7 +18,7 @@ namespace WinWeelay
     {
         private NickCompleter _nickCompleter;
         private MessageHistory _history;
-        private FormattingHelper _formattingHelper;
+        private FormattingParser _formattingParser;
         private OrderedDictionary<RelayBufferMessage, Block> _blocks;
         private bool _isScrolledToBottom;
 
@@ -36,7 +29,7 @@ namespace WinWeelay
             _nickCompleter = new NickCompleter(buffer);
             _history = new MessageHistory(buffer.Connection.Configuration);
             _blocks = new OrderedDictionary<RelayBufferMessage, Block>();
-            _formattingHelper = new FormattingHelper();
+            _formattingParser = new FormattingParser();
             Buffer = buffer;
 
             InitializeComponent();
@@ -110,34 +103,6 @@ namespace WinWeelay
             }
         }
 
-        //private void ConversationTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-            //            TextChange change = e.Changes.FirstOrDefault();
-            //            int addedLength = (change?.AddedLength) ?? 0;
-
-            //            bool scrollToEnd = _conversationTextBox.CaretIndex >= _conversationTextBox.Text.Length - addedLength;
-            //            if (scrollToEnd)
-            //            {
-            //                _conversationTextBox.CaretIndex = _conversationTextBox.Text.Length;
-            //                _conversationTextBox.ScrollToEnd();
-            //            }
-
-            //            foreach (RelayBufferMessage message in Buffer.MessagesToHighlight)
-            //            {
-            //                message.IsNotified = true;
-
-            //#if WINDOWS10_SDK
-            //                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
-            //                XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-            //                stringElements[0].AppendChild(toastXml.CreateTextNode(Buffer.Name));
-            //                stringElements[1].AppendChild(toastXml.CreateTextNode(message.ToString().Replace("\u001c", "")));
-
-            //                ToastNotification toast = new ToastNotification(toastXml);
-            //                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
-            //#endif
-            //            }
-        //}
-
         private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!_nickCompleter.IsNickCompleting)
@@ -157,7 +122,7 @@ namespace WinWeelay
         private void AddMessage(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
         {
             bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
-            Paragraph paragraph = _formattingHelper.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat);           
+            Paragraph paragraph = _formattingParser.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat);           
 
             if (addToEnd || !_blocks.Any())
                 _conversationDocument.Blocks.Add(paragraph);
@@ -209,7 +174,7 @@ namespace WinWeelay
         private void UpdateTitle()
         {
             _titleDocument.Blocks.Clear();
-            _titleDocument.Blocks.Add(_formattingHelper.FormatString(Buffer.Title));
+            _titleDocument.Blocks.Add(_formattingParser.FormatString(Buffer.Title));
         }
     }
 }
