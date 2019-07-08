@@ -76,6 +76,9 @@ namespace WinWeelay.Core
         /// <returns>the pointer at the given index.</returns>
         public string GetPointer(int index)
         {
+            if (index >= _pointers.Count || index < 0)
+                return null;
+
             return _pointers.ElementAt(index);
         }
 

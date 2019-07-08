@@ -130,9 +130,9 @@ namespace WinWeelay.Core
             Pointer = entry.GetPointer();
         }
 
-        public void AddMessage(RelayBufferMessage message, bool updateCount, bool isExpandedBacklog)
+        public void AddSingleMessage(RelayBufferMessage message, bool updateCount)
         {
-            _messages.Add(message);
+            _messages.Insert(0, message);
 
             if (updateCount)
             {
@@ -142,7 +142,15 @@ namespace WinWeelay.Core
                     HighlightedMessagesCount++;
             }
 
-            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, message.Date >= _messages.Max(x => x.Date), isExpandedBacklog));
+            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false));
+        }
+
+        public void AddMessageBatch(IEnumerable<RelayBufferMessage> messages, bool isExpandedBacklog)
+        {
+            _messages.AddRange(messages);
+
+            foreach (RelayBufferMessage message in messages)
+                MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, false, isExpandedBacklog));
         }
 
         public bool HasMessage(RelayBufferMessage message)

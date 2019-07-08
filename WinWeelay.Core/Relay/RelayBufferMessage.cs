@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
-    public class RelayBufferMessage : IComparable
+    public class RelayBufferMessage
     {
+        public string LinePointer { get; private set; }
         public string BufferPointer { get; private set; }
         public DateTime Date { get; private set; }
         public DateTime DatePrinted { get; private set; }
@@ -43,8 +42,9 @@ namespace WinWeelay.Core
             }
         }
 
-        public RelayBufferMessage(WeechatHdataEntry entry, bool showNotifications)
+        public RelayBufferMessage(WeechatHdataEntry entry, bool showNotifications, int linePointerIndex)
         {
+            LinePointer = entry.GetPointer(linePointerIndex);
             BufferPointer = entry["buffer"].AsPointer();
             Date = entry["date"].AsTime();
             DatePrinted = entry["date_printed"].AsTime();
@@ -67,38 +67,29 @@ namespace WinWeelay.Core
                 IsNotified = true;
         }
 
-
         public override bool Equals(object obj)
         {
             return obj is RelayBufferMessage message &&
-                   BufferPointer == message.BufferPointer &&
-                   Date == message.Date &&
-                   DatePrinted == message.DatePrinted &&
-                   IsDisplayed == message.IsDisplayed &&
-                   IsHighlighted == message.IsHighlighted &&
-                   Message == message.Message &&
-                   Nick == message.Nick &&
-                   MessageType == message.MessageType;
+                   LinePointer == message.LinePointer &&
+                   BufferPointer == message.BufferPointer;
         }
 
         public override int GetHashCode()
         {
-            var hashCode = 1396436438;
+            int hashCode = 1910936884;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LinePointer);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BufferPointer);
-            hashCode = hashCode * -1521134295 + Date.GetHashCode();
-            hashCode = hashCode * -1521134295 + DatePrinted.GetHashCode();
-            hashCode = hashCode * -1521134295 + IsDisplayed.GetHashCode();
-            hashCode = hashCode * -1521134295 + IsHighlighted.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Message);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Nick);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(MessageType);
             return hashCode;
         }
 
-        public int CompareTo(object obj)
+        public static bool operator ==(RelayBufferMessage left, RelayBufferMessage right)
         {
-            RelayBufferMessage message = (RelayBufferMessage)obj;
-            return Date.CompareTo(message.Date);
+            return EqualityComparer<RelayBufferMessage>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(RelayBufferMessage left, RelayBufferMessage right)
+        {
+            return !(left == right);
         }
     }
 }

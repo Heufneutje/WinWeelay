@@ -221,10 +221,12 @@ namespace WinWeelay.Core
         {
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
             List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
+            Dictionary<RelayBuffer, List<RelayBufferMessage>> newMessages = new Dictionary<RelayBuffer, List<RelayBufferMessage>>();
+            int linePointerIndex = hdata.PathList.ToList().IndexOf("line_data");
             for (int i = 0; i < hdata.Count; i++)
             {
                 bool isSingleLineUpdate = message.ID == MessageIds.BufferLineAdded;
-                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], isSingleLineUpdate);
+                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], isSingleLineUpdate, linePointerIndex);
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
                 if (buffer != null && !buffer.HasMessage(bufferMessage))
                 {
@@ -239,7 +241,15 @@ namespace WinWeelay.Core
                         _connection.OutputHandler.MarkBufferAsRead(buffer);
                     }
 
-                    buffer.AddMessage(bufferMessage, updateMessageCount, message.ID == MessageIds.CustomGetBufferBacklogExtra);
+                    if (hdata.Count == 1)
+                        buffer.AddSingleMessage(bufferMessage, updateMessageCount);
+                    else
+                    {
+                        if (!newMessages.ContainsKey(buffer))
+                            newMessages.Add(buffer, new List<RelayBufferMessage>());
+                        newMessages[buffer].Add(bufferMessage);
+                    }
+                        
                     if (!updatedBuffers.Contains(buffer))
                         updatedBuffers.Add(buffer);
 
@@ -247,6 +257,9 @@ namespace WinWeelay.Core
                         _connection.OnHighlighted(bufferMessage, buffer);
                 }
             }
+
+            foreach (KeyValuePair<RelayBuffer, List<RelayBufferMessage>> pair in newMessages)
+                pair.Key.AddMessageBatch(pair.Value, message.ID == MessageIds.CustomGetBufferBacklogExtra);
 
             foreach (RelayBuffer updateBuffer in updatedBuffers)
                 updateBuffer.NotifyMessageCountUpdated();

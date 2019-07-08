@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
-using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -19,7 +18,6 @@ namespace WinWeelay
         private NickCompleter _nickCompleter;
         private MessageHistory _history;
         private FormattingParser _formattingParser;
-        private OrderedDictionary<RelayBufferMessage, Block> _blocks;
         private bool _isScrolledToBottom;
 
         public RelayBuffer Buffer { get; private set; }
@@ -28,7 +26,6 @@ namespace WinWeelay
         {
             _nickCompleter = new NickCompleter(buffer);
             _history = new MessageHistory(buffer.Connection.Configuration);
-            _blocks = new OrderedDictionary<RelayBufferMessage, Block>();
             _formattingParser = new FormattingParser(buffer.Connection.OptionParser);
             Buffer = buffer;
 
@@ -111,36 +108,32 @@ namespace WinWeelay
 
         private void InitBufferMessages()
         {
-            _conversationRichTextBox.BeginChange();
-            foreach (RelayBufferMessage message in Buffer.Messages)
-                AddMessage(message, false, false);
+            if (Buffer.Messages.Any())
+            {
+                _conversationRichTextBox.BeginChange();
+                foreach (RelayBufferMessage message in Buffer.Messages)
+                    AddMessage(message, false, false);
 
-            _conversationRichTextBox.EndChange();
+                _conversationRichTextBox.EndChange();
+            }
+
             _isScrolledToBottom = true;
         }
 
         private void AddMessage(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
         {
-            bool scrollToEnd = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
+            bool hasMessages = _conversationDocument.Blocks.Any();
+            bool scrollToEnd = !hasMessages || _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
             Paragraph paragraph = _formattingParser.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat);           
 
-            if (addToEnd || !_blocks.Any())
+            if (addToEnd || !hasMessages)
                 _conversationDocument.Blocks.Add(paragraph);
             else
-            {
-                RelayBufferMessage previousMessage = _blocks.Keys.LastOrDefault(x => x.Date < message.Date);
-                if (previousMessage == null)
-                    _conversationDocument.Blocks.InsertBefore(_conversationDocument.Blocks.FirstBlock, paragraph);
-                else
-                    _conversationDocument.Blocks.InsertAfter(_blocks[previousMessage], paragraph);
-            }
-
-            _blocks.Add(message, paragraph);
-            _blocks.SortKeys();
+                _conversationDocument.Blocks.InsertBefore(_conversationDocument.Blocks.FirstBlock, paragraph);
 
             if (isExpandedBacklog)
                 _conversationRichTextBox.ScrollToHome();
-            else if (!addToEnd || scrollToEnd)
+            else if (scrollToEnd)
                 _conversationRichTextBox.ScrollToEnd();
         }
 
