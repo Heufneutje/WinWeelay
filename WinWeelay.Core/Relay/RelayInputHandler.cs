@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using WinWeelay.Utils;
@@ -105,6 +106,9 @@ namespace WinWeelay.Core
                 case MessageIds.CustomGetBufferBacklogExtra:
                     ParseBufferLines(message);
                     break;
+                case MessageIds.CustomGetColorOptions:
+                    ParseColorOptions(message);
+                    break;
                 case MessageIds.BufferOpened:
                     ParseBufferOpened(message);
                     break;
@@ -137,6 +141,12 @@ namespace WinWeelay.Core
                     ParseUpgradeEnded();
                     break;
             }
+        }
+
+        private void ParseColorOptions(RelayMessage message)
+        {
+            WeechatInfoList infolist = (WeechatInfoList)message.RelayObjects[0];
+            _connection.OptionParser.ParseOptions(infolist);
         }
 
         private void ParseVersion(RelayMessage message)

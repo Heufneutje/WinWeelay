@@ -8,6 +8,7 @@
         public const string CustomGetNicklist = "getnicklist";
         public const string CustomGetHotlist = "gethotlist";
         public const string CustomGetVersion = "getversion";
+        public const string CustomGetColorOptions = "getcoloroptions";
 
         public const string BufferOpened = "_buffer_opened";
         public const string BufferTitleChanged = "_buffer_title_changed";

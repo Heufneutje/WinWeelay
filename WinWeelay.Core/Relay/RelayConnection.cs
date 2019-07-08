@@ -23,6 +23,7 @@ namespace WinWeelay.Core
         public ObservableCollection<RelayBuffer> Buffers { get; private set; }
         public RelayConfiguration Configuration { get; set; }
         public RelayBuffer ActiveBuffer { get; set; }
+        public OptionParser OptionParser { get; set; }
         public bool IsConnected { get; private set; }
 
         private string _weeChatVersion;
@@ -59,6 +60,7 @@ namespace WinWeelay.Core
         {
             Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;
+            OptionParser = new OptionParser();
 
             _bufferView = view;
             _pingTimer = new Timer(30000) { AutoReset = true };
@@ -107,6 +109,7 @@ namespace WinWeelay.Core
             OutputHandler.RequestHotlist();
             OutputHandler.Sync();
             OutputHandler.Info("version", MessageIds.CustomGetVersion);
+            OutputHandler.RequestColorOptions();
             OutputHandler.EndMessageBatch();
 
             _pingTimer.Start();

@@ -74,6 +74,11 @@ namespace WinWeelay.Core
             Infolist("hotlist", id: MessageIds.CustomGetHotlist);
         }
 
+        public void RequestColorOptions()
+        {
+            Infolist("option", string.Empty, "/s weechat.color.*", MessageIds.CustomGetColorOptions);
+        }
+
         public void MarkBufferAsRead(RelayBuffer buffer)
         {
             if (_connection.Configuration.SyncReadMessages)
@@ -113,12 +118,12 @@ namespace WinWeelay.Core
 
         public void Infolist(string name, string pointer = null, string arguments = null, string id = null)
         {
-            if (string.IsNullOrEmpty(pointer))
+            if (string.IsNullOrEmpty(pointer) && string.IsNullOrEmpty(arguments))
                 SendMessage($"infolist {name}", id);
             else if (string.IsNullOrEmpty(arguments))
                 SendMessage($"infolist {name} {pointer}", id);
             else
-                SendMessage($"infolist {name} {pointer} {arguments}", id);
+                SendMessage($"infolist {name} {arguments}", id);
         }
 
         public void Nicklist(RelayBuffer buffer = null, string id = null)

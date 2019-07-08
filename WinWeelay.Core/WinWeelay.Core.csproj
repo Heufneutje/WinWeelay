@@ -37,6 +37,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -51,6 +52,7 @@
     </Compile>
     <Compile Include="ConnectionLostEventArgs.cs" />
     <Compile Include="DataTypes\WeechatArray.cs" />
+    <Compile Include="DataTypes\WeechatColor.cs" />
     <Compile Include="DataTypes\WeechatData.cs" />
     <Compile Include="DataTypes\WeechatHashtable.cs" />
     <Compile Include="DataTypes\WeechatHdata.cs" />
@@ -66,6 +68,8 @@
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />
     <Compile Include="NickCompleter.cs" />
+    <Compile Include="OptionNames.cs" />
+    <Compile Include="OptionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelayBufferMessageEventArgs.cs" />
     <Compile Include="Relay\RelayBuffer.cs" />
@@ -74,6 +78,7 @@
     <Compile Include="Relay\RelayInputHandler.cs" />
     <Compile Include="Relay\RelayMessage.cs" />
     <Compile Include="Relay\RelayNicklistEntry.cs" />
+    <Compile Include="Relay\RelayOption.cs" />
     <Compile Include="Relay\RelayOutputHandler.cs" />
   </ItemGroup>
   <ItemGroup>

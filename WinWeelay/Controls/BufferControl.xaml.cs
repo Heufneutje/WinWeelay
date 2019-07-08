@@ -29,7 +29,7 @@ namespace WinWeelay
             _nickCompleter = new NickCompleter(buffer);
             _history = new MessageHistory(buffer.Connection.Configuration);
             _blocks = new OrderedDictionary<RelayBufferMessage, Block>();
-            _formattingParser = new FormattingParser();
+            _formattingParser = new FormattingParser(buffer.Connection.OptionParser);
             Buffer = buffer;
 
             InitializeComponent();

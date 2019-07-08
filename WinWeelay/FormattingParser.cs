@@ -12,6 +12,7 @@ namespace WinWeelay
     public class FormattingParser
     {
         private ColorHelper _colorHelper;
+        private OptionParser _optionParser;
 
         private int _index;
         private string _formattedString;
@@ -22,9 +23,10 @@ namespace WinWeelay
         private int _backColor;
         private Regex _urlRegex;
 
-        public FormattingParser()
+        public FormattingParser(OptionParser optionParser)
         {
             _colorHelper = new ColorHelper();
+            _optionParser = optionParser;
             _urlRegex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
@@ -32,12 +34,25 @@ namespace WinWeelay
         {
             string formattedDate = $"[{message.Date.ToString(timestampFormat)}] ";
 
+            string highlightFormatting = null;
+            if (message.IsHighlighted)
+                highlightFormatting = $"\u001a\u0001\u0019{_optionParser.GetOptionColorCode(OptionNames.WeechatColorChatHighlight)}";
+
             Paragraph paragraph = new Paragraph();
-            paragraph.Inlines.Add(new Run(formattedDate));
+
+            if (message.IsHighlighted)
+                paragraph.Inlines.AddRange(HandleFormatting($"{highlightFormatting}{formattedDate}"));
+            else
+                paragraph.Inlines.Add(new Run(formattedDate));
 
             string prefix = message.Prefix;
             if (message.MessageType == "privmsg")
-                prefix = $"<{prefix}\u0019\u001c>";
+            {
+                if (message.IsHighlighted)
+                    prefix = $"{highlightFormatting}<{message.UnformattedPrefix}>";
+                else
+                    prefix = $"<{prefix}\u0019\u001c>";
+            }
             prefix += ' ';
 
             paragraph.Inlines.AddRange(HandleFormatting(prefix));
@@ -198,11 +213,8 @@ namespace WinWeelay
                             case '\u001c': // Reset colors, keep other attributes.
                                 ResetColors();
                                 break;
-                            default:
-                                // TODO: Handle weechat option colors. Consumes 2 characters.
-                                ConsumeCharacter();
-                                ConsumeCharacter();
-                                ResetColors();
+                            default: // Option color.
+                                SetOptionColor();
                                 break;
                         }
                         break;
@@ -214,6 +226,16 @@ namespace WinWeelay
 
             CreateInline();
             return _inlines;
+        }
+
+        private void SetOptionColor()
+        {
+            CreateInline();
+            _backColor = -1;
+
+            string colorCode = ConsumeCharacters(2);
+            bool convertResult = int.TryParse(colorCode, out int color);
+            _foreColor = convertResult ? _optionParser.GetOptionColor(color) : -1;
         }
 
         private string ConsumeCharacters(int numberOfCharacters)
