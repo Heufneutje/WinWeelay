@@ -34,6 +34,7 @@ namespace WinWeelay
             DataContext = buffer;
 
             Buffer.MessageAdded += Buffer_MessageAdded;
+            Buffer.MessagesCleared += Buffer_MessagesCleared;
             Buffer.TitleChanged += Buffer_TitleChanged;
 
             InitBufferMessages();
@@ -56,6 +57,11 @@ namespace WinWeelay
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
         {
             AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog);
+        }
+
+        private void Buffer_MessagesCleared(object sender, EventArgs e)
+        {
+            _conversationDocument.Blocks.Clear();
         }
 
         private void Buffer_TitleChanged(object sender, EventArgs e)

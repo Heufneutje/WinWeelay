@@ -98,6 +98,7 @@ namespace WinWeelay.Core
         public event EventHandler NameChanged;
         public event MessageAddedHandler MessageAdded;
         public event EventHandler TitleChanged;
+        public event EventHandler MessagesCleared;
         #endregion
 
         public RelayBuffer()
@@ -161,6 +162,7 @@ namespace WinWeelay.Core
         public void ClearMessages()
         {
             _messages.Clear();
+            MessagesCleared?.Invoke(this, EventArgs.Empty);
         }
 
         public void NotifyNameUpdated()
