@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.ComponentModel;
 using System.Timers;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
-using WinWeelay.Utils;
 using WinWeelay.Properties;
-using System.IO;
-using System.Reflection;
+using WinWeelay.Utils;
+using System.Windows;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
@@ -22,6 +23,7 @@ namespace WinWeelay
         private Timer _retryTimer;
         private bool _isRetryingConnection;
         private ThemeManager _themeManager;
+        private bool _isDownloadingUpdate;
         
         public RelayConnection Connection { get; private set; }
         public string ConnectionStatus { get; set; }
@@ -42,6 +44,7 @@ namespace WinWeelay
         public DelegateCommand LoadMoreMessagesCommand { get; private set; }
         public DelegateCommand SourceCodeCommand { get; private set; }
         public DelegateCommand IssueTrackerCommand { get; private set; }
+        public DelegateCommand CheckForUpdateCommand { get; private set; }
 
         public BufferViewModel() { }
 
@@ -49,6 +52,10 @@ namespace WinWeelay
         {
             _mainWindow = window;
             SetStatusText("Disconnected.");
+
+            string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
+            if (!Directory.Exists(appDataPath))
+                Directory.CreateDirectory(appDataPath);
 
             _retryTimer = new Timer(10000);
             _retryTimer.Elapsed += RetryTimer_Elapsed;
@@ -75,9 +82,13 @@ namespace WinWeelay
             LoadMoreMessagesCommand = new DelegateCommand(LoadMoreMessages, IsBufferSelected);
             SourceCodeCommand = new DelegateCommand(OpenSourceCode);
             IssueTrackerCommand = new DelegateCommand(OpenIssueTracker);
+            CheckForUpdateCommand = new DelegateCommand(HandleCheckForUpdate, CanCheckForUpdate);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
             Connection.Highlighted += Connection_Highlighted;
+
+            if (_relayConfiguration.AutoCheckUpdates)
+                CheckForUpdate(false);
 
             if (_relayConfiguration.AutoConnect)
                 Connect(null);
@@ -160,7 +171,7 @@ namespace WinWeelay
             {
                 _isRetryingConnection = false;
                 UpdateConnectionCommands();
-                SetStatusText($"Connected to {_relayConfiguration.ConnectionAddress}{(_relayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl ? " (secure connection)" : "")}.");
+                SetStatusConnected();
             }
             else if (_isRetryingConnection)
                 _retryTimer.Start();
@@ -286,6 +297,16 @@ namespace WinWeelay
             Process.Start("https://github.com/Heufneutje/WinWeelay/issues");
         }
 
+        private void HandleCheckForUpdate(object parameter)
+        {
+            CheckForUpdate(true);
+        }
+
+        private bool CanCheckForUpdate(object parameter)
+        {
+            return !_isDownloadingUpdate;
+        }
+
         private void UpdateConnectionCommands()
         {
             ConnectCommand.OnCanExecuteChanged();
@@ -324,6 +345,95 @@ namespace WinWeelay
         {
             ConnectionStatus = $"[{DateTime.Now:HH:mm:ss}] {message}";
             NotifyPropertyChanged(nameof(ConnectionStatus));
+        }
+
+        private void SetStatusConnected()
+        {
+            SetStatusText($"Connected to {_relayConfiguration.ConnectionAddress}{(_relayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl ? " (secure connection)" : "")}.");
+        }
+
+        private void CheckForUpdate(bool shouldPopUp)
+        {
+            _isDownloadingUpdate = true;
+            CheckForUpdateCommand.OnCanExecuteChanged();
+
+            SetStatusText("Checking for updates...");
+
+            BackgroundWorker updateCheckerBackgroundWorker = new BackgroundWorker();
+            UpdateHelper updateHelper = new UpdateHelper();
+            updateCheckerBackgroundWorker.DoWork += (sender, args) =>
+            {
+                args.Result = updateHelper.CheckForUpdate();
+            };
+            updateCheckerBackgroundWorker.RunWorkerCompleted += (sender, args) =>
+            {
+                UpdateCheckResult result = (UpdateCheckResult)args.Result;
+                if (result.ResultType == UpdateResultType.UpdateAvailable)
+                {
+                    if (ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        DownloadUpdate(updateHelper, result.DownloadUrl);
+                        return;
+                    }
+                }
+                else
+                {
+                    if (shouldPopUp)
+                        ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.OK, result.ResultType == UpdateResultType.NoUpdateAvailable ? MessageBoxImage.Information : MessageBoxImage.Error);
+                }
+
+                FinishUpdateCheck();
+                updateHelper.Dispose();
+            };
+            updateCheckerBackgroundWorker.RunWorkerAsync();
+        }
+
+        private void DownloadUpdate(UpdateHelper updateHelper, string downloadUrl)
+        {
+            SetStatusText("Downloading update files...");
+            _mainWindow.SetProgressBarVisibility(true);
+
+            updateHelper.ProgressChanged += (sender, args) =>
+            {
+                _mainWindow.SetProgress(args.ProgressPercentage);
+            };
+            updateHelper.DownloadCompleted += (sender, args) =>
+            {
+                if (args.Error != null)
+                {
+                    ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{args.Error.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    try
+                    {
+                        ProcessStartInfo psi = new ProcessStartInfo(updateHelper.InstallerFilePath);
+                        psi.Arguments = $"/S /UPDATELOCATION={updateHelper.GetApplicationDirectory()}";
+                        updateHelper.Dispose();
+                        Process.Start(psi);
+                        Application.Current.Shutdown();
+                    }
+                    catch (Exception ex)
+                    {
+                        ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        updateHelper.Dispose();
+                        FinishUpdateCheck();
+                    }
+                }
+            };
+            updateHelper.DownloadUpdate(downloadUrl);
+        }
+
+        private void FinishUpdateCheck()
+        {
+            _isDownloadingUpdate = false;
+            CheckForUpdateCommand.OnCanExecuteChanged();
+            _mainWindow.SetProgressBarVisibility(false);
+
+            if (Connection.IsConnected)
+                SetStatusConnected();
+            else
+                SetStatusText("Disconnected.");
         }
     }
 }

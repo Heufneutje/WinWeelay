@@ -178,5 +178,15 @@ namespace WinWeelay
                 bufferControl.UpdateFont();
             }
         }
+
+        public void SetProgressBarVisibility(bool visible)
+        {
+            _progressBar.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void SetProgress(int progressPercentage)
+        {
+            _progressBar.Value = progressPercentage;
+        }
     }
 }

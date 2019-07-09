@@ -46,10 +46,11 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Release\</OutputPath>
     <DefineConstants>TRACE;WINDOWS10_SDK</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>WinWeelay.App</StartupObject>
@@ -119,6 +120,9 @@
     <Compile Include="Convert\BoolToVisibilityConverter.cs" />
     <Compile Include="FormattingParser.cs" />
     <Compile Include="Layout\DockingManagerLayoutHelper.cs" />
+    <Compile Include="Windows\ThemedMessageBoxWindow.xaml.cs">
+      <DependentUpon>ThemedMessageBoxWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
@@ -131,6 +135,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BufferControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ThemedMessageBoxWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,5 +263,11 @@
   <ItemGroup>
     <Resource Include="Resources\weechat.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Web-Download.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>if $(ConfigurationName) == Release "D:\Program Files (x86)\NSIS\makensis.exe" "$(ProjectDir)..\setup.nsi"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

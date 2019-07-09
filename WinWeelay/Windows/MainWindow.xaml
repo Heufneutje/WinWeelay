@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinWeelay"
-        xmlns:Core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core" x:Class="WinWeelay.MainWindow"
+        x:Class="WinWeelay.MainWindow"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
     xmlns:customcontrols="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
@@ -22,6 +22,7 @@
         <BitmapImage x:Key="aboutImage" UriSource="/WinWeelay;component/Resources/Info.png" />
         <BitmapImage x:Key="sourceCodeImage" UriSource="/WinWeelay;component/Resources/page_code.png" />
         <BitmapImage x:Key="issueTrackerImage" UriSource="/WinWeelay;component/Resources/bug.png" />
+        <BitmapImage x:Key="checkForUpdatesImage" UriSource="/WinWeelay;component/Resources/Web-Download.png"/>
     </Window.Resources>
     <Grid>
         <Menu x:Name="menu" VerticalAlignment="Top">
@@ -117,6 +118,14 @@
                         <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub."/>
                     </MenuItem.ToolTip>
                 </MenuItem>
+                <MenuItem Header="Check for Updates" Command="{Binding CheckForUpdateCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource checkForUpdatesImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Check for Updates" Description="Check whether a newer version of WinWeelay is available for download."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Header="About" Command="{Binding AboutCommand}">
                     <MenuItem.Icon>
@@ -201,6 +210,7 @@
                     </StackPanel>
                 </StatusBarItem.ToolTip>
             </StatusBarItem>
+            <ProgressBar x:Name="_progressBar" Height="20" Width="200" Visibility="Collapsed" />
         </StatusBar>
     </Grid>
 </MWindow:MetroWindow>
