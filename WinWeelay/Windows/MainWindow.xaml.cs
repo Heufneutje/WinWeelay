@@ -16,11 +16,13 @@ namespace WinWeelay
     public partial class MainWindow : MetroWindow, IBufferView
     {
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
+        private SpellingManager _spellingManager;
 
         public MainWindow()
         {
             InitializeComponent();
             _bufferControls = new Dictionary<RelayBuffer, LayoutDocument>();
+            _spellingManager = new SpellingManager();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -47,7 +49,7 @@ namespace WinWeelay
             LayoutDocument layoutDocument;
             if (!_bufferControls.ContainsKey(buffer))
             {
-                BufferControl bufferControl = new BufferControl(buffer);
+                BufferControl bufferControl = new BufferControl(buffer, _spellingManager);
                 layoutDocument = new LayoutDocument
                 {
                     Title = buffer.Name,

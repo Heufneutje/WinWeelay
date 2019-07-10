@@ -19,14 +19,16 @@ namespace WinWeelay
         private MessageHistory _history;
         private FormattingParser _formattingParser;
         private bool _isScrolledToBottom;
+        private SpellingManager _spellingManager;
 
         public RelayBuffer Buffer { get; private set; }
 
-        public BufferControl(RelayBuffer buffer)
+        public BufferControl(RelayBuffer buffer, SpellingManager spellingManager)
         {
             _nickCompleter = new NickCompleter(buffer);
             _history = new MessageHistory(buffer.Connection.Configuration);
             _formattingParser = new FormattingParser(buffer.Connection.OptionParser);
+            _spellingManager = spellingManager;
             Buffer = buffer;
 
             InitializeComponent();
@@ -48,11 +50,13 @@ namespace WinWeelay
 
             UpdateFont();
             _messageTextBox.Focus();
+            _spellingManager.Subscribe(_messageTextBox);
         }
 
         private void BufferControl_Unloaded(object sender, RoutedEventArgs e)
         {
             _isScrolledToBottom = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
+            _spellingManager.Unsubscribe(_messageTextBox);
         }
 
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
