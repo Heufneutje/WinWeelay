@@ -47,6 +47,7 @@ namespace WinWeelay
                 _conversationRichTextBox.ScrollToEnd();
 
             UpdateFont();
+            _messageTextBox.Focus();
         }
 
         private void BufferControl_Unloaded(object sender, RoutedEventArgs e)
