@@ -62,8 +62,16 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click" />
-                <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click" />
+                <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click">
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Buffers" Description="Show or hide the 'Buffers' dock element."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
+                <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click">
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="Nicklist" Description="Show or hide the 'Nicklist' dock element."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Buffer">
                 <MenuItem Header="Load More Messages" Command="{Binding LoadMoreMessagesCommand}">
