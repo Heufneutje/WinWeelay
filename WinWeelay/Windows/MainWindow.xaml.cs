@@ -190,5 +190,10 @@ namespace WinWeelay
         {
             _progressBar.Value = progressPercentage;
         }
+
+        public void ToggleSpellChecker(bool isEnabled)
+        {
+            _spellingManager.IsEnabled = isEnabled;
+        }
     }
 }

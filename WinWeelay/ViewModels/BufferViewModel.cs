@@ -61,6 +61,7 @@ namespace WinWeelay
 
             _relayConfiguration = ConfigurationHelper.LoadConfiguration();
             Connection = new RelayConnection(window, _relayConfiguration);
+            _mainWindow.ToggleSpellChecker(_relayConfiguration.IsSpellCheckEnabled);
 
             SetStatusText("Disconnected.");
 
@@ -240,6 +241,9 @@ namespace WinWeelay
 
                 if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
                     _mainWindow.UpdateFont();
+
+                if (config.HasPropertyChanged(nameof(config.IsSpellCheckEnabled)))
+                    _mainWindow.ToggleSpellChecker(_relayConfiguration.IsSpellCheckEnabled);
 
                 _relayConfiguration.ResetTrackingChanges();
                 _relayConfiguration.StartTrackingChanges();

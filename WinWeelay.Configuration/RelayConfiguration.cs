@@ -23,6 +23,7 @@ namespace WinWeelay.Configuration
         public string TimestampFormat { get; set; }
         public string Theme { get; set; }
         public bool AutoCheckUpdates { get; set; }
+        public bool IsSpellCheckEnabled { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -56,6 +57,7 @@ namespace WinWeelay.Configuration
             TimestampFormat = "HH:mm";
             Theme = Themes.Light;
             AutoCheckUpdates = true;
+            IsSpellCheckEnabled = true;
         }
 
         public void NotifyThemeChanged()

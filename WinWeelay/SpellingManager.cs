@@ -17,6 +17,17 @@ namespace WinWeelay
         private readonly string _dictPath;
         private List<TextBox> _subscribedTextBoxes;
         private Uri _customDictionary;
+        private bool _isEnabled;
+
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                _isEnabled = value;
+                RefreshSubscribedTextBoxes();
+            }
+        }
 
         /// <summary>
         /// Create a new instance of the manager. Initializes the dictionary from the lexicon file in the AppData folder.
@@ -39,12 +50,7 @@ namespace WinWeelay
         public void AddWordToDictionary(string word)
         {
             File.AppendAllText(_dictPath, $"{word}{Environment.NewLine}");
-
-            foreach (TextBox textBox in _subscribedTextBoxes.ToArray())
-            {
-                Unsubscribe(textBox);
-                Subscribe(textBox);
-            }
+            RefreshSubscribedTextBoxes();
         }
 
         /// <summary>
@@ -56,7 +62,7 @@ namespace WinWeelay
             IList dictionaries = SpellCheck.GetCustomDictionaries(textBox);
             dictionaries.Add(_customDictionary);
 
-            textBox.SpellCheck.IsEnabled = true;
+            textBox.SpellCheck.IsEnabled = _isEnabled;
             textBox.ContextMenuOpening += TextBox_ContextMenuOpening;
 
             if (!_subscribedTextBoxes.Contains(textBox))
@@ -77,6 +83,15 @@ namespace WinWeelay
 
             if (_subscribedTextBoxes.Contains(textBox))
                 _subscribedTextBoxes.Remove(textBox);
+        }
+
+        private void RefreshSubscribedTextBoxes()
+        {
+            foreach (TextBox textBox in _subscribedTextBoxes.ToArray())
+            {
+                Unsubscribe(textBox);
+                Subscribe(textBox);
+            }
         }
 
         private void TextBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
