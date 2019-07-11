@@ -40,7 +40,7 @@
                         <Label Content="Message History Size" HorizontalAlignment="Left" Margin="6,33,0,0" VerticalAlignment="Top" />
                         <CustomControls:NumericUpDown Margin="155,5,0,0" VerticalAlignment="Top" Value="{Binding BacklogSize, Mode=TwoWay}" Width="Auto" MaxValue="1000" MinValue="0" />
                         <CustomControls:NumericUpDown Margin="155,32,0,0" VerticalAlignment="Top" Value="{Binding HistorySize}" Width="Auto" MaxValue="50" MinValue="1" />
-                        <CheckBox Content="Sync read messages with WeeChat" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" IsChecked="{Binding SyncReadMessages}" />
+                        <CheckBox Content="Sync Read Messages with WeeChat" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" IsChecked="{Binding SyncReadMessages}" />                        
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -78,7 +78,7 @@
             <TabItem Header="General">
                 <GroupBox Header="General Settings" Margin="10,5">
                     <Grid>
-                        <CheckBox Content="Automatically check for updates" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" IsChecked="{Binding AutoCheckUpdates}" />
+                        <CheckBox Content="Automatically Check for Updates" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" IsChecked="{Binding AutoCheckUpdates}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
