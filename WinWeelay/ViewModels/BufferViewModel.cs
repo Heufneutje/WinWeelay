@@ -51,7 +51,6 @@ namespace WinWeelay
         public BufferViewModel(MainWindow window)
         {
             _mainWindow = window;
-            SetStatusText("Disconnected.");
 
             string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
             if (!Directory.Exists(appDataPath))
@@ -62,6 +61,8 @@ namespace WinWeelay
 
             _relayConfiguration = ConfigurationHelper.LoadConfiguration();
             Connection = new RelayConnection(window, _relayConfiguration);
+
+            SetStatusText("Disconnected.");
 
             _themeManager = new ThemeManager();
             _themeManager.InitializeThemes(_relayConfiguration);
@@ -343,7 +344,7 @@ namespace WinWeelay
 
         private void SetStatusText(string message)
         {
-            ConnectionStatus = $"[{DateTime.Now:HH:mm:ss}] {message}";
+            ConnectionStatus = $"[{DateTime.Now.ToString(_relayConfiguration.TimestampFormat)}] {message}";
             NotifyPropertyChanged(nameof(ConnectionStatus));
         }
 
