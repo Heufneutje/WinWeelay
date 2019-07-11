@@ -375,7 +375,7 @@ namespace WinWeelay
                 UpdateCheckResult result = (UpdateCheckResult)args.Result;
                 if (result.ResultType == UpdateResultType.UpdateAvailable)
                 {
-                    if (ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    if (ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Question, _mainWindow) == MessageBoxResult.Yes)
                     {
                         DownloadUpdate(updateHelper, result.DownloadUrl);
                         return;
@@ -384,7 +384,7 @@ namespace WinWeelay
                 else
                 {
                     if (shouldPopUp)
-                        ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.OK, result.ResultType == UpdateResultType.NoUpdateAvailable ? MessageBoxImage.Information : MessageBoxImage.Error);
+                        ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.OK, result.ResultType == UpdateResultType.NoUpdateAvailable ? MessageBoxImage.Information : MessageBoxImage.Error, _mainWindow);
                 }
 
                 FinishUpdateCheck();
@@ -406,7 +406,7 @@ namespace WinWeelay
             {
                 if (args.Error != null)
                 {
-                    ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{args.Error.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{args.Error.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error, _mainWindow);
                 }
                 else
                 {
@@ -420,7 +420,7 @@ namespace WinWeelay
                     }
                     catch (Exception ex)
                     {
-                        ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error, _mainWindow);
                         updateHelper.Dispose();
                         FinishUpdateCheck();
                     }

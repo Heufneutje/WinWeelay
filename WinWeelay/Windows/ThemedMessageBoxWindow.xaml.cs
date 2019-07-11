@@ -147,9 +147,9 @@ namespace WinWeelay
             Close();
         }
 
-        public static MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage image)
+        public static MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage image, Window owner)
         {
-            ThemedMessageBoxWindow window = new ThemedMessageBoxWindow(message, caption, button, image);
+            ThemedMessageBoxWindow window = new ThemedMessageBoxWindow(message, caption, button, image) { Owner = owner };
             window.ShowDialog();
             return window.Result;
         }
