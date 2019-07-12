@@ -80,6 +80,7 @@
                 <GroupBox Header="General Settings" Margin="10,5">
                     <Grid>
                         <CheckBox Content="Automatically Check for Updates" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" IsChecked="{Binding AutoCheckUpdates}" />
+                        <CheckBox Content="Enable Notifications" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" IsChecked="{Binding NotificationsEnabled}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

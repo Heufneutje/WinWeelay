@@ -24,6 +24,7 @@ namespace WinWeelay.Configuration
         public string Theme { get; set; }
         public bool AutoCheckUpdates { get; set; }
         public bool IsSpellCheckEnabled { get; set; }
+        public bool NotificationsEnabled { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -58,6 +59,7 @@ namespace WinWeelay.Configuration
             Theme = Themes.Light;
             AutoCheckUpdates = true;
             IsSpellCheckEnabled = true;
+            NotificationsEnabled = true;
         }
 
         public void NotifyThemeChanged()
