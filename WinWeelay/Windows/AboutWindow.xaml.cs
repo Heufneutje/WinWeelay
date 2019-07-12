@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 using MWindowLib;
+using WinWeelay.Configuration;
+using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -13,7 +15,7 @@ namespace WinWeelay
     /// </summary>
     public partial class AboutWindow : MetroWindow
     {
-        public AboutWindow()
+        public AboutWindow(RelayConfiguration config)
         {
             InitializeComponent();
             Paragraph paragraph = new Paragraph();
@@ -24,9 +26,10 @@ namespace WinWeelay
             else
                 paragraph.Inlines.Add("Licenses file is missing.");
             FlowDocument document = new FlowDocument(paragraph);
+            document.Foreground = new SolidColorBrush(config.Theme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
             _richTextBox.Document = document;
 
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
+            FileVersionInfo fvi = UpdateHelper.GetCurrentVersion();
             _versionLabel.Content = $"WinWeelay v{string.Join(".", new int[3] { fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart })}";
         }
 

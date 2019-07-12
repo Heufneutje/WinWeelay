@@ -252,7 +252,7 @@ namespace WinWeelay
 
         private void ShowAboutWindow(object parameter)
         {
-            AboutWindow aboutWindow = new AboutWindow() { Owner = _mainWindow };
+            AboutWindow aboutWindow = new AboutWindow(_relayConfiguration) { Owner = _mainWindow };
             aboutWindow.ShowDialog();
         }
 
