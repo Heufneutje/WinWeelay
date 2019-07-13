@@ -17,6 +17,7 @@ namespace WinWeelay
     {
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
         private SpellingManager _spellingManager;
+        private bool _isManualSelection;
 
         public MainWindow()
         {
@@ -40,19 +41,20 @@ namespace WinWeelay
             DockingManagerLayoutHelper.SaveLayout(_dockingManager);
         }
 
-        private void BuffersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BuffersListBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             RelayBuffer buffer = (RelayBuffer)_buffersListBox.SelectedItem;
             if (buffer == null)
                 return;
 
+            _isManualSelection = true;
             LayoutDocument layoutDocument;
             if (!_bufferControls.ContainsKey(buffer))
             {
                 BufferControl bufferControl = new BufferControl(buffer, _spellingManager);
                 layoutDocument = new LayoutDocument
                 {
-                    Title = buffer.Name,
+                    Title = buffer.FullName,
                     FloatingHeight = 400,
                     FloatingWidth = 500,
                     Content = bufferControl,
@@ -63,7 +65,7 @@ namespace WinWeelay
                 documentPane.Children.Add(layoutDocument);
                 _bufferControls.Add(buffer, layoutDocument);
 
-                buffer.NameChanged += delegate { layoutDocument.Title = buffer.Name; };
+                buffer.NameChanged += delegate { layoutDocument.Title = buffer.FullName; };
             }
             else
                 layoutDocument = _bufferControls[buffer];
@@ -73,6 +75,7 @@ namespace WinWeelay
 
             layoutDocument.IsActive = true;
             ((BufferViewModel)DataContext).UpdateBufferCommands();
+            _isManualSelection = false;
         }
 
         private void NicklistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -89,7 +92,7 @@ namespace WinWeelay
 
             if (_buffersListBox.SelectedItem == buffer)
             {
-                _buffersListBox.SelectedItem = null;
+                _buffersListBox.ClearSelection();
                 buffer.HandleUnselected();
             }
 
@@ -98,8 +101,8 @@ namespace WinWeelay
 
         private void DockingManager_ActiveContentChanged(object sender, EventArgs e)
         {
-            if (_dockingManager.ActiveContent is BufferControl)
-                _buffersListBox.SelectedItem = ((BufferControl)_dockingManager.ActiveContent).Buffer;
+            if (_dockingManager.ActiveContent is BufferControl && !_isManualSelection)
+                _buffersListBox.SelectItem(((BufferControl)_dockingManager.ActiveContent).Buffer);
         }
 
         private void NicklistListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)

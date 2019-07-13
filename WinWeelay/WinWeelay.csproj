@@ -115,6 +115,7 @@
     <Compile Include="ColorHelper.cs" />
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
+    <Compile Include="TreeViewExtension.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>

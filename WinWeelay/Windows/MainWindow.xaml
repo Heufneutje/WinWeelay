@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WinWeelay"
+        xmlns:core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core"
         x:Class="WinWeelay.MainWindow"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
@@ -159,23 +160,29 @@
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
                             <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True">
-                                <ListBox x:Name="_buffersListBox" SelectionChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.Buffers, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
+                                <TreeView x:Name="_buffersListBox" SelectedItemChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.RootBuffers, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch">
+                                    <TreeView.ItemContainerStyle>
+                                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
+                                            <Setter Property="IsExpanded" Value="True"/>
+                                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                                        </Style>
+                                    </TreeView.ItemContainerStyle>
+                                    <TreeView.ItemTemplate>
+                                        <HierarchicalDataTemplate DataType="{x:Type core:RelayBuffer}" ItemsSource="{Binding Children}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*" />
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <Label Content="{Binding Name}" Grid.Column="0" Padding="1" HorizontalAlignment="Left" />
+                                                <Label Content="{Binding ShortName}" Grid.Column="0" Padding="1" HorizontalAlignment="Left" />
                                                 <Grid HorizontalAlignment="Right" Grid.Column="1" Visibility="{Binding IsBadgeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                     <Border BorderThickness="0" CornerRadius="2,2,2,2" Background="{Binding BadgeBackground}" Padding="5,0,5,0" />
                                                     <Label Content="{Binding DisplayCount}" Foreground="White" />
                                                 </Grid>
                                             </Grid>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                        </HierarchicalDataTemplate>
+                                    </TreeView.ItemTemplate>
+                                </TreeView>
                             </xcad:LayoutAnchorable>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>

@@ -15,17 +15,20 @@ namespace WinWeelay.Core
 
         public RelayConnection Connection { get; private set; }
 
-        private string _name;
-        public string Name
+        public string FullName { get; set; }
+
+        private string _shortName;
+        public string ShortName
         {
-            get => _name;
+            get => _shortName;
             set
             {
-                _name = value;
+                _shortName = value;
                 NameChanged?.Invoke(this, EventArgs.Empty);
             }
         }
 
+        public string BufferType { get; set; }
         public int Number { get; set; }
         public string Pointer { get; set; }
         public RelayNicklistEntry ActiveNicklistEntry { get; set; }
@@ -55,6 +58,8 @@ namespace WinWeelay.Core
             }
         }
         public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
+        public IList<RelayBuffer> Children { get; private set; }
+        public RelayBuffer Parent { get; set; }
 
         #region View Model
         public IEnumerable<RelayBufferMessage> MessagesToHighlight
@@ -95,6 +100,8 @@ namespace WinWeelay.Core
             }
         }
 
+        public bool IsActiveBuffer => Connection.ActiveBuffer == this;
+
         public event EventHandler NameChanged;
         public event MessageAddedHandler MessageAdded;
         public event EventHandler TitleChanged;
@@ -105,6 +112,7 @@ namespace WinWeelay.Core
         {
             _messages = new List<RelayBufferMessage>();
             Nicklist = new ObservableCollection<RelayNicklistEntry>();
+            Children = new List<RelayBuffer>();
         }
 
         public RelayBuffer(RelayConnection connection, WeechatHdataEntry entry)
@@ -114,21 +122,35 @@ namespace WinWeelay.Core
             Connection = connection;
             _messages = new List<RelayBufferMessage>();
             Nicklist = new ObservableCollection<RelayNicklistEntry>();
+            Children = new List<RelayBuffer>();
         }
 
         public void UpdateBufferProperties(WeechatHdataEntry entry)
         {
-            if (entry.DataContainsKey("name"))
-                Name = entry["name"].AsString();
-            else
-            {
-                WeechatHashtable table = (WeechatHashtable)entry["local_variables"];
-                Name = table["name"].AsString();
-            }
+            WeechatHashtable localVars = entry.GetLocalVariables();
 
+            if (entry.DataContainsKey("name"))
+                FullName = entry["name"].AsString();
+            else if (entry.DataContainsKey("full_name"))
+                FullName = entry["full_name"].AsString();
+            else if (localVars.ContainsKey("name"))
+                FullName = localVars["name"].AsString();
+            else if (localVars.ContainsKey("full_name"))
+                FullName = localVars["full_name"].AsString();
+
+            ShortName = FullName;
+
+            if (entry.DataContainsKey("short_name") && !string.IsNullOrEmpty(entry["short_name"].AsString()))
+                ShortName = entry["short_name"].AsString();
+            else if (localVars.ContainsKey("short_vars") && !string.IsNullOrEmpty(localVars["short_name"].AsString()))
+                ShortName = localVars["short_name"].AsString();
+            
             Number = entry["number"].AsInt();
             Title = entry["title"].AsString();
             Pointer = entry.GetPointer();
+
+            if (localVars.ContainsKey("type"))
+                BufferType = localVars["type"].AsString();
         }
 
         public void AddSingleMessage(RelayBufferMessage message, bool updateCount)
@@ -167,7 +189,8 @@ namespace WinWeelay.Core
 
         public void NotifyNameUpdated()
         {
-            NotifyPropertyChanged(nameof(Name));
+            NotifyPropertyChanged(nameof(ShortName));
+            NotifyPropertyChanged(nameof(FullName));
         }
 
         public void NotifyMessageCountUpdated()
@@ -202,6 +225,7 @@ namespace WinWeelay.Core
                 Connection.OutputHandler.MarkBufferAsRead(this);
 
             NotifyMessageCountUpdated();
+            NotifyPropertyChanged(nameof(IsActiveBuffer));
         }
 
         public void HandleUnselected()
@@ -213,6 +237,11 @@ namespace WinWeelay.Core
         public void SortNicklist()
         {
             Nicklist = new ObservableCollection<RelayNicklistEntry>(Nicklist.OrderBy(x => x.SortIndex).ThenBy(x => x.Name));
+        }
+
+        public void SortChildren()
+        {
+            Children = new ObservableCollection<RelayBuffer>(Children.OrderBy(x => x.Number));
         }
 
         public IEnumerable<string> GetSortedUniqueNicks()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -50,6 +51,8 @@ namespace WinWeelay.Core
                 return $"WinWeelay - WeeChat {WeeChatVersion}";
             }
         }
+
+        public ObservableCollection<RelayBuffer> RootBuffers => new ObservableCollection<RelayBuffer>(Buffers.Where(x => x.Parent == null));
 
         public event ConnectionLostHandler ConnectionLost;
         public event HighlightHandler Highlighted;
@@ -151,6 +154,8 @@ namespace WinWeelay.Core
         public void SortBuffers()
         {
             Buffers = new ObservableCollection<RelayBuffer>(Buffers.OrderBy(x => x.Number));
+            foreach (RelayBuffer buffer in RootBuffers)
+                buffer.SortChildren();
         }
 
         public void CloseBuffer(RelayBuffer buffer)
@@ -166,6 +171,7 @@ namespace WinWeelay.Core
         public void NotifyBuffersChanged()
         {
             NotifyPropertyChanged(nameof(Buffers));
+            NotifyPropertyChanged(nameof(RootBuffers));
         }
 
         public void NotifyNicklistUpdated()

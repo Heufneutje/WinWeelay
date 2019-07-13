@@ -161,6 +161,8 @@ namespace WinWeelay.Core
             for (int i = 0; i < hdata.Count; i++)
             {
                 WeechatHdataEntry entry = hdata[i];
+                WeechatHashtable localVars = entry.GetLocalVariables();
+
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == entry.GetPointer());
 
                 if (buffer == null && !entry["hidden"].AsBoolean())
@@ -170,6 +172,15 @@ namespace WinWeelay.Core
                 }
                 else if (buffer != null)
                     buffer.UpdateBufferProperties(entry);
+
+                if (localVars.ContainsKey("server"))
+                {
+                    RelayBuffer parentBuffer = _connection.Buffers.Union(newBuffers).FirstOrDefault(x => x.BufferType == "server" && x.ShortName == localVars["server"].AsString() && x != buffer);
+                    buffer.Parent = parentBuffer;
+
+                    if (parentBuffer != null && !parentBuffer.Children.Contains(buffer))
+                        parentBuffer.Children.Add(buffer);
+                }
             }
             
             foreach (RelayBuffer existingBuffer in _connection.Buffers.ToList())
@@ -281,6 +292,10 @@ namespace WinWeelay.Core
             if (buffer != null)
             {
                 _connection.Buffers.Remove(buffer);
+                foreach (RelayBuffer rootBuffer in _connection.RootBuffers)
+                    if (rootBuffer.Children.Contains(buffer))
+                        rootBuffer.Children.Remove(buffer);
+
                 _connection.NotifyBufferClosed(buffer);
                 _connection.NotifyBuffersChanged();
             }
@@ -316,8 +331,16 @@ namespace WinWeelay.Core
 
             if (buffer != null)
             {
-                WeechatHashtable table = (WeechatHashtable)hdata[0]["local_variables"];
-                buffer.Name = table["name"].ToString();
+                WeechatHashtable localVars = hdata[0].GetLocalVariables();
+                if (localVars.ContainsKey("name"))
+                    buffer.FullName = localVars["name"].AsString();
+                else if (localVars.ContainsKey("full_name"))
+                    buffer.FullName = localVars["full_name"].AsString();
+
+                buffer.ShortName = buffer.FullName;
+                if (localVars.ContainsKey("short_name") && !string.IsNullOrEmpty(localVars["short_name"].AsString()))
+                    buffer.ShortName = localVars["short_name"].AsString();
+
                 buffer.NotifyNameUpdated();
             }
         }

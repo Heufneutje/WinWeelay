@@ -110,6 +110,19 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
+        /// Get the hashtable of local variables if it is present.
+        /// </summary>
+        /// <returns>A hashtable of local variables.</returns>
+        public WeechatHashtable GetLocalVariables()
+        {
+            WeechatHashtable localVars = new WeechatHashtable();
+            if (DataContainsKey("local_variables"))
+                localVars = (WeechatHashtable)this["local_variables"];
+
+            return localVars;
+        }
+
+        /// <summary>
         /// Override for debug purposes.
         /// </summary>
         /// <param name="indent">A given intent.</param>

@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WinWeelay">
     <Application.Resources>
-         
+        <ResourceDictionary Source="/MLib;component/Controls/TreeView.xaml" x:Name="TreeViewResources"/>
     </Application.Resources>
 </Application>

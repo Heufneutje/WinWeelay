@@ -34,6 +34,16 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
+        /// Checker whether a given key is present in the hashtabel.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns>Whether or not the key is present in the hashtable.</returns>
+        public bool ContainsKey(string key)
+        {
+            return _dict.ContainsKey(key);
+        }
+
+        /// <summary>
         /// Override for debug purposes.
         /// </summary>
         /// <returns>All values in the hashtable.</returns>
