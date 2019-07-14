@@ -25,6 +25,7 @@ namespace WinWeelay.Configuration
         public bool AutoCheckUpdates { get; set; }
         public bool IsSpellCheckEnabled { get; set; }
         public bool NotificationsEnabled { get; set; }
+        public BufferViewType BufferViewType { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -43,6 +44,16 @@ namespace WinWeelay.Configuration
             get
             {
                 return ConnectionTypeWrapper.GetTypes();
+            }
+        }
+
+        [JsonIgnore]
+        [ChangeTrackingIgnore]
+        public IEnumerable<BufferViewTypeWrapper> BufferViewTypes
+        {
+            get
+            {
+                return BufferViewTypeWrapper.GetTypes();
             }
         }
 

@@ -61,6 +61,7 @@ namespace WinWeelay
 
             _relayConfiguration = ConfigurationHelper.LoadConfiguration();
             Connection = new RelayConnection(window, _relayConfiguration);
+            SetBufferListType();
             _mainWindow.ToggleSpellChecker(_relayConfiguration.IsSpellCheckEnabled);
 
             SetStatusText("Disconnected.");
@@ -244,6 +245,9 @@ namespace WinWeelay
 
                 if (config.HasPropertyChanged(nameof(config.IsSpellCheckEnabled)))
                     _mainWindow.ToggleSpellChecker(_relayConfiguration.IsSpellCheckEnabled);
+
+                if (config.HasPropertyChanged(nameof(config.BufferViewType)))
+                    SetBufferListType();
 
                 _relayConfiguration.ResetTrackingChanges();
                 _relayConfiguration.StartTrackingChanges();
@@ -439,6 +443,19 @@ namespace WinWeelay
                 SetStatusConnected();
             else
                 SetStatusText("Disconnected.");
+        }
+
+        private void SetBufferListType()
+        {
+            switch (_relayConfiguration.BufferViewType)
+            {
+                case BufferViewType.List:
+                    _mainWindow.SetBufferControl(new BufferListControl(Connection));
+                    break;
+                case BufferViewType.Tree:
+                    _mainWindow.SetBufferControl(new BufferTreeControl(Connection));
+                    break;
+            }
         }
     }
 }

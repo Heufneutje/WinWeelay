@@ -25,7 +25,7 @@
                         <Label Content="WeeChat Relay Hostname" HorizontalAlignment="Left" Margin="6,32,0,0" VerticalAlignment="Top" />
                         <Label Content="WeeChat Relay Port" HorizontalAlignment="Left" Margin="6,60,0,0" VerticalAlignment="Top" />
                         <Label Content="WeeChat Relay Password" HorizontalAlignment="Left" Margin="6,87,0,0" VerticalAlignment="Top" />
-                        <ComboBox x:Name="_connectionTypeComboBox" HorizontalAlignment="Left" Margin="155,5,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding ConnectionType}" />
+                        <ComboBox HorizontalAlignment="Left" Margin="155,5,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding ConnectionType}" />
                         <TextBox Height="22" Margin="155,32,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Hostname}" />
                         <CustomControls:NumericUpDown Margin="155,59,3,0" VerticalAlignment="Top" Value="{Binding Port, Mode=TwoWay}" Width="Auto" MaxValue="99999" MinValue="1" />
                         <PasswordBox x:Name="_passwordBox" Margin="155,86,3,0" VerticalAlignment="Top" Height="22" />
@@ -45,13 +45,14 @@
                     </Grid>
                 </GroupBox>
             </TabItem>
-            <TabItem Header="Theme">
-                <GroupBox Header="Theme Settings" Margin="10,5">
+            <TabItem Header="Interface">
+                <GroupBox Header="Interface Settings" Margin="10,5">
                     <Grid>
                         <Label Content="Application Theme" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
                         <Label Content="Font Family" HorizontalAlignment="Left" Margin="6,33,0,0" VerticalAlignment="Top" />
                         <Label Content="Font Size" HorizontalAlignment="Left" Margin="6,60,0,0" VerticalAlignment="Top" />
                         <Label Content="Timestamp Format" HorizontalAlignment="Left" Margin="6,87,0,0" VerticalAlignment="Top" />
+                        <Label Content="Buffer List Type" HorizontalAlignment="Left" Margin="6,114,0,0" VerticalAlignment="Top" />
                         <ComboBox Margin="155,5,0,0" VerticalAlignment="Top" SelectedValue="{Binding Theme, NotifyOnSourceUpdated=True}">
                             <sys:String>Light</sys:String>
                             <sys:String>Dark</sys:String>
@@ -69,10 +70,11 @@
                             </ComboBox.ItemTemplate>
                         </ComboBox>
                         <CustomControls:NumericUpDown Margin="155,59,0,0" VerticalAlignment="Top" Value="{Binding FontSize, Mode=TwoWay}" Width="Auto" MaxValue="50" MinValue="1" />
-                        <ComboBox Margin="155,86,0,0" VerticalAlignment="Top" SelectedValue="{Binding TimestampFormat, NotifyOnSourceUpdated=True}">
+                        <ComboBox HorizontalAlignment="Left" Margin="155,86,0,0" VerticalAlignment="Top" Width="122" SelectedValue="{Binding TimestampFormat, NotifyOnSourceUpdated=True}">
                             <sys:String>HH:mm</sys:String>
                             <sys:String>HH:mm:ss</sys:String>
                         </ComboBox>
+                        <ComboBox HorizontalAlignment="Left" Margin="155,113,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding BufferViewTypes}" DisplayMemberPath="Description" SelectedValuePath="BufferViewType" SelectedValue="{Binding BufferViewType}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

@@ -47,6 +47,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="BufferViewType.cs" />
+    <Compile Include="BufferViewTypeWrapper.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="ConnectionType.cs" />
     <Compile Include="ConnectionTypeWrapper.cs" />

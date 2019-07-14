@@ -18,6 +18,7 @@ namespace WinWeelay
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
         private SpellingManager _spellingManager;
         private bool _isManualSelection;
+        private IBufferControl _bufferControl;
 
         public MainWindow()
         {
@@ -41,9 +42,9 @@ namespace WinWeelay
             DockingManagerLayoutHelper.SaveLayout(_dockingManager);
         }
 
-        private void BuffersListBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void BufferControl_SelectionChanged(object sender, EventArgs e)
         {
-            RelayBuffer buffer = (RelayBuffer)_buffersListBox.SelectedItem;
+            RelayBuffer buffer = _bufferControl.GetSelectedItem();
             if (buffer == null)
                 return;
 
@@ -90,9 +91,9 @@ namespace WinWeelay
             if (buffer != null)
                 _bufferControls.Remove(buffer);
 
-            if (_buffersListBox.SelectedItem == buffer)
+            if (_bufferControl.GetSelectedItem() == buffer)
             {
-                _buffersListBox.ClearSelection();
+                _bufferControl.ClearSelection();
                 buffer.HandleUnselected();
             }
 
@@ -102,7 +103,7 @@ namespace WinWeelay
         private void DockingManager_ActiveContentChanged(object sender, EventArgs e)
         {
             if (_dockingManager.ActiveContent is BufferControl && !_isManualSelection)
-                _buffersListBox.SelectItem(((BufferControl)_dockingManager.ActiveContent).Buffer);
+                _bufferControl.SelectItem(((BufferControl)_dockingManager.ActiveContent).Buffer);
         }
 
         private void NicklistListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -197,6 +198,13 @@ namespace WinWeelay
         public void ToggleSpellChecker(bool isEnabled)
         {
             _spellingManager.IsEnabled = isEnabled;
+        }
+
+        public void SetBufferControl(IBufferControl bufferControl)
+        {
+            _bufferControl = bufferControl;
+            _bufferControl.SelectionChanged += BufferControl_SelectionChanged;
+            GetPanel("buffers").Content = _bufferControl;
         }
     }
 }

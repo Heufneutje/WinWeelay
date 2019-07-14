@@ -100,8 +100,6 @@ namespace WinWeelay.Core
             }
         }
 
-        public bool IsActiveBuffer => Connection.ActiveBuffer == this;
-
         public event EventHandler NameChanged;
         public event MessageAddedHandler MessageAdded;
         public event EventHandler TitleChanged;
@@ -225,7 +223,6 @@ namespace WinWeelay.Core
                 Connection.OutputHandler.MarkBufferAsRead(this);
 
             NotifyMessageCountUpdated();
-            NotifyPropertyChanged(nameof(IsActiveBuffer));
         }
 
         public void HandleUnselected()

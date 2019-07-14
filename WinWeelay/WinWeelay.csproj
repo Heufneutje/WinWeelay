@@ -113,6 +113,13 @@
     </Compile>
     <Compile Include="AttributeType.cs" />
     <Compile Include="ColorHelper.cs" />
+    <Compile Include="Controls\BufferListControl.xaml.cs">
+      <DependentUpon>BufferListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BufferTreeControl.xaml.cs">
+      <DependentUpon>BufferTreeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\IBufferControl.cs" />
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
     <Compile Include="TreeViewExtension.cs" />
@@ -128,6 +135,14 @@
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\BufferListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\BufferTreeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ResourceDictionaries\DarkLightBrushs.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

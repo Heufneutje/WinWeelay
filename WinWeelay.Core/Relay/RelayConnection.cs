@@ -57,7 +57,11 @@ namespace WinWeelay.Core
         public event ConnectionLostHandler ConnectionLost;
         public event HighlightHandler Highlighted;
 
-        public RelayConnection() { }
+        public RelayConnection()
+        {
+            Buffers = new ObservableCollection<RelayBuffer>();
+            OptionParser = new OptionParser();
+        }
 
         public RelayConnection(IBufferView view, RelayConfiguration configuration)
         {

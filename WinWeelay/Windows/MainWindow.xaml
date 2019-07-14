@@ -12,7 +12,6 @@
     mc:Ignorable="d"
         Title="{Binding Connection.Description}" Height="{Binding Connection.Configuration.WindowHeight, Mode=TwoWay}" Width="{Binding Connection.Configuration.WindowWidth, Mode=TwoWay}" Closing="Window_Closing" Loaded="Window_Loaded" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
     <Window.Resources>
-        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <BitmapImage x:Key="connectImage" UriSource="/WinWeelay;component/Resources/connect.png" />
         <BitmapImage x:Key="disconnectImage" UriSource="/WinWeelay;component/Resources/disconnect.png" />
         <BitmapImage x:Key="exitImage" UriSource="/WinWeelay;component/Resources/Application-cancel.png" />
@@ -159,31 +158,7 @@
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
-                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True">
-                                <TreeView x:Name="_buffersListBox" SelectedItemChanged="BuffersListBox_SelectionChanged" ItemsSource="{Binding Connection.RootBuffers, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch">
-                                    <TreeView.ItemContainerStyle>
-                                        <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
-                                            <Setter Property="IsExpanded" Value="True"/>
-                                            <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-                                        </Style>
-                                    </TreeView.ItemContainerStyle>
-                                    <TreeView.ItemTemplate>
-                                        <HierarchicalDataTemplate DataType="{x:Type core:RelayBuffer}" ItemsSource="{Binding Children}">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="*" />
-                                                    <ColumnDefinition Width="Auto" />
-                                                </Grid.ColumnDefinitions>
-                                                <Label Content="{Binding ShortName}" Grid.Column="0" Padding="1" HorizontalAlignment="Left" />
-                                                <Grid HorizontalAlignment="Right" Grid.Column="1" Visibility="{Binding IsBadgeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
-                                                    <Border BorderThickness="0" CornerRadius="2,2,2,2" Background="{Binding BadgeBackground}" Padding="5,0,5,0" />
-                                                    <Label Content="{Binding DisplayCount}" Foreground="White" />
-                                                </Grid>
-                                            </Grid>
-                                        </HierarchicalDataTemplate>
-                                    </TreeView.ItemTemplate>
-                                </TreeView>
-                            </xcad:LayoutAnchorable>
+                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True"/>
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>
                     <xcad:LayoutDocumentPaneGroup>
