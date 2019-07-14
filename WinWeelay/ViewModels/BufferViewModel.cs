@@ -106,7 +106,7 @@ namespace WinWeelay
             {
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
                 XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-                stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.Name));
+                stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
                 stringElements[1].AppendChild(toastXml.CreateTextNode(args.Message.UnformattedMessage));
 
                 string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
