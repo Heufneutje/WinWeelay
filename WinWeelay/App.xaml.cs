@@ -21,7 +21,7 @@ namespace WinWeelay
             base.OnStartup(e);
 
             MainWindow window = new MainWindow();
-            BufferViewModel model = new BufferViewModel(window);
+            MainViewModel model = new MainViewModel(window);
             window.DataContext = model;
 
             window.Show();

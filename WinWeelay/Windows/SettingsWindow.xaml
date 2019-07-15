@@ -9,7 +9,7 @@
     xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
-        Title="Settings" Height="299.208" Width="520.27" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
+        Title="Settings" Height="319.885" Width="520.27" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
     <Window.DataContext>
         <Configuration:RelayConfiguration />
     </Window.DataContext>
@@ -49,15 +49,22 @@
                 <GroupBox Header="Interface Settings" Margin="10,5">
                     <Grid>
                         <Label Content="Application Theme" HorizontalAlignment="Left" Margin="6,6,0,0" VerticalAlignment="Top" />
-                        <Label Content="Font Family" HorizontalAlignment="Left" Margin="6,33,0,0" VerticalAlignment="Top" />
-                        <Label Content="Font Size" HorizontalAlignment="Left" Margin="6,60,0,0" VerticalAlignment="Top" />
-                        <Label Content="Timestamp Format" HorizontalAlignment="Left" Margin="6,87,0,0" VerticalAlignment="Top" />
-                        <Label Content="Buffer List Type" HorizontalAlignment="Left" Margin="6,114,0,0" VerticalAlignment="Top" />
+                        <Label Content="Accent Color" HorizontalAlignment="Left" Margin="6,33,0,0" VerticalAlignment="Top" />
+                        <Label Content="Font Family" HorizontalAlignment="Left" Margin="6,60,0,0" VerticalAlignment="Top" />
+                        <Label Content="Font Size" HorizontalAlignment="Left" Margin="6,87,0,0" VerticalAlignment="Top" />
+                        <Label Content="Timestamp Format" HorizontalAlignment="Left" Margin="6,114,0,0" VerticalAlignment="Top" />
+                        <Label Content="Buffer List Type" HorizontalAlignment="Left" Margin="6,141,0,0" VerticalAlignment="Top" />
                         <ComboBox Margin="155,5,0,0" VerticalAlignment="Top" SelectedValue="{Binding Theme, NotifyOnSourceUpdated=True}">
                             <sys:String>Light</sys:String>
                             <sys:String>Dark</sys:String>
                         </ComboBox>
-                        <ComboBox x:Name="_fontComboBox" Margin="155,32,0,0" VerticalAlignment="Top" SelectedValue="{Binding FontFamily}">
+                        <Label Content="R" HorizontalAlignment="Left" Margin="150,33,0,0" VerticalAlignment="Top" />
+                        <CustomControls:NumericUpDown Margin="166,32,0,0" VerticalAlignment="Top" Value="{Binding AccentColor.RedValue, Mode=TwoWay}" Width="45" MaxValue="255" MinValue="0" HorizontalAlignment="Left" />
+                        <Label Content="G" HorizontalAlignment="Left" Margin="220,33,0,0" VerticalAlignment="Top" />
+                        <CustomControls:NumericUpDown Margin="236,32,0,0" VerticalAlignment="Top" Value="{Binding AccentColor.GreenValue, Mode=TwoWay}" Width="45" MaxValue="255" MinValue="0" HorizontalAlignment="Left" />
+                        <Label Content="B" HorizontalAlignment="Left" Margin="290,33,0,0" VerticalAlignment="Top" />
+                        <CustomControls:NumericUpDown Margin="306,32,0,0" VerticalAlignment="Top" Value="{Binding AccentColor.BlueValue, Mode=TwoWay}" Width="45" MaxValue="255" MinValue="0" HorizontalAlignment="Left" />
+                        <ComboBox x:Name="_fontComboBox" Margin="155,59,0,0" VerticalAlignment="Top" SelectedValue="{Binding FontFamily}">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <VirtualizingStackPanel />
@@ -69,12 +76,12 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <CustomControls:NumericUpDown Margin="155,59,0,0" VerticalAlignment="Top" Value="{Binding FontSize, Mode=TwoWay}" Width="Auto" MaxValue="50" MinValue="1" />
-                        <ComboBox HorizontalAlignment="Left" Margin="155,86,0,0" VerticalAlignment="Top" Width="122" SelectedValue="{Binding TimestampFormat, NotifyOnSourceUpdated=True}">
+                        <CustomControls:NumericUpDown Margin="155,86,0,0" VerticalAlignment="Top" Value="{Binding FontSize, Mode=TwoWay}" Width="45" MaxValue="50" MinValue="1" HorizontalAlignment="Left" />
+                        <ComboBox HorizontalAlignment="Left" Margin="155,113,0,0" VerticalAlignment="Top" Width="122" SelectedValue="{Binding TimestampFormat, NotifyOnSourceUpdated=True}">
                             <sys:String>HH:mm</sys:String>
                             <sys:String>HH:mm:ss</sys:String>
                         </ComboBox>
-                        <ComboBox HorizontalAlignment="Left" Margin="155,113,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding BufferViewTypes}" DisplayMemberPath="Description" SelectedValuePath="BufferViewType" SelectedValue="{Binding BufferViewType}" />
+                        <ComboBox HorizontalAlignment="Left" Margin="155,140,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding BufferViewTypes}" DisplayMemberPath="Description" SelectedValuePath="BufferViewType" SelectedValue="{Binding BufferViewType}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

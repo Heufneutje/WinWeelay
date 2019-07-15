@@ -13,12 +13,12 @@ using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WinWeelay
 {
-    public partial class MainWindow : MetroWindow, IBufferView
+    public partial class MainWindow : MetroWindow, Core.IBufferView
     {
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
         private SpellingManager _spellingManager;
         private bool _isManualSelection;
-        private IBufferControl _bufferControl;
+        private IBufferView _bufferControl;
 
         public MainWindow()
         {
@@ -36,7 +36,7 @@ namespace WinWeelay
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            BufferViewModel vm = (BufferViewModel)DataContext;
+            MainViewModel vm = (MainViewModel)DataContext;
             vm.DisconnectCommand.Execute(null);
             vm.SaveWindowSize();
             DockingManagerLayoutHelper.SaveLayout(_dockingManager);
@@ -52,7 +52,7 @@ namespace WinWeelay
             LayoutDocument layoutDocument;
             if (!_bufferControls.ContainsKey(buffer))
             {
-                BufferControl bufferControl = new BufferControl(buffer, _spellingManager);
+                BufferContentControl bufferControl = new BufferContentControl(buffer, _spellingManager);
                 layoutDocument = new LayoutDocument
                 {
                     Title = buffer.FullName,
@@ -72,17 +72,17 @@ namespace WinWeelay
                 layoutDocument = _bufferControls[buffer];
 
             buffer.HandleSelected();
-            ((BufferViewModel)DataContext).Connection.NotifyNicklistUpdated();
+            ((MainViewModel)DataContext).Connection.NotifyNicklistUpdated();
 
             layoutDocument.IsActive = true;
-            ((BufferViewModel)DataContext).UpdateBufferCommands();
+            ((MainViewModel)DataContext).UpdateBufferCommands();
             _isManualSelection = false;
         }
 
         private void NicklistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             RelayNicklistEntry nick = (RelayNicklistEntry)_nicklistListBox.SelectedItem;
-            ((BufferViewModel)DataContext).UpdateActiveNicklistEntry(nick);
+            ((MainViewModel)DataContext).UpdateActiveNicklistEntry(nick);
         }
 
         private void DockingManager_DocumentClosed(object sender, DocumentClosedEventArgs e)
@@ -97,14 +97,14 @@ namespace WinWeelay
                 buffer.HandleUnselected();
             }
 
-            ((BufferViewModel)DataContext).UpdateBufferCommands();
+            ((MainViewModel)DataContext).UpdateBufferCommands();
         }
 
         private void DockingManager_ActiveContentChanged(object sender, EventArgs e)
         {
-            if (_dockingManager.ActiveContent is BufferControl && !_isManualSelection)
+            if (_dockingManager.ActiveContent is BufferContentControl && !_isManualSelection)
             {
-                RelayBuffer buffer = ((BufferControl)_dockingManager.ActiveContent).Buffer;
+                RelayBuffer buffer = ((BufferContentControl)_dockingManager.ActiveContent).Buffer;
                 if (_bufferControl.GetSelectedBuffer() != buffer)
                     _bufferControl.SelectBuffer(buffer);
             }
@@ -114,7 +114,7 @@ namespace WinWeelay
         {
             RelayNicklistEntry nicklistEntry = (RelayNicklistEntry)GetElementFromPoint(_nicklistListBox, e.GetPosition(_nicklistListBox));
             if (nicklistEntry != null)
-                ((BufferViewModel)DataContext).Connection.OutputHandler.Input(nicklistEntry.Buffer, $@"/query {nicklistEntry.Name}");
+                ((MainViewModel)DataContext).Connection.OutputHandler.Input(nicklistEntry.Buffer, $@"/query {nicklistEntry.Name}");
         }
 
         private object GetElementFromPoint(ListBox box, Point point)
@@ -184,7 +184,7 @@ namespace WinWeelay
         {
             foreach (LayoutDocument document in _bufferControls.Values)
             {
-                BufferControl bufferControl = (BufferControl)document.Content;
+                BufferContentControl bufferControl = (BufferContentControl)document.Content;
                 bufferControl.UpdateFont();
             }
         }
@@ -204,7 +204,7 @@ namespace WinWeelay
             _spellingManager.IsEnabled = isEnabled;
         }
 
-        public void SetBufferControl(IBufferControl bufferControl)
+        public void SetBufferControl(IBufferView bufferControl)
         {
             _bufferControl = bufferControl;
             _bufferControl.SelectionChanged += BufferControl_SelectionChanged;

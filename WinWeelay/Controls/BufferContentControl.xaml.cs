@@ -11,9 +11,9 @@ using WinWeelay.Core;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for BufferControl.xaml
+    /// Interaction logic for BufferContentControl.xaml
     /// </summary>
-    public partial class BufferControl : UserControl
+    public partial class BufferContentControl : UserControl
     {
         private NickCompleter _nickCompleter;
         private MessageHistory _history;
@@ -23,7 +23,7 @@ namespace WinWeelay
 
         public RelayBuffer Buffer { get; private set; }
 
-        public BufferControl(RelayBuffer buffer, SpellingManager spellingManager)
+        public BufferContentControl(RelayBuffer buffer, SpellingManager spellingManager)
         {
             _nickCompleter = new NickCompleter(buffer);
             _history = new MessageHistory(buffer.Connection.Configuration);
