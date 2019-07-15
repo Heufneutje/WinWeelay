@@ -210,5 +210,10 @@ namespace WinWeelay
             _bufferControl.SelectionChanged += BufferControl_SelectionChanged;
             GetPanel("buffers").Content = _bufferControl;
         }
+
+        private void ViewMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainViewModel)DataContext).UpdateViewSettings();
+        }
     }
 }

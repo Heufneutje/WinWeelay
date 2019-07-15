@@ -27,6 +27,8 @@ namespace WinWeelay.Configuration
         public bool NotificationsEnabled { get; set; }
         public BufferViewType BufferViewType { get; set; }
         public AccentColor AccentColor { get; set; }
+        public bool IsToolbarVisible { get; set; }
+        public bool IsStatusBarVisible { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -53,12 +55,20 @@ namespace WinWeelay.Configuration
             IsSpellCheckEnabled = true;
             NotificationsEnabled = true;
             AccentColor = new AccentColor(33, 99, 255);
+            IsToolbarVisible = true;
+            IsStatusBarVisible = true;
         }
 
         public override void StartTrackingChanges()
         {
             base.StartTrackingChanges();
             AccentColor.StartTrackingChanges();
+        }
+
+        public void NotifyViewPropertiesChanged()
+        {
+            NotifyPropertyChanged(nameof(IsToolbarVisible));
+            NotifyPropertyChanged(nameof(IsStatusBarVisible));
         }
     }
 }

@@ -19,12 +19,12 @@ namespace WinWeelay
     public class MainViewModel : NotifyPropertyChangedBase
     {
         private MainWindow _mainWindow;
-        private RelayConfiguration _relayConfiguration;
         private Timer _retryTimer;
         private bool _isRetryingConnection;
         private ThemeManager _themeManager;
         private bool _isDownloadingUpdate;
-        
+
+        public RelayConfiguration RelayConfiguration { get; set; }
         public RelayConnection Connection { get; private set; }
         public string ConnectionStatus { get; set; }
 
@@ -58,15 +58,15 @@ namespace WinWeelay
             _retryTimer = new Timer(10000);
             _retryTimer.Elapsed += RetryTimer_Elapsed;
 
-            _relayConfiguration = ConfigurationHelper.LoadConfiguration();
-            Connection = new RelayConnection(window, _relayConfiguration);
+            RelayConfiguration = ConfigurationHelper.LoadConfiguration();
+            Connection = new RelayConnection(window, RelayConfiguration);
             SetBufferListType();
-            _mainWindow.ToggleSpellChecker(_relayConfiguration.IsSpellCheckEnabled);
+            _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 
             SetStatusText("Disconnected.");
 
             _themeManager = new ThemeManager();
-            _themeManager.InitializeThemes(_relayConfiguration);
+            _themeManager.InitializeThemes(RelayConfiguration);
 
             ConnectCommand = new DelegateCommand(Connect, CanConnect);
             DisconnectCommand = new DelegateCommand(Disconnect, CanDisconnect);
@@ -88,10 +88,10 @@ namespace WinWeelay
             Connection.ConnectionLost += Connection_ConnectionLost;
             Connection.Highlighted += Connection_Highlighted;
 
-            if (_relayConfiguration.AutoCheckUpdates)
+            if (RelayConfiguration.AutoCheckUpdates)
                 CheckForUpdate(false);
 
-            if (_relayConfiguration.AutoConnect)
+            if (RelayConfiguration.AutoConnect)
                 Connect(null);
         }
 
@@ -159,14 +159,14 @@ namespace WinWeelay
 
         private async void Connect(object parameter)
         {
-            if (string.IsNullOrEmpty(_relayConfiguration.Hostname) || _relayConfiguration.Port == 0)
+            if (string.IsNullOrEmpty(RelayConfiguration.Hostname) || RelayConfiguration.Port == 0)
             {
                 SetStatusText($"Connection failed, reason: configuration is invalid.");
                 return;
             }
 
             UpdateConnectionCommands();
-            SetStatusText($"Attempting to connect to {_relayConfiguration.ConnectionAddress}...");
+            SetStatusText($"Attempting to connect to {RelayConfiguration.ConnectionAddress}...");
 
             if (await Connection.Connect())
             {
@@ -219,13 +219,13 @@ namespace WinWeelay
         private void ShowSettingsWindow(object parameter)
         {
             RelayConfiguration config = new RelayConfiguration();
-            _relayConfiguration.CopyPropertiesTo(config);
+            RelayConfiguration.CopyPropertiesTo(config);
 
             SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(config)) { Owner = _mainWindow };
             if (settingsWindow.ShowDialog() == true)
             {
-                _relayConfiguration = settingsWindow.Configuration;
-                Connection.Configuration = _relayConfiguration;
+                RelayConfiguration = settingsWindow.Configuration;
+                Connection.Configuration = RelayConfiguration;
 
                 if (config.HasPropertyChanged(nameof(config.Theme)) || config.AccentColor.HasChanges())
                     _themeManager.UpdateTheme(config.Theme, config.AccentColor);
@@ -234,19 +234,19 @@ namespace WinWeelay
                     _mainWindow.UpdateFont();
 
                 if (config.HasPropertyChanged(nameof(config.IsSpellCheckEnabled)))
-                    _mainWindow.ToggleSpellChecker(_relayConfiguration.IsSpellCheckEnabled);
+                    _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 
                 if (config.HasPropertyChanged(nameof(config.BufferViewType)))
                     SetBufferListType();
 
-                _relayConfiguration.ResetTrackingChanges();
-                _relayConfiguration.StartTrackingChanges();
+                RelayConfiguration.ResetTrackingChanges();
+                RelayConfiguration.StartTrackingChanges();
             }
         }
 
         private void ShowAboutWindow(object parameter)
         {
-            AboutWindow aboutWindow = new AboutWindow(_relayConfiguration) { Owner = _mainWindow };
+            AboutWindow aboutWindow = new AboutWindow(RelayConfiguration) { Owner = _mainWindow };
             aboutWindow.ShowDialog();
         }
 
@@ -334,20 +334,33 @@ namespace WinWeelay
 
         public void SaveWindowSize()
         {
-            if (_relayConfiguration.HasPropertyChanged(nameof(_relayConfiguration.WindowWidth)) ||
-                _relayConfiguration.HasPropertyChanged(nameof(_relayConfiguration.WindowHeight)))
-                ConfigurationHelper.SaveConfiguration(_relayConfiguration);
+            if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.WindowWidth)) ||
+                RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.WindowHeight)))
+                ConfigurationHelper.SaveConfiguration(RelayConfiguration);
+        }
+
+        public void UpdateViewSettings()
+        {
+            if (RelayConfiguration.HasChanges())
+            {
+                ConfigurationHelper.SaveConfiguration(RelayConfiguration);
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsToolbarVisible)) || RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsStatusBarVisible)))
+                    RelayConfiguration.NotifyViewPropertiesChanged();
+
+                RelayConfiguration.ResetTrackingChanges();
+                RelayConfiguration.StartTrackingChanges();
+            }
         }
 
         private void SetStatusText(string message)
         {
-            ConnectionStatus = $"[{DateTime.Now.ToString(_relayConfiguration.TimestampFormat)}] {message}";
+            ConnectionStatus = $"[{DateTime.Now.ToString(RelayConfiguration.TimestampFormat)}] {message}";
             NotifyPropertyChanged(nameof(ConnectionStatus));
         }
 
         private void SetStatusConnected()
         {
-            SetStatusText($"Connected to {_relayConfiguration.ConnectionAddress}{(_relayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl ? " (secure connection)" : "")}.");
+            SetStatusText($"Connected to {RelayConfiguration.ConnectionAddress}{(RelayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl ? " (secure connection)" : "")}.");
         }
 
         private void CheckForUpdate(bool shouldPopUp)
@@ -436,7 +449,7 @@ namespace WinWeelay
 
         private void SetBufferListType()
         {
-            switch (_relayConfiguration.BufferViewType)
+            switch (RelayConfiguration.BufferViewType)
             {
                 case BufferViewType.List:
                     _mainWindow.SetBufferControl(new BufferListControl(Connection));
