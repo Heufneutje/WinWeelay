@@ -20,12 +20,12 @@ namespace WinWeelay
             _bufferTreeView.ClearSelection();
         }
 
-        public RelayBuffer GetSelectedItem()
+        public RelayBuffer GetSelectedBuffer()
         {
             return (RelayBuffer)_bufferTreeView.SelectedItem;
         }
 
-        public void SelectItem(RelayBuffer buffer)
+        public void SelectBuffer(RelayBuffer buffer)
         {
             _bufferTreeView.SelectItem(buffer);
         }

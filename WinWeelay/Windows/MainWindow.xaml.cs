@@ -44,7 +44,7 @@ namespace WinWeelay
 
         private void BufferControl_SelectionChanged(object sender, EventArgs e)
         {
-            RelayBuffer buffer = _bufferControl.GetSelectedItem();
+            RelayBuffer buffer = _bufferControl.GetSelectedBuffer();
             if (buffer == null)
                 return;
 
@@ -91,7 +91,7 @@ namespace WinWeelay
             if (buffer != null)
                 _bufferControls.Remove(buffer);
 
-            if (_bufferControl.GetSelectedItem() == buffer)
+            if (_bufferControl.GetSelectedBuffer() == buffer)
             {
                 _bufferControl.ClearSelection();
                 buffer.HandleUnselected();
@@ -105,8 +105,8 @@ namespace WinWeelay
             if (_dockingManager.ActiveContent is BufferControl && !_isManualSelection)
             {
                 RelayBuffer buffer = ((BufferControl)_dockingManager.ActiveContent).Buffer;
-                if (_bufferControl.GetSelectedItem() != buffer)
-                    _bufferControl.SelectItem(buffer);
+                if (_bufferControl.GetSelectedBuffer() != buffer)
+                    _bufferControl.SelectBuffer(buffer);
             }
         }
 

@@ -7,9 +7,9 @@ namespace WinWeelay
     {
         event EventHandler SelectionChanged;
 
-        RelayBuffer GetSelectedItem();
+        RelayBuffer GetSelectedBuffer();
 
-        void SelectItem(RelayBuffer buffer);
+        void SelectBuffer(RelayBuffer buffer);
 
         void ClearSelection();
     }

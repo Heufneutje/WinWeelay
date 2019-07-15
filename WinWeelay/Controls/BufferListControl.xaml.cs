@@ -22,12 +22,12 @@ namespace WinWeelay
             _bufferListBox.SelectedItem = null;
         }
 
-        public RelayBuffer GetSelectedItem()
+        public RelayBuffer GetSelectedBuffer()
         {
             return (RelayBuffer)_bufferListBox.SelectedItem;
         }
 
-        public void SelectItem(RelayBuffer buffer)
+        public void SelectBuffer(RelayBuffer buffer)
         {
             _bufferListBox.SelectedItem = buffer;
         }
