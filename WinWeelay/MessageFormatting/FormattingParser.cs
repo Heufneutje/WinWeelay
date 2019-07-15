@@ -332,6 +332,9 @@ namespace WinWeelay
 
         private string ParseUrls(string message)
         {
+            if (string.IsNullOrEmpty(message))
+                return string.Empty;
+
             return _urlRegex.Replace(message, "\u001a\u0010$1\u001b\u0010");
         }
     }

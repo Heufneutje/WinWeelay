@@ -231,6 +231,9 @@ namespace WinWeelay.Core
         private void ParseBufferLines(RelayMessage message)
         {
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
+            if (!hdata.Any())
+                return;
+
             List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
             Dictionary<RelayBuffer, List<RelayBufferMessage>> newMessages = new Dictionary<RelayBuffer, List<RelayBufferMessage>>();
             int linePointerIndex = hdata.PathList.ToList().IndexOf("line_data");
