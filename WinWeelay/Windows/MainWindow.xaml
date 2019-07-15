@@ -228,7 +228,7 @@
                 </Button>
             </ToolBar>
         </ToolBarTray>
-        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Grid.Row="2" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="2">
+        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Grid.Row="2" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
             <xcad:DockingManager.DocumentHeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />
