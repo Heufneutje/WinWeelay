@@ -34,7 +34,6 @@ namespace WinWeelay
         public DelegateCommand CloseBufferCommand { get; private set; }
         public DelegateCommand ExitCommand { get; private set; }
         public DelegateCommand SettingsCommand { get; private set; }
-        public DelegateCommand StopConnectingCommand { get; private set; }
         public DelegateCommand AboutCommand { get; private set; }
         public DelegateCommand WhoisCommand { get; private set; }
         public DelegateCommand QueryCommand { get; private set; }
@@ -75,7 +74,6 @@ namespace WinWeelay
             CloseBufferCommand = new DelegateCommand(CloseBuffer, IsBufferSelected);
             ExitCommand = new DelegateCommand(Exit);
             SettingsCommand = new DelegateCommand(ShowSettingsWindow);
-            StopConnectingCommand = new DelegateCommand(StopConnecting, CanStopConnecting);
             AboutCommand = new DelegateCommand(ShowAboutWindow);
             WhoisCommand = new DelegateCommand(SendWhois, IsNickSelected);
             QueryCommand = new DelegateCommand(OpenQuery, IsNickSelected);
@@ -182,28 +180,20 @@ namespace WinWeelay
 
         private bool CanDisconnect(object parameter)
         {
-            return Connection.IsConnected;
+            return Connection.IsConnected || _isRetryingConnection;
         }
 
         private void Disconnect(object parameter)
         {
-            if (CanDisconnect(parameter))
+            if (Connection.IsConnected)
                 Connection.Disconnect(true);
+            else
+            {
+                _isRetryingConnection = false;
+                _retryTimer.Stop();
+            }
             UpdateConnectionCommands();
             SetStatusText($"Disconnected.");
-        }
-
-        private bool CanStopConnecting(object parameter)
-        {
-            return _isRetryingConnection;
-        }
-
-        private void StopConnecting(object parameter)
-        {
-            _isRetryingConnection = false;
-            _retryTimer.Stop();
-            UpdateConnectionCommands();
-            SetStatusText("Disconnected.");
         }
 
         private bool IsBufferSelected(object parameter)
@@ -320,7 +310,6 @@ namespace WinWeelay
         {
             ConnectCommand.OnCanExecuteChanged();
             DisconnectCommand.OnCanExecuteChanged();
-            StopConnectingCommand.OnCanExecuteChanged();
         }
 
         public void UpdateBufferCommands()

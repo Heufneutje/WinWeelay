@@ -25,7 +25,14 @@
         <BitmapImage x:Key="checkForUpdatesImage" UriSource="/WinWeelay;component/Resources/Web-Download.png"/>
     </Window.Resources>
     <Grid>
-        <Menu x:Name="menu" VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu x:Name="menu" Grid.Row="0">
             <MenuItem Header="File" >
                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}">
                     <MenuItem.Icon>
@@ -41,14 +48,6 @@
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
                         <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay."/>
-                    </MenuItem.ToolTip>
-                </MenuItem>
-                <MenuItem Header="Stop Connecting" Command="{Binding StopConnectingCommand}">
-                    <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource disconnectImage}"/>
-                    </MenuItem.Icon>
-                    <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Stop Connecting" Description="Stop trying to connect after a connection attempt fails."/>
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <Separator />
@@ -145,7 +144,77 @@
                 </MenuItem>
             </MenuItem>
         </Menu>
-        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Margin="5,23,5,22" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}">
+        <ToolBarTray VerticalAlignment="Top" Grid.Row="1" IsLocked="True">
+            <ToolBar Name="Connection">
+                <Button Command="{Binding ConnectCommand}">
+                    <Image Source="{StaticResource connectImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Connect" Description="Connect to a WeeChat relay with the current settings."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding DisconnectCommand}">
+                    <Image Source="{StaticResource disconnectImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay."/>
+                    </Button.ToolTip>
+                </Button>
+            </ToolBar>
+            <ToolBar Name="Buffer">
+                <Button Command="{Binding LoadMoreMessagesCommand}">
+                    <Image Source="{StaticResource loadMoreMessagesImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Load More Messages" Description="Retrieve messages that are older than the current backlog. Note: due to a limitation in WeeChat this could be slow due to needing to reprocess all current messages in the buffer."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding HideBufferCommand}">
+                    <Image Source="{StaticResource hideBufferTabImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Hide Buffer Tab" Description="Close the active buffer in the relay only. It can be reopened at any time by clicking the buffer in the buffers list."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding CloseBufferCommand}">
+                    <Image Source="{StaticResource closeBufferImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Close Buffer" Description="Close the active buffer in both the relay and WeeChat. The /CLOSE command will be sent to the buffer."/>
+                    </Button.ToolTip>
+                </Button>
+            </ToolBar>
+            <ToolBar Name="Tools">
+                <Button Command="{Binding SettingsCommand}">
+                    <Image Source="{StaticResource settingsImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
+                    </Button.ToolTip>
+                </Button>
+            </ToolBar>
+            <ToolBar Name="Help">
+                <Button Command="{Binding IssueTrackerCommand}">
+                    <Image Source="{StaticResource issueTrackerImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Issue Tracker" Description="Open WinWeelay's issue tracker on GitHub."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding SourceCodeCommand}">
+                    <Image Source="{StaticResource sourceCodeImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding CheckForUpdateCommand}">
+                    <Image Source="{StaticResource checkForUpdatesImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Check for Updates" Description="Check whether a newer version of WinWeelay is available for download."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding AboutCommand}">
+                    <Image Source="{StaticResource aboutImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="About" Description="Show information about WinWeelay."/>
+                    </Button.ToolTip>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <xcad:DockingManager x:Name="_dockingManager" AllowMixedOrientation="True" DocumentClosed="DockingManager_DocumentClosed" ActiveContentChanged="DockingManager_ActiveContentChanged" Grid.Row="2" IsEnabled="{Binding Connection.IsConnected, UpdateSourceTrigger=PropertyChanged}" Grid.RowSpan="2">
             <xcad:DockingManager.DocumentHeaderTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding Title}" />
@@ -188,7 +257,7 @@
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>
-        <StatusBar Height="22" VerticalAlignment="Bottom">
+        <StatusBar Grid.Row="3">
             <StatusBarItem x:Name="_connectionStatusBarItem">
                 <StatusBarItem.Content>
                     <TextBlock TextTrimming="WordEllipsis" Text="{Binding ConnectionStatus}" />
