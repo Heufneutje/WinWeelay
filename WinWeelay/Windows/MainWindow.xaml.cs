@@ -103,7 +103,11 @@ namespace WinWeelay
         private void DockingManager_ActiveContentChanged(object sender, EventArgs e)
         {
             if (_dockingManager.ActiveContent is BufferControl && !_isManualSelection)
-                _bufferControl.SelectItem(((BufferControl)_dockingManager.ActiveContent).Buffer);
+            {
+                RelayBuffer buffer = ((BufferControl)_dockingManager.ActiveContent).Buffer;
+                if (_bufferControl.GetSelectedItem() != buffer)
+                    _bufferControl.SelectItem(buffer);
+            }
         }
 
         private void NicklistListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
