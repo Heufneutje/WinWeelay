@@ -100,7 +100,7 @@ namespace WinWeelay
             args.Message.IsNotified = true;
 
 #if WINDOWS10_SDK
-            if (_relayConfiguration.NotificationsEnabled && (args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive))
+            if (RelayConfiguration.NotificationsEnabled && (args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive))
             {
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
                 XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
