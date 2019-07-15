@@ -14,23 +14,23 @@ namespace WinWeelay
         {
             get
             {
-                return (RelayConfiguration)DataContext;
+                return ((SettingsViewModel)DataContext).Configuration;
             }
         }
 
-        public SettingsWindow(RelayConfiguration relayConfiguration)
+        public SettingsWindow(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
-            DataContext = relayConfiguration;
-            _passwordBox.Password = Cipher.Decrypt(relayConfiguration.RelayPassword);
-            relayConfiguration.StartTrackingChanges();
+            DataContext = settingsViewModel;
+            _passwordBox.Password = Cipher.Decrypt(settingsViewModel.Configuration.RelayPassword);
+            settingsViewModel.Configuration.StartTrackingChanges();
 
             _fontComboBox.ItemsSource = FormattingUtils.GetInstalledFonts();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            RelayConfiguration relayConfiguration = (RelayConfiguration)DataContext;
+            RelayConfiguration relayConfiguration = ((SettingsViewModel)DataContext).Configuration;
             relayConfiguration.RelayPassword = Cipher.Encrypt(_passwordBox.Password);
 
             if (relayConfiguration.HasChanges())
@@ -45,6 +45,11 @@ namespace WinWeelay
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
+        }
+
+        private void AccentColor_ValueChanged(object sender, System.EventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifyAccentColorChanged();
         }
     }
 }

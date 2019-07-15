@@ -36,13 +36,13 @@ namespace WinWeelay
 
             }, _themeInfos);
 
-            UpdateTheme(relayConfiguration.Theme);
+            UpdateTheme(relayConfiguration.Theme, relayConfiguration.AccentColor);
         }
 
-        public void UpdateTheme(string theme)
+        public void UpdateTheme(string theme, AccentColor accentColor)
         {
             (Application.Current as App).ChangeSkin(theme);
-            _appearanceManager.SetTheme(_themeInfos, theme, Color.FromRgb(33, 99, 255));
+            _appearanceManager.SetTheme(_themeInfos, theme, Color.FromRgb(accentColor.RedValue, accentColor.GreenValue, accentColor.BlueValue));
         }
     }
 }

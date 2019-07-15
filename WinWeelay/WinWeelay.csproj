@@ -123,6 +123,7 @@
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
     <Compile Include="Extensions\TreeViewExtension.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
     </Compile>

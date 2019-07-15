@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -15,6 +16,8 @@ namespace WinWeelay.CustomControls
         public readonly static DependencyProperty ValueProperty;
         public readonly static DependencyProperty StepProperty;
 
+        public event EventHandler ValueChanged;
+
         public int MaxValue
         {
             get { return (int)GetValue(MaximumProperty); }
@@ -30,7 +33,11 @@ namespace WinWeelay.CustomControls
         public int Value
         {
             get { return (int)GetValue(ValueProperty); }
-            set { SetCurrentValue(ValueProperty, value); }
+            set
+            {
+                SetCurrentValue(ValueProperty, value);
+                ValueChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         public int StepValue
@@ -90,12 +97,15 @@ namespace WinWeelay.CustomControls
             int number = 0;
             if (_numericUpDownTextBox.Text != "")
                 if (!int.TryParse(_numericUpDownTextBox.Text, out number))
-                    _numericUpDownTextBox.Text = Value.ToString();
+                    number = Value;
 
             if (number > MaxValue)
-                _numericUpDownTextBox.Text = MaxValue.ToString();
+                number = MaxValue;
             if (number < MinValue)
-                _numericUpDownTextBox.Text = MinValue.ToString();
+                number = MinValue;
+
+            Value = number;
+            _numericUpDownTextBox.Text = number.ToString();
             _numericUpDownTextBox.SelectionStart = _numericUpDownTextBox.Text.Length;
         }
 

@@ -26,6 +26,7 @@ namespace WinWeelay.Configuration
         public bool IsSpellCheckEnabled { get; set; }
         public bool NotificationsEnabled { get; set; }
         public BufferViewType BufferViewType { get; set; }
+        public AccentColor AccentColor { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -34,26 +35,6 @@ namespace WinWeelay.Configuration
             get
             {
                 return $"{Hostname}:{Port}";
-            }
-        }
-
-        [JsonIgnore]
-        [ChangeTrackingIgnore]
-        public IEnumerable<ConnectionTypeWrapper> ConnectionTypes
-        {
-            get
-            {
-                return ConnectionTypeWrapper.GetTypes();
-            }
-        }
-
-        [JsonIgnore]
-        [ChangeTrackingIgnore]
-        public IEnumerable<BufferViewTypeWrapper> BufferViewTypes
-        {
-            get
-            {
-                return BufferViewTypeWrapper.GetTypes();
             }
         }
 
@@ -71,12 +52,13 @@ namespace WinWeelay.Configuration
             AutoCheckUpdates = true;
             IsSpellCheckEnabled = true;
             NotificationsEnabled = true;
+            AccentColor = new AccentColor(33, 99, 255);
         }
 
-        public void NotifyThemeChanged()
+        public override void StartTrackingChanges()
         {
-            NotifyPropertyChanged(nameof(FontSize));
-            NotifyPropertyChanged(nameof(FontFamily));
+            base.StartTrackingChanges();
+            AccentColor.StartTrackingChanges();
         }
     }
 }

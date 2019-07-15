@@ -17,7 +17,7 @@ namespace WinWeelay.Utils
         [NonSerialized]
         private bool _hasChangesCache;
 
-        public void StartTrackingChanges()
+        public virtual void StartTrackingChanges()
         {
             _originalValues = new Dictionary<string, object>();
 

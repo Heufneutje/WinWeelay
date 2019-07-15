@@ -5,18 +5,18 @@ using System.ComponentModel;
 using System.Timers;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
-using WinWeelay.Properties;
 using WinWeelay.Utils;
 using System.Windows;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+using WinWeelay.Properties;
 #endif
 
 namespace WinWeelay
 {
-    public class BufferViewModel : NotifyPropertyChangedBase
+    public class MainViewModel : NotifyPropertyChangedBase
     {
         private MainWindow _mainWindow;
         private RelayConfiguration _relayConfiguration;
@@ -46,9 +46,9 @@ namespace WinWeelay
         public DelegateCommand IssueTrackerCommand { get; private set; }
         public DelegateCommand CheckForUpdateCommand { get; private set; }
 
-        public BufferViewModel() { }
+        public MainViewModel() { }
 
-        public BufferViewModel(MainWindow window)
+        public MainViewModel(MainWindow window)
         {
             _mainWindow = window;
 
@@ -231,14 +231,14 @@ namespace WinWeelay
             RelayConfiguration config = new RelayConfiguration();
             _relayConfiguration.CopyPropertiesTo(config);
 
-            SettingsWindow settingsWindow = new SettingsWindow(config) { Owner = _mainWindow };
+            SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(config)) { Owner = _mainWindow };
             if (settingsWindow.ShowDialog() == true)
             {
                 _relayConfiguration = settingsWindow.Configuration;
                 Connection.Configuration = _relayConfiguration;
 
-                if (config.HasPropertyChanged(nameof(config.Theme)))
-                    _themeManager.UpdateTheme(config.Theme);
+                if (config.HasPropertyChanged(nameof(config.Theme)) || config.AccentColor.HasChanges())
+                    _themeManager.UpdateTheme(config.Theme, config.AccentColor);
 
                 if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
                     _mainWindow.UpdateFont();
