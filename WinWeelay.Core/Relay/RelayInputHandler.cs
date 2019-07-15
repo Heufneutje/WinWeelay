@@ -282,10 +282,16 @@ namespace WinWeelay.Core
         private void ParseBufferOpened(RelayMessage message)
         {
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
-            RelayBuffer buffer = new RelayBuffer(_connection, hdata[0]);
-            _connection.Buffers.Add(buffer);
-            _connection.SortBuffers();
-            _connection.NotifyBuffersChanged();
+            WeechatHdataEntry entry = hdata[0];
+
+            string bufferName = null;
+            if (entry.DataContainsKey("full_name"))
+                bufferName = entry["full_name"].AsString();
+            else if (entry.DataContainsKey("name"))
+                bufferName = entry["name"].AsString();
+
+            if (bufferName != null)
+                _connection.OutputHandler.RequestBufferList();
         }
 
         private void ParseBufferClosing(RelayMessage message)
