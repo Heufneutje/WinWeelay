@@ -2,7 +2,7 @@
 
 namespace WinWeelay.Core
 {
-    public interface IBufferView
+    public interface IBufferWindow
     {
         void CloseBuffer(RelayBuffer buffer);
     }

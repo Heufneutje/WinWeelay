@@ -3,7 +3,7 @@ using WinWeelay.Core;
 
 namespace WinWeelay
 {
-    public interface IBufferView
+    public interface IBufferDockView
     {
         event EventHandler SelectionChanged;
 

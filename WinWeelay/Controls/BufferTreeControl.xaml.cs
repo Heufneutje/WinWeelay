@@ -5,7 +5,7 @@ using WinWeelay.Core;
 
 namespace WinWeelay
 {
-    public partial class BufferTreeControl : UserControl, IBufferView
+    public partial class BufferTreeControl : UserControl, IBufferDockView
     {
         public event EventHandler SelectionChanged;
 

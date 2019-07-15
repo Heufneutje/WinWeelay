@@ -7,7 +7,7 @@ namespace WinWeelay
     /// <summary>
     /// Interaction logic for BufferListControl.xaml
     /// </summary>
-    public partial class BufferListControl : UserControl, IBufferView
+    public partial class BufferListControl : UserControl, IBufferDockView
     {
         public event EventHandler SelectionChanged;
 

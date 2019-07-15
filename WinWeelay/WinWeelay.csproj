@@ -119,7 +119,7 @@
     <Compile Include="Controls\BufferTreeControl.xaml.cs">
       <DependentUpon>BufferTreeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\IBufferView.cs" />
+    <Compile Include="Controls\IBufferDockView.cs" />
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
     <Compile Include="Extensions\TreeViewExtension.cs" />

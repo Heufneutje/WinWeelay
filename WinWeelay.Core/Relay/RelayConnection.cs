@@ -16,7 +16,7 @@ namespace WinWeelay.Core
     {
         private TcpClient _tcpClient;
         private Stream _networkStream;
-        private IBufferView _bufferView;
+        private IBufferWindow _bufferView;
         private Timer _pingTimer;
         
         public RelayInputHandler InputHandler { get; private set; }
@@ -63,7 +63,7 @@ namespace WinWeelay.Core
             OptionParser = new OptionParser();
         }
 
-        public RelayConnection(IBufferView view, RelayConfiguration configuration)
+        public RelayConnection(IBufferWindow view, RelayConfiguration configuration)
         {
             Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;

@@ -13,12 +13,12 @@ using Xceed.Wpf.AvalonDock.Layout;
 
 namespace WinWeelay
 {
-    public partial class MainWindow : MetroWindow, Core.IBufferView
+    public partial class MainWindow : MetroWindow, IBufferWindow
     {
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
         private SpellingManager _spellingManager;
         private bool _isManualSelection;
-        private IBufferView _bufferControl;
+        private IBufferDockView _bufferControl;
 
         public MainWindow()
         {
@@ -204,7 +204,7 @@ namespace WinWeelay
             _spellingManager.IsEnabled = isEnabled;
         }
 
-        public void SetBufferControl(IBufferView bufferControl)
+        public void SetBufferControl(IBufferDockView bufferControl)
         {
             _bufferControl = bufferControl;
             _bufferControl.SelectionChanged += BufferControl_SelectionChanged;
