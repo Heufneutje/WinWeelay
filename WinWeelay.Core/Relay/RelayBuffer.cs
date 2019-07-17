@@ -11,7 +11,6 @@ namespace WinWeelay.Core
         private List<RelayBufferMessage> _messages;
         private bool _hasBacklog;
         private bool _hasNicklist;
-        private int _backlogOffset;
 
         public RelayConnection Connection { get; private set; }
 
@@ -279,14 +278,18 @@ namespace WinWeelay.Core
 
         public void LoadMoreMessages()
         {
-            int size = Connection.Configuration.BacklogSize;
-            string messageId = MessageIds.CustomGetBufferBacklog;
+            int size;
+            string messageId;
 
             if (_hasBacklog)
             {
-                _backlogOffset += 100;
-                size += _backlogOffset;
+                size = Messages.Count + 100;
                 messageId = MessageIds.CustomGetBufferBacklogExtra;
+            }
+            else
+            {
+                size = Connection.Configuration.BacklogSize;
+                messageId = MessageIds.CustomGetBufferBacklog;
             }
 
             Connection.OutputHandler.RequestBufferBacklog(this, size, messageId);
