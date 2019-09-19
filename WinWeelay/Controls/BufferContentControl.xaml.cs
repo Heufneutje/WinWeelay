@@ -135,7 +135,7 @@ namespace WinWeelay
         {
             bool hasMessages = _conversationDocument.Blocks.Any();
             bool scrollToEnd = !hasMessages || _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
-            Paragraph paragraph = _formattingParser.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat);           
+            Paragraph paragraph = _formattingParser.FormatMessage(message, Buffer.Connection.Configuration.TimestampFormat, Buffer.Connection.Configuration.IsMessageFormattingEnabled);
 
             if (addToEnd || !hasMessages)
                 _conversationDocument.Blocks.Add(paragraph);
@@ -175,10 +175,10 @@ namespace WinWeelay
             }
         }
 
-        private void UpdateTitle()
+        public void UpdateTitle()
         {
             _titleDocument.Blocks.Clear();
-            _titleDocument.Blocks.Add(_formattingParser.FormatString(Buffer.Title));
+            _titleDocument.Blocks.Add(_formattingParser.FormatString(Buffer.Title, Buffer.Connection.Configuration.IsMessageFormattingEnabled));
         }
     }
 }

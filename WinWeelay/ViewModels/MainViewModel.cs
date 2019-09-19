@@ -243,6 +243,13 @@ namespace WinWeelay
                 if (config.HasPropertyChanged(nameof(config.BufferViewType)))
                     SetBufferListType();
 
+                if (config.HasPropertyChanged(nameof(config.IsMessageFormattingEnabled)))
+                {
+                    _mainWindow.UpdateFormattingSettings();
+                    foreach (RelayBuffer buffer in Connection.Buffers)
+                        buffer.ReinitMessages();
+                }
+
                 RelayConfiguration.ResetTrackingChanges();
                 RelayConfiguration.StartTrackingChanges();
             }

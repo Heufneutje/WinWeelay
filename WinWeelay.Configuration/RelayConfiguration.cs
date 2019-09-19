@@ -24,6 +24,7 @@ namespace WinWeelay.Configuration
         public string Theme { get; set; }
         public bool AutoCheckUpdates { get; set; }
         public bool IsSpellCheckEnabled { get; set; }
+        public bool IsMessageFormattingEnabled { get; set; }
         public bool NotificationsEnabled { get; set; }
         public BufferViewType BufferViewType { get; set; }
         public AccentColor AccentColor { get; set; }
@@ -53,6 +54,7 @@ namespace WinWeelay.Configuration
             Theme = Themes.Light;
             AutoCheckUpdates = true;
             IsSpellCheckEnabled = true;
+            IsMessageFormattingEnabled = true;
             NotificationsEnabled = true;
             AccentColor = new AccentColor(33, 99, 255);
             IsToolbarVisible = true;

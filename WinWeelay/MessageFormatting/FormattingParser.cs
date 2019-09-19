@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using WinWeelay.Configuration;
 using WinWeelay.Core;
 
 namespace WinWeelay
@@ -13,6 +14,7 @@ namespace WinWeelay
     {
         private ColorHelper _colorHelper;
         private OptionParser _optionParser;
+        private bool _parseFormatting;
 
         private int _index;
         private string _formattedString;
@@ -30,8 +32,10 @@ namespace WinWeelay
             _urlRegex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
-        public Paragraph FormatMessage(RelayBufferMessage message, string timestampFormat)
+        public Paragraph FormatMessage(RelayBufferMessage message, string timestampFormat, bool parseFormatting)
         {
+            _parseFormatting = parseFormatting;
+
             string formattedDate = $"[{message.Date.ToString(timestampFormat)}] ";
 
             string highlightFormatting = null;
@@ -60,8 +64,10 @@ namespace WinWeelay
             return paragraph;
         }
 
-        public Paragraph FormatString(string formattedString)
+        public Paragraph FormatString(string formattedString, bool parseFormatting)
         {
+            _parseFormatting = parseFormatting;
+
             Paragraph paragraph = new Paragraph();
             paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(formattedString)));
             return paragraph;
@@ -278,12 +284,25 @@ namespace WinWeelay
                 return;
 
             Inline inline = new Run(_messagePart);
-            if (_attributes.Contains(AttributeType.Bold))
-                inline = new Bold(inline);
-            if (_attributes.Contains(AttributeType.Italic))
-                inline = new Italic(inline);
-            if (_attributes.Contains(AttributeType.Underline))
-                inline = new Underline(inline);
+
+            if (_parseFormatting)
+            {
+                if (_attributes.Contains(AttributeType.Bold))
+                    inline = new Bold(inline);
+                if (_attributes.Contains(AttributeType.Italic))
+                    inline = new Italic(inline);
+                if (_attributes.Contains(AttributeType.Underline))
+                    inline = new Underline(inline);
+                
+                Color color = GetColor(_foreColor);
+                if (color != default)
+                    inline.Foreground = new SolidColorBrush() { Color = color };
+
+                color = GetColor(_backColor);
+                if (color != default)
+                    inline.Background = new SolidColorBrush() { Color = color };
+            }
+
             if (_attributes.Contains(AttributeType.Hyperlink) && IsValidUri())
             {
                 Hyperlink link = new Hyperlink(inline);
@@ -291,14 +310,6 @@ namespace WinWeelay
                 link.RequestNavigate += Link_RequestNavigate;
                 inline = link;
             }
-
-            Color color = GetColor(_foreColor);
-            if (color != default)
-                inline.Foreground = new SolidColorBrush() { Color = color };
-
-            color = GetColor(_backColor);
-            if (color != default)
-                inline.Background = new SolidColorBrush() { Color = color };
 
             _messagePart = string.Empty;
             _inlines.Add(inline);

@@ -189,6 +189,15 @@ namespace WinWeelay
             }
         }
 
+        public void UpdateFormattingSettings()
+        {
+            foreach (LayoutDocument document in _bufferControls.Values)
+            {
+                BufferContentControl bufferControl = (BufferContentControl)document.Content;
+                bufferControl.UpdateTitle();
+            }
+        }
+
         public void SetProgressBarVisibility(bool visible)
         {
             _progressBar.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;

@@ -87,6 +87,7 @@
                             <sys:String>HH:mm:ss</sys:String>
                         </ComboBox>
                         <ComboBox HorizontalAlignment="Left" Margin="155,140,0,0" VerticalAlignment="Top" Width="126" ItemsSource="{Binding BufferViewTypes}" DisplayMemberPath="Description" SelectedValuePath="BufferViewType" SelectedValue="{Binding Configuration.BufferViewType}" />
+                        <CheckBox Content="Enable Message Formatting" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsMessageFormattingEnabled}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
