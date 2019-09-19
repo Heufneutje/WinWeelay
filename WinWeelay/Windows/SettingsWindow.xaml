@@ -29,7 +29,7 @@
                         <TextBox Height="22" Margin="155,32,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Configuration.Hostname}" />
                         <CustomControls:NumericUpDown Margin="155,59,0,0" VerticalAlignment="Top" Value="{Binding Configuration.Port, Mode=TwoWay}" Width="70" MaxValue="99999" MinValue="1" HorizontalAlignment="Left" />
                         <PasswordBox x:Name="_passwordBox" Margin="155,86,3,0" VerticalAlignment="Top" Height="22" />
-                        <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="10,120,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoConnect}" />
+                        <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoConnect}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -40,8 +40,8 @@
                         <Label Content="Message History Size" HorizontalAlignment="Left" Margin="6,35,0,0" VerticalAlignment="Top" />
                         <CustomControls:NumericUpDown Margin="155,5,0,0" VerticalAlignment="Top" Value="{Binding Configuration.BacklogSize, Mode=TwoWay}" Width="70" MaxValue="1000" MinValue="0" HorizontalAlignment="Left" />
                         <CustomControls:NumericUpDown Margin="155,32,0,0" VerticalAlignment="Top" Value="{Binding Configuration.HistorySize}" Width="70" MaxValue="50" MinValue="1" HorizontalAlignment="Left" />
-                        <CheckBox Content="Sync Read Messages with WeeChat" HorizontalAlignment="Left" Margin="10,66,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.SyncReadMessages}" />
-                        <CheckBox Content="Enable Spell Checker" HorizontalAlignment="Left" Margin="10,93,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsSpellCheckEnabled}" />
+                        <CheckBox Content="Sync Read Messages with WeeChat" HorizontalAlignment="Left" Margin="6,66,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.SyncReadMessages}" />
+                        <CheckBox Content="Enable Spell Checker" HorizontalAlignment="Left" Margin="6,93,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsSpellCheckEnabled}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -87,15 +87,15 @@
                             <sys:String>HH:mm:ss</sys:String>
                         </ComboBox>
                         <ComboBox HorizontalAlignment="Left" Margin="155,140,0,0" VerticalAlignment="Top" Width="126" ItemsSource="{Binding BufferViewTypes}" DisplayMemberPath="Description" SelectedValuePath="BufferViewType" SelectedValue="{Binding Configuration.BufferViewType}" />
-                        <CheckBox Content="Enable Message Formatting" HorizontalAlignment="Left" Margin="10,171,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsMessageFormattingEnabled}" />
+                        <CheckBox Content="Enable Message Formatting" HorizontalAlignment="Left" Margin="6,171,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsMessageFormattingEnabled}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
             <TabItem Header="General">
                 <GroupBox Header="General Settings" Margin="10,5">
                     <Grid>
-                        <CheckBox Content="Automatically Check for Updates" HorizontalAlignment="Left" Margin="10,9,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoCheckUpdates}" />
-                        <CheckBox Content="Enable Notifications" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabled}" />
+                        <CheckBox Content="Automatically Check for Updates" HorizontalAlignment="Left" Margin="6,9,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoCheckUpdates}" />
+                        <CheckBox Content="Enable Notifications" HorizontalAlignment="Left" Margin="6,38,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabled}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
