@@ -276,6 +276,18 @@ namespace WinWeelay.Core
                 SendMessage($"/kickban {ActiveNicklistEntry.Name}");
         }
 
+        public void SendClear()
+        {
+            SendMessage("/buffer clear");
+        }
+
+        public void ReinitMessages()
+        {
+            _hasBacklog = false;
+            ClearMessages();
+            LoadMoreMessages();
+        }
+
         public void LoadMoreMessages()
         {
             int size;

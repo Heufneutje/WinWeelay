@@ -44,6 +44,8 @@ namespace WinWeelay
         public DelegateCommand SourceCodeCommand { get; private set; }
         public DelegateCommand IssueTrackerCommand { get; private set; }
         public DelegateCommand CheckForUpdateCommand { get; private set; }
+        public DelegateCommand ClearBufferCommand { get; private set; }
+        public DelegateCommand ReinitBufferCommand { get; private set; }
 
         public MainViewModel() { }
 
@@ -84,6 +86,8 @@ namespace WinWeelay
             SourceCodeCommand = new DelegateCommand(OpenSourceCode);
             IssueTrackerCommand = new DelegateCommand(OpenIssueTracker);
             CheckForUpdateCommand = new DelegateCommand(HandleCheckForUpdate, CanCheckForUpdate);
+            ClearBufferCommand = new DelegateCommand(ClearBuffer, IsBufferSelected);
+            ReinitBufferCommand = new DelegateCommand(ReinitBuffer, IsBufferSelected);
 
             Connection.ConnectionLost += Connection_ConnectionLost;
             Connection.Highlighted += Connection_Highlighted;
@@ -286,6 +290,16 @@ namespace WinWeelay
             Connection.ActiveBuffer?.LoadMoreMessages();
         }
 
+        private void ClearBuffer(object parameter)
+        {
+            Connection.ActiveBuffer?.SendClear();
+        }
+
+        private void ReinitBuffer(object parameter)
+        {
+            Connection.ActiveBuffer?.ReinitMessages();
+        }
+
         private void OpenSourceCode(object parameter)
         {
             Process.Start("https://github.com/Heufneutje/WinWeelay");
@@ -317,6 +331,8 @@ namespace WinWeelay
             HideBufferCommand.OnCanExecuteChanged();
             CloseBufferCommand.OnCanExecuteChanged();
             LoadMoreMessagesCommand.OnCanExecuteChanged();
+            ClearBufferCommand.OnCanExecuteChanged();
+            ReinitBufferCommand.OnCanExecuteChanged();
         }
 
         public void UpdateActiveNicklistEntry(RelayNicklistEntry nick)
