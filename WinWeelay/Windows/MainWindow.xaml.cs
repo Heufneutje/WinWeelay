@@ -24,7 +24,6 @@ namespace WinWeelay
         {
             InitializeComponent();
             _bufferControls = new Dictionary<RelayBuffer, LayoutDocument>();
-            _spellingManager = new SpellingManager();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -206,6 +205,11 @@ namespace WinWeelay
         public void SetProgress(int progressPercentage)
         {
             _progressBar.Value = progressPercentage;
+        }
+
+        public void SetSpellingManager(SpellingManager spellingManager)
+        {
+            _spellingManager = spellingManager;
         }
 
         public void ToggleSpellChecker(bool isEnabled)

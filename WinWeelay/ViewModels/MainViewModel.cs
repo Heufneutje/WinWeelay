@@ -22,6 +22,7 @@ namespace WinWeelay
         private Timer _retryTimer;
         private bool _isRetryingConnection;
         private ThemeManager _themeManager;
+        private SpellingManager _spellingManager;
         private bool _isDownloadingUpdate;
 
         public RelayConfiguration RelayConfiguration { get; set; }
@@ -69,6 +70,9 @@ namespace WinWeelay
 
             _themeManager = new ThemeManager();
             _themeManager.InitializeThemes(RelayConfiguration);
+
+            _spellingManager = new SpellingManager();
+            window.SetSpellingManager(_spellingManager);
 
             ConnectCommand = new DelegateCommand(Connect, CanConnect);
             DisconnectCommand = new DelegateCommand(Disconnect, CanDisconnect);
