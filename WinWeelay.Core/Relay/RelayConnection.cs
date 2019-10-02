@@ -99,7 +99,8 @@ namespace WinWeelay.Core
             catch (Exception ex)
             {
                 _networkStream?.Dispose();
-                _tcpClient?.Dispose();
+                _tcpClient.Close();
+                _tcpClient = null;
                 HandleException(ex);
                 return false;
             }
@@ -135,7 +136,8 @@ namespace WinWeelay.Core
                 {
                     OutputHandler.Quit();
                     _networkStream.Dispose();
-                    _tcpClient.Dispose();
+                    _tcpClient.Close();
+                    _tcpClient = null;
                 }
                 catch (IOException) { } // Ignore this since we want to disconnect anyway.
             }
