@@ -64,7 +64,6 @@ namespace WinWeelay
             RelayConfiguration = ConfigurationHelper.LoadConfiguration();
             Connection = new RelayConnection(window, RelayConfiguration);
             SetBufferListType();
-            _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 
             SetStatusText("Disconnected.");
 
@@ -72,7 +71,8 @@ namespace WinWeelay
             _themeManager.InitializeThemes(RelayConfiguration);
 
             _spellingManager = new SpellingManager();
-            window.SetSpellingManager(_spellingManager);
+            _mainWindow.SetSpellingManager(_spellingManager);
+            _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 
             ConnectCommand = new DelegateCommand(Connect, CanConnect);
             DisconnectCommand = new DelegateCommand(Disconnect, CanDisconnect);
