@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
@@ -19,6 +20,8 @@ namespace WinWeelay
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             MainWindow window = new MainWindow();
             MainViewModel model = new MainViewModel(window);
