@@ -242,7 +242,7 @@ namespace WinWeelay.Core
 
         public IEnumerable<string> GetSortedUniqueNicks()
         {
-            List<string> nicks = _messages.Where(x => !string.IsNullOrEmpty(x.Nick)).OrderByDescending(x => x.Date).Select(x => x.Nick).ToList();
+            List<string> nicks = _messages.Where(x => !string.IsNullOrEmpty(x.Nick) && Nicklist.Any(y => y.Name == x.Nick)).OrderByDescending(x => x.Date).Select(x => x.Nick).ToList();
             nicks.AddRange(Nicklist.Select(x => x.Name));
             return nicks.Distinct();
         }
