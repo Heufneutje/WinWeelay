@@ -12,6 +12,10 @@ namespace WinWeelay.Core
                     return new TcpRelayTransport();
                 case RelayConnectionType.WeechatSsl:
                     return new SslRelayTransport();
+                case RelayConnectionType.WebSocket:
+                    return new WebSocketRelayTransport(false);
+                case RelayConnectionType.WebSocketSsl:
+                    return new WebSocketRelayTransport(true);
                 default:
                     return null;
             }

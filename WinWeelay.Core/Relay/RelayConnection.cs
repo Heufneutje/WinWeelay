@@ -22,7 +22,7 @@ namespace WinWeelay.Core
         public RelayConfiguration Configuration { get; set; }
         public RelayBuffer ActiveBuffer { get; set; }
         public OptionParser OptionParser { get; set; }
-        public bool IsConnected => _transport.IsConnected;
+        public bool IsConnected => _transport != null && _transport.IsConnected;
 
         private string _weeChatVersion;
         public string WeeChatVersion
@@ -77,6 +77,8 @@ namespace WinWeelay.Core
             _transport.ErrorReceived += Transport_ErrorReceived;
 
             await _transport.Connect(Configuration);
+            if (!_transport.IsConnected)
+                return false;
 
             NotifyPropertyChanged(nameof(IsConnected));
 
@@ -158,10 +160,7 @@ namespace WinWeelay.Core
             while (error.InnerException != null)
                 error = ex.InnerException;
 
-            if (ex is IOException || ex is SocketException)
-                ConnectionLost?.Invoke(this, new ConnectionLostEventArgs(error));
-            else
-                throw ex;
+            ConnectionLost?.Invoke(this, new ConnectionLostEventArgs(error));
         }
 
         public void OnHighlighted(RelayBufferMessage message, RelayBuffer buffer)

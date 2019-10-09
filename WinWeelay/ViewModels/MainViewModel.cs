@@ -387,7 +387,7 @@ namespace WinWeelay
 
         private void SetStatusConnected()
         {
-            SetStatusText($"Connected to {RelayConfiguration.ConnectionAddress}{(RelayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl ? " (secure connection)" : "")}.");
+            SetStatusText($"Connected to {RelayConfiguration.ConnectionAddress}{(RelayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl || RelayConfiguration.ConnectionType == RelayConnectionType.WebSocketSsl ? " (secure connection)" : "")}.");
         }
 
         private void CheckForUpdate(bool shouldPopUp)

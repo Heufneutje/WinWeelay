@@ -43,9 +43,22 @@ namespace WinWeelay
             }
         }
 
+        public bool IsWebSocketPathVisible
+        {
+            get
+            {
+                return Configuration.ConnectionType == RelayConnectionType.WebSocket || Configuration.ConnectionType == RelayConnectionType.WebSocketSsl;
+            }
+        }
+
         public void NotifyAccentColorChanged()
         {
             NotifyPropertyChanged(nameof(AccentColorExample));
+        }
+
+        public void NotifySocketPathVisibleChanged()
+        {
+            NotifyPropertyChanged(nameof(IsWebSocketPathVisible));
         }
     }
 }

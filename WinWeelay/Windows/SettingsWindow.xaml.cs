@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
 using MWindowLib;
 using WinWeelay.Configuration;
 using WinWeelay.Utils;
@@ -47,9 +49,14 @@ namespace WinWeelay
             DialogResult = false;
         }
 
-        private void AccentColor_ValueChanged(object sender, System.EventArgs e)
+        private void AccentColor_ValueChanged(object sender, EventArgs e)
         {
             ((SettingsViewModel)DataContext).NotifyAccentColorChanged();
+        }
+
+        private void _connecetionTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifySocketPathVisibleChanged();
         }
     }
 }

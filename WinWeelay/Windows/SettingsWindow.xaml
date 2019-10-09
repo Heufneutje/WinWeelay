@@ -15,6 +15,7 @@
     </Window.DataContext>
     <Window.Resources>
         <CollectionViewSource Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}" x:Key="fonts" />
+        <winweelay:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
     <Grid>
         <TabControl Margin="0,0,0,47">
@@ -25,11 +26,13 @@
                         <Label Content="WeeChat Relay Hostname" HorizontalAlignment="Left" Margin="6,35,0,0" VerticalAlignment="Top" />
                         <Label Content="WeeChat Relay Port" HorizontalAlignment="Left" Margin="6,62,0,0" VerticalAlignment="Top" />
                         <Label Content="WeeChat Relay Password" HorizontalAlignment="Left" Margin="6,89,0,0" VerticalAlignment="Top" />
-                        <ComboBox HorizontalAlignment="Left" Margin="155,5,3,0" VerticalAlignment="Top" Width="122" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding Configuration.ConnectionType}" />
+                        <Label Content="WebSocket Path" HorizontalAlignment="Left" Margin="6,116,0,0" VerticalAlignment="Top" Visibility="{Binding Path=IsWebSocketPathVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <ComboBox x:Name="_connecetionTypeComboBox" HorizontalAlignment="Left" Margin="155,5,0,0" VerticalAlignment="Top" Width="144" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding Configuration.ConnectionType}" SelectionChanged="_connecetionTypeComboBox_SelectionChanged" />
                         <TextBox Height="22" Margin="155,32,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Configuration.Hostname}" />
                         <CustomControls:NumericUpDown Margin="155,59,0,0" VerticalAlignment="Top" Value="{Binding Configuration.Port, Mode=TwoWay}" Width="70" MaxValue="99999" MinValue="1" HorizontalAlignment="Left" />
                         <PasswordBox x:Name="_passwordBox" Margin="155,86,3,0" VerticalAlignment="Top" Height="22" />
-                        <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoConnect}" />
+                        <TextBox Margin="155,113,2.5,0" VerticalAlignment="Top" Height="22" Text="{Binding Configuration.WebSocketPath}" Visibility="{Binding Path=IsWebSocketPathVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <CheckBox Content="Automatically Connect" HorizontalAlignment="Left" Margin="6,147,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoConnect}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

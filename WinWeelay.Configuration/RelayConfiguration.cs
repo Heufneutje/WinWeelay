@@ -14,6 +14,7 @@ namespace WinWeelay.Configuration
         public int BacklogSize { get; set; }
         public bool AutoConnect { get; set; }
         public RelayConnectionType ConnectionType { get; set; }
+        public string WebSocketPath { get; set; }
         public bool SyncReadMessages { get; set; }
         public int HistorySize { get; set; }
         public int FontSize { get; set; }
@@ -44,6 +45,7 @@ namespace WinWeelay.Configuration
         public RelayConfiguration()
         {
             Port = 9001;
+            WebSocketPath = "weechat";
             BacklogSize = 100;
             HistorySize = 50;
             FontFamily = "Calibri";

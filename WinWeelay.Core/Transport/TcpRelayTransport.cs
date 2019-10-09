@@ -37,9 +37,9 @@ namespace WinWeelay.Core
             catch (Exception ex)
             {
                 _networkStream?.Dispose();
-                _tcpClient.Close();
+                _tcpClient?.Dispose();
                 _tcpClient = null;
-                throw ex;
+                OnErrorReceived(ex);
             }
         }
 
@@ -47,8 +47,8 @@ namespace WinWeelay.Core
         {
             IsConnected = false;
             _inputWorker.CancelAsync();
-            _networkStream.Dispose();
-            _tcpClient.Close();
+            _networkStream?.Dispose();
+            _tcpClient?.Dispose();
             _tcpClient = null;
         }
 
