@@ -63,6 +63,9 @@
     <Compile Include="DataTypes\WeechatSignalType.cs" />
     <Compile Include="DataTypes\WeechatType.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\RelayErrorEventArgs.cs" />
+    <Compile Include="Events\RelayMessageEventArgs.cs" />
     <Compile Include="HighlightEventArgs.cs" />
     <Compile Include="Interfaces\IBufferWindow.cs" />
     <Compile Include="MessageHistory.cs" />
@@ -80,6 +83,11 @@
     <Compile Include="Relay\RelayNicklistEntry.cs" />
     <Compile Include="Relay\RelayOption.cs" />
     <Compile Include="Relay\RelayOutputHandler.cs" />
+    <Compile Include="Transport\BaseRelayTransport.cs" />
+    <Compile Include="Transport\IRelayTransport.cs" />
+    <Compile Include="Transport\RelayTransportFactory.cs" />
+    <Compile Include="Transport\SslRelayTransport.cs" />
+    <Compile Include="Transport\TcpRelayTransport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

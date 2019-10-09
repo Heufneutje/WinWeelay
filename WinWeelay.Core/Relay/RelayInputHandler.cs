@@ -1,90 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
     public class RelayInputHandler
     {
         private RelayConnection _connection;
-        private Stream _networkStream;
-        private BackgroundWorker _inputWorker;
+        private IRelayTransport _transport;
 
-        public RelayInputHandler(RelayConnection connection, Stream networkStream)
+        public RelayInputHandler(RelayConnection connection, IRelayTransport transport)
         {
             _connection = connection;
-            _networkStream = networkStream;
-
-            _inputWorker = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true };
-            _inputWorker.DoWork += InputWorker_DoWork;
-            _inputWorker.ProgressChanged += InputWorker_ProgressChanged;
-            _inputWorker.RunWorkerAsync();
+            _transport = transport;
+            _transport.RelayMessageReceived += Transport_RelayMessageReceived;
         }
 
-        private void InputWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void Transport_RelayMessageReceived(object sender, RelayMessageEventArgs args)
         {
-            if (!(e.UserState is byte[]))
-                return;
-
-            RelayMessage relayMessage = new RelayMessage((byte[])e.UserState);
-            ParseMessage(relayMessage);
-        }
-
-        private void InputWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            BufferedStream reader = null;
-            try
-            {
-                reader = new BufferedStream(_networkStream);
-            }
-            catch (Exception ex)
-            {
-                if (_connection.IsConnected)
-                    _connection.HandleException(ex);
-                return;
-            }
-
-            while (true)
-            {
-                try
-                {
-                    List<byte> bytes = new List<byte>();
-
-                    byte[] buffer = new byte[4];
-                    int read = reader.Read(buffer, 0, buffer.Length);
-
-                    if (read == 4)
-                    {
-                        byte[] lengthBytes = ArrayHelper.CopyOfRange(buffer, 0, 4);
-                        if (BitConverter.IsLittleEndian)
-                            Array.Reverse(lengthBytes);
-
-                        int length = BitConverter.ToInt32(lengthBytes, 0);
-                        bytes.AddRange(buffer);
-
-                        length -= 4;
-                        while (length > 0)
-                        {
-                            bytes.Add((byte)reader.ReadByte());
-                            length -= 1;
-                        }
-
-                        _inputWorker.ReportProgress(0, bytes.ToArray());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    if (_connection.IsConnected)
-                        _connection.HandleException(ex);
-                    break;
-                }
-
-                if (_inputWorker.CancellationPending)
-                    break;
-            }
+            ParseMessage(args.RelayMessage);
         }
 
         private void ParseMessage(RelayMessage message)
@@ -422,11 +355,6 @@ namespace WinWeelay.Core
         {
             _connection.OutputHandler.Sync();
             _connection.OutputHandler.RequestBufferList();
-        }
-
-        public void CancelInputWorker()
-        {
-            _inputWorker.CancelAsync();
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net.Security;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Timers;
@@ -14,8 +12,7 @@ namespace WinWeelay.Core
 {
     public class RelayConnection : NotifyPropertyChangedBase
     {
-        private TcpClient _tcpClient;
-        private Stream _networkStream;
+        private IRelayTransport _transport;
         private IBufferWindow _bufferView;
         private Timer _pingTimer;
         
@@ -25,7 +22,7 @@ namespace WinWeelay.Core
         public RelayConfiguration Configuration { get; set; }
         public RelayBuffer ActiveBuffer { get; set; }
         public OptionParser OptionParser { get; set; }
-        public bool IsConnected { get; private set; }
+        public bool IsConnected => _transport.IsConnected;
 
         private string _weeChatVersion;
         public string WeeChatVersion
@@ -76,40 +73,15 @@ namespace WinWeelay.Core
 
         public async Task<bool> Connect()
         {
-            _tcpClient = new TcpClient();
+            _transport = RelayTransportFactory.GetTransport(Configuration.ConnectionType);
+            _transport.ErrorReceived += Transport_ErrorReceived;
 
-            try
-            {
-                await _tcpClient.ConnectAsync(Configuration.Hostname, Configuration.Port);
-                switch (Configuration.ConnectionType)
-                {
-                    case RelayConnectionType.PlainText:
-                        _networkStream = _tcpClient.GetStream();
-                        break;
-                    case RelayConnectionType.WeechatSsl:
-                        _networkStream = new SslStream(_tcpClient.GetStream());
-                        SslStream sslStream = _networkStream as SslStream;
+            await _transport.Connect(Configuration);
 
-                        await Task.WhenAny(sslStream.AuthenticateAsClientAsync(Configuration.Hostname), Task.Delay(5000));
-                        if (!sslStream.IsAuthenticated)
-                            throw new IOException("SSL authentication timed out.");
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                _networkStream?.Dispose();
-                _tcpClient.Close();
-                _tcpClient = null;
-                HandleException(ex);
-                return false;
-            }
-
-            IsConnected = true;
             NotifyPropertyChanged(nameof(IsConnected));
 
-            InputHandler = new RelayInputHandler(this, _networkStream);
-            OutputHandler = new RelayOutputHandler(this, _networkStream);
+            InputHandler = new RelayInputHandler(this, _transport);
+            OutputHandler = new RelayOutputHandler(this, _transport);
 
             OutputHandler.BeginMessageBatch();
             OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword), true);
@@ -126,7 +98,6 @@ namespace WinWeelay.Core
 
         public void Disconnect(bool cleanDisconnect)
         {
-            IsConnected = false;
             WeeChatVersion = null;
             NotifyPropertyChanged(nameof(Description));
 
@@ -135,14 +106,10 @@ namespace WinWeelay.Core
                 try
                 {
                     OutputHandler.Quit();
-                    _networkStream.Dispose();
-                    _tcpClient.Close();
-                    _tcpClient = null;
+                    _transport.Disconnect();
                 }
                 catch (IOException) { } // Ignore this since we want to disconnect anyway.
             }
-
-            InputHandler.CancelInputWorker();
 
             foreach (RelayBuffer buffer in Buffers)
                 CloseBuffer(buffer);
@@ -200,6 +167,11 @@ namespace WinWeelay.Core
         public void OnHighlighted(RelayBufferMessage message, RelayBuffer buffer)
         {
             Highlighted?.Invoke(this, new HighlightEventArgs(message, buffer));
+        }
+
+        private void Transport_ErrorReceived(object sender, RelayErrorEventArgs args)
+        {
+            HandleException(args.Error);
         }
 
         private void PingTimer_Elapsed(object sender, ElapsedEventArgs e)

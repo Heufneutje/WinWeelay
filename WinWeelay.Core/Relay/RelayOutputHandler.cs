@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,14 +8,14 @@ namespace WinWeelay.Core
     public class RelayOutputHandler
     {
         private RelayConnection _connection;
-        private Stream _networkStream;
+        private IRelayTransport _transport;
         private bool _useBatch;
         private List<byte> _messageBatch;
 
-        public RelayOutputHandler(RelayConnection connection, Stream networkStream)
+        public RelayOutputHandler(RelayConnection connection, IRelayTransport transport)
         {
             _connection = connection;
-            _networkStream = networkStream;
+            _transport = transport;
             _messageBatch = new List<byte>();
         }
 
@@ -56,7 +55,7 @@ namespace WinWeelay.Core
         {
             try
             {
-                _networkStream.Write(msgBytes, 0, msgBytes.Length);
+                _transport.Write(msgBytes);
             }
             catch (Exception ex)
             {
