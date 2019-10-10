@@ -35,21 +35,11 @@ namespace WinWeelay
             }
         }
 
-        public Color AccentColorExample
-        {
-            get
-            {
-                return Color.FromRgb(Configuration.AccentColor.RedValue, Configuration.AccentColor.GreenValue, Configuration.AccentColor.BlueValue);
-            }
-        }
+        public Color AccentColorExample => Color.FromRgb(Configuration.AccentColor.RedValue, Configuration.AccentColor.GreenValue, Configuration.AccentColor.BlueValue);
 
-        public bool IsWebSocketPathVisible
-        {
-            get
-            {
-                return Configuration.ConnectionType == RelayConnectionType.WebSocket || Configuration.ConnectionType == RelayConnectionType.WebSocketSsl;
-            }
-        }
+        public bool IsWebSocketPathVisible =>  Configuration.ConnectionType == RelayConnectionType.WebSocket || Configuration.ConnectionType == RelayConnectionType.WebSocketSsl;
+
+        public bool NotificationsEnabled => Configuration.NotificationsEnabled;
 
         public void NotifyAccentColorChanged()
         {
@@ -59,6 +49,11 @@ namespace WinWeelay
         public void NotifySocketPathVisibleChanged()
         {
             NotifyPropertyChanged(nameof(IsWebSocketPathVisible));
+        }
+
+        public void NotifyNotificationsEnabledChanged()
+        {
+            NotifyPropertyChanged(nameof(NotificationsEnabled));
         }
     }
 }

@@ -27,6 +27,7 @@ namespace WinWeelay.Configuration
         public bool IsSpellCheckEnabled { get; set; }
         public bool IsMessageFormattingEnabled { get; set; }
         public bool NotificationsEnabled { get; set; }
+        public bool NotificationsEnabledWithBufferFocus { get; set; }
         public BufferViewType BufferViewType { get; set; }
         public AccentColor AccentColor { get; set; }
         public bool IsToolbarVisible { get; set; }

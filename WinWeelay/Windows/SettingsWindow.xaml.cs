@@ -58,5 +58,10 @@ namespace WinWeelay
         {
             ((SettingsViewModel)DataContext).NotifySocketPathVisibleChanged();
         }
+
+        private void notificationsCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifyNotificationsEnabledChanged();
+        }
     }
 }

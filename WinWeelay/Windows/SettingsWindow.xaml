@@ -98,7 +98,8 @@
                 <GroupBox Header="General Settings" Margin="10,5">
                     <Grid>
                         <CheckBox Content="Automatically check for updates" HorizontalAlignment="Left" Margin="6,9,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoCheckUpdates}" />
-                        <CheckBox Content="Enable notifications" HorizontalAlignment="Left" Margin="6,38,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabled}" />
+                        <CheckBox x:Name="notificationsCheckBox" Content="Enable notifications" HorizontalAlignment="Left" Margin="6,38,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabled}" Checked="notificationsCheckBox_CheckedChanged" Unchecked="notificationsCheckBox_CheckedChanged" />
+                        <CheckBox Content="Show notifications even when the respective buffer is in focus" HorizontalAlignment="Left" Margin="6,65,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabledWithBufferFocus}" Visibility="{Binding Path=NotificationsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

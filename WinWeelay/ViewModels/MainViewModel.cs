@@ -107,8 +107,8 @@ namespace WinWeelay
         {
             args.Message.IsNotified = true;
 
-#if WINDOWS10_SDK
-            if (RelayConfiguration.NotificationsEnabled && (args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive))
+            #if WINDOWS10_SDK
+            if (RelayConfiguration.NotificationsEnabled && (RelayConfiguration.NotificationsEnabledWithBufferFocus || args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive))
             {
                 XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
                 XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
@@ -125,7 +125,7 @@ namespace WinWeelay
                 ToastNotification toast = new ToastNotification(toastXml);
                 ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
             }
-#endif
+            #endif
         }
 
         private void Connection_ConnectionLost(object sender, ConnectionLostEventArgs args)
