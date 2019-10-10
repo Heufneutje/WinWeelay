@@ -64,14 +64,5 @@ namespace WinWeelay.Core
             if (IsConnected)
                 _webSocket.Send(data);
         }
-
-        private void InputWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (!(e.UserState is byte[]))
-                return;
-
-            RelayMessage relayMessage = new RelayMessage((byte[])e.UserState);
-            OnRelayMessageReceived(relayMessage);
-        }
     }
 }
