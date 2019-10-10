@@ -16,7 +16,7 @@ namespace WinWeelay.Configuration
         public static IEnumerable<ConnectionTypeWrapper> GetTypes()
         {
             List<ConnectionTypeWrapper> types = new List<ConnectionTypeWrapper>();
-            types.Add(new ConnectionTypeWrapper(RelayConnectionType.PlainText, "Plain Connection"));
+            types.Add(new ConnectionTypeWrapper(RelayConnectionType.PlainText, "Plain connection"));
             types.Add(new ConnectionTypeWrapper(RelayConnectionType.WeechatSsl, "WeeChat SSL"));
             types.Add(new ConnectionTypeWrapper(RelayConnectionType.WebSocket, "WebSocket (Plain)"));
             types.Add(new ConnectionTypeWrapper(RelayConnectionType.WebSocketSsl, "WebSocket (SSL)"));
