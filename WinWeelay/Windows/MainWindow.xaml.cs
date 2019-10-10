@@ -228,5 +228,16 @@ namespace WinWeelay
         {
             ((MainViewModel)DataContext).UpdateViewSettings();
         }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            RelayBuffer activeBuffer = ((MainViewModel)DataContext).Connection.ActiveBuffer;
+            if (activeBuffer != null)
+            {
+                LayoutDocument document = _bufferControls[activeBuffer];
+                BufferContentControl bufferControl = (BufferContentControl)document.Content;
+                bufferControl.HandleWindowStateChange(WindowState);
+            }
+        }
     }
 }

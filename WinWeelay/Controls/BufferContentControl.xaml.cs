@@ -45,7 +45,7 @@ namespace WinWeelay
 
         private void BufferControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_isScrolledToBottom)
+             if (_isScrolledToBottom)
                 _conversationRichTextBox.ScrollToEnd();
 
             UpdateFont();
@@ -55,7 +55,7 @@ namespace WinWeelay
 
         private void BufferControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            _isScrolledToBottom = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
+            CheckScrolledToBottom();
             _spellingManager.Unsubscribe(_messageTextBox);
         }
 
@@ -179,6 +179,18 @@ namespace WinWeelay
         {
             _titleDocument.Blocks.Clear();
             _titleDocument.Blocks.Add(_formattingParser.FormatString(Buffer.Title, Buffer.Connection.Configuration.IsMessageFormattingEnabled));
+        }
+
+        private void CheckScrolledToBottom()
+        {
+            _isScrolledToBottom = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
+        }
+
+        public void HandleWindowStateChange(WindowState windowState)
+        {
+            CheckScrolledToBottom();
+            if ((windowState == WindowState.Maximized || windowState == WindowState.Normal) && _isScrolledToBottom)
+                _conversationRichTextBox.ScrollToEnd();
         }
     }
 }
