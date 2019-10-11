@@ -45,7 +45,7 @@ namespace WinWeelay
 
         private void BufferControl_Loaded(object sender, RoutedEventArgs e)
         {
-             if (_isScrolledToBottom)
+            if (_isScrolledToBottom)
                 _conversationRichTextBox.ScrollToEnd();
 
             UpdateFont();
