@@ -14,7 +14,7 @@
         <core:RelayConnection/>
     </UserControl.DataContext>
     <Grid>
-        <TreeView x:Name="_bufferTreeView" SelectedItemChanged="BufferTreeView_SelectedItemChanged" ItemsSource="{Binding RootBuffers, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch">
+        <TreeView x:Name="_bufferTreeView" SelectedItemChanged="BufferTreeView_SelectedItemChanged" ItemsSource="{Binding RootBuffers, UpdateSourceTrigger=PropertyChanged}" HorizontalContentAlignment="Stretch" PreviewMouseDown="_bufferTreeView_PreviewMouseDown">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
                     <Setter Property="IsExpanded" Value="True"/>

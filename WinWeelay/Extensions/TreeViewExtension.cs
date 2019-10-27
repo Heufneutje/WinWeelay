@@ -47,26 +47,44 @@ namespace WinWeelay
         /// Clear the selection of a given TreeView.
         /// </summary>
         /// <param name="treeView">A given TreeView.</param>
-        public static void ClearSelection(this TreeView treeView)
+        public static void ClearSelection(this TreeView input)
         {
-            if (treeView != null)
-                ClearTreeViewItemsControlSelection(treeView.Items, treeView.ItemContainerGenerator);
-        }
-
-        private static void ClearTreeViewItemsControlSelection(ItemCollection ic, ItemContainerGenerator icg)
-        {
-            if (ic == null || icg == null)
+            object selected = input.SelectedItem;
+            if (selected == null)
                 return;
 
-            for (int i = 0; i < ic.Count; i++)
+            input.Focus();
+            TreeViewItem tvi = ContainerFromItem(input, selected) as TreeViewItem;
+            if (tvi != null) 
+                tvi.IsSelected = false;
+        }
+
+        private static TreeViewItem ContainerFromItem(TreeView treeView, object item)
+        {
+            TreeViewItem containerThatMightContainItem = (TreeViewItem)treeView.ItemContainerGenerator.ContainerFromItem(item);
+            if (containerThatMightContainItem != null)
+                return containerThatMightContainItem;
+            else
+                return ContainerFromItem(treeView.ItemContainerGenerator, treeView.Items, item);
+        }
+
+        private static TreeViewItem ContainerFromItem(ItemContainerGenerator parentItemContainerGenerator, ItemCollection itemCollection, object item)
+        {
+            foreach (object curChildItem in itemCollection)
             {
-                TreeViewItem tvi = icg.ContainerFromIndex(i) as TreeViewItem;
-                if (tvi != null)
-                {
-                    ClearTreeViewItemsControlSelection(tvi.Items, tvi.ItemContainerGenerator);
-                    tvi.IsSelected = false;
-                }
+                TreeViewItem parentContainer = (TreeViewItem)parentItemContainerGenerator.ContainerFromItem(curChildItem);
+                if (parentContainer == null)
+                    return null;
+
+                TreeViewItem containerThatMightContainItem = (TreeViewItem)parentContainer.ItemContainerGenerator.ContainerFromItem(item);
+                if (containerThatMightContainItem != null)
+                    return containerThatMightContainItem;
+
+                TreeViewItem recursionResult = ContainerFromItem(parentContainer.ItemContainerGenerator, parentContainer.Items, item);
+                if (recursionResult != null)
+                    return recursionResult;
             }
+            return null;
         }
     }
 }
