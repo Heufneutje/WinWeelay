@@ -38,6 +38,7 @@ namespace WinWeelay
             MainViewModel vm = (MainViewModel)DataContext;
             vm.DisconnectCommand.Execute(null);
             vm.SaveWindowSize();
+            vm.SaveOptionCache();
             DockingManagerLayoutHelper.SaveLayout(_dockingManager);
         }
 

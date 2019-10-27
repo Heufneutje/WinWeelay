@@ -32,6 +32,8 @@ namespace WinWeelay.Configuration
         public AccentColor AccentColor { get; set; }
         public bool IsToolbarVisible { get; set; }
         public bool IsStatusBarVisible { get; set; }
+        public bool UseOptionCache { get; set; }
+        public int OptionCacheDays { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -62,6 +64,8 @@ namespace WinWeelay.Configuration
             AccentColor = new AccentColor(33, 99, 255);
             IsToolbarVisible = true;
             IsStatusBarVisible = true;
+            UseOptionCache = true;
+            OptionCacheDays = 7;
         }
 
         public override void StartTrackingChanges()

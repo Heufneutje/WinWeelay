@@ -57,14 +57,14 @@ namespace WinWeelay.Core
         public RelayConnection()
         {
             Buffers = new ObservableCollection<RelayBuffer>();
-            OptionParser = new OptionParser();
+            OptionParser = new OptionParser(Configuration);
         }
 
         public RelayConnection(IBufferWindow view, RelayConfiguration configuration)
         {
             Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;
-            OptionParser = new OptionParser();
+            OptionParser = new OptionParser(Configuration);
 
             _bufferView = view;
             _pingTimer = new Timer(30000) { AutoReset = true };
@@ -91,7 +91,10 @@ namespace WinWeelay.Core
             OutputHandler.RequestHotlist();
             OutputHandler.Sync();
             OutputHandler.Info("version", MessageIds.CustomGetVersion);
-            OutputHandler.RequestColorOptions();
+
+            if (!OptionParser.HasOptionCache)
+                OutputHandler.RequestColorOptions();
+            
             OutputHandler.EndMessageBatch();
 
             _pingTimer.Start();

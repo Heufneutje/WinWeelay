@@ -27,7 +27,7 @@
                         <Label Content="Port" HorizontalAlignment="Left" Margin="6,62,0,0" VerticalAlignment="Top" />
                         <Label Content="Password" HorizontalAlignment="Left" Margin="6,89,0,0" VerticalAlignment="Top" />
                         <Label Content="WebSocket path" HorizontalAlignment="Left" Margin="6,116,0,0" VerticalAlignment="Top" Visibility="{Binding Path=IsWebSocketPathVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
-                        <ComboBox x:Name="_connecetionTypeComboBox" HorizontalAlignment="Left" Margin="155,5,0,0" VerticalAlignment="Top" Width="144" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding Configuration.ConnectionType}" SelectionChanged="_connecetionTypeComboBox_SelectionChanged" />
+                        <ComboBox x:Name="_connectionTypeComboBox" HorizontalAlignment="Left" Margin="155,5,0,0" VerticalAlignment="Top" Width="144" ItemsSource="{Binding ConnectionTypes}" DisplayMemberPath="Description" SelectedValuePath="ConnectionType" SelectedValue="{Binding Configuration.ConnectionType}" SelectionChanged="ConnectionTypeComboBox_SelectionChanged" />
                         <TextBox Height="22" Margin="155,32,3,0" TextWrapping="Wrap" VerticalAlignment="Top" Text="{Binding Configuration.Hostname}" />
                         <CustomControls:NumericUpDown Margin="155,59,0,0" VerticalAlignment="Top" Value="{Binding Configuration.Port, Mode=TwoWay}" Width="70" MaxValue="99999" MinValue="1" HorizontalAlignment="Left" />
                         <PasswordBox x:Name="_passwordBox" Margin="155,86,3,0" VerticalAlignment="Top" Height="22" />
@@ -42,9 +42,12 @@
                         <Label Content="Initial buffer size" HorizontalAlignment="Left" Margin="6,8,0,0" VerticalAlignment="Top" />
                         <Label Content="Message history size" HorizontalAlignment="Left" Margin="6,35,0,0" VerticalAlignment="Top" />
                         <CustomControls:NumericUpDown Margin="155,5,0,0" VerticalAlignment="Top" Value="{Binding Configuration.BacklogSize, Mode=TwoWay}" Width="70" MaxValue="1000" MinValue="0" HorizontalAlignment="Left" />
-                        <CustomControls:NumericUpDown Margin="155,32,0,0" VerticalAlignment="Top" Value="{Binding Configuration.HistorySize}" Width="70" MaxValue="50" MinValue="1" HorizontalAlignment="Left" />
+                        <CustomControls:NumericUpDown Margin="155,32,0,0" VerticalAlignment="Top" Value="{Binding Configuration.HistorySize, Mode=TwoWay}" Width="70" MaxValue="50" MinValue="1" HorizontalAlignment="Left" />
                         <CheckBox Content="Sync read messages with WeeChat" HorizontalAlignment="Left" Margin="6,66,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.SyncReadMessages}" />
                         <CheckBox Content="Enable spell checker" HorizontalAlignment="Left" Margin="6,93,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsSpellCheckEnabled}" />
+                        <CheckBox x:Name="_optionCacheCheckBox" Content="Cache WeeChat options for" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.UseOptionCache}" Checked="OptionCacheCheckBox_CheckedChanged" Unchecked="OptionCacheCheckBox_CheckedChanged" />
+                        <CustomControls:NumericUpDown Margin="178,119,0,0" VerticalAlignment="Top" Value="{Binding Configuration.OptionCacheDays, Mode=TwoWay}" Width="49" MaxValue="30" MinValue="1" HorizontalAlignment="Left" IsEnabled="{Binding UseOptionCache}" />
+                        <Label Content="days" HorizontalAlignment="Left" Margin="229,121,0,0" VerticalAlignment="Top" IsEnabled="{Binding UseOptionCache}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -98,7 +101,7 @@
                 <GroupBox Header="General Settings" Margin="10,5">
                     <Grid>
                         <CheckBox Content="Automatically check for updates" HorizontalAlignment="Left" Margin="6,9,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoCheckUpdates}" />
-                        <CheckBox x:Name="notificationsCheckBox" Content="Enable notifications" HorizontalAlignment="Left" Margin="6,38,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabled}" Checked="notificationsCheckBox_CheckedChanged" Unchecked="notificationsCheckBox_CheckedChanged" />
+                        <CheckBox x:Name="_notificationsCheckBox" Content="Enable notifications" HorizontalAlignment="Left" Margin="6,38,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabled}" Checked="NotificationsCheckBox_CheckedChanged" Unchecked="NotificationsCheckBox_CheckedChanged" />
                         <CheckBox Content="Show notifications even when the respective buffer is in focus" HorizontalAlignment="Left" Margin="6,65,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.NotificationsEnabledWithBufferFocus}" Visibility="{Binding Path=NotificationsEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </Grid>
                 </GroupBox>

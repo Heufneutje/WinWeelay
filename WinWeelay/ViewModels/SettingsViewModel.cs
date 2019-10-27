@@ -41,6 +41,8 @@ namespace WinWeelay
 
         public bool NotificationsEnabled => Configuration.NotificationsEnabled;
 
+        public bool UseOptionCache => Configuration.UseOptionCache;
+
         public void NotifyAccentColorChanged()
         {
             NotifyPropertyChanged(nameof(AccentColorExample));
@@ -54,6 +56,11 @@ namespace WinWeelay
         public void NotifyNotificationsEnabledChanged()
         {
             NotifyPropertyChanged(nameof(NotificationsEnabled));
+        }
+
+        public void NotifyOptionCacheEnabledChanged()
+        {
+            NotifyPropertyChanged(nameof(UseOptionCache));
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Newtonsoft.Json;
+using WinWeelay.Utils;
 
 namespace WinWeelay.Configuration
 {
@@ -12,7 +12,7 @@ namespace WinWeelay.Configuration
         {
             RelayConfiguration relayConfiguration;
             if (File.Exists(_configPath))
-                relayConfiguration = JsonConvert.DeserializeObject<RelayConfiguration>(File.ReadAllText(_configPath));
+                relayConfiguration = JsonUtils.DeserializeObject<RelayConfiguration>(File.ReadAllText(_configPath));
             else
                 relayConfiguration = new RelayConfiguration();
 
@@ -22,9 +22,7 @@ namespace WinWeelay.Configuration
 
         public static void SaveConfiguration(RelayConfiguration relayConfiguration)
         {
-            JsonSerializer serializer = new JsonSerializer { Formatting = Formatting.Indented };
-            using (StreamWriter writer = File.CreateText(_configPath))
-                serializer.Serialize(writer, relayConfiguration);
+            JsonUtils.SaveSerializedObject(relayConfiguration, _configPath);
         }
     }
 }

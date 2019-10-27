@@ -54,14 +54,19 @@ namespace WinWeelay
             ((SettingsViewModel)DataContext).NotifyAccentColorChanged();
         }
 
-        private void _connecetionTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void ConnectionTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ((SettingsViewModel)DataContext).NotifySocketPathVisibleChanged();
         }
 
-        private void notificationsCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        private void NotificationsCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
             ((SettingsViewModel)DataContext).NotifyNotificationsEnabledChanged();
+        }
+
+        private void OptionCacheCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifyOptionCacheEnabledChanged();
         }
     }
 }

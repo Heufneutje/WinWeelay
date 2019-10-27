@@ -1,5 +1,8 @@
-﻿namespace WinWeelay.Core
+﻿using System;
+
+namespace WinWeelay.Core
 {
+    [Serializable]
     public class RelayOption
     {
         public string Name { get; set; }

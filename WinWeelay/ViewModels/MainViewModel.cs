@@ -379,6 +379,11 @@ namespace WinWeelay
             }
         }
 
+        public void SaveOptionCache()
+        {
+            Connection.OptionParser.SaveOptionCache();
+        }
+
         private void SetStatusText(string message)
         {
             ConnectionStatus = $"[{DateTime.Now.ToString(RelayConfiguration.TimestampFormat)}] {message}";

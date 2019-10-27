@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WinWeelay.Configuration;
 
 namespace WinWeelay.Core
 {
@@ -8,13 +9,15 @@ namespace WinWeelay.Core
     {
         private Dictionary<int, string> _colorOptions;
         private Dictionary<string, int> _reverseColorOptions;
+        private OptionCache _optionCache;
+        private RelayConfiguration _relayConfiguration;
 
-        public List<RelayOption> Options { get; private set; }
+        public bool HasOptionCache => _optionCache.HasOptions;
 
-        public OptionParser()
+        public OptionParser(RelayConfiguration relayConfiguration)
         {
-            Options = new List<RelayOption>();
-
+            _relayConfiguration = relayConfiguration;
+            _optionCache = OptionCache.Load(relayConfiguration);
             _colorOptions = new Dictionary<int, string>
             {
                 { 0, OptionNames.WeechatColorSeparator },
@@ -61,10 +64,15 @@ namespace WinWeelay.Core
 
         public void ParseOptions(WeechatInfoList optionsList)
         {
-            Options.Clear();
+            _optionCache.Options.Clear();
 
             foreach (Dictionary<string, WeechatRelayObject> item in optionsList)
-                Options.Add(new RelayOption(item["full_name"].AsString(), item["value"].AsString()));
+                _optionCache.Options.Add(new RelayOption(item["full_name"].AsString(), item["value"].AsString()));
+        }
+
+        public void SaveOptionCache()
+        {
+            _optionCache.SaveOptionCache(_relayConfiguration);
         }
 
         public int GetOptionColor(int colorCode)
@@ -72,7 +80,7 @@ namespace WinWeelay.Core
             if (!_colorOptions.ContainsKey(colorCode))
                 return (int)WeechatColor.Default;
 
-            RelayOption option = Options.FirstOrDefault(x => x.Name == _colorOptions[colorCode]);
+            RelayOption option = _optionCache.Options.FirstOrDefault(x => x.Name == _colorOptions[colorCode]);
             if (option == null)
                 return (int)WeechatColor.Default;
 
