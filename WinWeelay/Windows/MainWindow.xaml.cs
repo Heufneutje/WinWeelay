@@ -233,7 +233,7 @@ namespace WinWeelay
         private void Window_StateChanged(object sender, EventArgs e)
         {
             RelayBuffer activeBuffer = ((MainViewModel)DataContext).Connection.ActiveBuffer;
-            if (activeBuffer != null)
+            if (activeBuffer != null && _bufferControls.ContainsKey(activeBuffer))
             {
                 LayoutDocument document = _bufferControls[activeBuffer];
                 BufferContentControl bufferControl = (BufferContentControl)document.Content;
