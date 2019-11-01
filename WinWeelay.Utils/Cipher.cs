@@ -7,10 +7,18 @@ using System.Text;
 
 namespace WinWeelay.Utils
 {
+    /// <summary>
+    /// Utility class for encrypting and decrypting data.
+    /// </summary>
     public static class Cipher
     {
         private const int KeySize = 256;
 
+        /// <summary>
+        /// Encrypt a given string.
+        /// </summary>
+        /// <param name="plainText">The text to encrypt.</param>
+        /// <returns>The encrypted text.</returns>
         public static string Encrypt(string plainText)
         {
             if (string.IsNullOrEmpty(plainText))
@@ -19,7 +27,7 @@ namespace WinWeelay.Utils
             return Encrypt(plainText, GetUniqueID());
         }
 
-        public static ICryptoTransform GetCryptoTransform(string passPhrase, byte[] saltStringBytes, byte[] ivStringBytes, bool encrypt)
+        private static ICryptoTransform GetCryptoTransform(string passPhrase, byte[] saltStringBytes, byte[] ivStringBytes, bool encrypt)
         {
             const int derivationIterations = 1000;
 
@@ -40,7 +48,7 @@ namespace WinWeelay.Utils
             }
         }
 
-        public static string Encrypt(string plainText, string passPhrase)
+        private static string Encrypt(string plainText, string passPhrase)
         {
             byte[] saltStringBytes = Generate256BitsOfRandomEntropy();
             byte[] ivStringBytes = Generate256BitsOfRandomEntropy();
@@ -64,6 +72,11 @@ namespace WinWeelay.Utils
             }
         }
 
+        /// <summary>
+        /// Decrypt a given string.
+        /// </summary>
+        /// <param name="cipherText">The given encrypted string.</param>
+        /// <returns>The decrypted plain text string.</returns>
         public static string Decrypt(string cipherText)
         {
             if (string.IsNullOrEmpty(cipherText))
@@ -72,7 +85,7 @@ namespace WinWeelay.Utils
             return Decrypt(cipherText, GetUniqueID());
         }
 
-        public static string Decrypt(string cipherText, string passPhrase)
+        private static string Decrypt(string cipherText, string passPhrase)
         {
             byte[] cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
             byte[] saltStringBytes = cipherTextBytesWithSaltAndIv.Take(KeySize / 8).ToArray();

@@ -41,6 +41,7 @@
     <DefineConstants>TRACE;DEBUG;WINDOWS10_SDK</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\Release\WinWeelay.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>WinWeelay.App</StartupObject>

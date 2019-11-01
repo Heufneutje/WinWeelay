@@ -4,8 +4,15 @@ using System.Linq;
 
 namespace WinWeelay.Utils
 {
+    /// <summary>
+    /// Utility class for text formatting helper methods.
+    /// </summary>
     public static class FormattingUtils
     {
+        /// <summary>
+        /// Retrieve all fonts installed on the system.
+        /// </summary>
+        /// <returns>A list of font names.</returns>
         public static List<string> GetInstalledFonts()
         {
             List<string> fonts = new List<string>();
@@ -19,6 +26,11 @@ namespace WinWeelay.Utils
             return fonts;
         }
 
+        /// <summary>
+        /// Remove all formatting codes from a WeeChat message.
+        /// </summary>
+        /// <param name="formattedString">The messages containing formatting codes.</param>
+        /// <returns>A stripped version of the given message.</returns>
         public static string StripWeechatFormatting(string formattedString)
         {
             string result = string.Empty;

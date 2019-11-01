@@ -10,22 +10,43 @@ using System.Text;
 
 namespace WinWeelay.Utils
 {
+    /// <summary>
+    /// Utility class handling application updates.
+    /// </summary>
     public class UpdateHelper : IDisposable
     {
         private const string _GITHUB_BASE_URL = "https://api.github.com";
+
+        /// <summary>
+        /// Temp path of the downloaded installer file.
+        /// </summary>
         public string InstallerFilePath { get; private set; } = Path.Combine(Path.GetTempPath(), "WinWeelaySetup.exe");
 
         private WebClient _client;
 
+        /// <summary>
+        /// Event for checking the download progress.
+        /// </summary>
         public event DownloadProgressChangedEventHandler ProgressChanged;
+        
+        /// <summary>
+        /// Event signaling that the download is complete.
+        /// </summary>
         public event AsyncCompletedEventHandler DownloadCompleted;
 
+        /// <summary>
+        /// Create a new instance for handling updates.
+        /// </summary>
         public UpdateHelper()
         {
             _client = new WebClient();
             SetHeaders(_client);
         }
 
+        /// <summary>
+        /// Check whether a new release exists.
+        /// </summary>
+        /// <returns>Whether a new release exists.</returns>
         public UpdateCheckResult CheckForUpdate()
         {
             try
@@ -60,6 +81,10 @@ namespace WinWeelay.Utils
             }
         }
 
+        /// <summary>
+        /// Download the release from the given URL.
+        /// </summary>
+        /// <param name="downloadUrl">The URL to download the update from.</param>
         public void DownloadUpdate(string downloadUrl)
         {
             string filePath = InstallerFilePath;
@@ -81,11 +106,19 @@ namespace WinWeelay.Utils
             ProgressChanged?.Invoke(sender, e);
         }
 
+        /// <summary>
+        /// Get the directory the application is currently running from.
+        /// </summary>
+        /// <returns>The directory the application is currently running from.</returns>
         public string GetApplicationDirectory()
         {
             return Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
         }
 
+        /// <summary>
+        /// Get the current version of the application.
+        /// </summary>
+        /// <returns>A version info object representing the current version.</returns>
         public static FileVersionInfo GetCurrentVersion()
         {
             return FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
@@ -114,6 +147,10 @@ namespace WinWeelay.Utils
         #region IDisposable Support
         private bool _disposedValue = false;
 
+        /// <summary>
+        /// IDisposable implementation.
+        /// </summary>
+        /// <param name="disposing">IDisposable implementation.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
@@ -125,6 +162,9 @@ namespace WinWeelay.Utils
             }
         }
 
+        /// <summary>
+        /// IDisposable implementation.
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);

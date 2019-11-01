@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace WinWeelay.Utils
 {
+    /// <summary>
+    /// Base class for checking property changes and keeping track of original values.
+    /// </summary>
     [Serializable]
     public abstract class BaseChangeTrackable : NotifyPropertyChangedBase
     {
@@ -17,6 +20,9 @@ namespace WinWeelay.Utils
         [NonSerialized]
         private bool _hasChangesCache;
 
+        /// <summary>
+        /// Set the property current values as the orignal values and start keeping track of property changes.
+        /// </summary>
         public virtual void StartTrackingChanges()
         {
             _originalValues = new Dictionary<string, object>();
@@ -27,6 +33,11 @@ namespace WinWeelay.Utils
                     _originalValues.Add(property.Name, property.GetValue(this));
         }
 
+        /// <summary>
+        /// Get all of the changes made to this object since the last StartTrackingChanges() call.
+        /// </summary>
+        /// <param name="refreshChanges">Whether or not the properties should be rechecked for changes.</param>
+        /// <returns>A dictionary which contains the changes. Contains the property name and its current value.</returns>
         public Dictionary<string, object> GetChanges(bool refreshChanges = false)
         {
             if (_originalValues == null)
@@ -46,16 +57,30 @@ namespace WinWeelay.Utils
             return _changedValues;
         }
 
+        /// <summary>
+        /// Check whether a given property value has changed since the last StartTrackingChanges() call.
+        /// </summary>
+        /// <param name="propertyName">The name of the property that is be checked.</param>
+        /// <param name="refreshChanges">Whether or not the properties should be rechecked for changes.</param>
+        /// <returns>Whether or not the property value has changed.</returns>
         public bool HasPropertyChanged(string propertyName, bool refreshChanges = false)
         {
             return GetChanges(refreshChanges).ContainsKey(propertyName);
         }
 
+        /// <summary>
+        /// Check whether this object has any properties that have changed values since the last StartTrackingChanges() call.
+        /// </summary>
+        /// <param name="refreshChanges">Whether or not the properties should be rechecked for changes.</param>
+        /// <returns>Whether or not the property values have changed.</returns>
         public bool HasChanges(bool refreshChanges = false)
         {
             return GetChanges(refreshChanges).Any();
         }
 
+        /// <summary>
+        /// Clear the original values and changed values that have been tracked since the last StartTrackingChanges() call.
+        /// </summary>
         public void ResetTrackingChanges()
         {
             _originalValues.Clear();
