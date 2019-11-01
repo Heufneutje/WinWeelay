@@ -105,6 +105,7 @@ namespace WinWeelay
             if (_dockingManager.ActiveContent is BufferContentControl && !_isManualSelection)
             {
                 RelayBuffer buffer = ((BufferContentControl)_dockingManager.ActiveContent).Buffer;
+                buffer.HandleSelected();
                 if (_bufferControl.GetSelectedBuffer() != buffer)
                     _bufferControl.SelectBuffer(buffer);
             }
