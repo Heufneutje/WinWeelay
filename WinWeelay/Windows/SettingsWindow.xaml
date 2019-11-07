@@ -16,6 +16,7 @@
     <Window.Resources>
         <CollectionViewSource Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}" x:Key="fonts" />
         <winweelay:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <winweelay:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
     </Window.Resources>
     <Grid>
         <TabControl Margin="0,0,0,47">
@@ -44,10 +45,9 @@
                         <CustomControls:NumericUpDown Margin="155,5,0,0" VerticalAlignment="Top" Value="{Binding Configuration.BacklogSize, Mode=TwoWay}" Width="70" MaxValue="1000" MinValue="0" HorizontalAlignment="Left" />
                         <CustomControls:NumericUpDown Margin="155,32,0,0" VerticalAlignment="Top" Value="{Binding Configuration.HistorySize, Mode=TwoWay}" Width="70" MaxValue="50" MinValue="1" HorizontalAlignment="Left" />
                         <CheckBox Content="Sync read messages with WeeChat" HorizontalAlignment="Left" Margin="6,66,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.SyncReadMessages}" />
-                        <CheckBox Content="Enable spell checker" HorizontalAlignment="Left" Margin="6,93,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsSpellCheckEnabled}" />
-                        <CheckBox x:Name="_optionCacheCheckBox" Content="Cache WeeChat options for" HorizontalAlignment="Left" Margin="6,120,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.UseOptionCache}" Checked="OptionCacheCheckBox_CheckedChanged" Unchecked="OptionCacheCheckBox_CheckedChanged" />
-                        <CustomControls:NumericUpDown Margin="178,119,0,0" VerticalAlignment="Top" Value="{Binding Configuration.OptionCacheDays, Mode=TwoWay}" Width="49" MaxValue="30" MinValue="1" HorizontalAlignment="Left" IsEnabled="{Binding UseOptionCache}" />
-                        <Label Content="days" HorizontalAlignment="Left" Margin="229,121,0,0" VerticalAlignment="Top" IsEnabled="{Binding UseOptionCache}" />
+                        <CheckBox x:Name="_optionCacheCheckBox" Content="Cache WeeChat options for" HorizontalAlignment="Left" Margin="6,91,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.UseOptionCache}" Checked="OptionCacheCheckBox_CheckedChanged" Unchecked="OptionCacheCheckBox_CheckedChanged" />
+                        <CustomControls:NumericUpDown Margin="178,90,0,0" VerticalAlignment="Top" Value="{Binding Configuration.OptionCacheDays, Mode=TwoWay}" Width="49" MaxValue="30" MinValue="1" HorizontalAlignment="Left" IsEnabled="{Binding UseOptionCache}" />
+                        <Label Content="days" HorizontalAlignment="Left" Margin="229,92,0,0" VerticalAlignment="Top" IsEnabled="{Binding UseOptionCache}" />
                     </Grid>
                 </GroupBox>
             </TabItem>
@@ -94,6 +94,18 @@
                         </ComboBox>
                         <ComboBox HorizontalAlignment="Left" Margin="155,140,0,0" VerticalAlignment="Top" Width="126" ItemsSource="{Binding BufferViewTypes}" DisplayMemberPath="Description" SelectedValuePath="BufferViewType" SelectedValue="{Binding Configuration.BufferViewType}" />
                         <CheckBox Content="Enable message formatting" HorizontalAlignment="Left" Margin="6,171,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsMessageFormattingEnabled}" />
+                    </Grid>
+                </GroupBox>
+            </TabItem>
+            <TabItem Header="Spell Checker">
+                <GroupBox Header="Spell Checker Settings" Margin="10,5">
+                    <Grid>
+                        <Label Content="Spell check language" HorizontalAlignment="Left" Margin="6,35,0,0" VerticalAlignment="Top" Visibility="{Binding Path=IsSpellCheckEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <Label Content="{Binding DictionaryInstalledText}"  HorizontalAlignment="Left" Margin="6,62,0,0" VerticalAlignment="Top" Visibility="{Binding Path=IsSpellCheckEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <TextBlock Text="Spell checker may not function correctly unless a .NET language pack is installed for this language. If the spell checker does not work, a dictionary should be installed using the 'Install' button." TextWrapping="WrapWithOverflow"  HorizontalAlignment="Left" Margin="7,89,0,0" VerticalAlignment="Top" Visibility="{Binding Path=IsDictionaryInstalled, Converter={StaticResource InverseBoolToVisibilityConverter}}" Width="466" />
+                        <CheckBox x:Name="_spellCheckBox" Content="Enable spell checker" HorizontalAlignment="Left" Margin="6,9,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.IsSpellCheckEnabled}" Checked="SpellCheckBox_CheckedChanged" Unchecked="SpellCheckBox_CheckedChanged" />
+                        <ComboBox x:Name="_languageComboBox" HorizontalAlignment="Left" Margin="155,32,0,0" VerticalAlignment="Top" Width="321" ItemsSource="{Binding CultureInfos}" DisplayMemberPath="DisplayName" SelectedValue="{Binding Configuration.Language}" Visibility="{Binding Path=IsSpellCheckEnabled, Converter={StaticResource BoolToVisibilityConverter}}" SelectionChanged="LanguageComboBox_SelectionChanged" />
+                        <Button x:Name="_installDictionaryButton" Content="Install" Margin="152,58,250,0" Height="25" VerticalAlignment="Top" Width="74" Click="InstallDictionaryButton_Click" Visibility="{Binding Path=IsSpellCheckEnabled, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

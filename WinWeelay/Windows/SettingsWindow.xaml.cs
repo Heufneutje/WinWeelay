@@ -68,5 +68,20 @@ namespace WinWeelay
         {
             ((SettingsViewModel)DataContext).NotifyOptionCacheEnabledChanged();
         }
+
+        private void SpellCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifySpellCheckerEnabledChanged();
+        }
+
+        private void InstallDictionaryButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).InstallDictionary();
+        }
+
+        private void LanguageComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifySpellCheckerEnabledChanged();
+        }
     }
 }

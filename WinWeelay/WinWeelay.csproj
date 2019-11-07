@@ -126,6 +126,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Convert\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="MessageFormatting\AttributeType.cs" />
     <Compile Include="MessageFormatting\ColorHelper.cs" />
     <Compile Include="Controls\BufferListControl.xaml.cs">

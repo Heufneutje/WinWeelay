@@ -7,6 +7,7 @@ using WinWeelay.Configuration;
 using WinWeelay.Core;
 using WinWeelay.Utils;
 using System.Windows;
+using System.Windows.Markup;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
@@ -70,6 +71,7 @@ namespace WinWeelay
             _themeManager = new ThemeManager();
             _themeManager.InitializeThemes(RelayConfiguration);
 
+            System.Threading.Thread.CurrentThread.CurrentUICulture = RelayConfiguration.Language;
             _spellingManager = new SpellingManager();
             _mainWindow.SetSpellingManager(_spellingManager);
             _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
@@ -229,7 +231,7 @@ namespace WinWeelay
             RelayConfiguration config = new RelayConfiguration();
             RelayConfiguration.CopyPropertiesTo(config);
 
-            SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(config)) { Owner = _mainWindow };
+            SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(config, _spellingManager)) { Owner = _mainWindow };
             if (settingsWindow.ShowDialog() == true)
             {
                 RelayConfiguration = settingsWindow.Configuration;
@@ -241,6 +243,12 @@ namespace WinWeelay
                 if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
                     _mainWindow.UpdateFont();
 
+                if (config.HasPropertyChanged(nameof(config.Language)))
+                {
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = config.Language;
+                    _spellingManager.SetDictionaryPaths();
+                }
+                    
                 if (config.HasPropertyChanged(nameof(config.IsSpellCheckEnabled)))
                     _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 

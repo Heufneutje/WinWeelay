@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -14,11 +16,14 @@ namespace WinWeelay
     /// </summary>
     public class SpellingManager
     {
-        private readonly string _dictPath;
-        private List<TextBox> _subscribedTextBoxes;
+        private readonly string _appDataPath;
+        private string _mainDictPath;
+        private string _customDictPath;
+        private Uri _mainDictionary;
         private Uri _customDictionary;
+        private List<TextBox> _subscribedTextBoxes;
+        
         private bool _isEnabled;
-
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -29,18 +34,60 @@ namespace WinWeelay
             }
         }
 
+        private CultureInfo _language;
+        public CultureInfo Language
+        {
+            get => _language;
+            set
+            {
+                _language = value;
+                SetDictionaryPaths();
+            }
+        }
+
         /// <summary>
         /// Create a new instance of the manager. Initializes the dictionary from the lexicon file in the AppData folder.
         /// </summary>
         public SpellingManager()
         {
             _subscribedTextBoxes = new List<TextBox>();
-            _dictPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay", "customdict.lex");
+            _appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
+            Language = Thread.CurrentThread.CurrentUICulture;
+        }
 
-            if (!File.Exists(_dictPath))
-                File.Create(_dictPath);
+        /// <summary>
+        /// Read the dictionaries from the app data folder.
+        /// </summary>
+        public void SetDictionaryPaths()
+        {
+            _mainDictPath = Path.Combine(_appDataPath, $"{_language.Name}.lex");
+            _customDictPath = Path.Combine(_appDataPath, "customdict.lex");
 
-            _customDictionary = new Uri(_dictPath);
+            if (File.Exists(_mainDictPath))
+                _mainDictionary = new Uri(_mainDictPath);
+
+            if (!File.Exists(_customDictPath))
+                File.Create(_customDictPath);
+
+            _customDictionary = new Uri(_customDictPath);
+            RefreshSubscribedTextBoxes();
+        }
+
+        /// <summary>
+        /// Check whether a dictionary exists for a given language
+        /// </summary>
+        /// <param name="language">The language to check.</param>
+        /// <returns>Whether a dictionary exists for a given language></returns>
+        public bool IsDictionaryInstalled(CultureInfo language) => File.Exists(Path.Combine(_appDataPath, $"{language.Name}.lex"));
+
+        /// <summary>
+        /// Install a dictionary for a given language.
+        /// </summary>
+        /// <param name="language">The language of the dictionary.</param>
+        /// <param name="dictionaryPath">The path to copy the dictionary</param>
+        public void InstallDictionary(CultureInfo language, string dictionaryPath)
+        {
+            File.Copy(dictionaryPath, Path.Combine(_appDataPath, $"{language.Name}.lex"), true);
         }
 
         /// <summary>
@@ -49,7 +96,7 @@ namespace WinWeelay
         /// <param name="word">The word to add.</param>
         public void AddWordToDictionary(string word)
         {
-            File.AppendAllText(_dictPath, $"{word}{Environment.NewLine}");
+            File.AppendAllText(_customDictPath, $"{word}{Environment.NewLine}");
             RefreshSubscribedTextBoxes();
         }
 
@@ -61,6 +108,9 @@ namespace WinWeelay
         {
             IList dictionaries = SpellCheck.GetCustomDictionaries(textBox);
             dictionaries.Add(_customDictionary);
+
+            if (_mainDictionary != null)
+                dictionaries.Add(_mainDictionary);
 
             textBox.SpellCheck.IsEnabled = _isEnabled;
             textBox.ContextMenuOpening += TextBox_ContextMenuOpening;

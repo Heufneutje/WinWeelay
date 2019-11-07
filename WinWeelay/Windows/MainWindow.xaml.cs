@@ -217,6 +217,7 @@ namespace WinWeelay
         public void ToggleSpellChecker(bool isEnabled)
         {
             _spellingManager.IsEnabled = isEnabled;
+            _spellingManager.SetDictionaryPaths();
         }
 
         public void SetBufferControl(IBufferDockView bufferControl)

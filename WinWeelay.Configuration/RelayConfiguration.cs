@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Newtonsoft.Json;
 using WinWeelay.Utils;
 
@@ -34,6 +35,7 @@ namespace WinWeelay.Configuration
         public bool IsStatusBarVisible { get; set; }
         public bool UseOptionCache { get; set; }
         public int OptionCacheDays { get; set; }
+        public CultureInfo Language { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -66,6 +68,7 @@ namespace WinWeelay.Configuration
             IsStatusBarVisible = true;
             UseOptionCache = true;
             OptionCacheDays = 7;
+            Language = CultureInfo.CurrentCulture;
         }
 
         public override void StartTrackingChanges()
