@@ -48,6 +48,7 @@
                         <CheckBox x:Name="_optionCacheCheckBox" Content="Cache WeeChat options for" HorizontalAlignment="Left" Margin="6,91,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.UseOptionCache}" Checked="OptionCacheCheckBox_CheckedChanged" Unchecked="OptionCacheCheckBox_CheckedChanged" />
                         <CustomControls:NumericUpDown Margin="178,90,0,0" VerticalAlignment="Top" Value="{Binding Configuration.OptionCacheDays, Mode=TwoWay}" Width="49" MaxValue="30" MinValue="1" HorizontalAlignment="Left" IsEnabled="{Binding UseOptionCache}" />
                         <Label Content="days" HorizontalAlignment="Left" Margin="229,92,0,0" VerticalAlignment="Top" IsEnabled="{Binding UseOptionCache}" />
+                        <CheckBox Content="Automatically clear top messages from message buffers as new messages are added" HorizontalAlignment="Left" Margin="6,116,0,0" VerticalAlignment="Top" IsChecked="{Binding Configuration.AutoShrinkBuffer}" />
                     </Grid>
                 </GroupBox>
             </TabItem>

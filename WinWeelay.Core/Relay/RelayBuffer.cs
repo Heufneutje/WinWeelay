@@ -33,6 +33,7 @@ namespace WinWeelay.Core
         public RelayNicklistEntry ActiveNicklistEntry { get; set; }
         public int UnreadMessagesCount { get; set; }
         public int HighlightedMessagesCount { get; set; }
+        public int MaxBacklogSize { get; set; }
         public ReadOnlyCollection<RelayBufferMessage> Messages
         {
             get
@@ -120,6 +121,7 @@ namespace WinWeelay.Core
             _messages = new List<RelayBufferMessage>();
             Nicklist = new ObservableCollection<RelayNicklistEntry>();
             Children = new List<RelayBuffer>();
+            MaxBacklogSize = Connection.Configuration.BacklogSize;
         }
 
         public void UpdateBufferProperties(WeechatHdataEntry entry)
@@ -162,6 +164,7 @@ namespace WinWeelay.Core
                     HighlightedMessagesCount++;
             }
 
+            ShrinkMessageBuffer();
             MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false));
         }
 
@@ -171,6 +174,15 @@ namespace WinWeelay.Core
 
             foreach (RelayBufferMessage message in messages)
                 MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, false, isExpandedBacklog));
+        }
+
+        private void ShrinkMessageBuffer()
+        {
+            if (!Connection.Configuration.AutoShrinkBuffer)
+                return;
+
+            while (_messages.Count > MaxBacklogSize)
+                _messages.RemoveAt(_messages.Count - 1);
         }
 
         public bool HasMessage(RelayBufferMessage message)
@@ -303,6 +315,8 @@ namespace WinWeelay.Core
                 size = Connection.Configuration.BacklogSize;
                 messageId = MessageIds.CustomGetBufferBacklog;
             }
+
+            MaxBacklogSize = size;
 
             Connection.OutputHandler.RequestBufferBacklog(this, size, messageId);
         }

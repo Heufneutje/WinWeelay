@@ -36,6 +36,7 @@ namespace WinWeelay.Configuration
         public bool UseOptionCache { get; set; }
         public int OptionCacheDays { get; set; }
         public CultureInfo Language { get; set; }
+        public bool AutoShrinkBuffer { get; set; }
         
         [JsonIgnore]
         [ChangeTrackingIgnore]
@@ -69,6 +70,7 @@ namespace WinWeelay.Configuration
             UseOptionCache = true;
             OptionCacheDays = 7;
             Language = CultureInfo.CurrentCulture;
+            AutoShrinkBuffer = true;
         }
 
         public override void StartTrackingChanges()

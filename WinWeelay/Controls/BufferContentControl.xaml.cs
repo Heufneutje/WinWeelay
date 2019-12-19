@@ -142,6 +142,12 @@ namespace WinWeelay
             else
                 _conversationDocument.Blocks.InsertBefore(_conversationDocument.Blocks.FirstBlock, paragraph);
 
+            if (Buffer.Connection.Configuration.AutoShrinkBuffer)
+            {
+                while (_conversationDocument.Blocks.Count > Buffer.MaxBacklogSize)
+                    _conversationDocument.Blocks.Remove(_conversationDocument.Blocks.FirstBlock);
+            }
+
             if (isExpandedBacklog)
                 _conversationRichTextBox.ScrollToHome();
             else if (scrollToEnd)
