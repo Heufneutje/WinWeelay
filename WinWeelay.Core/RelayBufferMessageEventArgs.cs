@@ -7,12 +7,14 @@ namespace WinWeelay.Core
         public RelayBufferMessage Message { get; private set; }
         public bool AddToEnd { get; private set; }
         public bool IsExpandedBacklog { get; private set; }
+        public bool IsBatchedMessage { get; private set; }
 
-        public RelayBufferMessageEventArgs(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
+        public RelayBufferMessageEventArgs(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog, bool isBatchedMessage)
         {
             Message = message;
             AddToEnd = addToEnd;
             IsExpandedBacklog = isExpandedBacklog;
+            IsBatchedMessage = isBatchedMessage;
         }
     }
 }

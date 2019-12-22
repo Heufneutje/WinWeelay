@@ -165,7 +165,7 @@ namespace WinWeelay.Core
             }
 
             ShrinkMessageBuffer();
-            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false));
+            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false, false));
         }
 
         public void AddMessageBatch(IEnumerable<RelayBufferMessage> messages, bool isExpandedBacklog)
@@ -173,7 +173,7 @@ namespace WinWeelay.Core
             _messages.AddRange(messages);
 
             foreach (RelayBufferMessage message in messages)
-                MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, false, isExpandedBacklog));
+                MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, false, isExpandedBacklog, true));
         }
 
         private void ShrinkMessageBuffer()

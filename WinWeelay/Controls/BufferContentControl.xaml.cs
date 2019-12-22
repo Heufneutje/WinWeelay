@@ -61,7 +61,7 @@ namespace WinWeelay
 
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
         {
-            AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog);
+            AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog, args.IsBatchedMessage);
         }
 
         private void Buffer_MessagesCleared(object sender, EventArgs e)
@@ -123,7 +123,7 @@ namespace WinWeelay
             {
                 _conversationRichTextBox.BeginChange();
                 foreach (RelayBufferMessage message in Buffer.Messages)
-                    AddMessage(message, false, false);
+                    AddMessage(message, false, false, true);
 
                 _conversationRichTextBox.EndChange();
             }
@@ -131,7 +131,7 @@ namespace WinWeelay
             _isScrolledToBottom = true;
         }
 
-        private void AddMessage(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog)
+        private void AddMessage(RelayBufferMessage message, bool addToEnd, bool isExpandedBacklog, bool isBatchedMessage)
         {
             bool hasMessages = _conversationDocument.Blocks.Any();
             bool scrollToEnd = !hasMessages || _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
@@ -150,7 +150,7 @@ namespace WinWeelay
 
             if (isExpandedBacklog)
                 _conversationRichTextBox.ScrollToHome();
-            else if (scrollToEnd)
+            else if (scrollToEnd || isBatchedMessage)
                 _conversationRichTextBox.ScrollToEnd();
         }
 
