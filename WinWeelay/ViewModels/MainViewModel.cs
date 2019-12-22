@@ -228,43 +228,41 @@ namespace WinWeelay
 
         private void ShowSettingsWindow(object parameter)
         {
-            RelayConfiguration config = new RelayConfiguration();
-            RelayConfiguration.CopyPropertiesTo(config);
-
-            SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(config, _spellingManager)) { Owner = _mainWindow };
+            SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(RelayConfiguration, _spellingManager)) { Owner = _mainWindow };
             if (settingsWindow.ShowDialog() == true)
             {
-                RelayConfiguration = settingsWindow.Configuration;
-                Connection.Configuration = RelayConfiguration;
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.Theme)) || RelayConfiguration.AccentColor.HasChanges())
+                    _themeManager.UpdateTheme(RelayConfiguration.Theme, RelayConfiguration.AccentColor);
 
-                if (config.HasPropertyChanged(nameof(config.Theme)) || config.AccentColor.HasChanges())
-                    _themeManager.UpdateTheme(config.Theme, config.AccentColor);
-
-                if (config.HasPropertyChanged(nameof(config.FontFamily)) || config.HasPropertyChanged(nameof(config.FontSize)))
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.FontFamily)) || RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.FontSize)))
                     _mainWindow.UpdateFont();
 
-                if (config.HasPropertyChanged(nameof(config.Language)))
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.Language)))
                 {
-                    System.Threading.Thread.CurrentThread.CurrentUICulture = config.Language;
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = RelayConfiguration.Language;
                     _spellingManager.SetDictionaryPaths();
                 }
                     
-                if (config.HasPropertyChanged(nameof(config.IsSpellCheckEnabled)))
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsSpellCheckEnabled)))
                     _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 
-                if (config.HasPropertyChanged(nameof(config.BufferViewType)))
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.BufferViewType)))
                     SetBufferListType();
 
-                if (config.HasPropertyChanged(nameof(config.IsMessageFormattingEnabled)))
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsMessageFormattingEnabled)))
                 {
                     _mainWindow.UpdateFormattingSettings();
                     foreach (RelayBuffer buffer in Connection.Buffers)
                         buffer.ReinitMessages();
                 }
-
-                RelayConfiguration.ResetTrackingChanges();
-                RelayConfiguration.StartTrackingChanges();
             }
+            else
+            {
+                RelayConfiguration.UndoChanges();
+            }
+
+            RelayConfiguration.ResetTrackingChanges();
+            RelayConfiguration.StartTrackingChanges();
         }
 
         private void ShowAboutWindow(object parameter)

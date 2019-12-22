@@ -87,5 +87,18 @@ namespace WinWeelay.Utils
             _changedValues.Clear();
             _hasChangesCache = false;
         }
+
+        /// <summary>
+        /// Revert all changes back to the original values.
+        /// </summary>
+        public void UndoChanges()
+        {
+            if (!HasChanges())
+                return;
+
+            foreach (PropertyInfo property in GetType().GetProperties())
+                if (_changedValues.ContainsKey(property.Name))
+                    property.SetValue(this, _originalValues[property.Name]);
+        }
     }
 }
