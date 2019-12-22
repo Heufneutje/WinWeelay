@@ -298,6 +298,7 @@ namespace WinWeelay.Core
             _hasBacklog = false;
             ClearMessages();
             LoadMoreMessages();
+            _hasBacklog = true;
         }
 
         public void LoadMoreMessages()
