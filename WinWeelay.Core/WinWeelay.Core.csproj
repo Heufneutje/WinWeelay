@@ -75,7 +75,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ConnectionLostEventArgs.cs" />
+    <Compile Include="Events\ConnectionLostEventArgs.cs" />
     <Compile Include="DataTypes\WeechatArray.cs" />
     <Compile Include="DataTypes\WeechatColor.cs" />
     <Compile Include="DataTypes\WeechatData.cs" />
@@ -89,9 +89,10 @@
     <Compile Include="DataTypes\WeechatType.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Events\Delegates.cs" />
+    <Compile Include="Events\RelayBufferMessageBatchEventsArgs.cs" />
     <Compile Include="Events\RelayErrorEventArgs.cs" />
     <Compile Include="Events\RelayMessageEventArgs.cs" />
-    <Compile Include="HighlightEventArgs.cs" />
+    <Compile Include="Events\HighlightEventArgs.cs" />
     <Compile Include="Interfaces\IBufferWindow.cs" />
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Options\OptionNames.cs" />
     <Compile Include="Options\OptionParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RelayBufferMessageEventArgs.cs" />
+    <Compile Include="Events\RelayBufferMessageEventArgs.cs" />
     <Compile Include="Relay\RelayBuffer.cs" />
     <Compile Include="Relay\RelayBufferMessage.cs" />
     <Compile Include="Relay\RelayConnection.cs" />
