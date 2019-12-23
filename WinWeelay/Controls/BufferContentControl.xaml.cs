@@ -36,6 +36,7 @@ namespace WinWeelay
             DataContext = buffer;
 
             Buffer.MessageAdded += Buffer_MessageAdded;
+            Buffer.MessageBatchAdded += Buffer_MessageBatchAdded;
             Buffer.MessagesCleared += Buffer_MessagesCleared;
             Buffer.TitleChanged += Buffer_TitleChanged;
 
@@ -61,7 +62,22 @@ namespace WinWeelay
 
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
         {
-            AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog, args.IsBatchedMessage);
+            AddMessage(args.Message, args.AddToEnd, args.IsExpandedBacklog, false);
+        }
+
+        private void Buffer_MessageBatchAdded(object sender, RelayBufferMessageBatchEventsArgs args)
+        {
+            _conversationRichTextBox.BeginChange();
+
+            foreach (RelayBufferMessage message in args.Messages)
+                AddMessage(message, args.AddToEnd, args.IsExpandedBacklog, true);
+
+            if (!args.IsExpandedBacklog)
+                _conversationRichTextBox.ScrollToEnd();
+
+            _conversationRichTextBox.EndChange();
+
+            AutoShrinkBuffer();
         }
 
         private void Buffer_MessagesCleared(object sender, EventArgs e)
@@ -142,16 +158,23 @@ namespace WinWeelay
             else
                 _conversationDocument.Blocks.InsertBefore(_conversationDocument.Blocks.FirstBlock, paragraph);
 
+            if (!isBatchedMessage)
+            {
+                AutoShrinkBuffer();
+                if (isExpandedBacklog)
+                    _conversationRichTextBox.ScrollToHome();
+                else if (scrollToEnd)
+                    _conversationRichTextBox.ScrollToEnd();
+            }
+        }
+
+        private void AutoShrinkBuffer()
+        {
             if (Buffer.Connection.Configuration.AutoShrinkBuffer)
             {
                 while (_conversationDocument.Blocks.Count > Buffer.MaxBacklogSize)
                     _conversationDocument.Blocks.Remove(_conversationDocument.Blocks.FirstBlock);
             }
-
-            if (isExpandedBacklog)
-                _conversationRichTextBox.ScrollToHome();
-            else if (scrollToEnd || isBatchedMessage)
-                _conversationRichTextBox.ScrollToEnd();
         }
 
         public void UpdateFont()

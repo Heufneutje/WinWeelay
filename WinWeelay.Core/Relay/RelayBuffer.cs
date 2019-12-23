@@ -102,6 +102,7 @@ namespace WinWeelay.Core
 
         public event EventHandler NameChanged;
         public event MessageAddedHandler MessageAdded;
+        public event MessageBatchAddedHandler MessageBatchAdded;
         public event EventHandler TitleChanged;
         public event EventHandler MessagesCleared;
         #endregion
@@ -165,15 +166,13 @@ namespace WinWeelay.Core
             }
 
             ShrinkMessageBuffer();
-            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false, false));
+            MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false));
         }
 
         public void AddMessageBatch(IEnumerable<RelayBufferMessage> messages, bool isExpandedBacklog)
         {
             _messages.AddRange(messages);
-
-            foreach (RelayBufferMessage message in messages)
-                MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, false, isExpandedBacklog, true));
+            MessageBatchAdded?.Invoke(this, new RelayBufferMessageBatchEventsArgs(messages, false, isExpandedBacklog));
         }
 
         private void ShrinkMessageBuffer()

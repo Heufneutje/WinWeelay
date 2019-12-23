@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace WinWeelay.Core.Events
+namespace WinWeelay.Core
 {
     public class RelayBufferMessageBatchEventsArgs : EventArgs
     {
