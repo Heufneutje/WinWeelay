@@ -91,7 +91,7 @@ namespace WinWeelay.Core
 
         public void RequestBufferBacklog(RelayBuffer buffer, int backlogSize, string messageId)
         {
-            Hdata($"buffer:{buffer.Pointer}/own_lines/last_line(-{backlogSize})/data", id: messageId);
+            Hdata($"buffer:{buffer.Pointer}/own_lines/last_line(-{backlogSize})/data", "buffer,date,prefix,message,highlight,tags_array", messageId);
         }
 
         public void Init(string password, bool useCompression)

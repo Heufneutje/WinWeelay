@@ -10,8 +10,6 @@ namespace WinWeelay.Core
         public string LinePointer { get; private set; }
         public string BufferPointer { get; private set; }
         public DateTime Date { get; private set; }
-        public DateTime DatePrinted { get; private set; }
-        public bool IsDisplayed { get; private set; }
         public bool IsHighlighted { get; private set; }
         public string[] Tags { get; private set; }
         public string Prefix { get; private set; }
@@ -47,8 +45,6 @@ namespace WinWeelay.Core
             LinePointer = entry.GetPointer(linePointerIndex);
             BufferPointer = entry["buffer"].AsPointer();
             Date = entry["date"].AsTime();
-            DatePrinted = entry["date_printed"].AsTime();
-            IsDisplayed = Convert.ToBoolean(entry["displayed"].AsBoolean());
             IsHighlighted = Convert.ToBoolean(entry["highlight"].AsBoolean());
             Tags = entry["tags_array"].AsArray().ToStringArray();
             Prefix = entry["prefix"].AsString();
