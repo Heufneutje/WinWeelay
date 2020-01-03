@@ -186,7 +186,7 @@ namespace WinWeelay.Core
 
         public bool HasMessage(RelayBufferMessage message)
         {
-            return _messages.Contains(message);
+            return _messages.Any(x => x.LinePointer == message.LinePointer);
         }
 
         public void ClearMessages()
