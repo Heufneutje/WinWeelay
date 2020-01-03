@@ -72,7 +72,9 @@ namespace WinWeelay
             foreach (RelayBufferMessage message in args.Messages)
                 AddMessage(message, args.AddToEnd, args.IsExpandedBacklog, true);
 
-            if (!args.IsExpandedBacklog)
+            if (args.IsExpandedBacklog)
+                _conversationRichTextBox.ScrollToHome();
+            else
                 _conversationRichTextBox.ScrollToEnd();
 
             _conversationRichTextBox.EndChange();
