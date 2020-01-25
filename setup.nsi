@@ -4,7 +4,7 @@
 !define APP_NAME "WinWeelay"
 !define COMP_NAME "Stefan 'Heufneutje' Frijters"
 !define WEB_SITE "https://github.com/Heufneutje/WinWeelay"
-!define VERSION "1.8.4.0"
+!define VERSION "1.8.5.0"
 !define DESCRIPTION "WinWeelay"
 !define LICENSE_TXT "LICENSE.txt"
 !define INSTALLER_NAME "Release\WinWeelaySetup.exe"
