@@ -146,6 +146,9 @@
     <Compile Include="Convert\BoolToVisibilityConverter.cs" />
     <Compile Include="MessageFormatting\FormattingParser.cs" />
     <Compile Include="Layout\DockingManagerLayoutHelper.cs" />
+    <Compile Include="Windows\ExceptionWindow.xaml.cs">
+      <DependentUpon>ExceptionWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\ThemedMessageBoxWindow.xaml.cs">
       <DependentUpon>ThemedMessageBoxWindow.xaml</DependentUpon>
     </Compile>
@@ -169,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\BufferContentControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ExceptionWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

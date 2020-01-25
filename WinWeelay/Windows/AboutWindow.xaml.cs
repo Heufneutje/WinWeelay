@@ -15,7 +15,7 @@ namespace WinWeelay
     /// </summary>
     public partial class AboutWindow : MetroWindow
     {
-        public AboutWindow(RelayConfiguration config)
+        public AboutWindow()
         {
             InitializeComponent();
             Paragraph paragraph = new Paragraph();
@@ -26,7 +26,7 @@ namespace WinWeelay
             else
                 paragraph.Inlines.Add("Licenses file is missing.");
             FlowDocument document = new FlowDocument(paragraph);
-            document.Foreground = new SolidColorBrush(config.Theme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
+            document.Foreground = new SolidColorBrush(App.CurrentTheme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
             _richTextBox.Document = document;
 
             FileVersionInfo fvi = UpdateHelper.GetCurrentVersion();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -17,16 +18,17 @@ namespace WinWeelay
     /// </summary>
     public partial class App : Application
     {
+        public static string CurrentTheme { get; set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            SetupExceptionHandling();
 
             MainWindow window = new MainWindow();
             MainViewModel model = new MainViewModel(window);
             window.DataContext = model;
-
             window.Show();
         }
 
@@ -34,6 +36,7 @@ namespace WinWeelay
         {
             Resources.Clear();
             Resources.MergedDictionaries.Clear();
+            CurrentTheme = newSkin;
 
             switch (newSkin)
             {
@@ -56,6 +59,30 @@ namespace WinWeelay
 
             foreach (object key in dict.Keys)
                 Resources[key] = dict[key];
+        }
+
+        private void SetupExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => LogUnhandledException((Exception)e.ExceptionObject);
+            Dispatcher.UnhandledException += (s, e) => LogUnhandledException(e.Exception);
+            TaskScheduler.UnobservedTaskException += (s, e) => LogUnhandledException(e.Exception);
+        }
+
+        private void LogUnhandledException(Exception exception)
+        {
+            try
+            {
+                ExceptionWindow exceptionWindow = new ExceptionWindow(exception);
+                exceptionWindow.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
+                if (!Directory.Exists(appDataPath))
+                    Directory.CreateDirectory(appDataPath);
+
+                File.WriteAllText(Path.Combine(appDataPath, $"ExceptionLog_{DateTime.Now:yyyy-MM-dd_HHmmss}.txt"), $"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+            }
         }
     }
 }

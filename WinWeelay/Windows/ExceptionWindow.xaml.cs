@@ -1,0 +1,36 @@
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Navigation;
+using MWindowLib;
+using WinWeelay.Configuration;
+
+namespace WinWeelay
+{
+    public partial class ExceptionWindow : MetroWindow
+    {
+        public ExceptionWindow(Exception ex)
+        {
+            InitializeComponent();
+            DataContext = ex;
+
+            // TODO: Properly fix theming to make read-only text boxes actually readable.
+            SolidColorBrush brush = new SolidColorBrush(App.CurrentTheme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
+            _document.Foreground = brush;
+            _messageTextBox.Foreground = brush;
+            _sourceTextBox.Foreground = brush;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(e.Uri.AbsoluteUri);
+            e.Handled = true;
+        }
+    }
+}
