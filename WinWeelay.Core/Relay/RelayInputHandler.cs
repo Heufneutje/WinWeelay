@@ -103,8 +103,11 @@ namespace WinWeelay.Core
                     buffer = new RelayBuffer(_connection, entry);
                     newBuffers.Add(buffer);
                 }
-                else if (buffer != null)
-                    buffer.UpdateBufferProperties(entry);
+
+                if (buffer == null)
+                    continue;
+
+                buffer.UpdateBufferProperties(entry);
 
                 if (localVars.ContainsKey("server"))
                 {
