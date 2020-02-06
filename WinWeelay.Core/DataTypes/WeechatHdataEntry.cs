@@ -54,22 +54,6 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
-        /// Retrieves the last pointer that was added as a long value.
-        /// </summary>
-        /// <returns>The last pointer that was added.</returns>
-        public long GetPointerLong()
-        {
-            try
-            {
-                return Convert.ToInt64(GetPointer().Substring(2), 16);
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-        }
-
-        /// <summary>
         /// Retrieves the pointer at a given index.
         /// </summary>
         /// <param name="index">A given index.</param>
@@ -80,23 +64,6 @@ namespace WinWeelay.Core
                 return null;
 
             return _pointers.ElementAt(index);
-        }
-
-        /// <summary>
-        /// Retrieves the pointer at a given index as a long value.
-        /// </summary>
-        /// <param name="index">A given index.</param>
-        /// <returns>the pointer at the given index.</returns>
-        public long GetPointerLong(int index)
-        {
-            try
-            {
-                return Convert.ToInt64(GetPointer(index).Substring(2), 16);
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
         }
 
         /// <summary>

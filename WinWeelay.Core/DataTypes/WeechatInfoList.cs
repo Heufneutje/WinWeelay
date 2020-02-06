@@ -15,7 +15,7 @@ namespace WinWeelay.Core
         /// </summary>
         public string Name { get; private set; }
 
-        private List<Dictionary<string, WeechatRelayObject>> _items = new List<Dictionary<string, WeechatRelayObject>>();
+        private List<Dictionary<string, WeechatRelayObject>> _items;
 
         /// <summary>
         /// The number of items in the info list.
@@ -34,6 +34,7 @@ namespace WinWeelay.Core
         /// <param name="name">Name of the info list.</param>
         public WeechatInfoList(string name)
         {
+            _items = new List<Dictionary<string, WeechatRelayObject>>();
             Name = name;
             Type = WeechatType.INL;
         }

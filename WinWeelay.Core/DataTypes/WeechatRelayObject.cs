@@ -183,22 +183,6 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
-        /// Converts the current object to a pointer as a 64-bit integer.
-        /// </summary>
-        /// <returns>A pointer.</returns>
-        public long AsPointerLong()
-        {
-            try
-            {
-                return Convert.ToInt64((AsPointer().Substring(2), 16));
-            }
-            catch (Exception)
-            {
-                return -1;
-            }
-        }
-
-        /// <summary>
         /// Converts the current object to a time.
         /// </summary>
         /// <returns>A time.</returns>
