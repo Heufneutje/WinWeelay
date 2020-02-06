@@ -118,11 +118,12 @@ namespace WinWeelay.Core
                         parentBuffer.Children.Add(buffer);
                 }
             }
-            
+
             foreach (RelayBuffer existingBuffer in _connection.Buffers.ToList())
             {
-                if (!hdata.Any(x => x.GetPointer() == existingBuffer.Pointer && !x["hidden"].AsBoolean()))
-                    _connection.Buffers.Remove(existingBuffer);
+                WeechatHdataEntry bufferData = hdata.FirstOrDefault(x => x.GetPointer() == existingBuffer.Pointer);
+                if (bufferData == null || bufferData["hidden"].AsBoolean())
+                    RemoveBuffer(existingBuffer);
             }
 
             foreach (RelayBuffer addedBuffer in newBuffers)
@@ -236,12 +237,7 @@ namespace WinWeelay.Core
             RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[0].GetPointer());
             if (buffer != null)
             {
-                _connection.Buffers.Remove(buffer);
-                foreach (RelayBuffer rootBuffer in _connection.RootBuffers)
-                    if (rootBuffer.Children.Contains(buffer))
-                        rootBuffer.Children.Remove(buffer);
-
-                _connection.NotifyBufferClosed(buffer);
+                RemoveBuffer(buffer);
                 _connection.NotifyBuffersChanged();
             }
         }
@@ -358,6 +354,16 @@ namespace WinWeelay.Core
         {
             _connection.OutputHandler.Sync();
             _connection.OutputHandler.RequestBufferList();
+        }
+
+        private void RemoveBuffer(RelayBuffer buffer)
+        {
+            _connection.Buffers.Remove(buffer);
+            foreach (RelayBuffer rootBuffer in _connection.RootBuffers)
+                if (rootBuffer.Children.Contains(buffer))
+                    rootBuffer.Children.Remove(buffer);
+
+            _connection.NotifyBufferClosed(buffer);
         }
     }
 }
