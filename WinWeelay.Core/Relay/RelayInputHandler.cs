@@ -268,19 +268,21 @@ namespace WinWeelay.Core
         private void ParseBufferRenamed(RelayMessage message)
         {
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
-            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[0].GetPointer());
+            WeechatHdataEntry entry = hdata[0];
+
+            RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == entry.GetPointer());
 
             if (buffer != null)
             {
-                WeechatHashtable localVars = hdata[0].GetLocalVariables();
+                WeechatHashtable localVars = entry.GetLocalVariables();
                 if (localVars.ContainsKey("name"))
                     buffer.FullName = localVars["name"].AsString();
                 else if (localVars.ContainsKey("full_name"))
                     buffer.FullName = localVars["full_name"].AsString();
 
                 buffer.ShortName = buffer.FullName;
-                if (localVars.ContainsKey("short_name") && !string.IsNullOrEmpty(localVars["short_name"].AsString()))
-                    buffer.ShortName = localVars["short_name"].AsString();
+                if (entry.DataContainsKey("short_name") && !string.IsNullOrEmpty(entry["short_name"].AsString()))
+                    buffer.ShortName = entry["short_name"].AsString();
 
                 buffer.NotifyNameUpdated();
             }
