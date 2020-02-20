@@ -112,20 +112,27 @@ namespace WinWeelay
             #if WINDOWS10_SDK
             if (RelayConfiguration.NotificationsEnabled && (RelayConfiguration.NotificationsEnabledWithBufferFocus || args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive))
             {
-                XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
-                XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-                stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
-                stringElements[1].AppendChild(toastXml.CreateTextNode(args.Message.UnformattedMessage));
+                try
+                {
+                    XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
+                    XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
+                    stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
+                    stringElements[1].AppendChild(toastXml.CreateTextNode(args.Message.UnformattedMessage));
 
-                string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
-                if (!File.Exists(tempPath))
-                    Resources.weechat.Save(tempPath);
+                    string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
+                    if (!File.Exists(tempPath))
+                        Resources.weechat.Save(tempPath);
 
-                XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
-                imageElements[0].Attributes.GetNamedItem("src").NodeValue = tempPath;
+                    XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
+                    imageElements[0].Attributes.GetNamedItem("src").NodeValue = tempPath;
 
-                ToastNotification toast = new ToastNotification(toastXml);
-                ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
+                    ToastNotification toast = new ToastNotification(toastXml);
+                    ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
+                }
+                catch (Exception)
+                {
+                    // Ignore the error as it likely means notifications simply aren't available.
+                }
             }
             #endif
         }
