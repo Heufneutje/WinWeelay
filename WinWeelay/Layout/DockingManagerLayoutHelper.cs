@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using Xceed.Wpf.AvalonDock;
-using Xceed.Wpf.AvalonDock.Layout;
-using Xceed.Wpf.AvalonDock.Layout.Serialization;
+using AvalonDock;
+using AvalonDock.Layout;
+using AvalonDock.Layout.Serialization;
 
 namespace WinWeelay
 {

@@ -41,12 +41,12 @@ namespace WinWeelay
             switch (newSkin)
             {
                 case Themes.Light:
-                    ApplyResources("/Xceed.Wpf.AvalonDock.Themes.VS2013;component/LightTheme.xaml");
-                    ApplyResources("/Xceed.Wpf.AvalonDock.Themes.VS2013;component/LightBrushs.xaml");
+                    ApplyResources("/AvalonDock.Themes.VS2013;component/LightTheme.xaml");
+                    ApplyResources("/AvalonDock.Themes.VS2013;component/LightBrushs.xaml");
                     break;
                 case Themes.Dark:
-                    ApplyResources("/Xceed.Wpf.AvalonDock.Themes.VS2013;component/DarkTheme.xaml");
-                    ApplyResources("/Xceed.Wpf.AvalonDock.Themes.VS2013;component/DarkBrushs.xaml");
+                    ApplyResources("/AvalonDock.Themes.VS2013;component/DarkTheme.xaml");
+                    ApplyResources("/AvalonDock.Themes.VS2013;component/DarkBrushs.xaml");
                     break;
             }
         }

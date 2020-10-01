@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WinWeelay"
         xmlns:core="clr-namespace:WinWeelay.Core;assembly=WinWeelay.Core"
         x:Class="WinWeelay.MainWindow"
-        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:xcad="https://github.com/Dirkster99/AvalonDock"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
     xmlns:customcontrols="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
     mc:Ignorable="d"
