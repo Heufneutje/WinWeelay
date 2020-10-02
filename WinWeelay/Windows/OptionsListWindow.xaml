@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:winweelay="clr-namespace:WinWeelay"
+        xmlns:customcontrols="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
         mc:Ignorable="d"
         Title="WeeChat Options" Height="600" Width="800" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico" Loaded="MetroWindow_Loaded">
@@ -13,21 +14,16 @@
     <Window.Resources>
         <winweelay:BoolToFontWeightConverter x:Key="BoolToFontWeightConverter" />
         <winweelay:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <BitmapImage x:Key="editImage" UriSource="/WinWeelay;component/Resources/table_edit.png" />
+        <BitmapImage x:Key="resetImage" UriSource="/WinWeelay;component/Resources/table_go.png" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <ToolBarTray Grid.Row="0" Visibility="Collapsed">
-            <ToolBar Name="Options">
-                <Button Content="Edit"></Button>
-                <Button Content="Reset"></Button>
-            </ToolBar>
-        </ToolBarTray>
-        <Grid Grid.Row="1" Margin="10">
+        <Grid Grid.Row="0" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="10"/>
@@ -40,7 +36,27 @@
             </TextBox>
             <Button Content="Search" Grid.Column="2" Command="{Binding SearchCommand}"></Button>
         </Grid>
-        <ListView Margin="10,0,10,10" ItemsSource="{Binding Options}" Grid.Row="2" SelectedItem="{Binding SelectedOption}" SelectionChanged="ListView_SelectionChanged">
+        <ListView Margin="10,0,10,10" ItemsSource="{Binding Options}" Grid.Row="1" SelectedItem="{Binding SelectedOption}" SelectionChanged="ListView_SelectionChanged">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Edit Option" Command="{Binding EditCommand}">
+                        <MenuItem.Icon>
+                            <customcontrols:AutoGreyableImage Source="{StaticResource editImage}"/>
+                        </MenuItem.Icon>
+                        <MenuItem.ToolTip>
+                            <customcontrols:RichToolTip Title="Edit Option" Description="Change the currently selected option's value."/>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                    <MenuItem Header="Reset to Default Value" Command="{Binding ResetCommand}">
+                        <MenuItem.Icon>
+                            <customcontrols:AutoGreyableImage Source="{StaticResource resetImage}"/>
+                        </MenuItem.Icon>
+                        <MenuItem.ToolTip>
+                            <customcontrols:RichToolTip Title="Reset to Default Value" Description="Reset the currently selected option to its default value."/>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock FontWeight="Bold"></TextBlock>
@@ -72,7 +88,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Grid Grid.Row="3" Margin="10,0,10,10" Visibility="{Binding Path=IsOptionSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid Grid.Row="2" Margin="10,0,10,10" Visibility="{Binding Path=IsOptionSelected, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="130"/>
                 <ColumnDefinition Width="*"/>

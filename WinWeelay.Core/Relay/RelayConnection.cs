@@ -142,6 +142,11 @@ namespace WinWeelay.Core
             _bufferView.CloseBuffer(buffer);
         }
 
+        public RelayBuffer GetCoreBuffer()
+        {
+            return Buffers.FirstOrDefault(x => x.BufferType == null && x.PluginType == "core");
+        }
+
         public void NotifyBufferClosed(RelayBuffer buffer)
         {
             _bufferView.CloseBuffer(buffer);

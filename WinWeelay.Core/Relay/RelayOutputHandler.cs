@@ -93,6 +93,11 @@ namespace WinWeelay.Core
             }
         }
 
+        public void SetOption(string option, string value)
+        {
+            Input(_connection.GetCoreBuffer(), $"/set {option} {value}");
+        }
+
         public void MarkBufferAsRead(RelayBuffer buffer)
         {
             if (_connection.Configuration.SyncReadMessages)

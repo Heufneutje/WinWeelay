@@ -28,6 +28,7 @@ namespace WinWeelay.Core
         }
 
         public string BufferType { get; set; }
+        public string PluginType { get; set; }
         public int Number { get; set; }
         public string Pointer { get; set; }
         public RelayNicklistEntry ActiveNicklistEntry { get; set; }
@@ -151,6 +152,9 @@ namespace WinWeelay.Core
 
             if (localVars.ContainsKey("type"))
                 BufferType = localVars["type"].AsString();
+
+            if (localVars.ContainsKey("plugin"))
+                PluginType = localVars["plugin"].AsString();
         }
 
         public void AddSingleMessage(RelayBufferMessage message, bool updateCount)

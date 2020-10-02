@@ -322,6 +322,12 @@
   <ItemGroup>
     <Resource Include="Resources\table_gear.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\table_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\table_go.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release "D:\Program Files (x86)\NSIS\makensis.exe" "$(ProjectDir)..\setup.nsi"</PostBuildEvent>

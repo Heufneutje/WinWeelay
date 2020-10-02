@@ -20,6 +20,8 @@ namespace WinWeelay
         public bool IsModified => SelectedOption?.IsModified == true;
 
         public DelegateCommand SearchCommand { get; private set; }
+        public DelegateCommand EditCommand { get; private set; }
+        public DelegateCommand ResetCommand { get; private set; }
 
         public OptionsListViewModel() : this(null)
         {
@@ -34,6 +36,29 @@ namespace WinWeelay
 
             Options = new List<RelayOption>();
             SearchCommand = new DelegateCommand(Search);
+            EditCommand = new DelegateCommand(EditOption, CanEditOption);
+            ResetCommand = new DelegateCommand(ResetOption, CanResetOption);
+        }
+
+        private void EditOption(object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void ResetOption(object parameter)
+        {
+            _connection.OutputHandler.SetOption(SelectedOption.Name, SelectedOption.DefaultValueIsNull ? "null" : SelectedOption.DefaultValue);
+            Search(null);
+        }
+
+        private bool CanEditOption(object parameter)
+        {
+            return IsOptionSelected;
+        }
+
+        private bool CanResetOption(object parameter)
+        {
+            return IsModified;
         }
 
         public void Search(object parameter)
@@ -48,6 +73,8 @@ namespace WinWeelay
             NotifyPropertyChanged(nameof(IsModified));
             NotifyPropertyChanged(nameof(HasParentValue));
             NotifyPropertyChanged(nameof(HasPossibleValues));
+            EditCommand.OnCanExecuteChanged();
+            ResetCommand.OnCanExecuteChanged();
         }
 
         private void Connection_OptionsParsed(object sender, EventArgs e)
