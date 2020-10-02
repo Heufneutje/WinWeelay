@@ -53,6 +53,7 @@ namespace WinWeelay.Core
 
         public event ConnectionLostHandler ConnectionLost;
         public event HighlightHandler Highlighted;
+        public event EventHandler OptionsParsed;
 
         public RelayConnection()
         {
@@ -169,6 +170,11 @@ namespace WinWeelay.Core
         public void OnHighlighted(RelayBufferMessage message, RelayBuffer buffer)
         {
             Highlighted?.Invoke(this, new HighlightEventArgs(message, buffer));
+        }
+
+        public void OnOptionsParsed()
+        {
+            OptionsParsed?.Invoke(this, EventArgs.Empty);
         }
 
         private void Transport_ErrorReceived(object sender, RelayErrorEventArgs args)

@@ -41,6 +41,9 @@ namespace WinWeelay.Core
                 case MessageIds.CustomGetColorOptions:
                     ParseColorOptions(message);
                     break;
+                case MessageIds.CustomGetOptions:
+                    ParseOptions(message);
+                    break;
                 case MessageIds.BufferOpened:
                     ParseBufferOpened(message);
                     break;
@@ -78,7 +81,14 @@ namespace WinWeelay.Core
         private void ParseColorOptions(RelayMessage message)
         {
             WeechatInfoList infolist = (WeechatInfoList)message.RelayObjects[0];
-            _connection.OptionParser.ParseOptions(infolist);
+            _connection.OptionParser.ParseOptionsCached(infolist);
+        }
+
+        private void ParseOptions(RelayMessage message)
+        {
+            WeechatInfoList infolist = (WeechatInfoList)message.RelayObjects[0];
+            _connection.OptionParser.ParseOptionsUncached(infolist);
+            _connection.OnOptionsParsed();
         }
 
         private void ParseVersion(RelayMessage message)

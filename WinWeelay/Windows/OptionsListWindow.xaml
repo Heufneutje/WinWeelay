@@ -1,0 +1,102 @@
+﻿<MWindow:MetroWindow x:Class="WinWeelay.Windows.OptionsListWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:winweelay="clr-namespace:WinWeelay"
+        xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
+        mc:Ignorable="d"
+        Title="WeeChat Options" Height="600" Width="800" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico" Loaded="MetroWindow_Loaded">
+    <Window.DataContext>
+        <winweelay:OptionsListViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <winweelay:BoolToFontWeightConverter x:Key="BoolToFontWeightConverter" />
+        <winweelay:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Visibility="Collapsed">
+            <ToolBar Name="Options">
+                <Button Content="Edit"></Button>
+                <Button Content="Reset"></Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="searchTextBox" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0">
+                <TextBox.InputBindings>
+                    <KeyBinding Command="{Binding SearchCommand}" Key="Return" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Content="Search" Grid.Column="2" Command="{Binding SearchCommand}"></Button>
+        </Grid>
+        <ListView Margin="10,0,10,10" ItemsSource="{Binding Options}" Grid.Row="2" SelectedItem="{Binding SelectedOption}" SelectionChanged="ListView_SelectionChanged">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock FontWeight="Bold"></TextBlock>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Name">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Type">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding OptionType}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Value">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayValue}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Grid Grid.Row="3" Margin="10,0,10,10" Visibility="{Binding Path=IsOptionSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="130"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Name:" FontWeight="Bold" Grid.Column="0" Grid.Row="0"/>
+            <TextBlock Text="Description:" FontWeight="Bold" Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Text="Current value:" FontWeight="Bold" Grid.Column="0" Grid.Row="2"/>
+            <TextBlock Text="Default value:" FontWeight="Bold" Grid.Column="0" Grid.Row="3" Visibility="{Binding Path=IsModified, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="Possible values:" FontWeight="Bold" Grid.Column="0" Grid.Row="4" Visibility="{Binding Path=HasPossibleValues, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="Parent value:" FontWeight="Bold" Grid.Column="0" Grid.Row="5" Visibility="{Binding Path=HasParentValue, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding SelectedOption.Name}" Grid.Column="1" Grid.Row="0" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SelectedOption.Description}" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SelectedOption.DescriptionBoxValue}" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SelectedOption.DefaultValue}" Grid.Column="1" Grid.Row="3" Visibility="{Binding Path=IsModified, Converter={StaticResource BoolToVisibilityConverter}}" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SelectedOption.PossibleValuesString}" Grid.Column="1" Grid.Row="4" Visibility="{Binding Path=HasPossibleValues, Converter={StaticResource BoolToVisibilityConverter}}" TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding SelectedOption.ParentValue}" Grid.Column="1" Grid.Row="5" Visibility="{Binding Path=HasParentValue, Converter={StaticResource BoolToVisibilityConverter}}" TextWrapping="Wrap"/>
+        </Grid>
+    </Grid>
+</MWindow:MetroWindow>

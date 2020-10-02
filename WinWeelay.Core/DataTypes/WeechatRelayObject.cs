@@ -170,16 +170,12 @@ namespace WinWeelay.Core
         /// <returns>A boolean.</returns>
         public bool AsBoolean()
         {
-            try
-            {
-                CheckType(WeechatType.CHR);
+            if (Type == WeechatType.CHR)
                 return _charValue == '\u0001';
-            }
-            catch (InvalidCastException)
-            {
-                CheckType(WeechatType.INT);
+            else if (Type == WeechatType.INT)
                 return _intValue == 1;
-            }
+
+            return false;
         }
 
         /// <summary>

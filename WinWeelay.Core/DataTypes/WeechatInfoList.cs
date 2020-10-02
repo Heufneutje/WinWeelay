@@ -15,7 +15,7 @@ namespace WinWeelay.Core
         /// </summary>
         public string Name { get; private set; }
 
-        private List<Dictionary<string, WeechatRelayObject>> _items;
+        public List<Dictionary<string, WeechatRelayObject>> Items;
 
         /// <summary>
         /// The number of items in the info list.
@@ -24,7 +24,7 @@ namespace WinWeelay.Core
         {
             get
             {
-                return _items.Count;
+                return Items.Count;
             }
         }
 
@@ -34,7 +34,7 @@ namespace WinWeelay.Core
         /// <param name="name">Name of the info list.</param>
         public WeechatInfoList(string name)
         {
-            _items = new List<Dictionary<string, WeechatRelayObject>>();
+            Items = new List<Dictionary<string, WeechatRelayObject>>();
             Name = name;
             Type = WeechatType.INL;
         }
@@ -45,7 +45,7 @@ namespace WinWeelay.Core
         /// <param name="variables">Dictionary of info values.</param>
         public void AddItem(Dictionary<string, WeechatRelayObject> variables)
         {
-            _items.Add(variables);
+            Items.Add(variables);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace WinWeelay.Core
         {
             get
             {
-                return _items[index];
+                return Items[index];
             }
         }
 
@@ -68,7 +68,7 @@ namespace WinWeelay.Core
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(Name + $":{Environment.NewLine}");
-            foreach (Dictionary<string, WeechatRelayObject> item in _items)
+            foreach (Dictionary<string, WeechatRelayObject> item in Items)
             {
                 foreach (KeyValuePair<string, WeechatRelayObject> pair in item)
                     sb.Append($"  {pair.Key}->{pair.Value}, ");
@@ -84,8 +84,8 @@ namespace WinWeelay.Core
         /// <returns>Enumerator for looping.</returns>
         public IEnumerator GetEnumerator()
         {
-            for (int index = 0; index < _items.Count; index++)
-                yield return _items[index];
+            for (int index = 0; index < Items.Count; index++)
+                yield return Items[index];
         }
     }
 }

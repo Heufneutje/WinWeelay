@@ -242,5 +242,10 @@ namespace WinWeelay
                 bufferControl.HandleWindowStateChange(WindowState);
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ((MainViewModel)DataContext).Connection.OutputHandler.RequestOptions("");
+        }
     }
 }

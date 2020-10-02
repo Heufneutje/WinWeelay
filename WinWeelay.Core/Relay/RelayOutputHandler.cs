@@ -75,7 +75,22 @@ namespace WinWeelay.Core
 
         public void RequestColorOptions()
         {
-            Infolist("option", string.Empty, "/s weechat.color.*", MessageIds.CustomGetColorOptions);
+            RequestOptions("weechat.color.*", MessageIds.CustomGetColorOptions);
+        }
+
+        public void RequestOptions(string filter, string id = MessageIds.CustomGetOptions)
+        {
+            if (string.IsNullOrWhiteSpace(filter))
+            {
+                Infolist("option", id: id);
+            }
+            else
+            {
+                if (!filter.Contains("*"))
+                    filter = $"*{filter}*";
+
+                Infolist("option", string.Empty, $"/s {filter}", id);
+            }
         }
 
         public void MarkBufferAsRead(RelayBuffer buffer)

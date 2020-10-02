@@ -11,6 +11,7 @@ namespace WinWeelay.Core
         private Dictionary<string, int> _reverseColorOptions;
         private OptionCache _optionCache;
         private RelayConfiguration _relayConfiguration;
+        private List<RelayOption> _weechatOptions;
 
         public bool HasOptionCache => _optionCache.HasOptions;
 
@@ -18,6 +19,7 @@ namespace WinWeelay.Core
         {
             _relayConfiguration = relayConfiguration;
             _optionCache = OptionCache.Load(relayConfiguration);
+            _weechatOptions = new List<RelayOption>();
             _colorOptions = new Dictionary<int, string>
             {
                 { 0, OptionNames.WeechatColorSeparator },
@@ -62,12 +64,24 @@ namespace WinWeelay.Core
                 _reverseColorOptions.Add(pair.Value, pair.Key);
         }
 
-        public void ParseOptions(WeechatInfoList optionsList)
+        public void ParseOptionsCached(WeechatInfoList optionsList)
         {
             _optionCache.Options.Clear();
 
             foreach (Dictionary<string, WeechatRelayObject> item in optionsList)
                 _optionCache.Options.Add(new RelayOption(item["full_name"].AsString(), item["value"].AsString()));
+        }
+
+        public void ParseOptionsUncached(WeechatInfoList optionsList)
+        {
+            _weechatOptions.Clear();
+            foreach (Dictionary<string, WeechatRelayObject> item in optionsList.Items)
+                _weechatOptions.Add(new RelayOption(item));
+        }
+
+        public List<RelayOption> GetParsedOptions()
+        {
+            return _weechatOptions.ToList();
         }
 
         public void SaveOptionCache()

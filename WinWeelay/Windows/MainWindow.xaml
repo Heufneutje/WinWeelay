@@ -25,6 +25,7 @@
         <BitmapImage x:Key="checkForUpdatesImage" UriSource="/WinWeelay;component/Resources/Web-Download.png"/>
         <BitmapImage x:Key="clearBufferImage" UriSource="/WinWeelay;component/Resources/table_lightning.png"/>
         <BitmapImage x:Key="reinitBufferImage" UriSource="/WinWeelay;component/Resources/table_refresh.png"/>
+        <BitmapImage x:Key="weechatOptionsImage" UriSource="/WinWeelay;component/Resources/table_gear.png"/>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
     <Grid>
@@ -140,6 +141,14 @@
                         <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
                     </MenuItem.ToolTip>
                 </MenuItem>
+                <MenuItem Header="WeeChat options" Command="{Binding WeeChatOptionsCommand}">
+                    <MenuItem.Icon>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource weechatOptionsImage}"/>
+                    </MenuItem.Icon>
+                    <MenuItem.ToolTip>
+                        <customcontrols:RichToolTip Title="WeeChat options" Description="Configure WeeChat's options (fset)."/>
+                    </MenuItem.ToolTip>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Issue Tracker" Command="{Binding IssueTrackerCommand}">
@@ -229,6 +238,12 @@
                     <Image Source="{StaticResource settingsImage}"/>
                     <Button.ToolTip>
                         <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
+                    </Button.ToolTip>
+                </Button>
+                <Button Command="{Binding WeeChatOptionsCommand}">
+                    <Image Source="{StaticResource weechatOptionsImage}"/>
+                    <Button.ToolTip>
+                        <customcontrols:RichToolTip Title="Settings" Description="Configure WeeChat's options (fset)."/>
                     </Button.ToolTip>
                 </Button>
             </ToolBar>

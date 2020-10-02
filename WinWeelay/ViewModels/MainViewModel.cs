@@ -8,6 +8,7 @@ using WinWeelay.Core;
 using WinWeelay.Utils;
 using System.Windows;
 using System.Windows.Markup;
+using WinWeelay.Windows;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
@@ -20,6 +21,7 @@ namespace WinWeelay
     public class MainViewModel : NotifyPropertyChangedBase
     {
         private MainWindow _mainWindow;
+        private OptionsListWindow _optionsListWindow;
         private Timer _retryTimer;
         private bool _isRetryingConnection;
         private ThemeManager _themeManager;
@@ -36,6 +38,7 @@ namespace WinWeelay
         public DelegateCommand CloseBufferCommand { get; private set; }
         public DelegateCommand ExitCommand { get; private set; }
         public DelegateCommand SettingsCommand { get; private set; }
+        public DelegateCommand WeeChatOptionsCommand { get; private set; }
         public DelegateCommand AboutCommand { get; private set; }
         public DelegateCommand WhoisCommand { get; private set; }
         public DelegateCommand QueryCommand { get; private set; }
@@ -54,6 +57,7 @@ namespace WinWeelay
         public MainViewModel(MainWindow window)
         {
             _mainWindow = window;
+            _mainWindow.Closed += MainWindow_Closed;
 
             string appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
             if (!Directory.Exists(appDataPath))
@@ -82,6 +86,7 @@ namespace WinWeelay
             CloseBufferCommand = new DelegateCommand(CloseBuffer, IsBufferSelected);
             ExitCommand = new DelegateCommand(Exit);
             SettingsCommand = new DelegateCommand(ShowSettingsWindow);
+            WeeChatOptionsCommand = new DelegateCommand(ShowWeeChatOptionsWindow, CanDisconnect);
             AboutCommand = new DelegateCommand(ShowAboutWindow);
             WhoisCommand = new DelegateCommand(SendWhois, IsNickSelected);
             QueryCommand = new DelegateCommand(OpenQuery, IsNickSelected);
@@ -103,6 +108,12 @@ namespace WinWeelay
 
             if (RelayConfiguration.AutoConnect)
                 Connect(null);
+        }
+
+        private void MainWindow_Closed(object sender, EventArgs e)
+        {
+            if (_optionsListWindow != null)
+                _optionsListWindow.Close();
         }
 
         private void Connection_Highlighted(object sender, HighlightEventArgs args)
@@ -272,6 +283,22 @@ namespace WinWeelay
             RelayConfiguration.StartTrackingChanges();
         }
 
+        private void ShowWeeChatOptionsWindow(object parameter)
+        {
+            if (_optionsListWindow == null)
+            {
+                _optionsListWindow = new OptionsListWindow(new OptionsListViewModel(Connection));
+                _optionsListWindow.Closed += OptionsListWindow_Closed;
+                _optionsListWindow.Show();
+            }
+            _optionsListWindow.Activate();
+        }
+
+        private void OptionsListWindow_Closed(object sender, EventArgs e)
+        {
+            _optionsListWindow = null;
+        }
+
         private void ShowAboutWindow(object parameter)
         {
             AboutWindow aboutWindow = new AboutWindow() { Owner = _mainWindow };
@@ -348,6 +375,7 @@ namespace WinWeelay
         {
             ConnectCommand.OnCanExecuteChanged();
             DisconnectCommand.OnCanExecuteChanged();
+            WeeChatOptionsCommand.OnCanExecuteChanged();
         }
 
         public void UpdateBufferCommands()

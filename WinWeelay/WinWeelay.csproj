@@ -123,6 +123,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Convert\BoolToFontWeightConverter.cs" />
     <Compile Include="Convert\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="MessageFormatting\AttributeType.cs" />
     <Compile Include="MessageFormatting\ColorHelper.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
     <Compile Include="Extensions\TreeViewExtension.cs" />
+    <Compile Include="ViewModels\OptionsListViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="Windows\AboutWindow.xaml.cs">
       <DependentUpon>AboutWindow.xaml</DependentUpon>
@@ -145,6 +147,9 @@
     <Compile Include="Layout\DockingManagerLayoutHelper.cs" />
     <Compile Include="Windows\ExceptionWindow.xaml.cs">
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\OptionsListWindow.xaml.cs">
+      <DependentUpon>OptionsListWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\ThemedMessageBoxWindow.xaml.cs">
       <DependentUpon>ThemedMessageBoxWindow.xaml</DependentUpon>
@@ -173,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ExceptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\OptionsListWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -309,6 +318,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\table_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\table_gear.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
