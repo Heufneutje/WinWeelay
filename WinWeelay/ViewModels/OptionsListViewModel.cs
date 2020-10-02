@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WinWeelay.Core;
 using WinWeelay.Utils;
 
@@ -11,6 +9,7 @@ namespace WinWeelay
     public class OptionsListViewModel : NotifyPropertyChangedBase
     {
         private RelayConnection _connection;
+        public OptionsListWindow Owner { get; set; }
         public List<RelayOption> Options { get; set; }
         public RelayOption SelectedOption { get; set; }
         public string SearchFilter { get; set; }
@@ -42,7 +41,22 @@ namespace WinWeelay
 
         private void EditOption(object parameter)
         {
-            throw new NotImplementedException();
+            IOptionWindow window = null;
+            OptionViewModel viewModel = new OptionViewModel(SelectedOption);
+
+            switch (SelectedOption.OptionType)
+            {
+                case "string":
+                case "color":
+                    window = new OptionStringWindow(viewModel) { Owner = Owner };
+                    break;
+            }
+
+            if (window.ShowDialog() == true)
+            {
+                _connection.OutputHandler.SetOption(SelectedOption.Name, viewModel.SetToNull ? "null" : viewModel.Option.Value);
+                Search(null);
+            }
         }
 
         private void ResetOption(object parameter)

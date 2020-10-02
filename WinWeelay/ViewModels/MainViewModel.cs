@@ -7,8 +7,6 @@ using WinWeelay.Configuration;
 using WinWeelay.Core;
 using WinWeelay.Utils;
 using System.Windows;
-using System.Windows.Markup;
-using WinWeelay.Windows;
 
 #if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
@@ -287,8 +285,11 @@ namespace WinWeelay
         {
             if (_optionsListWindow == null)
             {
-                _optionsListWindow = new OptionsListWindow(new OptionsListViewModel(Connection));
+                OptionsListViewModel viewModel = new OptionsListViewModel(Connection);
+                _optionsListWindow = new OptionsListWindow(viewModel);
                 _optionsListWindow.Closed += OptionsListWindow_Closed;
+
+                viewModel.Owner = _optionsListWindow;
                 _optionsListWindow.Show();
             }
             _optionsListWindow.Activate();
