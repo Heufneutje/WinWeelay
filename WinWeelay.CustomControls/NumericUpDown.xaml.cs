@@ -49,10 +49,10 @@ namespace WinWeelay.CustomControls
         static NumericUpDown()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown)));
-            MaximumProperty = DependencyProperty.Register("Maximum", typeof(int), typeof(NumericUpDown), new UIPropertyMetadata(int.MaxValue));
-            MinimumProperty = DependencyProperty.Register("Minimum", typeof(int), typeof(NumericUpDown), new UIPropertyMetadata(int.MinValue));
-            StepProperty = DependencyProperty.Register("StepValue", typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(1));
-            ValueProperty = DependencyProperty.Register("Value", typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0));
+            MaximumProperty = DependencyProperty.Register(nameof(MaxValue), typeof(int), typeof(NumericUpDown), new UIPropertyMetadata(int.MaxValue));
+            MinimumProperty = DependencyProperty.Register(nameof(MinValue), typeof(int), typeof(NumericUpDown), new UIPropertyMetadata(int.MinValue));
+            StepProperty = DependencyProperty.Register(nameof(StepValue), typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(1));
+            ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0));
         }
 
         public NumericUpDown()

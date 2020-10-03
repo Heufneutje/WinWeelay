@@ -53,6 +53,10 @@ namespace WinWeelay
                 case "boolean":
                     window = new OptionBooleanWindow(viewModel) { Owner = Owner };
                     break;
+                case "integer":
+                    if (SelectedOption.PossibleValuesString == null)
+                        window = new OptionIntegerWindow(viewModel) { Owner = Owner };
+                    break;
             }
 
             if (window.ShowDialog() == true)
