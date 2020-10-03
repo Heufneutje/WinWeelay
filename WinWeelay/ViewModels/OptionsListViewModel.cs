@@ -57,6 +57,8 @@ namespace WinWeelay
                 case "integer":
                     if (SelectedOption.PossibleValuesString == null)
                         window = new OptionIntegerWindow(viewModel) { Owner = Owner };
+                    else
+                        window = new OptionComboBoxWindow(viewModel) { Owner = Owner };
                     break;
             }
 
