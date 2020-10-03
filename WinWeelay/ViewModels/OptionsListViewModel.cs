@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using WinWeelay.Core;
 using WinWeelay.Utils;
 
@@ -59,7 +60,11 @@ namespace WinWeelay
                     break;
             }
 
-            if (window.ShowDialog() == true)
+            if (window == null)
+            {
+                ThemedMessageBoxWindow.Show("An editor dialog for this option type has not been implemented yet. Please report on the issue tracker.", "Not implemented", MessageBoxButton.OK, MessageBoxImage.Error, Owner);
+            }
+            else if (window.ShowDialog() == true)
             {
                 _connection.OutputHandler.SetOption(SelectedOption.Name, viewModel.SetToNull ? "null" : viewModel.Option.Value);
                 Search(null);
