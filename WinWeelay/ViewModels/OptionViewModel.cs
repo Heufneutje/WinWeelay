@@ -20,7 +20,13 @@ namespace WinWeelay
             switch (option.OptionType)
             {
                 case "string":
-                    EditValue = option.Value.Trim('\"');
+                    EditValue = option.ValueIsNull ? string.Empty : option.Value.Trim('\"');
+                    break;
+                case "integer":
+                    if (option.PossibleValuesString == null)
+                        EditValue = (option.MinValue > 0 ? option.MinValue : 0).ToString();
+                    else
+                        goto default;
                     break;
                 default:
                     EditValue = option.Value;
