@@ -141,12 +141,12 @@
                         <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
                     </MenuItem.ToolTip>
                 </MenuItem>
-                <MenuItem Header="WeeChat options" Command="{Binding WeeChatOptionsCommand}">
+                <MenuItem Header="WeeChat Options" Command="{Binding WeeChatOptionsCommand}">
                     <MenuItem.Icon>
                         <customcontrols:AutoGreyableImage Source="{StaticResource weechatOptionsImage}"/>
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="WeeChat options" Description="Configure WeeChat's options (fset)."/>
+                        <customcontrols:RichToolTip Title="WeeChat Options" Description="Configure WeeChat's options (fset)."/>
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
@@ -243,7 +243,7 @@
                 <Button Command="{Binding WeeChatOptionsCommand}">
                     <Image Source="{StaticResource weechatOptionsImage}"/>
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Settings" Description="Configure WeeChat's options (fset)."/>
+                        <customcontrols:RichToolTip Title="WeeChat Options" Description="Configure WeeChat's options (fset)."/>
                     </Button.ToolTip>
                 </Button>
             </ToolBar>
