@@ -49,7 +49,10 @@ namespace WinWeelay
             {
                 case "string":
                 case "color":
-                    window = new OptionStringWindow(viewModel) { Owner = Owner };
+                    if (SelectedOption.IsPassword)
+                        window = new OptionPasswordWindow(viewModel) { Owner = Owner };
+                    else
+                        window = new OptionStringWindow(viewModel) { Owner = Owner };
                     break;
                 case "boolean":
                     window = new OptionBooleanWindow(viewModel) { Owner = Owner };

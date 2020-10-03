@@ -54,6 +54,9 @@ namespace WinWeelay.Core
         [JsonIgnore]
         public string DescriptionBoxValue => ValueIsNull ? Value : DisplayValue;
 
+        [JsonIgnore]
+        public bool IsPassword { get; set; }
+
         public RelayOption() { }
 
         public RelayOption(string name, string value)
@@ -77,9 +80,15 @@ namespace WinWeelay.Core
             if (possibleValues != null)
                 PossibleValues = possibleValues.Split('|').ToList();
 
+            string lower = Name.ToLower();
+            IsPassword = OptionType == "string" && lower.EndsWith("password") && !lower.EndsWith("hide_password");
+
             if (item.ContainsKey("parent_value"))
             {
                 ParentValue = item["parent_value"].AsString();
+
+                if (IsPassword)
+                    ParentValue = "".PadLeft(ParentValue.Length, '*');
                 if (OptionType == "string")
                     ParentValue = AddStringQuotes(ParentValue);
             }
@@ -93,11 +102,15 @@ namespace WinWeelay.Core
             else if (item.ContainsKey("value"))
             {
                 Value = item["value"].AsString();
-                // TODO: Handle password options in an elegant matter.
-                //if (Name.ToLower().Contains("password"))
-                //    DisplayValue = "".PadLeft(Value.Length, '*');
-                //else
-                DisplayValue = Value;
+                if (IsPassword)
+                {
+                    DisplayValue = "".PadLeft(Value.Length, '*');
+                    IsPassword = true;
+                }
+                else
+                {
+                    DisplayValue = Value;
+                }
 
                 if (OptionType == "string")
                 {

@@ -161,6 +161,9 @@
     <Compile Include="Windows\OptionIntegerWindow.xaml.cs">
       <DependentUpon>OptionIntegerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\OptionPasswordWindow.xaml.cs">
+      <DependentUpon>OptionPasswordWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OptionsListWindow.xaml.cs">
       <DependentUpon>OptionsListWindow.xaml</DependentUpon>
     </Compile>
@@ -206,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\OptionIntegerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\OptionPasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
