@@ -93,10 +93,11 @@ namespace WinWeelay.Core
             else if (item.ContainsKey("value"))
             {
                 Value = item["value"].AsString();
-                if (Name.ToLower().Contains("password"))
-                    DisplayValue = "".PadLeft(Value.Length, '*');
-                else
-                    DisplayValue = Value;
+                // TODO: Handle password options in an elegant matter.
+                //if (Name.ToLower().Contains("password"))
+                //    DisplayValue = "".PadLeft(Value.Length, '*');
+                //else
+                DisplayValue = Value;
 
                 if (OptionType == "string")
                 {
