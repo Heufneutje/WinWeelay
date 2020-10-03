@@ -131,7 +131,7 @@ namespace WinWeelay.Core
             if (length == -1)
                 return null;
 
-            byte[] ret = ArrayHelper.CopyOfRange(_data, _pointer, _pointer + length);
+            byte[] ret = _data.CopyOfRange(_pointer, _pointer + length);
 
             _pointer += length;
             return ret;
@@ -367,7 +367,7 @@ namespace WinWeelay.Core
         /// <returns>A byte array of unparsed data.</returns>
         public byte[] GetByteArray()
         {
-            return ArrayHelper.CopyOfRange(_data, _pointer, _data.Length);
+            return _data.CopyOfRange(_pointer, _data.Length);
         }
     }
 }

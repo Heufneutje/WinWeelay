@@ -97,7 +97,7 @@ namespace WinWeelay.Core
 
                     if (read == 4)
                     {
-                        byte[] lengthBytes = ArrayHelper.CopyOfRange(buffer, 0, 4);
+                        byte[] lengthBytes = buffer.CopyOfRange(0, 4);
                         if (BitConverter.IsLittleEndian)
                             Array.Reverse(lengthBytes);
 

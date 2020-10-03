@@ -50,7 +50,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="ArrayHelper.cs" />
+    <Compile Include="CollectionExtension.cs" />
     <Compile Include="BaseChangeTrackable.cs" />
     <Compile Include="ChangeTrackingIgnoreAttribute.cs" />
     <Compile Include="Cipher.cs" />
