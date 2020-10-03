@@ -124,6 +124,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Convert\BoolToFontWeightConverter.cs" />
+    <Compile Include="Convert\BoolToOptionStringConverter.cs" />
     <Compile Include="Convert\InverseBoolConverter.cs" />
     <Compile Include="Convert\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="MessageFormatting\AttributeType.cs" />
@@ -151,6 +152,9 @@
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\IOptionWindow.cs" />
+    <Compile Include="Windows\OptionBooleanWindow.xaml.cs">
+      <DependentUpon>OptionBooleanWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\OptionsListWindow.xaml.cs">
       <DependentUpon>OptionsListWindow.xaml</DependentUpon>
     </Compile>
@@ -184,6 +188,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\ExceptionWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\OptionBooleanWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -50,6 +50,9 @@ namespace WinWeelay
                 case "color":
                     window = new OptionStringWindow(viewModel) { Owner = Owner };
                     break;
+                case "boolean":
+                    window = new OptionBooleanWindow(viewModel) { Owner = Owner };
+                    break;
             }
 
             if (window.ShowDialog() == true)

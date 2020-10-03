@@ -4,11 +4,11 @@ using MWindowLib;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for OptionStringWindow.xaml
+    /// Interaction logic for OptionBooleanWindow.xaml
     /// </summary>
-    public partial class OptionStringWindow : MetroWindow, IOptionWindow
+    public partial class OptionBooleanWindow : MetroWindow, IOptionWindow
     {
-        public OptionStringWindow(OptionViewModel viewModel)
+        public OptionBooleanWindow(OptionViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
