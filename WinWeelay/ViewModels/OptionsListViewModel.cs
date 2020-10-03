@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using WinWeelay.Core;
@@ -10,8 +11,15 @@ namespace WinWeelay
     public class OptionsListViewModel : NotifyPropertyChangedBase
     {
         private RelayConnection _connection;
+        private List<RelayOption> _options;
+        private bool _isRefreshing;
+
         public OptionsListWindow Owner { get; set; }
-        public List<RelayOption> Options { get; set; }
+        public int ScrollOffset { get; set; }
+        public bool IsChangingScroll { get; set; }
+        public bool IsFullyLoaded { get; private set; }
+
+        public ObservableCollection<RelayOption> LoadedOptions { get; set; }
         public RelayOption SelectedOption { get; set; }
         public string SearchFilter { get; set; }
         public bool IsOptionSelected => SelectedOption != null;
@@ -34,7 +42,8 @@ namespace WinWeelay
             if (connection != null)
                 _connection.OptionsParsed += Connection_OptionsParsed;
 
-            Options = new List<RelayOption>();
+            _options = new List<RelayOption>();
+            LoadedOptions = new ObservableCollection<RelayOption>();
             SearchCommand = new DelegateCommand(Search);
             EditCommand = new DelegateCommand(EditOption, CanEditOption);
             ResetCommand = new DelegateCommand(ResetOption, CanResetOption);
@@ -71,15 +80,15 @@ namespace WinWeelay
             }
             else if (window.ShowDialog() == true)
             {
-                _connection.OutputHandler.SetOption(SelectedOption.Name, viewModel.SetToNull ? "null" : viewModel.Option.Value);
-                Search(null);
+                _connection.OutputHandler.SetOption(SelectedOption.Name, viewModel.SetToNull ? "null" : viewModel.ValueToSave);
+                Refresh();
             }
         }
 
         private void ResetOption(object parameter)
         {
             _connection.OutputHandler.SetOption(SelectedOption.Name, SelectedOption.DefaultValueIsNull ? "null" : SelectedOption.DefaultValue);
-            Search(null);
+            Refresh();
         }
 
         private bool CanEditOption(object parameter)
@@ -97,6 +106,12 @@ namespace WinWeelay
             _connection.OutputHandler.RequestOptions(SearchFilter);
         }
 
+        private void Refresh()
+        {
+            _isRefreshing = true;
+            Search(null);
+        }
+
         public void OnSelectedOptionChanged()
         {
             NotifyPropertyChanged(nameof(SelectedOption));
@@ -110,8 +125,74 @@ namespace WinWeelay
 
         private void Connection_OptionsParsed(object sender, EventArgs e)
         {
-            Options = _connection.OptionParser.GetParsedOptions();
-            NotifyPropertyChanged(nameof(Options));
+            _options = _connection.OptionParser.GetParsedOptions();
+
+            if (_isRefreshing)
+            {
+                bool hasChanges = false;
+                _isRefreshing = false;
+                List<RelayOption> optionsToRemove = new List<RelayOption>();
+                for (int i = 0; i < LoadedOptions.Count; i++)
+                {
+                    RelayOption option = LoadedOptions[i];
+                    if (!_options.Contains(option))
+                    {
+                        optionsToRemove.Add(option);
+                        hasChanges = true;
+                    }
+                    else
+                    {
+                        RelayOption newOption = _options.First(x => x.Name == option.Name);
+                        if (newOption.Value != option.Value || newOption.ParentValue != option.ParentValue)
+                        {
+                            LoadedOptions.RemoveAt(i);
+                            LoadedOptions.Insert(i, newOption);
+                            hasChanges = true;
+                        }
+                    }
+                }
+
+                foreach (RelayOption option in optionsToRemove)
+                    LoadedOptions.Remove(option);
+
+                if (hasChanges)
+                    NotifyPropertyChanged(nameof(LoadedOptions));
+            }
+            else
+            {
+                LoadedOptions.Clear();
+                Owner.ResetScroll();
+                ScrollOffset = 0;
+                LoadOptions();
+            }
+        }
+
+        public void LoadOptions()
+        {
+            int stepSize = Owner.GetStepSize();
+            int start = ScrollOffset * stepSize;
+
+            for (int i = start; i < start + stepSize; i++)
+            {
+                if (i < _options.Count)
+                {
+                    RelayOption option = _options[i];
+                    if (!LoadedOptions.Contains(option))
+                        LoadedOptions.Add(option);
+                }
+                else
+                {
+                    IsFullyLoaded = true;
+                    break;
+                }
+            }
+
+            IsChangingScroll = false;
+            ScrollOffset++;
+            NotifyPropertyChanged(nameof(LoadedOptions));
+
+            if (LoadedOptions.Count != 0 && Owner.GetPossibleNumberOfVisibleItems() > LoadedOptions.Count && !IsFullyLoaded)
+                LoadOptions();
         }
     }
 }

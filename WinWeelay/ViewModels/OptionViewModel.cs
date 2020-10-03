@@ -8,6 +8,7 @@ namespace WinWeelay
         public RelayOption Option { get; set; }
         public bool SetToNull { get; set; }
         public string EditValue { get; set; }
+        public string ValueToSave { get; set; }
 
         public OptionViewModel()
         {
@@ -39,10 +40,10 @@ namespace WinWeelay
             switch (Option.OptionType)
             {
                 case "string":
-                    Option.Value = $"\"{EditValue}\"";
+                    ValueToSave = $"\"{EditValue}\"";
                     break;
                 default:
-                    Option.Value = EditValue;
+                    ValueToSave = EditValue;
                     break;
             }
         }

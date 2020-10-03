@@ -135,5 +135,25 @@ namespace WinWeelay.Core
         {
             return $"\"{value}\"";
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RelayOption option && Name == option.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return 539060726 + EqualityComparer<string>.Default.GetHashCode(Name);
+        }
+
+        public static bool operator ==(RelayOption left, RelayOption right)
+        {
+            return EqualityComparer<RelayOption>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(RelayOption left, RelayOption right)
+        {
+            return !(left == right);
+        }
     }
 }

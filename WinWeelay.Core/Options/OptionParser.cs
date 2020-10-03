@@ -81,7 +81,7 @@ namespace WinWeelay.Core
 
         public List<RelayOption> GetParsedOptions()
         {
-            return _weechatOptions.ToList();
+            return _weechatOptions.OrderBy(x => x.Name).ToList();
         }
 
         public void SaveOptionCache()

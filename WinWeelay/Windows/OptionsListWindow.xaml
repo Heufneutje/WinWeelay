@@ -17,7 +17,7 @@
         <BitmapImage x:Key="editImage" UriSource="/WinWeelay;component/Resources/table_edit.png" />
         <BitmapImage x:Key="resetImage" UriSource="/WinWeelay;component/Resources/table_go.png" />
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="_grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -36,7 +36,7 @@
             </TextBox>
             <Button Content="Search" Grid.Column="2" Command="{Binding SearchCommand}"></Button>
         </Grid>
-        <ListView Margin="10,0,10,10" ItemsSource="{Binding Options}" customcontrols:ControlItemDoubleClick.ItemsDoubleClick="True" Grid.Row="1" SelectedItem="{Binding SelectedOption}" SelectionChanged="ListView_SelectionChanged">
+        <ListView x:Name="_optionsListView" Margin="10,0,10,10" ItemsSource="{Binding LoadedOptions, UpdateSourceTrigger=PropertyChanged}" customcontrols:ControlItemDoubleClick.ItemsDoubleClick="True" Grid.Row="1" SelectedItem="{Binding SelectedOption}" SelectionChanged="ListView_SelectionChanged">
             <ListView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Edit Option" Command="{Binding EditCommand}">
