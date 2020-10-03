@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WinWeelay.Core
+﻿namespace WinWeelay.Core
 {
     public interface IBufferWindow
     {

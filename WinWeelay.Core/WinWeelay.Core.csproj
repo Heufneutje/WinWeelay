@@ -93,6 +93,7 @@
     <Compile Include="Events\RelayMessageEventArgs.cs" />
     <Compile Include="Events\HighlightEventArgs.cs" />
     <Compile Include="Interfaces\IBufferWindow.cs" />
+    <Compile Include="Interfaces\IOptionWindow.cs" />
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />
     <Compile Include="NickCompleter.cs" />

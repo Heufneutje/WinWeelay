@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using MWindowLib;
+using WinWeelay.Core;
 
 namespace WinWeelay
 {

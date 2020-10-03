@@ -1,4 +1,4 @@
-﻿namespace WinWeelay
+﻿namespace WinWeelay.Core
 {
     public interface IOptionWindow
     {
