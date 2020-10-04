@@ -4,8 +4,15 @@ using System.Threading.Tasks;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Secure TCP connection with SSL.
+    /// </summary>
     public class SslRelayTransport : TcpRelayTransport
     {
+        /// <summary>
+        /// Initialize the network stream and vrify the SSL connection.
+        /// </summary>
+        /// <returns>Async task.</returns>
         protected override async Task InitializeStream()
         {
             _networkStream = new SslStream(_tcpClient.GetStream());

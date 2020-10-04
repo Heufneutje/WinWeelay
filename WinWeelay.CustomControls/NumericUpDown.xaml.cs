@@ -6,33 +6,63 @@ using System.Windows.Input;
 
 namespace WinWeelay.CustomControls
 {
+    /// <summary>
+    /// Control that implements a spin box element.
+    /// </summary>
     public partial class NumericUpDown : UserControl
     {
         private RepeatButton _upButton;
         private RepeatButton _downButton;
 
+        /// <summary>
+        /// Property that holds the maximum numerical value.
+        /// </summary>
         public readonly static DependencyProperty MaximumProperty;
+
+        /// <summary>
+        /// Property that holds the minimum numerical value.
+        /// </summary>
         public readonly static DependencyProperty MinimumProperty;
+
+        /// <summary>
+        /// Property that holds the current value.
+        /// </summary>
         public readonly static DependencyProperty ValueProperty;
+
+        /// <summary>
+        /// Property that holds the number by which to increment/decrement the value.
+        /// </summary>
         public readonly static DependencyProperty StepProperty;
 
+        /// <summary>
+        /// Event to fire when the current value changes.
+        /// </summary>
         public event EventHandler ValueChanged;
 
+        /// <summary>
+        /// The maximum numerical value.
+        /// </summary>
         public int MaxValue
         {
-            get { return (int)GetValue(MaximumProperty); }
-            set { SetValue(MaximumProperty, value); }
+            get => (int)GetValue(MaximumProperty);
+            set => SetValue(MaximumProperty, value);
         }
 
+        /// <summary>
+        /// The minimum numerical value.
+        /// </summary>
         public int MinValue
         {
-            get { return (int)GetValue(MinimumProperty); }
-            set { SetValue(MinimumProperty, value); }
+            get => (int)GetValue(MinimumProperty);
+            set => SetValue(MinimumProperty, value);
         }
 
+        /// <summary>
+        /// The current value.
+        /// </summary>
         public int Value
         {
-            get { return (int)GetValue(ValueProperty); }
+            get => (int)GetValue(ValueProperty);
             set
             {
                 SetCurrentValue(ValueProperty, value);
@@ -40,10 +70,13 @@ namespace WinWeelay.CustomControls
             }
         }
 
+        /// <summary>
+        /// The number by which to increment/decrement the value.
+        /// </summary>
         public int StepValue
         {
-            get { return (int)GetValue(StepProperty); }
-            set { SetValue(StepProperty, value); }
+            get => (int)GetValue(StepProperty);
+            set => SetValue(StepProperty, value);
         }
 
         static NumericUpDown()
@@ -55,11 +88,17 @@ namespace WinWeelay.CustomControls
             ValueProperty = DependencyProperty.Register(nameof(Value), typeof(int), typeof(NumericUpDown), new FrameworkPropertyMetadata(0));
         }
 
+        /// <summary>
+        /// Create a new instance of the control.
+        /// </summary>
         public NumericUpDown()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Initialize buttons and event handlers.
+        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();

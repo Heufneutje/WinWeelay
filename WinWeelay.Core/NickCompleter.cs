@@ -5,6 +5,9 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Utility for tab completing nicknames based on latest activity.
+    /// </summary>
     public class NickCompleter
     {
         private RelayBuffer _buffer;
@@ -12,14 +15,26 @@ namespace WinWeelay.Core
         private string _lastNickCompletion;
         private string _lastSearch;
 
+        /// <summary>
+        /// Currently in the process of trying to complete a nick.
+        /// </summary>
         public bool IsNickCompleting { get; set; }
 
+        /// <summary>
+        /// Create a new instance of the nick completer for a given buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to create the nick completer for.</param>
         public NickCompleter(RelayBuffer buffer)
         {
             _buffer = buffer;
             _nickCompleteIndex = -1;
         }
 
+        /// <summary>
+        /// Try to complete the nickname based on a given test string.
+        /// </summary>
+        /// <param name="message">The given text string.</param>
+        /// <returns>A completed nickname if found, otherwise the original message.</returns>
         public string HandleNickCompletion(string message)
         {
             _nickCompleteIndex++;
@@ -73,6 +88,9 @@ namespace WinWeelay.Core
             return sortedNicks.ElementAt(_nickCompleteIndex);
         }
 
+        /// <summary>
+        /// Stop trying to complete the nickname and clear the search.
+        /// </summary>
         public void Reset()
         {
             _nickCompleteIndex = -1;

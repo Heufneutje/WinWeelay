@@ -5,6 +5,9 @@ using WinWeelay.Configuration;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Utility to parse WeeChat options.
+    /// </summary>
     public class OptionParser
     {
         private Dictionary<int, string> _colorOptions;
@@ -13,8 +16,15 @@ namespace WinWeelay.Core
         private RelayConfiguration _relayConfiguration;
         private List<RelayOption> _weechatOptions;
 
+        /// <summary>
+        /// Are there currently options in the cache?
+        /// </summary>
         public bool HasOptionCache => _optionCache.HasOptions;
 
+        /// <summary>
+        /// Create a new parser with the given configuration.
+        /// </summary>
+        /// <param name="relayConfiguration">The configuration which specifies how long options should be cached.</param>
         public OptionParser(RelayConfiguration relayConfiguration)
         {
             _relayConfiguration = relayConfiguration;
@@ -64,6 +74,10 @@ namespace WinWeelay.Core
                 _reverseColorOptions.Add(pair.Value, pair.Key);
         }
 
+        /// <summary>
+        /// Clear the options cache and create a new cache from the retrieved options.
+        /// </summary>
+        /// <param name="optionsList">The retrieved options.</param>
         public void ParseOptionsCached(WeechatInfoList optionsList)
         {
             _optionCache.Options.Clear();
@@ -72,6 +86,10 @@ namespace WinWeelay.Core
                 _optionCache.Options.Add(new RelayOption(item["full_name"].AsString(), item["value"].AsString()));
         }
 
+        /// <summary>
+        /// Create a temporary list from the retrieved options.
+        /// </summary>
+        /// <param name="optionsList">The retrieved options.</param>
         public void ParseOptionsUncached(WeechatInfoList optionsList)
         {
             _weechatOptions.Clear();
@@ -79,16 +97,28 @@ namespace WinWeelay.Core
                 _weechatOptions.Add(new RelayOption(item));
         }
 
+        /// <summary>
+        /// Get the temporary list from the retrieved options.
+        /// </summary>
+        /// <returns>The retrieved options.</returns>
         public List<RelayOption> GetParsedOptions()
         {
             return _weechatOptions.OrderBy(x => x.Name).ToList();
         }
 
+        /// <summary>
+        /// Save the current opions cache to file.
+        /// </summary>
         public void SaveOptionCache()
         {
             _optionCache.SaveOptionCache(_relayConfiguration);
         }
 
+        /// <summary>
+        /// Get the WeeChat color for a given color code.
+        /// </summary>
+        /// <param name="colorCode">The color code.</param>
+        /// <returns>A WeeChat color.</returns>
         public int GetOptionColor(int colorCode)
         {
             if (!_colorOptions.ContainsKey(colorCode))
@@ -107,6 +137,11 @@ namespace WinWeelay.Core
             return result ? (int)color : -1;
         }
 
+        /// <summary>
+        /// Get the WeeChat color from a given color option name.
+        /// </summary>
+        /// <param name="option">The option name.</param>
+        /// <returns>A WeeChat color.</returns>
         public string GetOptionColorCode(string option)
         {
             if (!_reverseColorOptions.ContainsKey(option))

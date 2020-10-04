@@ -11,12 +11,28 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Plain TCP connection without SSL.
+    /// </summary>
     public class TcpRelayTransport : BaseRelayTransport
     {
-        protected TcpClient _tcpClient;
-        protected Stream _networkStream;
         private BackgroundWorker _inputWorker;
 
+        /// <summary>
+        /// The TCP client for the relay connection.
+        /// </summary>
+        protected TcpClient _tcpClient;
+
+        /// <summary>
+        /// The TCP stream for the relay.
+        /// </summary>
+        protected Stream _networkStream;
+
+        /// <summary>
+        /// Connect to a WeeChat instance with the given configuration.
+        /// </summary>
+        /// <param name="configuration">Main configuration.</param>
+        /// <returns>Async task.</returns>
         public override async Task Connect(RelayConfiguration configuration)
         {
             _configuration = configuration;
@@ -43,6 +59,9 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// Disconnect from the WeeChat instance.
+        /// </summary>
         public override void Disconnect()
         {
             IsConnected = false;
@@ -52,11 +71,19 @@ namespace WinWeelay.Core
             _tcpClient = null;
         }
 
+        /// <summary>
+        /// Write raw data to the relay connection.
+        /// </summary>
+        /// <param name="data">The data array to write.</param>
         public override void Write(byte[] data)
         {
             _networkStream.Write(data, 0, data.Length);
         }
 
+        /// <summary>
+        /// Initialize the network stream.
+        /// </summary>
+        /// <returns>Async task.</returns>
         protected virtual Task InitializeStream()
         {
             _networkStream = _tcpClient.GetStream();

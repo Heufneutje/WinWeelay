@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Net.WebSockets;
 using System.Threading;
@@ -9,18 +8,30 @@ using WinWeelay.Configuration;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Plain text or secure WebSocket connection.
+    /// </summary>
     public class WebSocketRelayTransport : BaseRelayTransport
     {
         private WebsocketClient _webSocket;
         private SynchronizationContext _synchronizationContext;
         private bool _useSsl;
         
+        /// <summary>
+        /// Create a new WebSocket transport instance.
+        /// </summary>
+        /// <param name="useSsl">Connect to a secure WebSocket.</param>
         public WebSocketRelayTransport(bool useSsl)
         {
             _useSsl = useSsl;
             _synchronizationContext = SynchronizationContext.Current;
         }
 
+        /// <summary>
+        /// Connect to a WeeChat instance with the given configuration.
+        /// </summary>
+        /// <param name="configuration">Main configuration.</param>
+        /// <returns>Async task.</returns>
         public override async Task Connect(RelayConfiguration configuration)
         {
             _configuration = configuration;
@@ -53,12 +64,19 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// Disconnect from the WeeChat instance.
+        /// </summary>
         public override void Disconnect()
         {
             IsConnected = false;
             _webSocket.Dispose();
         }
 
+        /// <summary>
+        /// Write raw data to the relay connection.
+        /// </summary>
+        /// <param name="data">The data array to write.</param>
         public override void Write(byte[] data)
         {
             if (IsConnected)
