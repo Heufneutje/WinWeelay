@@ -160,6 +160,7 @@ namespace WinWeelay
             else
             {
                 LoadedOptions.Clear();
+                IsFullyLoaded = false;
                 Owner.ResetScroll();
                 LoadOptions();
             }
