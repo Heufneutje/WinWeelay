@@ -10,12 +10,12 @@ namespace WinWeelay.Core
     /// </summary>
     public class WeechatInfoList : WeechatRelayObject, IEnumerable
     {
+        private List<Dictionary<string, WeechatRelayObject>> _items;
+
         /// <summary>
         /// Name of the info list.
         /// </summary>
         public string Name { get; private set; }
-
-        public List<Dictionary<string, WeechatRelayObject>> Items;
 
         /// <summary>
         /// The number of items in the info list.
@@ -24,7 +24,7 @@ namespace WinWeelay.Core
         {
             get
             {
-                return Items.Count;
+                return _items.Count;
             }
         }
 
@@ -34,7 +34,7 @@ namespace WinWeelay.Core
         /// <param name="name">Name of the info list.</param>
         public WeechatInfoList(string name)
         {
-            Items = new List<Dictionary<string, WeechatRelayObject>>();
+            _items = new List<Dictionary<string, WeechatRelayObject>>();
             Name = name;
             Type = WeechatType.INL;
         }
@@ -45,7 +45,7 @@ namespace WinWeelay.Core
         /// <param name="variables">Dictionary of info values.</param>
         public void AddItem(Dictionary<string, WeechatRelayObject> variables)
         {
-            Items.Add(variables);
+            _items.Add(variables);
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace WinWeelay.Core
         {
             get
             {
-                return Items[index];
+                return _items[index];
             }
         }
 
@@ -68,7 +68,7 @@ namespace WinWeelay.Core
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(Name + $":{Environment.NewLine}");
-            foreach (Dictionary<string, WeechatRelayObject> item in Items)
+            foreach (Dictionary<string, WeechatRelayObject> item in _items)
             {
                 foreach (KeyValuePair<string, WeechatRelayObject> pair in item)
                     sb.Append($"  {pair.Key}->{pair.Value}, ");
@@ -84,8 +84,8 @@ namespace WinWeelay.Core
         /// <returns>Enumerator for looping.</returns>
         public IEnumerator GetEnumerator()
         {
-            for (int index = 0; index < Items.Count; index++)
-                yield return Items[index];
+            for (int index = 0; index < _items.Count; index++)
+                yield return _items[index];
         }
     }
 }

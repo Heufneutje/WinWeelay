@@ -75,7 +75,7 @@ namespace WinWeelay.Core
         public void ParseOptionsUncached(WeechatInfoList optionsList)
         {
             _weechatOptions.Clear();
-            foreach (Dictionary<string, WeechatRelayObject> item in optionsList.Items)
+            foreach (Dictionary<string, WeechatRelayObject> item in optionsList)
                 _weechatOptions.Add(new RelayOption(item));
         }
 
