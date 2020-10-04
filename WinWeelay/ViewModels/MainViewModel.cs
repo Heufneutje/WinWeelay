@@ -119,7 +119,7 @@ namespace WinWeelay
             args.Message.IsNotified = true;
 
             #if WINDOWS10_SDK
-            if (RelayConfiguration.NotificationsEnabled && (RelayConfiguration.NotificationsEnabledWithBufferFocus || args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive))
+            if (RelayConfiguration.NotificationsEnabled && (RelayConfiguration.NotificationsEnabledWithBufferFocus || args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive || _mainWindow.WindowState == WindowState.Minimized))
             {
                 try
                 {
