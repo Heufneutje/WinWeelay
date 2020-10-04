@@ -35,23 +35,12 @@ namespace WinWeelay.Core
         public int UnreadMessagesCount { get; set; }
         public int HighlightedMessagesCount { get; set; }
         public int MaxBacklogSize { get; set; }
-        public ReadOnlyCollection<RelayBufferMessage> Messages
-        {
-            get
-            {
-                return _messages.AsReadOnly();
-            }
-        }
+        public ReadOnlyCollection<RelayBufferMessage> Messages => _messages.AsReadOnly();
 
         private string _title;
-        
-
         public string Title
         {
-            get
-            {
-                return _title;
-            }
+            get => _title;
             set
             {
                 _title = value;
@@ -63,13 +52,7 @@ namespace WinWeelay.Core
         public RelayBuffer Parent { get; set; }
 
         #region View Model
-        public IEnumerable<RelayBufferMessage> MessagesToHighlight
-        {
-            get
-            {
-                return _messages.Where(x => x.IsHighlighted && !x.IsNotified);
-            }
-        }
+        public IEnumerable<RelayBufferMessage> MessagesToHighlight => _messages.Where(x => x.IsHighlighted && !x.IsNotified);
 
         public string DisplayCount
         {
@@ -82,13 +65,7 @@ namespace WinWeelay.Core
             }
         }
 
-        public bool IsBadgeVisible
-        {
-            get
-            {
-                return UnreadMessagesCount != 0 || HighlightedMessagesCount != 0;
-            }
-        }
+        public bool IsBadgeVisible => UnreadMessagesCount != 0 || HighlightedMessagesCount != 0;
 
         public string BadgeBackground
         {

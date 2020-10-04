@@ -15,13 +15,7 @@ namespace WinWeelay.Core
         public int SortIndex { get; set; }
         public RelayBuffer Buffer { get; set; }
 
-        public string ListDisplay
-        {
-            get
-            {
-                return ToString();
-            }
-        }
+        public string ListDisplay => ToString();
 
         public RelayNicklistEntry(WeechatHdataEntry entry, RelayBuffer buffer)
         {

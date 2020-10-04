@@ -26,29 +26,11 @@ namespace WinWeelay
             Configuration = configuration;
         }
 
-        public IEnumerable<ConnectionTypeWrapper> ConnectionTypes
-        {
-            get
-            {
-                return ConnectionTypeWrapper.GetTypes();
-            }
-        }
+        public IEnumerable<ConnectionTypeWrapper> ConnectionTypes => ConnectionTypeWrapper.GetTypes();
 
-        public IEnumerable<BufferViewTypeWrapper> BufferViewTypes
-        {
-            get
-            {
-                return BufferViewTypeWrapper.GetTypes();
-            }
-        }
+        public IEnumerable<BufferViewTypeWrapper> BufferViewTypes => BufferViewTypeWrapper.GetTypes();
 
-        public IEnumerable<CultureInfo> CultureInfos
-        {
-            get
-            {
-                return CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures).OrderBy(x => x.DisplayName);
-            }
-        }
+        public IEnumerable<CultureInfo> CultureInfos => CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures).OrderBy(x => x.DisplayName);
 
         public Color AccentColorExample => Color.FromRgb(Configuration.AccentColor.RedValue, Configuration.AccentColor.GreenValue, Configuration.AccentColor.BlueValue);
 

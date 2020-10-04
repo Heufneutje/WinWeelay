@@ -20,13 +20,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// The number of items in the info list.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _items.Count;
-            }
-        }
+        public int Count => _items.Count;
 
         /// <summary>
         /// Create a new list of info objects.
@@ -53,13 +47,7 @@ namespace WinWeelay.Core
         /// </summary>
         /// <param name="index">A given index.</param>
         /// <returns>A dictionary of info values</returns>
-        public Dictionary<string, WeechatRelayObject> this[int index]
-        {
-            get
-            {
-                return _items[index];
-            }
-        }
+        public Dictionary<string, WeechatRelayObject> this[int index] => _items[index];
 
         /// <summary>
         /// Override for debug purposes.

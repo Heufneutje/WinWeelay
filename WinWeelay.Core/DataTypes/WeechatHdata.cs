@@ -29,13 +29,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// The number of elements in the Hdata object.
         /// </summary>
-        public int Count
-        {
-            get
-            {
-                return _items.Count;
-            }
-        }
+        public int Count => _items.Count;
 
         /// <summary>
         /// Create an empty Hdata object.
@@ -75,13 +69,7 @@ namespace WinWeelay.Core
         /// </summary>
         /// <param name="index">The given index.</param>
         /// <returns>The object at the given index.</returns>
-        public WeechatHdataEntry this[int index]
-        {
-            get
-            {
-                return _items[index];
-            }
-        }
+        public WeechatHdataEntry this[int index] => _items[index];
 
         /// <summary>
         /// Override for debug purposes.
@@ -102,6 +90,10 @@ namespace WinWeelay.Core
             return s;
         }
 
+        /// <summary>
+        /// IEnumerable implementation.
+        /// </summary>
+        /// <returns>Enumerator for looping.</returns>
         public IEnumerator<WeechatHdataEntry> GetEnumerator()
         {
             return _items.GetEnumerator();

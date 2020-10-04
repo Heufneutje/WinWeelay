@@ -16,13 +16,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// Check whether there is any data left to parse.
         /// </summary>
-        public bool IsEmpty
-        {
-            get
-            {
-                return _pointer == _data.Length;
-            }
-        }
+        public bool IsEmpty => _pointer == _data.Length;
 
         /// <summary>
         /// Initialize a new data structure.
@@ -288,11 +282,11 @@ namespace WinWeelay.Core
         /// <returns>A data type.</returns>
         private WeechatType GetWeechatType()
         {
-            char a = GetChar();
-            char b = GetChar();
-            char c = GetChar();
+            string typeStr = string.Empty;
+            for (int i = 0; i < 3; i++)
+                typeStr += GetChar();
 
-            WeechatType type = (WeechatType)Enum.Parse(typeof(WeechatType), new string(new char[] { a, b, c }).ToUpper());
+            WeechatType type = (WeechatType)Enum.Parse(typeof(WeechatType), typeStr.ToUpper());
             return type;
         }
 

@@ -27,10 +27,7 @@ namespace WinWeelay.Core
         private string _weeChatVersion;
         public string WeeChatVersion
         {
-            get
-            {
-                return _weeChatVersion;
-            }
+            get => _weeChatVersion;
             set
             {
                 _weeChatVersion = value;

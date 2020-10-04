@@ -43,13 +43,7 @@ namespace WinWeelay.Core
         /// </summary>
         /// <param name="index">The index at which to find the object.</param>
         /// <returns>The retrieved relay object.</returns>
-        public WeechatRelayObject this[int index]
-        {
-            get
-            {
-                return _array[index];
-            }
-        }
+        public WeechatRelayObject this[int index] => _array[index];
 
         /// <summary>
         /// Convert all strings the array as a new array.

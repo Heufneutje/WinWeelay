@@ -36,13 +36,7 @@ namespace WinWeelay.Core
         /// </summary>
         /// <param name="key">The key of the element to retrieve.</param>
         /// <returns>The value for the given key.</returns>
-        public WeechatRelayObject this[string key]
-        {
-            get
-            {
-                return _data[key];
-            }
-        }
+        public WeechatRelayObject this[string key] => _data[key];
 
         /// <summary>
         /// Retrieves the last pointer that was added.

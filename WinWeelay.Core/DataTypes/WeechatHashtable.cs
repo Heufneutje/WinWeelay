@@ -25,13 +25,7 @@ namespace WinWeelay.Core
         /// </summary>
         /// <param name="key">The key of the element to retrieve.</param>
         /// <returns>The value for the given key.</returns>
-        public WeechatRelayObject this[string key]
-        {
-            get
-            {
-                return _dict[key];
-            }
-        }
+        public WeechatRelayObject this[string key] => _dict[key];
 
         /// <summary>
         /// Checker whether a given key is present in the hashtabel.
