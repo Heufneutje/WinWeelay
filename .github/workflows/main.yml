@@ -31,9 +31,3 @@ jobs:
       with:
         name: files
         path: Release
-          
-    - name: Upload installer
-      uses: actions/upload-artifact@v1.0.0
-      with:
-        name: installer
-        path: Release\WinWeelaySetup.exe
