@@ -15,7 +15,6 @@ namespace WinWeelay
         private bool _isRefreshing;
 
         public OptionsListWindow Owner { get; set; }
-        public int ScrollOffset { get; set; }
         public bool IsChangingScroll { get; set; }
         public bool IsFullyLoaded { get; private set; }
 
@@ -162,7 +161,6 @@ namespace WinWeelay
             {
                 LoadedOptions.Clear();
                 Owner.ResetScroll();
-                ScrollOffset = 0;
                 LoadOptions();
             }
         }
@@ -170,7 +168,7 @@ namespace WinWeelay
         public void LoadOptions()
         {
             int stepSize = Owner.GetStepSize();
-            int start = ScrollOffset * stepSize;
+            int start = LoadedOptions.Count;
 
             for (int i = start; i < start + stepSize; i++)
             {
@@ -188,7 +186,6 @@ namespace WinWeelay
             }
 
             IsChangingScroll = false;
-            ScrollOffset++;
             NotifyPropertyChanged(nameof(LoadedOptions));
 
             if (LoadedOptions.Count != 0 && Owner.GetPossibleNumberOfVisibleItems() > LoadedOptions.Count && !IsFullyLoaded)

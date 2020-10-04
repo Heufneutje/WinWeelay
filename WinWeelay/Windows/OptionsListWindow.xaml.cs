@@ -51,7 +51,7 @@ namespace WinWeelay
             ScrollViewer view = (ScrollViewer)sender;
             OptionsListViewModel viewModel = (OptionsListViewModel)DataContext;
             double progress = view.VerticalOffset / view.ScrollableHeight;
-            if (progress > 0.7 & !viewModel.IsChangingScroll && !viewModel.IsFullyLoaded)
+            if (progress > 0.95 & !viewModel.IsChangingScroll && !viewModel.IsFullyLoaded)
             {
                 viewModel.IsChangingScroll = true;
                 viewModel.LoadOptions();
