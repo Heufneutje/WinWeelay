@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using System.Timers;
 using WinWeelay.Configuration;
@@ -10,21 +9,55 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Connection to the WeeChat host.
+    /// </summary>
     public class RelayConnection : NotifyPropertyChangedBase
     {
         private IRelayTransport _transport;
         private IBufferWindow _bufferView;
         private Timer _pingTimer;
         
+        /// <summary>
+        /// The parser for incoming messages on this connection.
+        /// </summary>
         public RelayInputHandler InputHandler { get; private set; }
+
+        /// <summary>
+        /// The handler for outgoing messages from this connection.
+        /// </summary>
         public RelayOutputHandler OutputHandler { get; private set; }
+
+        /// <summary>
+        /// The buffers that have been loaded.
+        /// </summary>
         public ObservableCollection<RelayBuffer> Buffers { get; private set; }
+
+        /// <summary>
+        /// The main configuration loaded from the config file.
+        /// </summary>
         public RelayConfiguration Configuration { get; set; }
+
+        /// <summary>
+        /// The buffer that is currently active in the UI.
+        /// </summary>
         public RelayBuffer ActiveBuffer { get; set; }
+
+        /// <summary>
+        /// Parser to handle WeeChat options.
+        /// </summary>
         public OptionParser OptionParser { get; set; }
+
+        /// <summary>
+        /// Whether the connection is currently active.
+        /// </summary>
         public bool IsConnected => _transport != null && _transport.IsConnected;
 
         private string _weeChatVersion;
+
+        /// <summary>
+        /// The version of WeeChat running on the host.
+        /// </summary>
         public string WeeChatVersion
         {
             get => _weeChatVersion;
@@ -35,6 +68,9 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// The title of the main window.
+        /// </summary>
         public string Description
         {
             get
@@ -46,18 +82,40 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// The buffers which have no parent (core, plugins and servers).
+        /// </summary>
         public ObservableCollection<RelayBuffer> RootBuffers => new ObservableCollection<RelayBuffer>(Buffers.Where(x => x.Parent == null));
 
+        /// <summary>
+        /// Event fired when the connection is terminated.
+        /// </summary>
         public event ConnectionLostHandler ConnectionLost;
+
+        /// <summary>
+        /// Event fired when a message triggers a highlight.
+        /// </summary>
         public event HighlightHandler Highlighted;
+
+        /// <summary>
+        /// Event fired when a retrieved options list has been parsed.
+        /// </summary>
         public event EventHandler OptionsParsed;
 
+        /// <summary>
+        /// Constructor for designer.
+        /// </summary>
         public RelayConnection()
         {
             Buffers = new ObservableCollection<RelayBuffer>();
             OptionParser = new OptionParser(Configuration);
         }
 
+        /// <summary>
+        /// Create a new connection.
+        /// </summary>
+        /// <param name="view">Control that displays the buffer list (list or tree).</param>
+        /// <param name="configuration">The main configuration loaded from the config file.</param>
         public RelayConnection(IBufferWindow view, RelayConfiguration configuration)
         {
             Buffers = new ObservableCollection<RelayBuffer>();
@@ -69,6 +127,10 @@ namespace WinWeelay.Core
             _pingTimer.Elapsed += PingTimer_Elapsed;
         }
 
+        /// <summary>
+        /// Connect to the WeeChat host.
+        /// </summary>
+        /// <returns>Async result.</returns>
         public async Task<bool> Connect()
         {
             _transport = RelayTransportFactory.GetTransport(Configuration.ConnectionType);
@@ -99,6 +161,10 @@ namespace WinWeelay.Core
             return true;
         }
 
+        /// <summary>
+        /// Disconnect from the WeeChat host.
+        /// </summary>
+        /// <param name="cleanDisconnect">Whether a quit command should be sent.</param>
         public void Disconnect(bool cleanDisconnect)
         {
             WeeChatVersion = null;
@@ -127,6 +193,9 @@ namespace WinWeelay.Core
             NotifyPropertyChanged(nameof(IsConnected));
         }
 
+        /// <summary>
+        /// Sort the buffer list based on buffer numbers.
+        /// </summary>
         public void SortBuffers()
         {
             Buffers = new ObservableCollection<RelayBuffer>(Buffers.OrderBy(x => x.Number));
@@ -134,32 +203,45 @@ namespace WinWeelay.Core
                 buffer.SortChildren();
         }
 
+        /// <summary>
+        /// Close a given buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
         public void CloseBuffer(RelayBuffer buffer)
         {
             _bufferView.CloseBuffer(buffer);
         }
 
+        /// <summary>
+        /// Retrieve the buffer that is the core WeeChat buffer.
+        /// </summary>
+        /// <returns>The core buffer.</returns>
         public RelayBuffer GetCoreBuffer()
         {
             return Buffers.FirstOrDefault(x => x.BufferType == null && x.PluginType == "core");
         }
 
-        public void NotifyBufferClosed(RelayBuffer buffer)
-        {
-            _bufferView.CloseBuffer(buffer);
-        }
-
+        /// <summary>
+        /// Update the UI when the buffer list changes.
+        /// </summary>
         public void NotifyBuffersChanged()
         {
             NotifyPropertyChanged(nameof(Buffers));
             NotifyPropertyChanged(nameof(RootBuffers));
         }
 
+        /// <summary>
+        /// Update the UI when the nickname list for the active buffer changes.
+        /// </summary>
         public void NotifyNicklistUpdated()
         {
             NotifyPropertyChanged(nameof(ActiveBuffer));
         }
 
+        /// <summary>
+        /// Notify the UI that the connection has been lost.
+        /// </summary>
+        /// <param name="ex">The reason that the connected has been lost.</param>
         public void HandleException(Exception ex)
         {
             Exception error = ex;
@@ -169,16 +251,29 @@ namespace WinWeelay.Core
             ConnectionLost?.Invoke(this, new ConnectionLostEventArgs(error));
         }
 
+        /// <summary>
+        /// Fire an event when a message triggers a highlight.
+        /// </summary>
+        /// <param name="message">The message which triggered the highlight.</param>
+        /// <param name="buffer">The buffer the highlight was triggered in.</param>
         public void OnHighlighted(RelayBufferMessage message, RelayBuffer buffer)
         {
             Highlighted?.Invoke(this, new HighlightEventArgs(message, buffer));
         }
 
+        /// <summary>
+        /// Fire an event when parsing the retrieved options is finished.
+        /// </summary>
         public void OnOptionsParsed()
         {
             OptionsParsed?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Notify the UI that the connection has been lost.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="args">Arguments which contain the error.</param>
         private void Transport_ErrorReceived(object sender, RelayErrorEventArgs args)
         {
             HandleException(args.Error);

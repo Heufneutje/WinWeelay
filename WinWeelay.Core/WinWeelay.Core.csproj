@@ -97,6 +97,7 @@
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />
     <Compile Include="NickCompleter.cs" />
+    <Compile Include="Interfaces\IBufferDockView.cs" />
     <Compile Include="Options\OptionCache.cs" />
     <Compile Include="Options\OptionNames.cs" />
     <Compile Include="Options\OptionParser.cs" />

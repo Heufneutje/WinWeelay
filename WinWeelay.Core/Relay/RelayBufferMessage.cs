@@ -5,20 +5,68 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// A messaged received in a WeeChat buffer.
+    /// </summary>
     public class RelayBufferMessage
     {
+        /// <summary>
+        /// Internal ID for the message.
+        /// </summary>
         public string LinePointer { get; private set; }
+
+        /// <summary>
+        /// Internal ID for the buffer that the message was received in.
+        /// </summary>
         public string BufferPointer { get; private set; }
+
+        /// <summary>
+        /// The date and time the message was sent on.
+        /// </summary>
         public DateTime Date { get; private set; }
+
+        /// <summary>
+        /// Whether this message triggers a highlight.
+        /// </summary>
         public bool IsHighlighted { get; private set; }
+
+        /// <summary>
+        /// A list of additional message tags.
+        /// </summary>
         public string[] Tags { get; private set; }
+
+        /// <summary>
+        /// Role prefix for the user that sent the message.
+        /// </summary>
         public string Prefix { get; private set; }
+
+        /// <summary>
+        /// The content of the message.
+        /// </summary>
         public string Message { get; private set; }
+
+        /// <summary>
+        /// The nickname of the user that sent the message.
+        /// </summary>
         public string Nick { get; private set; }
+
+        /// <summary>
+        /// The type of the message (privmsg or notice).
+        /// </summary>
         public string MessageType { get; private set; }
+
+        /// <summary>
+        /// Whether a notification for this message has been displayed when it triggers a highlight.
+        /// </summary>
+        /// <seealso cref="IsHighlighted"/>
         public bool IsNotified { get; set; }
 
         private string _unformattedPrefix;
+
+        /// <summary>
+        /// Role prefix without color data.
+        /// </summary>
+        /// <seealso cref="Prefix"/>
         public string UnformattedPrefix
         {
             get
@@ -30,6 +78,11 @@ namespace WinWeelay.Core
         }
 
         private string _unformattedMessage;
+
+        /// <summary>
+        /// Message content without color or formatting data.
+        /// </summary>
+        /// <seealso cref="Message"/>
         public string UnformattedMessage
         {
             get
@@ -40,6 +93,12 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// Create a new message from a received Hdata structure.
+        /// </summary>
+        /// <param name="entry">Received Hdata structure with message details.</param>
+        /// <param name="showNotifications">Whether a notification should be shown if this message triggers a highlight (set to false for backlog messages).</param>
+        /// <param name="linePointerIndex">Index where this message's internal ID is located.</param>
         public RelayBufferMessage(WeechatHdataEntry entry, bool showNotifications, int linePointerIndex)
         {
             LinePointer = entry.GetPointer(linePointerIndex);
@@ -63,6 +122,11 @@ namespace WinWeelay.Core
                 IsNotified = true;
         }
 
+        /// <summary>
+        /// Override to check if line and buffer pointers match. When this is the case the message is the same.
+        /// </summary>
+        /// <param name="obj">The objec to compare.</param>
+        /// <returns>True if messages have the same internal ID in the same buffer.</returns>
         public override bool Equals(object obj)
         {
             return obj is RelayBufferMessage message &&
@@ -70,6 +134,10 @@ namespace WinWeelay.Core
                    BufferPointer == message.BufferPointer;
         }
 
+        /// <summary>
+        /// Override to check if line and buffer pointers match. When this is the case the message is the same.
+        /// </summary>
+        /// <returns>Hash code.</returns>
         public override int GetHashCode()
         {
             int hashCode = 1910936884;
@@ -78,11 +146,23 @@ namespace WinWeelay.Core
             return hashCode;
         }
 
+        /// <summary>
+        /// Override to check if line and buffer pointers match. When this is the case the message is the same.
+        /// </summary>
+        /// <param name="left">First message.</param>
+        /// <param name="right">Second message.</param>
+        /// <returns>True if messages have the same internal ID in the same buffer.</returns>
         public static bool operator ==(RelayBufferMessage left, RelayBufferMessage right)
         {
             return EqualityComparer<RelayBufferMessage>.Default.Equals(left, right);
         }
 
+        /// <summary>
+        /// Override to check if line and buffer pointers match. When this is the case the message is the same.
+        /// </summary>
+        /// <param name="left">First message.</param>
+        /// <param name="right">Second message.</param>
+        /// <returns>False if messages have the same internal ID in the same buffer.</returns>
         public static bool operator !=(RelayBufferMessage left, RelayBufferMessage right)
         {
             return !(left == right);

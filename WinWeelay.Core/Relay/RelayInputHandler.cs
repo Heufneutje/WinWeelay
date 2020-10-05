@@ -3,11 +3,19 @@ using System.Linq;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Parser for incoming messages.
+    /// </summary>
     public class RelayInputHandler
     {
         private RelayConnection _connection;
         private IRelayTransport _transport;
 
+        /// <summary>
+        /// Create a new parser for a given connection's incoming messages.
+        /// </summary>
+        /// <param name="connection">The connection that the messages should be handled for.</param>
+        /// <param name="transport">The network stream that the messages will be received on.</param>
         public RelayInputHandler(RelayConnection connection, IRelayTransport transport)
         {
             _connection = connection;
@@ -375,7 +383,7 @@ namespace WinWeelay.Core
                 if (rootBuffer.Children.Contains(buffer))
                     rootBuffer.Children.Remove(buffer);
 
-            _connection.NotifyBufferClosed(buffer);
+            _connection.CloseBuffer(buffer);
         }
     }
 }

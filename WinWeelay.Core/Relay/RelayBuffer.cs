@@ -6,17 +6,30 @@ using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
+    /// <summary>
+    /// Message buffer in WeeChat.
+    /// </summary>
     public class RelayBuffer : NotifyPropertyChangedBase
     {
         private List<RelayBufferMessage> _messages;
         private bool _hasBacklog;
         private bool _hasNicklist;
 
+        /// <summary>
+        /// The connection that the buffer is created on.
+        /// </summary>
         public RelayConnection Connection { get; private set; }
 
+        /// <summary>
+        /// The full internal name of the buffer.
+        /// </summary>
         public string FullName { get; set; }
 
         private string _shortName;
+
+        /// <summary>
+        /// The short name of the buffer for display purposes.
+        /// </summary>
         public string ShortName
         {
             get => _shortName;
@@ -27,17 +40,56 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// The internal type of the buffer.
+        /// </summary>
         public string BufferType { get; set; }
+
+        /// <summary>
+        /// The type of WeeChat plugin that the buffer uses.
+        /// </summary>
         public string PluginType { get; set; }
+
+        /// <summary>
+        /// The buffer number for ordering.
+        /// </summary>
         public int Number { get; set; }
+
+        /// <summary>
+        /// Internal ID for the buffer.
+        /// </summary>
         public string Pointer { get; set; }
+
+        /// <summary>
+        /// Currently selected nickname in the UI.
+        /// </summary>
         public RelayNicklistEntry ActiveNicklistEntry { get; set; }
+
+        /// <summary>
+        /// The number of unread messages in the buffer.
+        /// </summary>
         public int UnreadMessagesCount { get; set; }
+
+        /// <summary>
+        /// The number of unread highlights in the buffer.
+        /// </summary>
         public int HighlightedMessagesCount { get; set; }
+
+        /// <summary>
+        /// The current maxium size of the message backlog. Starts at the configured default. Can increase when calling <c>LoadMoreMessages</c>.
+        /// </summary>
         public int MaxBacklogSize { get; set; }
+
+        /// <summary>
+        /// The current messages in the buffer.
+        /// </summary>
         public ReadOnlyCollection<RelayBufferMessage> Messages => _messages.AsReadOnly();
 
         private string _title;
+
+        /// <summary>
+        /// The buffer title/topic.
+        /// </summary>
         public string Title
         {
             get => _title;
@@ -47,13 +99,26 @@ namespace WinWeelay.Core
                 TitleChanged?.Invoke(this, EventArgs.Empty);
             }
         }
+
+        /// <summary>
+        /// The loaded list of nicknames in the buffer.
+        /// </summary>
         public ObservableCollection<RelayNicklistEntry> Nicklist { get; private set; }
+
+        /// <summary>
+        /// Child buffers for this buffer (applies to IRC server buffers for example).
+        /// </summary>
         public IList<RelayBuffer> Children { get; private set; }
+
+        /// <summary>
+        /// Parent buffer for this buffer (applies to IRC channel buffers for example).
+        /// </summary>
         public RelayBuffer Parent { get; set; }
 
         #region View Model
-        public IEnumerable<RelayBufferMessage> MessagesToHighlight => _messages.Where(x => x.IsHighlighted && !x.IsNotified);
-
+        /// <summary>
+        /// The counter badge to display in the UI.
+        /// </summary>
         public string DisplayCount
         {
             get
@@ -65,8 +130,14 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// Should the badge be visible in the UI?
+        /// </summary>
         public bool IsBadgeVisible => UnreadMessagesCount != 0 || HighlightedMessagesCount != 0;
 
+        /// <summary>
+        /// Hex code for the background of the badge depending on the notification level.
+        /// </summary>
         public string BadgeBackground
         {
             get
@@ -78,13 +149,35 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// Event fired when this buffer's name changes.
+        /// </summary>
         public event EventHandler NameChanged;
+
+        /// <summary>
+        /// Event fired when a single message is added to the buffer.
+        /// </summary>
         public event MessageAddedHandler MessageAdded;
+
+        /// <summary>
+        /// Event fired when multiple messages are added to the buffer.
+        /// </summary>
         public event MessageBatchAddedHandler MessageBatchAdded;
+
+        /// <summary>
+        /// Event fired when the buffer title/topic changes.
+        /// </summary>
         public event EventHandler TitleChanged;
+
+        /// <summary>
+        /// Event fired when all messages in the buffer are cleared.
+        /// </summary>
         public event EventHandler MessagesCleared;
         #endregion
 
+        /// <summary>
+        /// Constructor for designer.
+        /// </summary>
         public RelayBuffer()
         {
             _messages = new List<RelayBufferMessage>();
@@ -92,6 +185,11 @@ namespace WinWeelay.Core
             Children = new List<RelayBuffer>();
         }
 
+        /// <summary>
+        /// Create a new buffer from a received Hdata structure.
+        /// </summary>
+        /// <param name="connection">The connection that the buffer is created on.</param>
+        /// <param name="entry">Received Hdata structure with buffer details.</param>
         public RelayBuffer(RelayConnection connection, WeechatHdataEntry entry)
         {
             UpdateBufferProperties(entry);
@@ -103,6 +201,10 @@ namespace WinWeelay.Core
             MaxBacklogSize = Connection.Configuration.BacklogSize;
         }
 
+        /// <summary>
+        /// Update the existing buffer with values for a received Hdata structure.
+        /// </summary>
+        /// <param name="entry">Received Hdata structure with buffer details.</param>
         public void UpdateBufferProperties(WeechatHdataEntry entry)
         {
             WeechatHashtable localVars = entry.GetLocalVariables();
@@ -134,11 +236,16 @@ namespace WinWeelay.Core
                 PluginType = localVars["plugin"].AsString();
         }
 
-        public void AddSingleMessage(RelayBufferMessage message, bool updateCount)
+        /// <summary>
+        /// Add a single message to this buffer's message list.
+        /// </summary>
+        /// <param name="message">The message that should be added.</param>
+        /// <param name="updateUnreadCount">Increase the number of unread messages.</param>
+        public void AddSingleMessage(RelayBufferMessage message, bool updateUnreadCount)
         {
             _messages.Insert(0, message);
 
-            if (updateCount)
+            if (updateUnreadCount)
             {
                 UnreadMessagesCount++;
 
@@ -150,6 +257,11 @@ namespace WinWeelay.Core
             MessageAdded?.Invoke(this, new RelayBufferMessageEventArgs(message, true, false));
         }
 
+        /// <summary>
+        /// Add multiple single message to this buffer's message list.
+        /// </summary>
+        /// <param name="messages">The messages that should be added.</param>
+        /// <param name="isExpandedBacklog">True if the messages are received after the "Load more messages" action.</param>
         public void AddMessageBatch(IEnumerable<RelayBufferMessage> messages, bool isExpandedBacklog)
         {
             _messages.AddRange(messages);
@@ -165,23 +277,37 @@ namespace WinWeelay.Core
                 _messages.RemoveAt(_messages.Count - 1);
         }
 
+        /// <summary>
+        /// Checks whether a given message has been added to this buffer.
+        /// </summary>
+        /// <param name="message">The message to check.</param>
+        /// <returns>True if the message has been added to the buffer.</returns>
         public bool HasMessage(RelayBufferMessage message)
         {
             return _messages.Any(x => x.LinePointer == message.LinePointer);
         }
 
+        /// <summary>
+        /// Clear the received messages from this buffer. Only clears the buffer locally.
+        /// </summary>
         public void ClearMessages()
         {
             _messages.Clear();
             MessagesCleared?.Invoke(this, EventArgs.Empty);
         }
 
+        /// <summary>
+        /// Update the UI when the buffer name changes.
+        /// </summary>
         public void NotifyNameUpdated()
         {
             NotifyPropertyChanged(nameof(ShortName));
             NotifyPropertyChanged(nameof(FullName));
         }
 
+        /// <summary>
+        /// Update the UI when the unread count changes.
+        /// </summary>
         public void NotifyMessageCountUpdated()
         {
             NotifyPropertyChanged(nameof(DisplayCount));
@@ -189,6 +315,9 @@ namespace WinWeelay.Core
             NotifyPropertyChanged(nameof(BadgeBackground));
         }
 
+        /// <summary>
+        /// Select this buffer as the active buffer and load the backlog if it hasn't been loaded yet.
+        /// </summary>
         public void HandleSelected()
         {
             Connection.ActiveBuffer = this;
@@ -216,22 +345,35 @@ namespace WinWeelay.Core
             NotifyMessageCountUpdated();
         }
 
+        /// <summary>
+        /// Deselect this buffer and set the active buffer to null.
+        /// </summary>
         public void HandleUnselected()
         {
             Connection.ActiveBuffer = null;
             Connection.NotifyNicklistUpdated();
         }
 
+        /// <summary>
+        /// Sort the nicklist by channel role, then nickname.
+        /// </summary>
         public void SortNicklist()
         {
             Nicklist = new ObservableCollection<RelayNicklistEntry>(Nicklist.OrderBy(x => x.SortIndex).ThenBy(x => x.Name));
         }
 
+        /// <summary>
+        /// Sort this buffer's child buffers based on their number.
+        /// </summary>
         public void SortChildren()
         {
             Children = new ObservableCollection<RelayBuffer>(Children.OrderBy(x => x.Number));
         }
 
+        /// <summary>
+        /// Get all nicknames from the message that have currently been received.
+        /// </summary>
+        /// <returns>A list of nicknames sorted by most recent activity.</returns>
         public IEnumerable<string> GetSortedUniqueNicks()
         {
             List<string> nicks = _messages.Where(x => !string.IsNullOrEmpty(x.Nick) && Nicklist.Any(y => y.Name == x.Nick)).OrderByDescending(x => x.Date).Select(x => x.Nick).ToList();
@@ -239,40 +381,62 @@ namespace WinWeelay.Core
             return nicks.Distinct();
         }
 
+        /// <summary>
+        /// Send a new message to this buffer.
+        /// </summary>
+        /// <param name="message">The mesage to send.</param>
         public void SendMessage(string message)
         {
             Connection.OutputHandler.Input(this, message);
         }
 
+        /// <summary>
+        /// Send a WHOIS request to the selected nickname in this buffer.
+        /// </summary>
         public void SendWhois()
         {
             if (ActiveNicklistEntry != null)
                 SendMessage($"/whois {ActiveNicklistEntry.Name}");
         }
 
+        /// <summary>
+        /// Kick the active nickname from this buffer (IRC channel).
+        /// </summary>
         public void SendKick()
         {
             if (ActiveNicklistEntry != null)
                 SendMessage($"/kick {ActiveNicklistEntry.Name}");
         }
 
+        /// <summary>
+        /// Ban the active nickname from this buffer (IRC channel).
+        /// </summary>
         public void SendBan()
         {
             if (ActiveNicklistEntry != null)
                 SendMessage($"/ban {ActiveNicklistEntry.Name}");
         }
 
+        /// <summary>
+        /// Kick and ban the active nickname from this buffer (IRC channel).
+        /// </summary>
         public void SendKickban()
         {
             if (ActiveNicklistEntry != null)
                 SendMessage($"/kickban {ActiveNicklistEntry.Name}");
         }
 
+        /// <summary>
+        /// Clear this buffer's messages both locally and on the WeeChat host.
+        /// </summary>
         public void SendClear()
         {
             SendMessage("/buffer clear");
         }
 
+        /// <summary>
+        /// Reset the backlog to its default configured size.
+        /// </summary>
         public void ReinitMessages()
         {
             _hasBacklog = false;
@@ -281,6 +445,9 @@ namespace WinWeelay.Core
             _hasBacklog = true;
         }
 
+        /// <summary>
+        /// Load 100 more older messages into the backlog.
+        /// </summary>
         public void LoadMoreMessages()
         {
             int size;

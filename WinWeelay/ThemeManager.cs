@@ -8,17 +8,27 @@ using WinWeelay.Configuration;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Helper class for registering theme resource dictionaries.
+    /// </summary>
     public class ThemeManager
     {
         private IAppearanceManager _appearanceManager;
         private IThemeInfos _themeInfos;
 
+        /// <summary>
+        /// Create a new theme manager.
+        /// </summary>
         public ThemeManager()
         {
             _appearanceManager = AppearanceManager.GetInstance();
             _themeInfos = _appearanceManager.CreateThemeInfos();
         }
 
+        /// <summary>
+        /// Initialize the resource dictionaries and apply the default theme.
+        /// </summary>
+        /// <param name="relayConfiguration">Configuration containing the default theme.</param>
         public void InitializeThemes(RelayConfiguration relayConfiguration)
         {
             _appearanceManager.SetDefaultThemes(_themeInfos);
@@ -39,6 +49,11 @@ namespace WinWeelay
             UpdateTheme(relayConfiguration.Theme, relayConfiguration.AccentColor);
         }
 
+        /// <summary>
+        /// Apply the theme with the given name.
+        /// </summary>
+        /// <param name="theme">The theme to apply.</param>
+        /// <param name="accentColor">The accent color to use with the theme.</param>
         public void UpdateTheme(string theme, AccentColor accentColor)
         {
             (Application.Current as App).ChangeSkin(theme);

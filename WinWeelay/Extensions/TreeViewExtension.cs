@@ -47,14 +47,14 @@ namespace WinWeelay
         /// Clear the selection of a given TreeView.
         /// </summary>
         /// <param name="treeView">A given TreeView.</param>
-        public static void ClearSelection(this TreeView input)
+        public static void ClearSelection(this TreeView treeView)
         {
-            object selected = input.SelectedItem;
+            object selected = treeView.SelectedItem;
             if (selected == null)
                 return;
 
-            input.Focus();
-            TreeViewItem tvi = ContainerFromItem(input, selected) as TreeViewItem;
+            treeView.Focus();
+            TreeViewItem tvi = ContainerFromItem(treeView, selected) as TreeViewItem;
             if (tvi != null) 
                 tvi.IsSelected = false;
         }

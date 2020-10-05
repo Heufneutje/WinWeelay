@@ -24,6 +24,10 @@ namespace WinWeelay
         private List<TextBox> _subscribedTextBoxes;
         
         private bool _isEnabled;
+
+        /// <summary>
+        /// Whether the spell checker is enabled.
+        /// </summary>
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -35,6 +39,10 @@ namespace WinWeelay
         }
 
         private CultureInfo _language;
+
+        /// <summary>
+        /// The language to use for the spell checker.
+        /// </summary>
         public CultureInfo Language
         {
             get => _language;
