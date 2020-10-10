@@ -158,3 +158,5 @@ $RECYCLE.BIN/
 .DS_Store
 
 .vs/
+docs/*
+!docs/Doxyfile
