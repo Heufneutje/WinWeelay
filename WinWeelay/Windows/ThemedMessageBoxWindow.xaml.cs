@@ -7,8 +7,14 @@ using MWindowLib;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// A message box which uses the current theme.
+    /// </summary>
     public partial class ThemedMessageBoxWindow : MetroWindow
     {
+        /// <summary>
+        /// The title of the dialog.
+        /// </summary>
         public string Caption
         {
             get
@@ -21,6 +27,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// The contents of the message.
+        /// </summary>
         public string Message
         {
             get
@@ -33,6 +42,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// The text on the OK button.
+        /// </summary>
         public string OkButtonText
         {
             get
@@ -45,6 +57,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// The text on the Yes button.
+        /// </summary>
         public string YesButtonText
         {
             get
@@ -57,6 +72,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// The text on the No button.
+        /// </summary>
         public string NoButtonText
         {
             get
@@ -69,8 +87,18 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// The dialog result.
+        /// </summary>
         public MessageBoxResult Result { get; set; }
 
+        /// <summary>
+        /// Displays a message box that has a message, title bar caption, button, and icon and that returns a result.
+        /// </summary>
+        /// <param name="message">A System.String that specifies the text to display.</param>
+        /// <param name="caption">A System.String that specifies the title bar caption to display.</param>
+        /// <param name="button">A System.Windows.MessageBoxButton value that specifies which button or buttons to display.</param>
+        /// <param name="image">A System.Windows.MessageBoxImage value that specifies the icon to display.</param>
         public ThemedMessageBoxWindow(string message, string caption, MessageBoxButton button, MessageBoxImage image)
         {
             InitializeComponent();
@@ -147,6 +175,14 @@ namespace WinWeelay
             Close();
         }
 
+        /// <summary>
+        /// Displays a message box that has a message, title bar caption, button, and icon and that returns a result.
+        /// </summary>
+        /// <param name="message">A System.String that specifies the text to display.</param>
+        /// <param name="caption">A System.String that specifies the title bar caption to display.</param>
+        /// <param name="button">A System.Windows.MessageBoxButton value that specifies which button or buttons to display.</param>
+        /// <param name="image">A System.Windows.MessageBoxImage value that specifies the icon to display.</param>
+        /// <param name="owner">The parent window.</param>
         public static MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage image, Window owner)
         {
             ThemedMessageBoxWindow window = new ThemedMessageBoxWindow(message, caption, button, image) { Owner = owner };

@@ -5,10 +5,14 @@ using WinWeelay.Core;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for OptionStringWindow.xaml
+    /// Dialog to edit passwords.
     /// </summary>
     public partial class OptionPasswordWindow : MetroWindow, IOptionWindow
     {
+        /// <summary>
+        /// Create a new instance of the window to edit the option.
+        /// </summary>
+        /// <param name="viewModel">The view model for the logic behind the editor.</param>
         public OptionPasswordWindow(OptionViewModel viewModel)
         {
             InitializeComponent();

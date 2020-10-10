@@ -6,10 +6,14 @@ using MWindowLib;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for OptionsListWindow.xaml
+    /// Window to edit WeeChat options.
     /// </summary>
     public partial class OptionsListWindow : MetroWindow
     {
+        /// <summary>
+        /// Create a new instance of the window.
+        /// </summary>
+        /// <param name="viewModel">View model to handle the logic.</param>
         public OptionsListWindow(OptionsListViewModel viewModel)
         {
             InitializeComponent();
@@ -58,16 +62,27 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Calculate the number of options that fit on screen to determinte how many to load at a time.
+        /// </summary>
+        /// <returns>The estimated number of visible items.</returns>
         public int GetPossibleNumberOfVisibleItems()
         {
             return (int)_optionsListView.ActualHeight / 20;
         }
 
+        /// <summary>
+        /// Calculate the number of items to load when scrolling.
+        /// </summary>
+        /// <returns>The number of items to load when scrolling.</returns>
         public int GetStepSize()
         {
             return (int)_optionsListView.ActualHeight / 10;
         }
 
+        /// <summary>
+        /// Scroll to the top of the options list.
+        /// </summary>
         public void ResetScroll()
         {
             ScrollViewer scrollViewer = GetScrollViewer(_optionsListView);

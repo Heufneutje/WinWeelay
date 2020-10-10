@@ -5,10 +5,14 @@ using WinWeelay.Core;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for OptionIntegerWindow.xaml
+    /// Dialog to edit integer values.
     /// </summary>
     public partial class OptionIntegerWindow : MetroWindow, IOptionWindow
     {
+        /// <summary>
+        /// Create a new instance of the window to edit the option.
+        /// </summary>
+        /// <param name="viewModel">The view model for the logic behind the editor.</param>
         public OptionIntegerWindow(OptionViewModel viewModel)
         {
             InitializeComponent();

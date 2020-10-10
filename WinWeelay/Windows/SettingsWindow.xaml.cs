@@ -8,10 +8,13 @@ using WinWeelay.Utils;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for SettingsWindow.xaml
+    /// Window to edit the relay's settings.
     /// </summary>
     public partial class SettingsWindow : MetroWindow
     {
+        /// <summary>
+        /// The configuration to edit.
+        /// </summary>
         public RelayConfiguration Configuration
         {
             get
@@ -20,6 +23,10 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Create a new instance of the window.
+        /// </summary>
+        /// <param name="settingsViewModel">View model to handle the logic.</param>
         public SettingsWindow(SettingsViewModel settingsViewModel)
         {
             InitializeComponent();
