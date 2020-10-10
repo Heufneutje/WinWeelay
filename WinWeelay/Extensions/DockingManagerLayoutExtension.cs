@@ -6,18 +6,18 @@ using AvalonDock.Layout.Serialization;
 
 namespace WinWeelay
 {
-    public static class DockingManagerLayoutHelper
+    public static class DockingManagerLayoutExtension
     {
         private static readonly string _layoutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay", "docklayout.xml");
 
-        public static void SaveLayout(DockingManager dockingManager)
+        public static void SaveLayout(this DockingManager dockingManager)
         {
             XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(dockingManager);
             using (StreamWriter writer = new StreamWriter(_layoutPath))
                 layoutSerializer.Serialize(writer);
         }
 
-        public static void RestoreLayout(DockingManager dockingManager)
+        public static void RestoreLayout(this DockingManager dockingManager)
         {
             if (!File.Exists(_layoutPath))
                 return;

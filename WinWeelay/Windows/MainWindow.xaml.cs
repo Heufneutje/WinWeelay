@@ -28,7 +28,7 @@ namespace WinWeelay
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            DockingManagerLayoutHelper.RestoreLayout(_dockingManager);
+            _dockingManager.RestoreLayout();
             GetPanel("buffers").Hiding += BuffersLayoutAnchorable_Hiding;
             GetPanel("nicklist").Hiding += NicklistLayoutAnchorable_Hiding;
         }
@@ -39,7 +39,7 @@ namespace WinWeelay
             vm.DisconnectCommand.Execute(null);
             vm.SaveWindowSize();
             vm.SaveOptionCache();
-            DockingManagerLayoutHelper.SaveLayout(_dockingManager);
+            _dockingManager.SaveLayout();
         }
 
         private void BufferControl_SelectionChanged(object sender, EventArgs e)

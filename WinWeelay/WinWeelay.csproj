@@ -147,7 +147,7 @@
     </Compile>
     <Compile Include="Convert\BoolToVisibilityConverter.cs" />
     <Compile Include="MessageFormatting\FormattingParser.cs" />
-    <Compile Include="Layout\DockingManagerLayoutHelper.cs" />
+    <Compile Include="Extensions\DockingManagerLayoutExtension.cs" />
     <Compile Include="Windows\ExceptionWindow.xaml.cs">
       <DependentUpon>ExceptionWindow.xaml</DependentUpon>
     </Compile>
