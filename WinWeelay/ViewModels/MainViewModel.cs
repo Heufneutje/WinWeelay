@@ -16,6 +16,9 @@ using WinWeelay.Properties;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// The main view model for the application.
+    /// </summary>
     public class MainViewModel : NotifyPropertyChangedBase
     {
         private MainWindow _mainWindow;
@@ -26,32 +29,125 @@ namespace WinWeelay
         private SpellingManager _spellingManager;
         private bool _isDownloadingUpdate;
 
+        /// <summary>
+        /// The main configuration loaded from the config file.
+        /// </summary>
         public RelayConfiguration RelayConfiguration { get; set; }
+
+        /// <summary>
+        /// Connection to the WeeChat host.
+        /// </summary>
         public RelayConnection Connection { get; private set; }
+
+        /// <summary>
+        /// The text to display in the status bar.
+        /// </summary>
         public string ConnectionStatus { get; set; }
 
+        /// <summary>
+        /// Command to connect to a WeeChat host.
+        /// </summary>
         public DelegateCommand ConnectCommand { get; private set; }
+
+        /// <summary>
+        /// Command to disconnect from a WeeChat host.
+        /// </summary>
         public DelegateCommand DisconnectCommand { get; private set; }
+
+        /// <summary>
+        /// Command to close a buffer tab.
+        /// </summary>
         public DelegateCommand HideBufferCommand { get; private set; }
+
+        /// <summary>
+        /// Command to close a buffer on the host.
+        /// </summary>
         public DelegateCommand CloseBufferCommand { get; private set; }
+
+        /// <summary>
+        /// Command to close the application.
+        /// </summary>
         public DelegateCommand ExitCommand { get; private set; }
+
+        /// <summary>
+        /// Command to display the settings dialog.
+        /// </summary>
         public DelegateCommand SettingsCommand { get; private set; }
+
+        /// <summary>
+        /// Command to display the WeeChat option editor.
+        /// </summary>
         public DelegateCommand WeeChatOptionsCommand { get; private set; }
+
+        /// <summary>
+        /// Command to display the about dialog.
+        /// </summary>
         public DelegateCommand AboutCommand { get; private set; }
+
+        /// <summary>
+        /// Command to use a /WHOIS command on the currently selected user.
+        /// </summary>
         public DelegateCommand WhoisCommand { get; private set; }
+
+        /// <summary>
+        /// Command to open a query buffer for the currently selected user.
+        /// </summary>
         public DelegateCommand QueryCommand { get; private set; }
+
+        /// <summary>
+        /// Command to kick the currently selected user from the channel.
+        /// </summary>
         public DelegateCommand KickCommand { get; private set; }
+
+        /// <summary>
+        /// Command to ban the currently selected user from the channel.
+        /// </summary>
         public DelegateCommand BanCommand { get; private set; }
+
+        /// <summary>
+        /// Command to kick and ban the currently selected user from the channel.
+        /// </summary>
         public DelegateCommand KickbanCommand { get; private set; }
+
+        /// <summary>
+        /// Command to load more messages from the currently selected buffer's backlog.
+        /// </summary>
         public DelegateCommand LoadMoreMessagesCommand { get; private set; }
+
+        /// <summary>
+        /// Command to open the GitHub repository in the default browser.
+        /// </summary>
         public DelegateCommand SourceCodeCommand { get; private set; }
+
+        /// <summary>
+        /// Command to open the GitHub issues tracker in the default browser.
+        /// </summary>
         public DelegateCommand IssueTrackerCommand { get; private set; }
+
+        /// <summary>
+        /// Command to check whether a new version is available.
+        /// </summary>
         public DelegateCommand CheckForUpdateCommand { get; private set; }
+
+        /// <summary>
+        /// Command to clear all messages from the active buffer on the host.
+        /// </summary>
         public DelegateCommand ClearBufferCommand { get; private set; }
+
+        /// <summary>
+        /// Command to reset the buffer size back to its default value and reload the messages in it.
+        /// </summary>
         public DelegateCommand ReinitBufferCommand { get; private set; }
 
+        /// <summary>
+        /// Empty constructor for the designer.
+        /// </summary>
         public MainViewModel() { }
 
+        /// <summary>
+        /// Create a new view model for the main window.
+        /// </summary>
+        /// <param name="window">The main window.</param>
         public MainViewModel(MainWindow window)
         {
             _mainWindow = window;
@@ -379,6 +475,9 @@ namespace WinWeelay
             WeeChatOptionsCommand.OnCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Update the state of all commands which interact with buffers.
+        /// </summary>
         public void UpdateBufferCommands()
         {
             HideBufferCommand.OnCanExecuteChanged();
@@ -388,6 +487,10 @@ namespace WinWeelay
             ReinitBufferCommand.OnCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Update the state of all commands which interact with the currently selected user.
+        /// </summary>
+        /// <param name="nick">The currently selected user.</param>
         public void UpdateActiveNicklistEntry(RelayNicklistEntry nick)
         {
             if (Connection.ActiveBuffer != null)
@@ -401,6 +504,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Save the current window size to the configuration file.
+        /// </summary>
         public void SaveWindowSize()
         {
             if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.WindowWidth)) ||
@@ -408,6 +514,9 @@ namespace WinWeelay
                 ConfigurationHelper.SaveConfiguration(RelayConfiguration);
         }
 
+        /// <summary>
+        /// Save bar visibility changes to the configuration file.
+        /// </summary>
         public void UpdateViewSettings()
         {
             if (RelayConfiguration.HasChanges())
@@ -421,6 +530,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Save the cached WeeChat options.
+        /// </summary>
         public void SaveOptionCache()
         {
             Connection.OptionParser.SaveOptionCache();

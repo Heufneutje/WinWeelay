@@ -11,7 +11,7 @@ using WinWeelay.Core;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for BufferContentControl.xaml
+    /// Control which contains the buffer messages and input box.
     /// </summary>
     public partial class BufferContentControl : UserControl
     {
@@ -21,8 +21,16 @@ namespace WinWeelay
         private bool _isScrolledToBottom;
         private SpellingManager _spellingManager;
 
+        /// <summary>
+        /// The buffer to interact with.
+        /// </summary>
         public RelayBuffer Buffer { get; private set; }
 
+        /// <summary>
+        /// Create a new control which contains the buffer messages and input box.
+        /// </summary>
+        /// <param name="buffer">The buffer to interact with.</param>
+        /// <param name="spellingManager">Spell checker for the input box.</param>
         public BufferContentControl(RelayBuffer buffer, SpellingManager spellingManager)
         {
             _nickCompleter = new NickCompleter(buffer);
@@ -179,6 +187,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Change the font on all messages after the font settings have been changed.
+        /// </summary>
         public void UpdateFont()
         {
             FontFamily fontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
@@ -206,6 +217,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Update the title box after the buffer title has been changed in the core.
+        /// </summary>
         public void UpdateTitle()
         {
             _titleDocument.Blocks.Clear();
@@ -217,6 +231,10 @@ namespace WinWeelay
             _isScrolledToBottom = _conversationRichTextBox.ViewportHeight + _conversationRichTextBox.VerticalOffset == _conversationRichTextBox.ExtentHeight;
         }
 
+        /// <summary>
+        /// Scroll to the bottom if it was previously scrolled to the bottom when the main window is restored or maximixed.
+        /// </summary>
+        /// <param name="windowState">The new state of the main window.</param>
         public void HandleWindowStateChange(WindowState windowState)
         {
             CheckScrolledToBottom();

@@ -13,6 +13,9 @@ using AvalonDock.Layout;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Main window of the application.
+    /// </summary>
     public partial class MainWindow : MetroWindow, IBufferWindow
     {
         private Dictionary<RelayBuffer, LayoutDocument> _bufferControls;
@@ -20,6 +23,9 @@ namespace WinWeelay
         private bool _isManualSelection;
         private IBufferDockView _bufferControl;
 
+        /// <summary>
+        /// Create a new instance of the main window.
+        /// </summary>
         public MainWindow()
         {
             InitializeComponent();
@@ -140,6 +146,10 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Remove the UI dock for a given buffer.
+        /// </summary>
+        /// <param name="buffer">The buffer to close.</param>
         public void CloseBuffer(RelayBuffer buffer)
         {
             if (_bufferControls.ContainsKey(buffer))
@@ -185,6 +195,9 @@ namespace WinWeelay
             return _dockingManager.Layout.Descendents().OfType<LayoutAnchorable>().SingleOrDefault(x => x.ContentId == contentID);
         }
 
+        /// <summary>
+        /// Update the font in all open buffer tabs.
+        /// </summary>
         public void UpdateFont()
         {
             foreach (LayoutDocument document in _bufferControls.Values)
@@ -194,6 +207,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Update the formattion in all open buffer tabs.
+        /// </summary>
         public void UpdateFormattingSettings()
         {
             foreach (LayoutDocument document in _bufferControls.Values)
@@ -203,27 +219,47 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Change the visibility of the progress bar.
+        /// </summary>
+        /// <param name="visible">Whether the progress bar should be visible.</param>
         public void SetProgressBarVisibility(bool visible)
         {
             _progressBar.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
         }
 
+        /// <summary>
+        /// Set the progress percentage of the progress bar.
+        /// </summary>
+        /// <param name="progressPercentage">The percentage.</param>
         public void SetProgress(int progressPercentage)
         {
             _progressBar.Value = progressPercentage;
         }
 
+        /// <summary>
+        /// Set the spelling manager helper.
+        /// </summary>
+        /// <param name="spellingManager">The spelling manager helper.</param>
         public void SetSpellingManager(SpellingManager spellingManager)
         {
             _spellingManager = spellingManager;
         }
 
+        /// <summary>
+        /// Enable or disable the spell checker.
+        /// </summary>
+        /// <param name="isEnabled">Whether the spell checker should be enabled.</param>
         public void ToggleSpellChecker(bool isEnabled)
         {
             _spellingManager.IsEnabled = isEnabled;
             _spellingManager.SetDictionaryPaths();
         }
 
+        /// <summary>
+        /// Change the buffer view.
+        /// </summary>
+        /// <param name="bufferControl">The control to display.</param>
         public void SetBufferControl(IBufferDockView bufferControl)
         {
             _bufferControl = bufferControl;

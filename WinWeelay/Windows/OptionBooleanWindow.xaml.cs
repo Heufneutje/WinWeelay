@@ -5,10 +5,14 @@ using WinWeelay.Core;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for OptionBooleanWindow.xaml
+    /// Dialog to edit boolean values.
     /// </summary>
     public partial class OptionBooleanWindow : MetroWindow, IOptionWindow
     {
+        /// <summary>
+        /// Create a new instance of the window to edit the option.
+        /// </summary>
+        /// <param name="viewModel">The view model for the logic behind the editor.</param>
         public OptionBooleanWindow(OptionViewModel viewModel)
         {
             InitializeComponent();

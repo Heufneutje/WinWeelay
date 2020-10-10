@@ -14,12 +14,19 @@ using WinWeelay.Configuration;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for App.xaml
+    /// Main class for the application.
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Name of the current application theme.
+        /// </summary>
         public static string CurrentTheme { get; set; }
 
+        /// <summary>
+        /// Set up exception handling and initialize the main view model.
+        /// </summary>
+        /// <param name="e">Event arguments.</param>
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -32,13 +39,17 @@ namespace WinWeelay
             window.Show();
         }
 
-        public void ChangeSkin(string newSkin)
+        /// <summary>
+        /// Change the current application theme.
+        /// </summary>
+        /// <param name="themeName">Name of the theme to change to.</param>
+        public void ChangeTheme(string themeName)
         {
             Resources.Clear();
             Resources.MergedDictionaries.Clear();
-            CurrentTheme = newSkin;
+            CurrentTheme = themeName;
 
-            switch (newSkin)
+            switch (themeName)
             {
                 case Themes.Light:
                     ApplyResources("/AvalonDock.Themes.VS2013;component/LightTheme.xaml");

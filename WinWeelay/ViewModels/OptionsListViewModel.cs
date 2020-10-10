@@ -8,32 +8,91 @@ using WinWeelay.Utils;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// View model for the WeeChat options editor window.
+    /// </summary>
     public class OptionsListViewModel : NotifyPropertyChangedBase
     {
         private RelayConnection _connection;
         private List<RelayOption> _options;
         private bool _isRefreshing;
 
+        /// <summary>
+        /// The optins editor window.
+        /// </summary>
         public OptionsListWindow Owner { get; set; }
+
+        /// <summary>
+        /// Whether the scroll position has caused more messages to be loaded.
+        /// </summary>
         public bool IsChangingScroll { get; set; }
+
+        /// <summary>
+        /// Whether all options have been loaded into the view based on the current search.
+        /// </summary>
         public bool IsFullyLoaded { get; private set; }
 
+        /// <summary>
+        /// All options which have been loaded into the view.
+        /// </summary>
         public ObservableCollection<RelayOption> LoadedOptions { get; set; }
+
+        /// <summary>
+        /// The option which is currently selected.
+        /// </summary>
         public RelayOption SelectedOption { get; set; }
+        
+        /// <summary>
+        /// The current search string.
+        /// </summary>
         public string SearchFilter { get; set; }
+
+        /// <summary>
+        /// Whether an option is currently selected.
+        /// </summary>
         public bool IsOptionSelected => SelectedOption != null;
+
+        /// <summary>
+        /// Whether the currently selected option has a parent value.
+        /// </summary>
         public bool HasParentValue => SelectedOption?.ParentValue != null;
+
+        /// <summary>
+        /// Whether the currently selected option has a list of values to choose from.
+        /// </summary>
         public bool HasPossibleValues => SelectedOption?.PossibleValues?.Any() == true;
+
+        /// <summary>
+        /// Whether the currently selected option's value differs from its default value.
+        /// </summary>
         public bool IsModified => SelectedOption?.IsModified == true;
 
+        /// <summary>
+        /// Command to execute the defined search.
+        /// </summary>
         public DelegateCommand SearchCommand { get; private set; }
+
+        /// <summary>
+        /// Command to edit the currently selected option.
+        /// </summary>
         public DelegateCommand EditCommand { get; private set; }
+
+        /// <summary>
+        /// Command to reset the currently selected option to its default value.
+        /// </summary>
         public DelegateCommand ResetCommand { get; private set; }
 
+        /// <summary>
+        /// Empty constructor for the designer.
+        /// </summary>
         public OptionsListViewModel() : this(null)
         {
         }
 
+        /// <summary>
+        /// Create a new view model for the options window.
+        /// </summary>
+        /// <param name="connection">Connection to the WeeChat host.</param>
         public OptionsListViewModel(RelayConnection connection)
         {
             _connection = connection;
@@ -100,6 +159,10 @@ namespace WinWeelay
             return IsModified;
         }
 
+        /// <summary>
+        /// Command handler to execute the defined search.
+        /// </summary>
+        /// <param name="parameter">Command parameter.</param>
         public void Search(object parameter)
         {
             _connection.OutputHandler.RequestOptions(SearchFilter);
@@ -111,6 +174,9 @@ namespace WinWeelay
             Search(null);
         }
 
+        /// <summary>
+        ///  Update the state of all commands which interact with the currently selected option.
+        /// </summary>
         public void OnSelectedOptionChanged()
         {
             NotifyPropertyChanged(nameof(SelectedOption));
@@ -166,6 +232,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Load more options from the search result into view after it has been scrolled down to the bottom.
+        /// </summary>
         public void LoadOptions()
         {
             int stepSize = Owner.GetStepSize();

@@ -5,11 +5,13 @@ using System.Text.RegularExpressions;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using WinWeelay.Configuration;
 using WinWeelay.Core;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Parser which converts the formatting codes within a relay message to actual formatting.
+    /// </summary>
     public class FormattingParser
     {
         private ColorHelper _colorHelper;
@@ -25,6 +27,10 @@ namespace WinWeelay
         private int _backColor;
         private Regex _urlRegex;
 
+        /// <summary>
+        /// Create a new instance of the parser.
+        /// </summary>
+        /// <param name="optionParser">Parser which handles WeeChat colors.</param>
         public FormattingParser(OptionParser optionParser)
         {
             _colorHelper = new ColorHelper();
@@ -32,6 +38,13 @@ namespace WinWeelay
             _urlRegex = new Regex(@"((http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?)", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         }
 
+        /// <summary>
+        /// Format an entire received buffer message.
+        /// </summary>
+        /// <param name="message">The message to format.</param>
+        /// <param name="timestampFormat">The timestamp format to use when prepending the timestamp to the message contents.</param>
+        /// <param name="parseFormatting">True to convert the formatting codes to actual formatting, false to just strip the formatting codes from the raw message.</param>
+        /// <returns>A FlowDocument paragraph which contains the formatted message.</returns>
         public Paragraph FormatMessage(RelayBufferMessage message, string timestampFormat, bool parseFormatting)
         {
             _parseFormatting = parseFormatting;
@@ -64,6 +77,12 @@ namespace WinWeelay
             return paragraph;
         }
 
+        /// <summary>
+        /// Format a single string which contains formatting codes.
+        /// </summary>
+        /// <param name="formattedString">The message to format.</param>
+        /// <param name="parseFormatting">True to convert the formatting codes to actual formatting, false to just strip the formatting codes from the raw message.</param>
+        /// <returns>A FlowDocument paragraph which contains the formatted message.</returns>
         public Paragraph FormatString(string formattedString, bool parseFormatting)
         {
             _parseFormatting = parseFormatting;

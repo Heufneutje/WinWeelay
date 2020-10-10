@@ -11,10 +11,13 @@ using WinWeelay.Utils;
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for AboutWindow.xaml
+    /// Window to display info about the application.
     /// </summary>
     public partial class AboutWindow : MetroWindow
     {
+        /// <summary>
+        /// Create an instance of the window.
+        /// </summary>
         public AboutWindow()
         {
             InitializeComponent();

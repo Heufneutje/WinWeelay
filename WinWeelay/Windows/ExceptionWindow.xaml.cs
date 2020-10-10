@@ -8,8 +8,15 @@ using WinWeelay.Configuration;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Window to display unhandled exceptions.
+    /// </summary>
     public partial class ExceptionWindow : MetroWindow
     {
+        /// <summary>
+        /// Create a new instance of the exception window with a given exception.
+        /// </summary>
+        /// <param name="ex">The exception that has occurred.</param>
         public ExceptionWindow(Exception ex)
         {
             InitializeComponent();

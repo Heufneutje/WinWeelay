@@ -3,12 +3,18 @@ using System.Windows.Media;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Helper class for defining and calculating color values.
+    /// </summary>
     public class ColorHelper
     {
         private int[] _basicColors;
         private int[] _extendedColors;
         private int[] _weechatColors;
 
+        /// <summary>
+        /// Create a new instance of the helper.
+        /// </summary>
         public ColorHelper()
         {
             _basicColors = new int[]{
@@ -64,6 +70,11 @@ namespace WinWeelay
             };
         }
 
+        /// <summary>
+        /// Retrieve a color from either the basic or extended colors based on the value.
+        /// </summary>
+        /// <param name="colorCode">The value of the color.</param>
+        /// <returns>A color.</returns>
         public Color GetColor(int colorCode)
         {
             if (colorCode < 0)
@@ -75,6 +86,11 @@ namespace WinWeelay
             return default;
         }
 
+        /// <summary>
+        /// Retrieve a defined WeeChat color based on the value.
+        /// </summary>
+        /// <param name="colorCode">The value of the color.</param>
+        /// <returns>A color.</returns>
         public Color GetWeechatColor(int colorCode)
         {
             if (colorCode < 1 || colorCode > _weechatColors.Length)
@@ -82,6 +98,11 @@ namespace WinWeelay
             return GetColor(_weechatColors[colorCode]);
         }
 
+        /// <summary>
+        /// Retrieve an extended color based on the value.
+        /// </summary>
+        /// <param name="colorCode">The value of the color.</param>
+        /// <returns></returns>
         public Color GetExtendedColor(int colorCode)
         {
             if (colorCode < 0 || colorCode > _extendedColors.Length)
@@ -90,6 +111,11 @@ namespace WinWeelay
             return ConvertColor(_extendedColors[colorCode]);
         }
 
+        /// <summary>
+        /// Check whether a color value is within the extended color range.
+        /// </summary>
+        /// <param name="colorCode">The value of the color.</param>
+        /// <returns>Whether the value is within the extended color range.</returns>
         public bool IsExtendedColor(int colorCode)
         {
             return colorCode > _basicColors.Length;
