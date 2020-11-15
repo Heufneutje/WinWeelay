@@ -6,7 +6,7 @@
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("WinWeelay")]
-[assembly: AssemblyCopyright("Copyright (c) 2019")]
+[assembly: AssemblyCopyright("Copyright (c) 2019-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
