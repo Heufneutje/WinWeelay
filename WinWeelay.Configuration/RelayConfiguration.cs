@@ -180,7 +180,6 @@ namespace WinWeelay.Configuration
             Theme = Themes.Light;
             AutoCheckUpdates = true;
             IsSpellCheckEnabled = true;
-            IsMessageFormattingEnabled = true;
             NotificationsEnabled = true;
             AccentColor = new AccentColor(33, 99, 255);
             IsToolbarVisible = true;
