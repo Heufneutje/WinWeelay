@@ -181,9 +181,12 @@ namespace WinWeelay
                 _conversationRichTextBox.ScrollToEnd();
         }
 
-        public void ClearHistory()
+        /// <summary>
+        /// Clear all history entries and set the configured font.
+        /// </summary>
+        public void ReinitializeInputBox()
         {
-            _inputViewModel.ClearHistory();
+            _inputViewModel.ReinitializeInputBox();
         }
     }
 }

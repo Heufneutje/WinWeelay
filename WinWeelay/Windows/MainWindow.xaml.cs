@@ -207,12 +207,15 @@ namespace WinWeelay
             }
         }
 
-        public void ClearHistory()
+        /// <summary>
+        /// Clear all history entries and set the configured font for all open buffer tabs.
+        /// </summary>
+        public void ReinitializeInputBoxes()
         {
             foreach (LayoutDocument document in _bufferControls.Values)
             {
                 BufferContentControl bufferControl = (BufferContentControl)document.Content;
-                bufferControl.ClearHistory();
+                bufferControl.ReinitializeInputBox();
             }
         }
 

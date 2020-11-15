@@ -526,7 +526,7 @@ namespace WinWeelay
                     RelayConfiguration.NotifyViewPropertiesChanged();
 
                 if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsFormattingToolbarVisible)))
-                    _mainWindow.ClearHistory();
+                    _mainWindow.ReinitializeInputBoxes();
 
                 RelayConfiguration.ResetTrackingChanges();
                 RelayConfiguration.StartTrackingChanges();

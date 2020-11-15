@@ -75,9 +75,13 @@ namespace WinWeelay
             UpdateFont();
         }
 
-        public void ClearHistory()
+        /// <summary>
+        /// Clear all history entries and set the configured font.
+        /// </summary>
+        public void ReinitializeInputBox()
         {
             _history.ClearHistory();
+            UpdateFont();
         }
 
         public void HandleNickCompletion(TextBoxBase textBox, string text)
@@ -101,7 +105,6 @@ namespace WinWeelay
         public void UpdateFont()
         {
             SetDefaultColor();
-            NotifyPropertyChanged(nameof(RelayConfiguration));
             FontFamily fontFamily = new FontFamily(RelayConfiguration.FontFamily);
             _inputControl.UpdateFont(RelayConfiguration.FontSize, fontFamily, DefaultColor);
         }
