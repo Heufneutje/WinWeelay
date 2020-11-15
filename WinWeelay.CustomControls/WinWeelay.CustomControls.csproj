@@ -49,6 +49,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="IrcColorPicker.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="NumericUpDown.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -67,7 +71,12 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="AutoGreyableImage.cs" />
+    <Compile Include="ColorPickerViewModel.cs" />
     <Compile Include="ControlItemDoubleClick.cs" />
+    <Compile Include="IrcColor.cs" />
+    <Compile Include="IrcColorPicker.xaml.cs">
+      <DependentUpon>IrcColorPicker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="NumericUpDown.xaml.cs">
       <DependentUpon>NumericUpDown.xaml</DependentUpon>
     </Compile>

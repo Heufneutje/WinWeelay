@@ -3,9 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using WinWeelay.Configuration;
 using WinWeelay.Core;
 
 namespace WinWeelay
@@ -15,11 +13,11 @@ namespace WinWeelay
     /// </summary>
     public partial class BufferContentControl : UserControl
     {
-        private NickCompleter _nickCompleter;
-        private MessageHistory _history;
+        private SpellingManager _spellingManager;
+        private BufferInputViewModel _inputViewModel;
         private FormattingParser _formattingParser;
         private bool _isScrolledToBottom;
-        private SpellingManager _spellingManager;
+        private bool _isInputControlInitialized;
 
         /// <summary>
         /// The buffer to interact with.
@@ -33,10 +31,8 @@ namespace WinWeelay
         /// <param name="spellingManager">Spell checker for the input box.</param>
         public BufferContentControl(RelayBuffer buffer, SpellingManager spellingManager)
         {
-            _nickCompleter = new NickCompleter(buffer);
-            _history = new MessageHistory(buffer.Connection.Configuration);
-            _formattingParser = new FormattingParser(buffer.Connection.OptionParser);
             _spellingManager = spellingManager;
+            _formattingParser = new FormattingParser(buffer.Connection.OptionParser);
             Buffer = buffer;
 
             InitializeComponent();
@@ -57,15 +53,20 @@ namespace WinWeelay
             if (_isScrolledToBottom)
                 _conversationRichTextBox.ScrollToEnd();
 
+            if (!_isInputControlInitialized)
+            {
+                _inputViewModel = new BufferInputViewModel(Buffer, _spellingManager, _inputControl);
+                _inputControl.DataContext = _inputViewModel;
+                _isInputControlInitialized = true;
+            }
+            
             UpdateFont();
-            _messageTextBox.Focus();
-            _spellingManager.Subscribe(_messageTextBox);
+            _inputControl.FocusEditor();
         }
 
         private void BufferControl_Unloaded(object sender, RoutedEventArgs e)
         {
             CheckScrolledToBottom();
-            _spellingManager.Unsubscribe(_messageTextBox);
         }
 
         private void Buffer_MessageAdded(object sender, RelayBufferMessageEventArgs args)
@@ -98,49 +99,6 @@ namespace WinWeelay
         private void Buffer_TitleChanged(object sender, EventArgs e)
         {
             UpdateTitle();
-        }
-
-        private void MessageTextBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Enter:
-                    if (!string.IsNullOrEmpty(_messageTextBox.Text))
-                    {
-                        Buffer.SendMessage(_messageTextBox.Text);
-                        _history.AddHistoryEntry(_messageTextBox.Text);
-                        _messageTextBox.Text = string.Empty;
-                    }
-                    break;
-                case Key.Tab:
-                    e.Handled = true;
-                    _nickCompleter.IsNickCompleting = true;
-                    _messageTextBox.Text = _nickCompleter.HandleNickCompletion(_messageTextBox.Text);
-                    _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
-                    _nickCompleter.IsNickCompleting = false;
-                    break;
-            }
-        }
-
-        private void MessageTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            switch (e.Key)
-            {
-                case Key.Up:
-                    _messageTextBox.Text = _history.GetPreviousHistoryEntry();
-                    _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
-                    break;
-                case Key.Down:
-                    _messageTextBox.Text = _history.GetNextHistoryEntry();
-                    _messageTextBox.CaretIndex = _messageTextBox.Text.Length;
-                    break;
-            }
-        }
-
-        private void MessageTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!_nickCompleter.IsNickCompleting)
-                _nickCompleter.Reset();
         }
 
         private void InitBufferMessages()
@@ -193,28 +151,9 @@ namespace WinWeelay
         public void UpdateFont()
         {
             FontFamily fontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
-            UpdateFlowDocument(_titleDocument, fontFamily);
-            UpdateFlowDocument(_conversationDocument, fontFamily);
-
-            _messageTextBox.FontFamily = fontFamily;
-            _messageTextBox.FontSize = Buffer.Connection.Configuration.FontSize;
-        }
-
-        private void UpdateFlowDocument(FlowDocument document, FontFamily fontFamily)
-        {
-            document.FontFamily = fontFamily;
-            document.FontSize = Buffer.Connection.Configuration.FontSize;
-            document.Foreground = new SolidColorBrush()
-            {
-                // The themes automatically set the text color to gray because editing is not enabled, which is not ideal. Override this behavior.
-                Color = Buffer.Connection.Configuration.Theme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0)
-            };
-
-            foreach (Block block in document.Blocks)
-            {
-                block.FontFamily = fontFamily;
-                block.FontSize = Buffer.Connection.Configuration.FontSize;
-            }
+            _titleDocument.UpdateFont(Buffer.Connection.Configuration.FontSize, fontFamily, true);
+            _conversationDocument.UpdateFont(Buffer.Connection.Configuration.FontSize, fontFamily, true);
+            _inputViewModel.UpdateFont();
         }
 
         /// <summary>

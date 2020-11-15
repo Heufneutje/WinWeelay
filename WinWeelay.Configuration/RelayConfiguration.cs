@@ -132,6 +132,11 @@ namespace WinWeelay.Configuration
         public bool IsStatusBarVisible { get; set; }
 
         /// <summary>
+        /// Show the formatting toolbar.
+        /// </summary>
+        public bool IsFormattingToolbarVisible { get; set; }
+
+        /// <summary>
         /// Cache color/formatting options.
         /// </summary>
         public bool UseOptionCache { get; set; }
@@ -180,6 +185,7 @@ namespace WinWeelay.Configuration
             AccentColor = new AccentColor(33, 99, 255);
             IsToolbarVisible = true;
             IsStatusBarVisible = true;
+            IsFormattingToolbarVisible = true;
             UseOptionCache = true;
             OptionCacheDays = 7;
             Language = CultureInfo.CurrentCulture;

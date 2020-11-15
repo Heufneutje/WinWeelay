@@ -10,8 +10,18 @@
     <UserControl.DataContext>
         <localcore:RelayBuffer/>
     </UserControl.DataContext>
-    <DockPanel LastChildFill="True">
-        <RichTextBox x:Name="_titleRichTextBox" VerticalAlignment="Top" IsReadOnly="True" DockPanel.Dock="Top" AcceptsReturn="True" IsUndoEnabled="False" IsDocumentEnabled="True">
+    <UserControl.Resources>
+        <BitmapImage x:Key="boldImage" UriSource="/WinWeelay;component/Resources/text_bold.png" />
+        <BitmapImage x:Key="italicImage" UriSource="/WinWeelay;component/Resources/text_italic.png" />
+        <BitmapImage x:Key="underlineImage" UriSource="/WinWeelay;component/Resources/text_underline.png" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <RichTextBox x:Name="_titleRichTextBox" VerticalAlignment="Top" IsReadOnly="True" AcceptsReturn="True" IsUndoEnabled="False" IsDocumentEnabled="True" Grid.Row="0">
             <FlowDocument x:Name="_titleDocument" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}">
                 <FlowDocument.Resources>
                     <Style TargetType="{x:Type Paragraph}">
@@ -20,8 +30,7 @@
                 </FlowDocument.Resources>
             </FlowDocument>
         </RichTextBox>
-        <TextBox x:Name="_messageTextBox" TextWrapping="Wrap" KeyDown="MessageTextBox_KeyDown" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" TextChanged="MessageTextBox_TextChanged" PreviewKeyDown="MessageTextBox_PreviewKeyDown" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}" />
-        <RichTextBox x:Name="_conversationRichTextBox" AcceptsReturn="True" Margin="0,5" VerticalScrollBarVisibility="Visible" IsDocumentEnabled="True" IsReadOnly="True" IsUndoEnabled="False">
+        <RichTextBox x:Name="_conversationRichTextBox" AcceptsReturn="True" Margin="0,5" VerticalScrollBarVisibility="Visible" IsDocumentEnabled="True" IsReadOnly="True" IsUndoEnabled="False" Grid.Row="1">
             <FlowDocument x:Name="_conversationDocument" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}">
                 <FlowDocument.Resources>
                     <Style TargetType="{x:Type Paragraph}">
@@ -30,5 +39,6 @@
                 </FlowDocument.Resources>
             </FlowDocument>
         </RichTextBox>
-    </DockPanel>
+        <local:BufferInputControl x:Name="_inputControl" Grid.Row="2"/>
+    </Grid>
 </UserControl>

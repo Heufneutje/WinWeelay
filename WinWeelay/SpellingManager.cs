@@ -21,7 +21,7 @@ namespace WinWeelay
         private string _customDictPath;
         private Uri _mainDictionary;
         private Uri _customDictionary;
-        private List<TextBox> _subscribedTextBoxes;
+        private List<RichTextBox> _subscribedTextBoxes;
         
         private bool _isEnabled;
 
@@ -58,7 +58,7 @@ namespace WinWeelay
         /// </summary>
         public SpellingManager()
         {
-            _subscribedTextBoxes = new List<TextBox>();
+            _subscribedTextBoxes = new List<RichTextBox>();
             _appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
             Language = Thread.CurrentThread.CurrentUICulture;
         }
@@ -112,7 +112,7 @@ namespace WinWeelay
         /// Subscribe a given text box to the spell checker. Enables spell checking, customizes the context menu to show suggestions and updates the spell checker when the custom diciontary is modified.
         /// </summary>
         /// <param name="textBox">The text box to subscribe.</param>
-        public void Subscribe(TextBox textBox)
+        public void Subscribe(RichTextBox textBox)
         {
             IList dictionaries = SpellCheck.GetCustomDictionaries(textBox);
             dictionaries.Add(_customDictionary);
@@ -131,7 +131,7 @@ namespace WinWeelay
         /// Unsubscribe a given text box from the spell checker.
         /// </summary>
         /// <param name="textBox">The text box to unsubscribe.</param>
-        public void Unsubscribe(TextBox textBox)
+        public void Unsubscribe(RichTextBox textBox)
         {
             IList dictionaries = SpellCheck.GetCustomDictionaries(textBox);
             dictionaries.Clear();
@@ -145,7 +145,7 @@ namespace WinWeelay
 
         private void RefreshSubscribedTextBoxes()
         {
-            foreach (TextBox textBox in _subscribedTextBoxes.ToArray())
+            foreach (RichTextBox textBox in _subscribedTextBoxes.ToArray())
             {
                 Unsubscribe(textBox);
                 Subscribe(textBox);

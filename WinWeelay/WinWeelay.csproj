@@ -123,11 +123,15 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Controls\BufferInputControl.xaml.cs">
+      <DependentUpon>BufferInputControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Convert\BoolToFontWeightConverter.cs" />
     <Compile Include="Convert\BoolToOptionStringConverter.cs" />
     <Compile Include="Convert\IntegerToStringConverter.cs" />
     <Compile Include="Convert\InverseBoolConverter.cs" />
     <Compile Include="Convert\InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="IrcMessageBuilder.cs" />
     <Compile Include="MessageFormatting\AttributeType.cs" />
     <Compile Include="MessageFormatting\ColorHelper.cs" />
     <Compile Include="Controls\BufferListControl.xaml.cs">
@@ -136,9 +140,11 @@
     <Compile Include="Controls\BufferTreeControl.xaml.cs">
       <DependentUpon>BufferTreeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RichTextHelper.cs" />
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
     <Compile Include="Extensions\TreeViewExtension.cs" />
+    <Compile Include="ViewModels\BufferInputViewModel.cs" />
     <Compile Include="ViewModels\OptionsListViewModel.cs" />
     <Compile Include="ViewModels\OptionViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -175,6 +181,10 @@
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Controls\BufferInputControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\BufferListControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -365,6 +375,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\table_go.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\text_bold.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\text_italic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\text_underline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\font.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\color_wheel.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
