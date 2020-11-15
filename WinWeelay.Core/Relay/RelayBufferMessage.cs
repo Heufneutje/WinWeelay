@@ -125,7 +125,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// Override to check if line and buffer pointers match. When this is the case the message is the same.
         /// </summary>
-        /// <param name="obj">The objec to compare.</param>
+        /// <param name="obj">The object to compare.</param>
         /// <returns>True if messages have the same internal ID in the same buffer.</returns>
         public override bool Equals(object obj)
         {

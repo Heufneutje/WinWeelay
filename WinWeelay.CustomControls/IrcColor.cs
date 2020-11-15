@@ -4,13 +4,37 @@ using System.Windows.Media;
 
 namespace WinWeelay.CustomControls
 {
+    /// <summary>
+    /// Color for IRC formatting.
+    /// </summary>
     public class IrcColor
     {
+        /// <summary>
+        /// IRC color value.
+        /// </summary>
         public byte ColorIndex { get; set; }
+
+        /// <summary>
+        /// Decsription of the color.
+        /// </summary>
         public string ColorName { get; set; }
+
+        /// <summary>
+        /// WPF color.
+        /// </summary>
         public Color Color { get; set; }
+
+        /// <summary>
+        /// Brush for using the color within controls.
+        /// </summary>
         public Brush ColorBrush => new SolidColorBrush(Color);
 
+        /// <summary>
+        /// Create a new instance of a color
+        /// </summary>
+        /// <param name="colorIndex">IRC color value.</param>
+        /// <param name="color">WPF color.</param>
+        /// <param name="colorName">Decsription of the color.</param>
         public IrcColor(byte colorIndex, Color color, string colorName)
         {
             ColorIndex = colorIndex;
@@ -19,6 +43,11 @@ namespace WinWeelay.CustomControls
         }
 
         private static List<IrcColor> _colors;
+
+        /// <summary>
+        /// Get a list of all available IRC colors.
+        /// </summary>
+        /// <returns>A list of IRC colors.</returns>
         public static List<IrcColor> GetColors()
         {
             if (_colors == null)
@@ -46,6 +75,11 @@ namespace WinWeelay.CustomControls
             return _colors;
         }
 
+        /// <summary>
+        /// Get the IRC color code for a given color.
+        /// </summary>
+        /// <param name="color">A WPF color.</param>
+        /// <returns>THe IRC color code.</returns>
         public static byte GetColorCode(Color color)
         {
             byte? colorCode = GetColors().FirstOrDefault(x => x.Color == color)?.ColorIndex;
@@ -55,22 +89,43 @@ namespace WinWeelay.CustomControls
             return colorCode.Value;
         }
 
+        /// <summary>
+        /// Override to match colors by their color code.
+        /// </summary>
+        /// <param name="obj">The object to compare.</param>
+        /// <returns>True if color codes match.</returns>
         public override bool Equals(object obj)
         {
             return obj is IrcColor color &&
                    ColorIndex == color.ColorIndex;
         }
 
+        /// <summary>
+        /// Override to match colors by their color code.
+        /// </summary>
+        /// <returns>Hash code.</returns>
         public override int GetHashCode()
         {
             return 1516799092 + ColorIndex.GetHashCode();
         }
 
+        /// <summary>
+        /// Override to match colors by their color code.
+        /// </summary>
+        /// <param name="left">First color.</param>
+        /// <param name="right">Second color.</param>
+        /// <returns>True if color codes match.</returns>
         public static bool operator ==(IrcColor left, IrcColor right)
         {
             return EqualityComparer<IrcColor>.Default.Equals(left, right);
         }
 
+        /// <summary>
+        /// Override to match colors by their color code.
+        /// </summary>
+        /// <param name="left">First color.</param>
+        /// <param name="right">Second color.</param>
+        /// <returns>False if color codes match.</returns>
         public static bool operator !=(IrcColor left, IrcColor right)
         {
             return !(left == right);
