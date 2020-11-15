@@ -65,9 +65,14 @@
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Bars">
-                    <MenuItem Header="Toolbar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsToolbarVisible}" Click="ViewMenuItem_Click">
+                    <MenuItem Header="Main Toolbar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsToolbarVisible}" Click="ViewMenuItem_Click">
                         <MenuItem.ToolTip>
-                            <customcontrols:RichToolTip Title="Toolbar" Description="Show or hide the toolbar."/>
+                            <customcontrols:RichToolTip Title="Main Toolbar" Description="Show or hide the toolbar."/>
+                        </MenuItem.ToolTip>
+                    </MenuItem>
+                    <MenuItem Header="Text Formatting Toolbar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsFormattingToolbarVisible}" Click="ViewMenuItem_Click">
+                        <MenuItem.ToolTip>
+                            <customcontrols:RichToolTip Title="Text Formatting Toolbar" Description="Show or hide the text formatting bar."/>
                         </MenuItem.ToolTip>
                     </MenuItem>
                     <MenuItem Header="Status Bar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsStatusBarVisible}" Click="ViewMenuItem_Click">

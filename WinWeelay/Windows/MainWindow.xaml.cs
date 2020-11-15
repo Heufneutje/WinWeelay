@@ -207,6 +207,15 @@ namespace WinWeelay
             }
         }
 
+        public void ClearHistory()
+        {
+            foreach (LayoutDocument document in _bufferControls.Values)
+            {
+                BufferContentControl bufferControl = (BufferContentControl)document.Content;
+                bufferControl.ClearHistory();
+            }
+        }
+
         /// <summary>
         /// Update the formattion in all open buffer tabs.
         /// </summary>

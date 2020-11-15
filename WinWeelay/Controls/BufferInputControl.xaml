@@ -17,6 +17,7 @@
         <BitmapImage x:Key="textColorImage" UriSource="/WinWeelay;component/Resources/font.png" />
         <BitmapImage x:Key="backgroundColorImage" UriSource="/WinWeelay;component/Resources/color_wheel.png" />
         <winweelay:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <winweelay:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter" />
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -59,6 +60,7 @@
                 </customcontrols:IrcColorPicker>
             </ToolBar>
         </ToolBarTray>
-        <RichTextBox x:Name="_editorRichTextBox" HorizontalAlignment="Left" Grid.Row="1" SelectionChanged="editorRichTextBox_SelectionChanged" PreviewKeyDown="_editorRichTextBox_PreviewKeyDown" KeyDown="_editorRichTextBox_KeyDown" TextChanged="_editorRichTextBox_TextChanged" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="False"/>
+        <RichTextBox x:Name="_editorRichTextBox" Grid.Row="1" SelectionChanged="_editorRichTextBox_SelectionChanged" PreviewKeyDown="_editorRichTextBox_PreviewKeyDown" KeyDown="_editorRichTextBox_KeyDown" TextChanged="_editorRichTextBox_TextChanged" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=RelayConfiguration.IsFormattingToolbarVisible, Converter={StaticResource BoolToVisibilityConverter}}" AcceptsReturn="False"/>
+        <TextBox x:Name="_editorTextBox" Grid.Row="1" PreviewKeyDown="_editorTextBox_PreviewKeyDown" KeyDown="_editorTextBox_KeyDown" TextChanged="_editorRichTextBox_TextChanged" FontSize="{Binding Connection.Configuration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding Connection.Configuration.FontFamily, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=RelayConfiguration.IsFormattingToolbarVisible, Converter={StaticResource InverseBoolToVisibilityConverter}}" AcceptsReturn="False"/>
     </Grid>
 </UserControl>

@@ -14,7 +14,6 @@ namespace WinWeelay
     /// </summary>
     public partial class BufferInputControl : UserControl
     {
-       
         private bool _modifiedPaste;
 
         public BufferInputViewModel ViewModel => (BufferInputViewModel)DataContext;
@@ -43,27 +42,47 @@ namespace WinWeelay
 
         public void UpdateFont(double fontSize, FontFamily fontFamily, Color defaultColor)
         {
-            _editorRichTextBox.Document.UpdateFont(fontSize, fontFamily, false);
-            _editorRichTextBox.Foreground = new SolidColorBrush(defaultColor);
+            if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
+            {
+                _editorRichTextBox.Document.UpdateFont(fontSize, fontFamily, false);
+                _editorRichTextBox.Foreground = new SolidColorBrush(defaultColor);
+            }
+            else
+            {
+                _editorTextBox.FontSize = fontSize;
+                _editorTextBox.FontFamily = fontFamily;
+                _editorTextBox.Foreground = new SolidColorBrush(defaultColor);
+            }
         }
 
         public void FocusEditor()
         {
-            _editorRichTextBox.Focus();
+            if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
+                _editorRichTextBox.Focus();
+            else
+                _editorTextBox.Focus();
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!DesignerProperties.GetIsInDesignMode(this))
+            if (DesignerProperties.GetIsInDesignMode(this))
+                return;
+
+            if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
                 ViewModel.SubscribeSpellingManager(_editorRichTextBox);
+            else
+                ViewModel.SubscribeSpellingManager(_editorTextBox);
         }
 
         private void UserControl_Unloaded(object sender, RoutedEventArgs e)
         {
-            ViewModel.UnsubscribeSpellingManager(_editorRichTextBox);
+            if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
+                ViewModel.UnsubscribeSpellingManager(_editorRichTextBox);
+            else
+                ViewModel.UnsubscribeSpellingManager(_editorTextBox);
         }
 
-        private void editorRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void _editorRichTextBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
             if (_toolBarTray.Visibility == Visibility.Collapsed)
                 return;
@@ -94,7 +113,7 @@ namespace WinWeelay
             {
                 case Key.Tab:
                     e.Handled = true;
-                    ViewModel.HandleNickCompletion(_editorRichTextBox);
+                    ViewModel.HandleNickCompletion(_editorRichTextBox, _editorRichTextBox.GetPlainText());
                     break;
                 case Key.Enter:
                     if (!_editorRichTextBox.IsEmpty())
@@ -113,6 +132,35 @@ namespace WinWeelay
                     break;
                 case Key.Down:
                     ViewModel.SetNextHistoryEntry(_editorRichTextBox);
+                    break;
+            }
+        }
+
+        private void _editorTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Tab:
+                    e.Handled = true;
+                    ViewModel.HandleNickCompletion(_editorTextBox, _editorTextBox.Text);
+                    break;
+                case Key.Enter:
+                    if (!string.IsNullOrEmpty(_editorTextBox.Text))
+                        ViewModel.SendMessage(_editorTextBox);
+                    e.Handled = true;
+                    break;
+            }
+        }
+
+        private void _editorTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.Key)
+            {
+                case Key.Up:
+                    ViewModel.SetPreviousHistoryEntry(_editorTextBox);
+                    break;
+                case Key.Down:
+                    ViewModel.SetNextHistoryEntry(_editorTextBox);
                     break;
             }
         }

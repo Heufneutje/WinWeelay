@@ -60,6 +60,12 @@ namespace WinWeelay.Core
             return GetHistoryEntry();
         }
 
+        public void ClearHistory()
+        {
+            _historyIndex = -1;
+            _messageHistory.Clear();
+        }
+
         private string GetHistoryEntry()
         {
             if (_historyIndex == -1)

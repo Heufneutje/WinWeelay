@@ -180,5 +180,10 @@ namespace WinWeelay
             if ((windowState == WindowState.Maximized || windowState == WindowState.Normal) && _isScrolledToBottom)
                 _conversationRichTextBox.ScrollToEnd();
         }
+
+        public void ClearHistory()
+        {
+            _inputViewModel.ClearHistory();
+        }
     }
 }

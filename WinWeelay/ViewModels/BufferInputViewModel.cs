@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
@@ -39,32 +40,55 @@ namespace WinWeelay
             richTextBox.SetPlainText(string.Empty);
         }
 
-        public void SubscribeSpellingManager(RichTextBox richTextBox)
+        public void SendMessage(TextBox textBox)
         {
-            _spellingManager.Subscribe(richTextBox);
+            Buffer.SendMessage(textBox.Text);
+            _history.AddHistoryEntry(textBox.Text);
+            textBox.Clear();
         }
 
-        public void UnsubscribeSpellingManager(RichTextBox richTextBox)
+        public void SubscribeSpellingManager(TextBoxBase textBox)
         {
-            _spellingManager.Unsubscribe(richTextBox);
+            _spellingManager.Subscribe(textBox);
         }
 
-        public void SetPreviousHistoryEntry(RichTextBox richTextBox)
+        public void UnsubscribeSpellingManager(TextBoxBase textBox)
         {
-            richTextBox.SetXaml(_history.GetPreviousHistoryEntry());
+            _spellingManager.Unsubscribe(textBox);
+        }
+
+        public void SetPreviousHistoryEntry(TextBoxBase textBox)
+        {
+            if (RelayConfiguration.IsFormattingToolbarVisible)
+                ((RichTextBox)textBox).SetXaml(_history.GetPreviousHistoryEntry());
+            else
+                ((TextBox)textBox).Text = _history.GetPreviousHistoryEntry();
             UpdateFont();
         }
 
-        public void SetNextHistoryEntry(RichTextBox richTextBox)
+        public void SetNextHistoryEntry(TextBoxBase textBox)
         {
-            richTextBox.SetXaml(_history.GetNextHistoryEntry());
+            if (RelayConfiguration.IsFormattingToolbarVisible)
+                ((RichTextBox)textBox).SetXaml(_history.GetNextHistoryEntry());
+            else
+                ((TextBox)textBox).Text = _history.GetNextHistoryEntry();
             UpdateFont();
         }
 
-        public void HandleNickCompletion(RichTextBox richTextBox)
+        public void ClearHistory()
+        {
+            _history.ClearHistory();
+        }
+
+        public void HandleNickCompletion(TextBoxBase textBox, string text)
         {
             _nickCompleter.IsNickCompleting = true;
-            richTextBox.SetPlainText(_nickCompleter.HandleNickCompletion(richTextBox.GetPlainText()));
+
+            if (RelayConfiguration.IsFormattingToolbarVisible)
+                ((RichTextBox)textBox).SetPlainText(_nickCompleter.HandleNickCompletion(text));
+            else
+                ((TextBox)textBox).Text = _nickCompleter.HandleNickCompletion(text);
+
             _nickCompleter.IsNickCompleting = false;
         }
 

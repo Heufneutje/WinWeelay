@@ -208,6 +208,7 @@ namespace WinWeelay.Configuration
         {
             NotifyPropertyChanged(nameof(IsToolbarVisible));
             NotifyPropertyChanged(nameof(IsStatusBarVisible));
+            NotifyPropertyChanged(nameof(IsFormattingToolbarVisible));
         }
     }
 }

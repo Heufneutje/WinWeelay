@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 
 namespace WinWeelay
@@ -21,7 +22,7 @@ namespace WinWeelay
         private string _customDictPath;
         private Uri _mainDictionary;
         private Uri _customDictionary;
-        private List<RichTextBox> _subscribedTextBoxes;
+        private List<TextBoxBase> _subscribedTextBoxes;
         
         private bool _isEnabled;
 
@@ -58,7 +59,7 @@ namespace WinWeelay
         /// </summary>
         public SpellingManager()
         {
-            _subscribedTextBoxes = new List<RichTextBox>();
+            _subscribedTextBoxes = new List<TextBoxBase>();
             _appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WinWeelay");
             Language = Thread.CurrentThread.CurrentUICulture;
         }
@@ -112,7 +113,7 @@ namespace WinWeelay
         /// Subscribe a given text box to the spell checker. Enables spell checking, customizes the context menu to show suggestions and updates the spell checker when the custom diciontary is modified.
         /// </summary>
         /// <param name="textBox">The text box to subscribe.</param>
-        public void Subscribe(RichTextBox textBox)
+        public void Subscribe(TextBoxBase textBox)
         {
             IList dictionaries = SpellCheck.GetCustomDictionaries(textBox);
             dictionaries.Add(_customDictionary);
@@ -131,7 +132,7 @@ namespace WinWeelay
         /// Unsubscribe a given text box from the spell checker.
         /// </summary>
         /// <param name="textBox">The text box to unsubscribe.</param>
-        public void Unsubscribe(RichTextBox textBox)
+        public void Unsubscribe(TextBoxBase textBox)
         {
             IList dictionaries = SpellCheck.GetCustomDictionaries(textBox);
             dictionaries.Clear();
@@ -154,28 +155,46 @@ namespace WinWeelay
 
         private void TextBox_ContextMenuOpening(object sender, ContextMenuEventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
+            TextBoxBase textBoxBase = (TextBoxBase)sender;
             const string controlTag = "spellcheck";
 
             int cmdIndex = 0;
-            int caretIndex = textBox.CaretIndex;
-            SpellingError spellingError = textBox.GetSpellingError(caretIndex);
-            
-            foreach (Control item in textBox.ContextMenu.Items.Cast<Control>().ToArray())
-                if ((string)item.Tag == controlTag)
-                    textBox.ContextMenu.Items.Remove(item);
+            SpellingError spellingError;
+            string misspelledWord;
 
-            if (spellingError == null)
+            foreach (Control item in textBoxBase.ContextMenu.Items.Cast<Control>().ToArray())
+                if ((string)item.Tag == controlTag)
+                    textBoxBase.ContextMenu.Items.Remove(item);
+
+            if (textBoxBase is TextBox textBox)
+            {
+                int caretIndex = textBox.CaretIndex;
+                spellingError = textBox.GetSpellingError(caretIndex);
+                if (spellingError == null)
+                    return;
+
+                misspelledWord = textBox.Text.Substring(textBox.GetSpellingErrorStart(caretIndex), textBox.GetSpellingErrorLength(caretIndex));
+            }
+            else if (textBoxBase is RichTextBox richTextBox)
+            {
+                TextPointer caretPosition = richTextBox.CaretPosition;
+                spellingError = richTextBox.GetSpellingError(caretPosition);
+
+                TextPointer start = richTextBox.CaretPosition;
+                TextPointer end = start.GetNextContextPosition(LogicalDirection.Backward);
+                richTextBox.Selection.Select(start, end);
+                misspelledWord = richTextBox.Selection.Text;
+            }
+            else
                 return;
 
-            string misspelledWord = textBox.Text.Substring(textBox.GetSpellingErrorStart(caretIndex), textBox.GetSpellingErrorLength(caretIndex));
             MenuItem spellingItem = new MenuItem()
             {
                 Header = "Spelling",
                 Tag = controlTag
             };
-            textBox.ContextMenu.Items.Insert(0, spellingItem);
-            textBox.ContextMenu.Items.Insert(1, new Separator() { Tag = controlTag });
+            textBoxBase.ContextMenu.Items.Insert(0, spellingItem);
+            textBoxBase.ContextMenu.Items.Insert(1, new Separator() { Tag = controlTag });
 
             foreach (string str in spellingError.Suggestions)
             {
@@ -185,7 +204,7 @@ namespace WinWeelay
                     FontWeight = FontWeights.Bold,
                     Command = EditingCommands.CorrectSpellingError,
                     CommandParameter = str,
-                    CommandTarget = textBox,
+                    CommandTarget = textBoxBase,
                     Tag = controlTag
                 };
                 spellingItem.Items.Insert(cmdIndex, item);
@@ -202,7 +221,7 @@ namespace WinWeelay
             {
                 Header = "Ignore All",
                 Command = EditingCommands.IgnoreSpellingError,
-                CommandTarget = textBox,
+                CommandTarget = textBoxBase,
                 Tag = controlTag
             };
             spellingItem.Items.Insert(cmdIndex, ignoreAllItem);

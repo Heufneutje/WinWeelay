@@ -522,8 +522,11 @@ namespace WinWeelay
             if (RelayConfiguration.HasChanges())
             {
                 ConfigurationHelper.SaveConfiguration(RelayConfiguration);
-                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsToolbarVisible)) || RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsStatusBarVisible)))
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsToolbarVisible)) || RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsStatusBarVisible)) || RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsFormattingToolbarVisible)))
                     RelayConfiguration.NotifyViewPropertiesChanged();
+
+                if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsFormattingToolbarVisible)))
+                    _mainWindow.ClearHistory();
 
                 RelayConfiguration.ResetTrackingChanges();
                 RelayConfiguration.StartTrackingChanges();
