@@ -5,19 +5,24 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using WinWeelay.Configuration;
 
 namespace WinWeelay
 {
     /// <summary>
-    /// Interaction logic for BufferInputControl.xaml
+    /// Input control.
     /// </summary>
     public partial class BufferInputControl : UserControl
     {
         private bool _modifiedPaste;
 
+        /// <summary>
+        /// The view model for the input control.
+        /// </summary>
         public BufferInputViewModel ViewModel => (BufferInputViewModel)DataContext;
        
+        /// <summary>
+        /// Instantiate the input control.
+        /// </summary>
         public BufferInputControl()
         {
             InitializeComponent();
@@ -26,7 +31,7 @@ namespace WinWeelay
 
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
-            if (_modifiedPaste == false)
+            if (!_modifiedPaste)
             {
                 _modifiedPaste = true;
                 string clipboard = e.DataObject.GetData(typeof(string)) as string;
@@ -40,6 +45,12 @@ namespace WinWeelay
                 _modifiedPaste = false;
         }
 
+        /// <summary>
+        /// Update the font settings.
+        /// </summary>
+        /// <param name="fontSize">The font size to set.</param>
+        /// <param name="fontFamily">The font family to set.</param>
+        /// <param name="defaultColor">The default text color based on the current theme.</param>
         public void UpdateFont(double fontSize, FontFamily fontFamily, Color defaultColor)
         {
             if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
@@ -55,6 +66,9 @@ namespace WinWeelay
             }
         }
 
+        /// <summary>
+        /// Focus the editor textbox that is currently being used.
+        /// </summary>
         public void FocusEditor()
         {
             if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
@@ -96,15 +110,15 @@ namespace WinWeelay
 
             value = _editorRichTextBox.Selection.GetPropertyValue(TextElement.ForegroundProperty);
             if (value != null && value is SolidColorBrush textBrush)
-                foregroundIrcColorPicker.SetSelectedColor(textBrush.Color);
+                _foregroundIrcColorPicker.SetSelectedColor(textBrush.Color);
             else
-                foregroundIrcColorPicker.SetSelectedIndex(0);
+                _foregroundIrcColorPicker.SetSelectedIndex(0);
 
             value = _editorRichTextBox.Selection.GetPropertyValue(TextElement.BackgroundProperty);
             if (value != null && value is SolidColorBrush backBrush)
-                backgroundIrcColorPicker.SetSelectedColor(backBrush.Color);
+                _backgroundIrcColorPicker.SetSelectedColor(backBrush.Color);
             else
-                backgroundIrcColorPicker.SetSelectedIndex(0);
+                _backgroundIrcColorPicker.SetSelectedIndex(0);
         }
 
         private void _editorRichTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -170,17 +184,17 @@ namespace WinWeelay
             ViewModel.ResetNickCompletion();
         }
 
-        private void backgroundIrcColorPicker_SelectedColorChanged(object sender, EventArgs e)
+        private void _backgroundIrcColorPicker_SelectedColorChanged(object sender, EventArgs e)
         {
-            _editorRichTextBox.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, backgroundIrcColorPicker.SelectedColor.ColorBrush);
+            _editorRichTextBox.Selection.ApplyPropertyValue(TextElement.BackgroundProperty, _backgroundIrcColorPicker.SelectedColor.ColorBrush);
         }
 
-        private void foregroundIrcColorPicker_SelectedColorChanged(object sender, EventArgs e)
+        private void _foregroundIrcColorPicker_SelectedColorChanged(object sender, EventArgs e)
         {
-            if (foregroundIrcColorPicker.SelectedColor.ColorIndex == 99)
+            if (_foregroundIrcColorPicker.SelectedColor.ColorIndex == 99)
                 _editorRichTextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, new SolidColorBrush(ViewModel.DefaultColor));
             else
-                _editorRichTextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, foregroundIrcColorPicker.SelectedColor.ColorBrush);
+                _editorRichTextBox.Selection.ApplyPropertyValue(TextElement.ForegroundProperty, _foregroundIrcColorPicker.SelectedColor.ColorBrush);
         }
     }
 }

@@ -3,7 +3,7 @@
 namespace WinWeelay.CustomControls
 {
     /// <summary>
-    /// View model for the ÍRC color picker dropdown.
+    /// View model for the IRC color picker dropdown.
     /// </summary>
     public class ColorPickerViewModel
     {

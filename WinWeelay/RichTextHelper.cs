@@ -10,8 +10,16 @@ using WinWeelay.Configuration;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Helper functions for RichTextBox objects and FlowDocument objects.
+    /// </summary>
     public static class RichTextHelper
     {
+        /// <summary>
+        /// Export the text box's document to a XAML string.
+        /// </summary>
+        /// <param name="textBox">The text box containing the document that will be exported.</param>
+        /// <returns>A XAML string containing the document.</returns>
         public static string GetXaml(this RichTextBox textBox)
         {
             TextRange range = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
@@ -21,12 +29,17 @@ namespace WinWeelay
             return xamlText;
         }
 
-        public static void SetXaml(this RichTextBox textBox, string text)
+        /// <summary>
+        /// Set a text box's document from an exported XAML string.
+        /// </summary>
+        /// <param name="textBox">The text box to load the document into.</param>
+        /// <param name="xamlText">The XAML containing the exported document.</param>
+        public static void SetXaml(this RichTextBox textBox, string xamlText)
         {
             FlowDocument doc = new FlowDocument();
-            if (!string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(xamlText))
             {
-                StringReader stringReader = new StringReader(text);
+                StringReader stringReader = new StringReader(xamlText);
                 XmlReader xmlReader = XmlReader.Create(stringReader);
                 Section sec = XamlReader.Load(xmlReader) as Section;
                 while (sec.Blocks.Count > 0)
@@ -36,18 +49,33 @@ namespace WinWeelay
             textBox.SetCaretToEnd();
         }
 
+        /// <summary>
+        /// Check whether the text box has text in it.
+        /// </summary>
+        /// <param name="textBox">The text box to check.</param>
+        /// <returns>True if text is contained.</returns>
         public static bool IsEmpty(this RichTextBox textBox)
         {
             string text = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd).Text;
             return string.IsNullOrEmpty(text);
         }
 
+        /// <summary>
+        /// Export the text box's document in plain text.
+        /// </summary>
+        /// <param name="textBox">The text box to check.</param>
+        /// <returns>Plain text.</returns>
         public static string GetPlainText(this RichTextBox textBox)
         {
             TextRange textRange = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
             return textRange.Text.TrimEnd();
         }
 
+        /// <summary>
+        /// Set the text box's document from plain text.
+        /// </summary>
+        /// <param name="textBox">The text box to set the text to.</param>
+        /// <param name="text">The plain text to set.</param>
         public static void SetPlainText(this RichTextBox textBox, string text)
         {
             textBox.Document.Blocks.Clear();
@@ -55,12 +83,23 @@ namespace WinWeelay
             textBox.SetCaretToEnd();
         }
 
+        /// <summary>
+        /// Set the caret of a given text box to the end of the text.
+        /// </summary>
+        /// <param name="textBox">The text box to change.</param>
         public static void SetCaretToEnd(this RichTextBox textBox)
         {
             TextPointer pointer = textBox.Document.ContentEnd;
             textBox.Selection.Select(pointer, pointer);
         }
 
+        /// <summary>
+        /// Update the font settings.
+        /// </summary>
+        /// <param name="document">The document to change.</param>
+        /// <param name="fontSize">The font size to set.</param>
+        /// <param name="fontFamily">The font family to set.</param>
+        /// <param name="changeTextColor">Whether or not the default color should be applied to the text.</param>
         public static void UpdateFont(this FlowDocument document, double fontSize, FontFamily fontFamily, bool changeTextColor)
         {
             document.FontFamily = fontFamily;

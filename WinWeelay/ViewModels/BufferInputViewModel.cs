@@ -7,6 +7,9 @@ using WinWeelay.Utils;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// The view model for the input control.
+    /// </summary>
     public class BufferInputViewModel : NotifyPropertyChangedBase
     {
         private BufferInputControl _inputControl;
@@ -15,12 +18,32 @@ namespace WinWeelay
         private SpellingManager _spellingManager;
         private IrcMessageBuilder _messageBuilder;
 
+        /// <summary>
+        /// The default text color based on the current theme.
+        /// </summary>
         public Color DefaultColor { get; set; }
+
+        /// <summary>
+        /// The buffer to interact with.
+        /// </summary>
         public RelayBuffer Buffer { get; set; }
+
+        /// <summary>
+        /// The main configuration loaded from the config file.
+        /// </summary>
         public RelayConfiguration RelayConfiguration => Buffer?.Connection?.Configuration;
 
+        /// <summary>
+        /// Default constructor for designer.
+        /// </summary>
         public BufferInputViewModel() { }
 
+        /// <summary>
+        /// Create a new view model for the input control.
+        /// </summary>
+        /// <param name="buffer">The buffer to interact with.</param>
+        /// <param name="spellingManager">Spell checker for the input box.</param>
+        /// <param name="inputControl">The control containing the input box.</param>
         public BufferInputViewModel(RelayBuffer buffer, SpellingManager spellingManager, BufferInputControl inputControl)
         {
             Buffer = buffer;
@@ -33,6 +56,10 @@ namespace WinWeelay
             SetDefaultColor();
         }
 
+        /// <summary>
+        /// Send a message to the attached buffer.
+        /// </summary>
+        /// <param name="richTextBox">The RichTextBox to parse the text from. IRC formatting will be applied.</param>
         public void SendMessage(RichTextBox richTextBox)
         {
             Buffer.SendMessage(_messageBuilder.BuildMessage(richTextBox.Document, DefaultColor));
@@ -40,6 +67,10 @@ namespace WinWeelay
             richTextBox.SetPlainText(string.Empty);
         }
 
+        /// <summary>
+        /// Send a message to the attached buffer.
+        /// </summary>
+        /// <param name="textBox">The TextBox to parse the text from.</param>
         public void SendMessage(TextBox textBox)
         {
             Buffer.SendMessage(textBox.Text);
@@ -47,16 +78,27 @@ namespace WinWeelay
             textBox.Clear();
         }
 
+        /// <summary>
+        /// Subscribe a given text box to the spell checker. Enables spell checking, customizes the context menu to show suggestions and updates the spell checker when the custom diciontary is modified.
+        /// </summary>
+        /// <param name="textBox">The text box to subscribe.</param>
         public void SubscribeSpellingManager(TextBoxBase textBox)
         {
             _spellingManager.Subscribe(textBox);
         }
 
+        /// <summary>
+        /// Unsubscribe a given text box from the spell checker.
+        /// </summary>
+        /// <param name="textBox">The text box to unsubscribe.</param>
         public void UnsubscribeSpellingManager(TextBoxBase textBox)
         {
             _spellingManager.Unsubscribe(textBox);
         }
 
+        /// <summary>
+        /// Fill the input box with the message before the current index.
+        /// </summary>
         public void SetPreviousHistoryEntry(TextBoxBase textBox)
         {
             if (RelayConfiguration.IsFormattingToolbarVisible)
@@ -66,6 +108,9 @@ namespace WinWeelay
             UpdateFont();
         }
 
+        /// <summary>
+        /// Fill the input box with the message after the current index.
+        /// </summary>
         public void SetNextHistoryEntry(TextBoxBase textBox)
         {
             if (RelayConfiguration.IsFormattingToolbarVisible)
@@ -84,6 +129,11 @@ namespace WinWeelay
             UpdateFont();
         }
 
+        /// <summary>
+        /// Try to complete the nickname based on a given test string.
+        /// </summary>
+        /// <param name="textBox">The textbox to output the result to.</param>
+        /// <param name="text">The given text string.</param>
         public void HandleNickCompletion(TextBoxBase textBox, string text)
         {
             _nickCompleter.IsNickCompleting = true;
@@ -96,12 +146,18 @@ namespace WinWeelay
             _nickCompleter.IsNickCompleting = false;
         }
 
+        /// <summary>
+        /// Stop trying to complete the nickname and clear the search.
+        /// </summary>
         public void ResetNickCompletion()
         {
             if (!_nickCompleter.IsNickCompleting)
                 _nickCompleter.Reset();
         }
 
+        /// <summary>
+        /// Update the font settings.
+        /// </summary>
         public void UpdateFont()
         {
             SetDefaultColor();

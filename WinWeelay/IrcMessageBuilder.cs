@@ -6,17 +6,29 @@ using WinWeelay.CustomControls;
 
 namespace WinWeelay
 {
+    /// <summary>
+    /// Helper class for parsing a FlowDocument to a string that can be sent with IRC formatting.
+    /// </summary>
     public class IrcMessageBuilder
     {
         private FlowDocument _document;
         private StringBuilder _stringBuilder;
         private Color _defaultColor;
 
+        /// <summary>
+        /// Create a new instance of the helper.
+        /// </summary>
         public IrcMessageBuilder()
         {
             _stringBuilder = new StringBuilder();
         }
 
+        /// <summary>
+        /// Build a message from a given document.
+        /// </summary>
+        /// <param name="document">The message input.</param>
+        /// <param name="defaultColor">The default text color based on the current theme.</param>
+        /// <returns>An IRC formatted string.</returns>
         public string BuildMessage(FlowDocument document, Color defaultColor)
         {
             _document = document;

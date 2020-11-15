@@ -47,13 +47,13 @@
             </ToolBar>
             <ToolBar Name="Color">
                 <Image Source="{StaticResource textColorImage}"></Image>
-                <customcontrols:IrcColorPicker x:Name="foregroundIrcColorPicker" SelectedColorChanged="foregroundIrcColorPicker_SelectedColorChanged">
+                <customcontrols:IrcColorPicker x:Name="_foregroundIrcColorPicker" SelectedColorChanged="_foregroundIrcColorPicker_SelectedColorChanged">
                     <customcontrols:IrcColorPicker.ToolTip>
                         <customcontrols:RichToolTip Title="Text color" Description="Change the color of the text."/>
                     </customcontrols:IrcColorPicker.ToolTip>
                 </customcontrols:IrcColorPicker>
                 <Image Source="{StaticResource backgroundColorImage}"></Image>
-                <customcontrols:IrcColorPicker x:Name="backgroundIrcColorPicker" SelectedColorChanged="backgroundIrcColorPicker_SelectedColorChanged">
+                <customcontrols:IrcColorPicker x:Name="_backgroundIrcColorPicker" SelectedColorChanged="_backgroundIrcColorPicker_SelectedColorChanged">
                     <customcontrols:IrcColorPicker.ToolTip>
                         <customcontrols:RichToolTip Title="Background color" Description="Change the color of the background."/>
                     </customcontrols:IrcColorPicker.ToolTip>
