@@ -25,6 +25,11 @@ namespace WinWeelay.CustomControls
             SelectedColorChanged?.Invoke(this, e);
         }
 
+        public void SetSelectedIndex(int index)
+        {
+            colorComboBox.SelectedIndex = index;
+        }
+
         public void SetSelectedColor(Color color)
         {
             int? selectedColor = (IrcColor.GetColors().FirstOrDefault(x => x.Color == color)?.ColorIndex);

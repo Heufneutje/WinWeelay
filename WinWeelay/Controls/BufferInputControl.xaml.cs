@@ -78,10 +78,14 @@ namespace WinWeelay
             value = _editorRichTextBox.Selection.GetPropertyValue(TextElement.ForegroundProperty);
             if (value != null && value is SolidColorBrush textBrush)
                 foregroundIrcColorPicker.SetSelectedColor(textBrush.Color);
+            else
+                foregroundIrcColorPicker.SetSelectedIndex(0);
 
             value = _editorRichTextBox.Selection.GetPropertyValue(TextElement.BackgroundProperty);
             if (value != null && value is SolidColorBrush backBrush)
                 backgroundIrcColorPicker.SetSelectedColor(backBrush.Color);
+            else
+                backgroundIrcColorPicker.SetSelectedIndex(0);
         }
 
         private void _editorRichTextBox_KeyDown(object sender, KeyEventArgs e)
