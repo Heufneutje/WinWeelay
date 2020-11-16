@@ -73,7 +73,7 @@ namespace WinWeelay
             prefix += ' ';
 
             paragraph.Inlines.AddRange(HandleFormatting(prefix));
-            paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(message.Message)));
+            paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(message.MessageBody)));
             return paragraph;
         }
 

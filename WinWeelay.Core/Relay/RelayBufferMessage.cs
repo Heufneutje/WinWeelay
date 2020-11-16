@@ -43,7 +43,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// The content of the message.
         /// </summary>
-        public string Message { get; private set; }
+        public string MessageBody { get; private set; }
 
         /// <summary>
         /// The nickname of the user that sent the message.
@@ -75,7 +75,7 @@ namespace WinWeelay.Core
             IsHighlighted = Convert.ToBoolean(entry["highlight"].AsBoolean());
             Tags = entry["tags_array"].AsArray().ToStringArray();
             Prefix = entry["prefix"].AsString();
-            Message = entry["message"].AsString();
+            MessageBody = entry["message"].AsString();
 
             string[] tags = entry["tags_array"].AsArray().ToStringArray();
             string nickTag = tags.FirstOrDefault(x => x.StartsWith("nick_"));
