@@ -226,7 +226,7 @@ namespace WinWeelay
                     XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
                     stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
                     string prefix = $"<{_formattingParser.GetUnformattedString(args.Message.Prefix)}>";
-                    stringElements[1].AppendChild(toastXml.CreateTextNode($"{prefix} {_formattingParser.GetUnformattedString(args.Message.Message)}"));
+                    stringElements[1].AppendChild(toastXml.CreateTextNode($"{prefix} {_formattingParser.GetUnformattedString(args.Message.MessageBody)}"));
 
                     string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
                     if (!File.Exists(tempPath))
