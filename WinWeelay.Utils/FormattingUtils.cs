@@ -51,8 +51,12 @@ namespace WinWeelay.Utils
                 else if (isInFormatting)
                 {
                     if (char.IsDigit(prefixChar) || isFirstFormattingCharacter && prefixChar == 'F' || prefixChar == '@')
-                        continue;
+                    {
+                        if (prefixChar == 'F')
+                            isFirstFormattingCharacter = false;
 
+                        continue;
+                    }
                     isInFormatting = false;
                 }
 
