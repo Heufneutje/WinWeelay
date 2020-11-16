@@ -27,6 +27,7 @@ namespace WinWeelay
         private bool _isRetryingConnection;
         private ThemeManager _themeManager;
         private SpellingManager _spellingManager;
+        private FormattingParser _formattingParser;
         private bool _isDownloadingUpdate;
 
         /// <summary>
@@ -169,6 +170,8 @@ namespace WinWeelay
             _themeManager = new ThemeManager();
             _themeManager.InitializeThemes(RelayConfiguration);
 
+            _formattingParser = new FormattingParser(new OptionParser(RelayConfiguration));
+
             System.Threading.Thread.CurrentThread.CurrentUICulture = RelayConfiguration.Language;
             _spellingManager = new SpellingManager();
             _mainWindow.SetSpellingManager(_spellingManager);
@@ -222,7 +225,7 @@ namespace WinWeelay
                     XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
                     XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
                     stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
-                    stringElements[1].AppendChild(toastXml.CreateTextNode(args.Message.UnformattedMessage));
+                    stringElements[1].AppendChild(toastXml.CreateTextNode(_formattingParser.GetUnformattedString(args.Message.Message)));
 
                     string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
                     if (!File.Exists(tempPath))

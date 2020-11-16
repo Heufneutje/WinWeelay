@@ -66,7 +66,7 @@ namespace WinWeelay
             if (message.MessageType == "privmsg")
             {
                 if (message.IsHighlighted)
-                    prefix = $"{highlightFormatting}<{message.UnformattedPrefix}>";
+                    prefix = $"{highlightFormatting}<{GetUnformattedString(message.Prefix)}>\u0019\u0001\u001a";
                 else
                     prefix = $"<{prefix}\u0019\u001c>";
             }
@@ -90,6 +90,20 @@ namespace WinWeelay
             Paragraph paragraph = new Paragraph();
             paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(formattedString)));
             return paragraph;
+        }
+
+        /// <summary>
+        /// Strip the formatting codes from a given text string.
+        /// </summary>
+        /// <param name="formattedString">The text string.</param>
+        /// <returns>A new text string with the formatting codes removed.</returns>
+        public string GetUnformattedString(string formattedString)
+        {
+            bool oldValue = _parseFormatting;
+            _parseFormatting = false;
+            Paragraph paragraph = FormatString(formattedString, false);
+            _parseFormatting = oldValue;
+            return new TextRange(paragraph.ContentStart, paragraph.ContentEnd).Text.Trim();
         }
 
         private char ConsumeCharacter()

@@ -61,38 +61,6 @@ namespace WinWeelay.Core
         /// <seealso cref="IsHighlighted"/>
         public bool IsNotified { get; set; }
 
-        private string _unformattedPrefix;
-
-        /// <summary>
-        /// Role prefix without color data.
-        /// </summary>
-        /// <seealso cref="Prefix"/>
-        public string UnformattedPrefix
-        {
-            get
-            {
-                if (_unformattedPrefix == null)
-                    _unformattedPrefix = FormattingUtils.StripWeechatFormatting(Prefix);
-                return _unformattedPrefix;
-            }
-        }
-
-        private string _unformattedMessage;
-
-        /// <summary>
-        /// Message content without color or formatting data.
-        /// </summary>
-        /// <seealso cref="Message"/>
-        public string UnformattedMessage
-        {
-            get
-            {
-                if (_unformattedMessage == null)
-                    _unformattedMessage = FormattingUtils.StripWeechatFormatting(Message);
-                return _unformattedMessage;
-            }
-        }
-
         /// <summary>
         /// Create a new message from a received Hdata structure.
         /// </summary>
