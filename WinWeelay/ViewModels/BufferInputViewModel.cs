@@ -141,8 +141,11 @@ namespace WinWeelay
             if (RelayConfiguration.IsFormattingToolbarVisible)
                 ((RichTextBox)textBox).SetPlainText(_nickCompleter.HandleNickCompletion(text));
             else
-                ((TextBox)textBox).Text = _nickCompleter.HandleNickCompletion(text);
-
+            {
+                TextBox box = textBox as TextBox;
+                box.Text = _nickCompleter.HandleNickCompletion(text);
+                box.CaretIndex = box.Text.Length;
+            }
             _nickCompleter.IsNickCompleting = false;
         }
 
