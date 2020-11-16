@@ -75,10 +75,12 @@ namespace WinWeelay
                     if (backColor != 99 && textColor == 99)
                         textColor = 0;
 
+                    string textColorStr = textColor.ToString().PadLeft(2, '0');
+                    string backColorStr = backColor.ToString().PadLeft(2, '0');
                     if (backColor != 99)
-                        _stringBuilder.Append($"{textColor},{backColor}");
+                        _stringBuilder.Append($"{textColorStr},{backColorStr}");
                     else
-                        _stringBuilder.Append(textColor.ToString());
+                        _stringBuilder.Append(textColorStr);
                 }
             }
         }
