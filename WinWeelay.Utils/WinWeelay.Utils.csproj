@@ -55,7 +55,7 @@
     <Compile Include="ChangeTrackingIgnoreAttribute.cs" />
     <Compile Include="Cipher.cs" />
     <Compile Include="CloneHelper.cs" />
-    <Compile Include="FormattingUtils.cs" />
+    <Compile Include="FontUtils.cs" />
     <Compile Include="Update\GitHubRelease.cs" />
     <Compile Include="Update\GitHubReleaseAsset.cs" />
     <Compile Include="JsonUtils.cs" />

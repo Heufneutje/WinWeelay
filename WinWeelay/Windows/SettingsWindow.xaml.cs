@@ -34,7 +34,7 @@ namespace WinWeelay
             _passwordBox.Password = Cipher.Decrypt(settingsViewModel.Configuration.RelayPassword);
             settingsViewModel.Configuration.StartTrackingChanges();
 
-            _fontComboBox.ItemsSource = FormattingUtils.GetInstalledFonts();
+            _fontComboBox.ItemsSource = FontUtils.GetInstalledFonts();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)

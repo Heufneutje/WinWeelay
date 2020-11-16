@@ -5,9 +5,9 @@ using System.Linq;
 namespace WinWeelay.Utils
 {
     /// <summary>
-    /// Utility class for text formatting helper methods.
+    /// Utility class for fonts.
     /// </summary>
-    public static class FormattingUtils
+    public static class FontUtils
     {
         /// <summary>
         /// Retrieve all fonts installed on the system.
