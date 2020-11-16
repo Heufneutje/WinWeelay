@@ -63,7 +63,7 @@ namespace WinWeelay.CustomControls
                     new IrcColor(6, Color.FromArgb(255, 156, 0, 156), "Purple"),
                     new IrcColor(7, Color.FromArgb(255, 255, 127, 0), "Orange"),
                     new IrcColor(8, Color.FromArgb(255, 255, 255, 0), "Yellow"),
-                    new IrcColor(9, Color.FromArgb(255, 252, 0, 0), "Light Green"),
+                    new IrcColor(9, Color.FromArgb(255, 0, 252, 0), "Light Green"),
                     new IrcColor(10, Color.FromArgb(255, 0, 147, 147), "Cyan"),
                     new IrcColor(11, Color.FromArgb(255, 0, 255, 255), "Light Cyan"),
                     new IrcColor(12, Color.FromArgb(255, 0, 0, 252), "Light Blue"),
