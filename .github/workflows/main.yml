@@ -7,13 +7,13 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout Code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2.3.4
      
     - name: Setup MSBuild path
       uses: microsoft/setup-msbuild@v1
        
     - name: Setup NuGet
-      uses: NuGet/setup-nuget@v1.0.2
+      uses: NuGet/setup-nuget@v1.0.5
      
     - name: Restore NuGet Packages
       run: nuget restore WinWeelay.sln
@@ -27,7 +27,7 @@ jobs:
         script-file: setup.nsi
 
     - name: Upload Build Files
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v2.2.1
       with:
         name: files
         path: Release
