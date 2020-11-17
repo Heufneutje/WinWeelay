@@ -179,6 +179,8 @@ namespace WinWeelay
             {
                 TextPointer caretPosition = richTextBox.CaretPosition;
                 spellingError = richTextBox.GetSpellingError(caretPosition);
+                if (spellingError == null)
+                    return;
 
                 TextPointer start = richTextBox.CaretPosition;
                 TextPointer end = start.GetNextContextPosition(LogicalDirection.Backward);
