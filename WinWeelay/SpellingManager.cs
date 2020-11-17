@@ -182,10 +182,7 @@ namespace WinWeelay
                 if (spellingError == null)
                     return;
 
-                TextPointer start = richTextBox.CaretPosition;
-                TextPointer end = start.GetNextContextPosition(LogicalDirection.Backward);
-                richTextBox.Selection.Select(start, end);
-                misspelledWord = richTextBox.Selection.Text;
+                misspelledWord = richTextBox.GetWordByCaret();
             }
             else
                 return;

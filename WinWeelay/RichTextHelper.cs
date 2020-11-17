@@ -118,5 +118,66 @@ namespace WinWeelay
                 block.FontSize = fontSize;
             }
         }
+
+        /// <summary>
+        /// Get the word that the cursor is on.
+        /// </summary>
+        /// <param name="textBox">The text box to check.</param>
+        /// <returns>A word.</returns>
+        public static string GetWordByCaret(this RichTextBox textBox)
+        {
+            return GetWordByCaret(textBox, LogicalDirection.Backward) + GetWordByCaret(textBox, LogicalDirection.Forward);
+        }
+
+        private static string GetWordByCaret(RichTextBox textBox, LogicalDirection direction)
+        {
+            TextPointer position = textBox.CaretPosition;
+            TextPointerContext context = position.GetPointerContext(direction);
+
+            string text = string.Empty;
+            while (context != TextPointerContext.None)
+            {
+                if (context == TextPointerContext.Text)
+                {
+                    string current = position.GetTextInRun(direction);
+                    if (direction == LogicalDirection.Backward)
+                    {
+                        int spaceIndex = current.LastIndexOf(' ');
+                        if (spaceIndex >= 0)
+                        {
+                            int length = current.Length - 1;
+                            if (spaceIndex + 1 <= length)
+                                text = current.Substring(spaceIndex + 1, length - spaceIndex) + text;
+
+                            return text;
+                        }
+
+                        else
+                            text = current + text;
+                    }
+                    else
+                    {
+                        int spaceIndex = current.IndexOf(' ');
+                        if (spaceIndex >= 0)
+                        {
+                            int length = current.Length;
+                            if (spaceIndex <= length)
+                                text += current.Substring(0, spaceIndex);
+
+                            return text;
+                        }
+                        else
+                            text += current;
+                    }
+                }
+
+                position = position.GetNextContextPosition(direction);
+                if (position != null)
+                    context = position.GetPointerContext(direction);
+                else
+                    context = TextPointerContext.None;
+            }
+            return text;
+        }
     }
 }
