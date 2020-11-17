@@ -77,6 +77,23 @@ namespace WinWeelay
                 _editorTextBox.Focus();
         }
 
+        /// <summary>
+        /// Register the correct input box with the spell checker after the preferred input box has been changed.
+        /// </summary>
+        public void RefreshSpellCheckSubscription()
+        {
+            if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
+            {
+                ViewModel.UnsubscribeSpellingManager(_editorTextBox);
+                ViewModel.SubscribeSpellingManager(_editorRichTextBox);
+            }
+            else
+            {
+                ViewModel.UnsubscribeSpellingManager(_editorRichTextBox);
+                ViewModel.SubscribeSpellingManager(_editorTextBox);
+            }
+        }
+
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             if (DesignerProperties.GetIsInDesignMode(this))

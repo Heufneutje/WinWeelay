@@ -146,7 +146,7 @@ namespace WinWeelay
 
         private void RefreshSubscribedTextBoxes()
         {
-            foreach (RichTextBox textBox in _subscribedTextBoxes.ToArray())
+            foreach (TextBoxBase textBox in _subscribedTextBoxes.ToArray())
             {
                 Unsubscribe(textBox);
                 Subscribe(textBox);

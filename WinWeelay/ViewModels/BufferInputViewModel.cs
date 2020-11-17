@@ -127,6 +127,9 @@ namespace WinWeelay
         {
             _history.ClearHistory();
             UpdateFont();
+
+            if (RelayConfiguration.IsSpellCheckEnabled)
+                _inputControl.RefreshSpellCheckSubscription();
         }
 
         /// <summary>
