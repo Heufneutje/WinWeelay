@@ -217,7 +217,7 @@ namespace WinWeelay
         {
             args.Message.IsNotified = true;
 
-            #if WINDOWS10_SDK
+#if WINDOWS10_SDK
             if (RelayConfiguration.NotificationsEnabled && (RelayConfiguration.NotificationsEnabledWithBufferFocus || args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive || _mainWindow.WindowState == WindowState.Minimized))
             {
                 try
@@ -225,7 +225,11 @@ namespace WinWeelay
                     XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
                     XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
                     stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
-                    string prefix = $"<{_formattingParser.GetUnformattedString(args.Message.Prefix)}>";
+
+                    string prefix = _formattingParser.GetUnformattedString(args.Message.Prefix);
+                    if (prefix != "*")
+                        prefix = $"<{prefix}>";
+
                     stringElements[1].AppendChild(toastXml.CreateTextNode($"{prefix} {_formattingParser.GetUnformattedString(args.Message.MessageBody)}"));
 
                     string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
@@ -243,7 +247,7 @@ namespace WinWeelay
                     // Ignore the error as it likely means notifications simply aren't available.
                 }
             }
-            #endif
+#endif
         }
 
         private void Connection_ConnectionLost(object sender, ConnectionLostEventArgs args)
