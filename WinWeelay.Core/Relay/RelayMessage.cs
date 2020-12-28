@@ -55,17 +55,5 @@ namespace WinWeelay.Core
             while (!wd.IsEmpty)
                 RelayObjects.Add(wd.GetObject());
         }
-
-        /// <summary>
-        /// Override for debug purposes.
-        /// </summary>
-        /// <returns>A string representation of the entire relay message.</returns>
-        public override string ToString()
-        {
-            string msg = $"[WMessage.tostring]{Environment.NewLine}  Length: {Length}{Environment.NewLine}  Compressed: {Compressed}{Environment.NewLine}  ID: {ID}{Environment.NewLine}";
-            foreach (WeechatRelayObject obj in RelayObjects)
-                msg += $"{obj}{Environment.NewLine}";
-            return msg;
-        }
     }
 }
