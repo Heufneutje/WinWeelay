@@ -324,7 +324,7 @@ SetOutPath "$INSTDIR"
 File "Release\*.dll"
 File "Release\*.pdb"
 File "Release\*.txt"
-File "Release\*.exe"
+File "Release\WinWeelay.exe"
 File "Release\WinWeelay.exe.config"
 SectionEnd
 
@@ -386,9 +386,8 @@ ${INSTALL_TYPE}
 Delete "$INSTDIR\*.dll"
 Delete "$INSTDIR\*.pdb"
 Delete "$INSTDIR\*.txt"
-Delete "$INSTDIR\*.exe"
+Delete "$INSTDIR\WinWeelay.exe"
 Delete "$INSTDIR\WinWeelay.exe.config"
-Delete "$INSTDIR\WinWeelay.pdb"
 Delete "$INSTDIR\uninstall.exe"
 !ifdef WEB_SITE
 Delete "$INSTDIR\${APP_NAME} website.url"
