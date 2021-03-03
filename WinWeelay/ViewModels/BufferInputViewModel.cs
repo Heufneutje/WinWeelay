@@ -104,7 +104,7 @@ namespace WinWeelay
             if (RelayConfiguration.IsFormattingToolbarVisible)
                 ((RichTextBox)textBox).SetXaml(_history.GetPreviousHistoryEntry());
             else
-                ((TextBox)textBox).Text = _history.GetPreviousHistoryEntry();
+                SetPlainText(textBox as TextBox, _history.GetPreviousHistoryEntry());
             UpdateFont();
         }
 
@@ -116,7 +116,7 @@ namespace WinWeelay
             if (RelayConfiguration.IsFormattingToolbarVisible)
                 ((RichTextBox)textBox).SetXaml(_history.GetNextHistoryEntry());
             else
-                ((TextBox)textBox).Text = _history.GetNextHistoryEntry();
+                SetPlainText(textBox as TextBox, _history.GetNextHistoryEntry());
             UpdateFont();
         }
 
@@ -177,6 +177,12 @@ namespace WinWeelay
                 DefaultColor = Color.FromArgb(255, 255, 255, 254);
             else
                 DefaultColor = Color.FromArgb(255, 0, 0, 1);
+        }
+
+        private void SetPlainText(TextBox textBox, string text)
+        {
+            textBox.Text = text;
+            textBox.CaretIndex = textBox.Text.Length;
         }
     }
 }
