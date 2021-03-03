@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -14,6 +15,7 @@ namespace WinWeelay
     public partial class BufferInputControl : UserControl
     {
         private bool _modifiedPaste;
+        private SynchronizationContext _synchronizationContext;
 
         /// <summary>
         /// The view model for the input control.
@@ -26,23 +28,31 @@ namespace WinWeelay
         public BufferInputControl()
         {
             InitializeComponent();
+            _synchronizationContext = SynchronizationContext.Current;
             DataObject.AddPastingHandler(_editorRichTextBox, new DataObjectPastingEventHandler(OnPaste));
         }
 
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
-            if (!_modifiedPaste)
+            try
             {
-                _modifiedPaste = true;
-                string clipboard = e.DataObject.GetData(typeof(string)) as string;
-                e.CancelCommand();
+                if (!_modifiedPaste)
+                {
+                    _modifiedPaste = true;
+                    string clipboard = e.DataObject.GetData(typeof(string)) as string;
+                    e.CancelCommand();
 
-                string result = clipboard.Replace("\r", string.Empty).Replace("\n", string.Empty);
-                Clipboard.SetData(DataFormats.Text, result);
-                ApplicationCommands.Paste.Execute(result, _editorRichTextBox);
+                    string result = clipboard.Replace("\r", string.Empty).Replace("\n", string.Empty);
+                    Clipboard.SetData(DataFormats.Text, result);
+                    ApplicationCommands.Paste.Execute(result, _editorRichTextBox);
+                }
+                else
+                    _modifiedPaste = false;
             }
-            else
-                _modifiedPaste = false;
+            catch (Exception ex)
+            {
+                _synchronizationContext.Post(delegate { ThemedMessageBoxWindow.Show($"Error while accessing clipboard data: {ex.Message}", "WinWeelay", MessageBoxButton.OK, MessageBoxImage.Error, Window.GetWindow(this)); }, null);           
+            }
         }
 
         /// <summary>
