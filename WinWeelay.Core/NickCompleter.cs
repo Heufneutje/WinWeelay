@@ -59,9 +59,9 @@ namespace WinWeelay.Core
                 if (string.IsNullOrEmpty(lastWord))
                     message = completedNick;
                 else
-                    message = message.ReplaceLastOccurrence(_lastNickCompletion ?? lastWord, completedNick);
-
-                _lastNickCompletion = completedNick;
+                    message = message.ReplaceLastOccurrence(_lastNickCompletion ?? lastWord, completedNick).Replace("  ", " ");
+                
+                _lastNickCompletion = completedNick.Trim();
 
                 return message;
             }
