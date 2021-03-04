@@ -25,7 +25,6 @@ namespace WinWeelay
         public BufferInputControl()
         {
             InitializeComponent();
-            _synchronizationContext = SynchronizationContext.Current;
             DataObject.AddPastingHandler(_editorRichTextBox, new DataObjectPastingEventHandler(OnPaste));
         }
 
