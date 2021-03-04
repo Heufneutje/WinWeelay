@@ -14,9 +14,6 @@ namespace WinWeelay
     /// </summary>
     public partial class BufferInputControl : UserControl
     {
-        private bool _modifiedPaste;
-        private SynchronizationContext _synchronizationContext;
-
         /// <summary>
         /// The view model for the input control.
         /// </summary>
@@ -34,25 +31,11 @@ namespace WinWeelay
 
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
-            try
-            {
-                if (!_modifiedPaste)
-                {
-                    _modifiedPaste = true;
-                    string clipboard = e.DataObject.GetData(typeof(string)) as string;
-                    e.CancelCommand();
-
-                    string result = clipboard.Replace("\r", string.Empty).Replace("\n", string.Empty);
-                    Clipboard.SetData(DataFormats.Text, result);
-                    ApplicationCommands.Paste.Execute(result, _editorRichTextBox);
-                }
-                else
-                    _modifiedPaste = false;
-            }
-            catch (Exception ex)
-            {
-                _synchronizationContext.Post(delegate { ThemedMessageBoxWindow.Show($"Error while accessing clipboard data: {ex.Message}", "WinWeelay", MessageBoxButton.OK, MessageBoxImage.Error, Window.GetWindow(this)); }, null);           
-            }
+            string clipboardText = e.DataObject.GetData(typeof(string)) as string;
+            clipboardText = clipboardText.Replace("\r", string.Empty).Replace("\n", string.Empty);
+            DataObject dataObject = new DataObject();
+            dataObject.SetText(clipboardText);
+            e.DataObject = dataObject;
         }
 
         /// <summary>
