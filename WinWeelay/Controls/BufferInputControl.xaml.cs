@@ -31,6 +31,12 @@ namespace WinWeelay
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
             string clipboardText = e.DataObject.GetData(typeof(string)) as string;
+            if (clipboardText == null)
+            {
+                e.CancelCommand();
+                return;
+            }
+
             clipboardText = clipboardText.Replace("\r", string.Empty).Replace("\n", string.Empty);
             DataObject dataObject = new DataObject();
             dataObject.SetText(clipboardText);
