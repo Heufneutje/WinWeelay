@@ -122,7 +122,10 @@ namespace WinWeelay.Core
                     newBuffers.Add(buffer);
                 }
                 else if (buffer != null && buffer.HasMessages)
+                {
                     buffer.ReinitMessages();
+                    buffer.ResetNicklist();
+                }
 
                 if (buffer == null)
                     continue;

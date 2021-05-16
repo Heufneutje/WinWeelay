@@ -335,11 +335,7 @@ namespace WinWeelay.Core
                 _hasBacklog = true;
             }
 
-            if (!_hasNicklist)
-            {
-                Connection.OutputHandler.Nicklist(this, MessageIds.CustomGetNicklist);
-                _hasNicklist = true;
-            }
+            RequestNicklist();
 
             UnreadMessagesCount = 0;
             HighlightedMessagesCount = 0;
@@ -472,6 +468,25 @@ namespace WinWeelay.Core
             MaxBacklogSize = size;
 
             Connection.OutputHandler.RequestBufferBacklog(this, size, messageId);
+        }
+
+        /// <summary>
+        /// Clear the nicklist and request it again.
+        /// </summary>
+        public void ResetNicklist()
+        {
+            Nicklist.Clear();
+            _hasNicklist = false;
+            RequestNicklist();
+        }
+
+        private void RequestNicklist()
+        {
+            if (!_hasNicklist)
+            {
+                Connection.OutputHandler.Nicklist(this, MessageIds.CustomGetNicklist);
+                _hasNicklist = true;
+            }
         }
     }
 }
