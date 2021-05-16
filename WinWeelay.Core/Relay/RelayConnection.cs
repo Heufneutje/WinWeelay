@@ -17,6 +17,11 @@ namespace WinWeelay.Core
         private IRelayTransport _transport;
         private IBufferWindow _bufferView;
         private Timer _pingTimer;
+
+        /// <summary>
+        /// Whether the buffer list is beimg updated and visual updates should be prevented.
+        /// </summary>
+        public bool IsRefreshingBuffers { get; internal set; }
         
         /// <summary>
         /// The parser for incoming messages on this connection.
@@ -217,8 +222,10 @@ namespace WinWeelay.Core
         /// </summary>
         public void NotifyBuffersChanged()
         {
+            IsRefreshingBuffers = true;
             NotifyPropertyChanged(nameof(Buffers));
             NotifyPropertyChanged(nameof(RootBuffers));
+            IsRefreshingBuffers = false;
         }
 
         /// <summary>

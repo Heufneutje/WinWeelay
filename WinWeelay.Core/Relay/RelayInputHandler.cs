@@ -380,12 +380,14 @@ namespace WinWeelay.Core
 
         private void RemoveBuffer(RelayBuffer buffer)
         {
+            _connection.IsRefreshingBuffers = true;
             _connection.Buffers.Remove(buffer);
             foreach (RelayBuffer rootBuffer in _connection.RootBuffers)
                 if (rootBuffer.Children.Contains(buffer))
                     rootBuffer.Children.Remove(buffer);
 
             _connection.CloseBuffer(buffer);
+            _connection.IsRefreshingBuffers = false;
         }
     }
 }
