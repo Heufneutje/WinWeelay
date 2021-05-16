@@ -136,6 +136,11 @@ namespace WinWeelay.Core
         public bool IsBadgeVisible => UnreadMessagesCount != 0 || HighlightedMessagesCount != 0;
 
         /// <summary>
+        /// Whether or not message have been loaded in this buffer.
+        /// </summary>
+        public bool HasMessages => _messages.Any();
+
+        /// <summary>
         /// Hex code for the background of the badge depending on the notification level.
         /// </summary>
         public string BadgeBackground

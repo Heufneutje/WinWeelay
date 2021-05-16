@@ -180,15 +180,6 @@ namespace WinWeelay.Core
                 catch (IOException) { } // Ignore this since we want to disconnect anyway.
             }
 
-            foreach (RelayBuffer buffer in Buffers)
-                CloseBuffer(buffer);
-
-            Buffers.Clear();
-            NotifyBuffersChanged();
-
-            ActiveBuffer = null;
-            NotifyNicklistUpdated();
-
             _pingTimer.Stop();
             NotifyPropertyChanged(nameof(IsConnected));
         }
