@@ -255,17 +255,20 @@ namespace WinWeelay
             _mainWindow.Dispatcher.Invoke(() => 
             {
                 bool wasConnected = Connection.IsConnected || _isRetryingConnection;
+                bool wasLoggedIn = Connection.IsLoggedIn;
 
-                if (wasConnected)
+                if (wasConnected && !Connection.IsLoggedIn)
+                    SetStatusText($"Connection failed, reason: Unable to log in. Verify the configured relay password settings.");
+                else if (wasConnected)
                     SetStatusText($"Connection lost, reason: {args.Error.Message}{(args.Error.Message.EndsWith(".") ? "" : ".")} Retrying in 10 seconds...");
                 else
                     SetStatusText($"Connection failed, reason: {args.Error.Message}{(args.Error.Message.EndsWith(".") ? "" : ".")}");
 
-                if (CanDisconnect(null))
-                    Connection.Disconnect(false);
+                if (CanDisconnect(null) || !wasLoggedIn)
+                    Connection.Disconnect(!wasLoggedIn);
                 UpdateConnectionCommands();
 
-                if (wasConnected)
+                if (wasConnected && wasLoggedIn)
                 {
                     _isRetryingConnection = true;
                     _retryTimer.Start();

@@ -25,6 +25,11 @@ namespace WinWeelay.Core
 
         private void Transport_RelayMessageReceived(object sender, RelayMessageEventArgs args)
         {
+            // If this is the first response we receive we can assume that we're now successfully logged.
+            // Unfortunately when logging in fails no data is sent back so we can only assume.
+            if (!_connection.IsLoggedIn)
+                _connection.IsLoggedIn = true; 
+
             ParseMessage(args.RelayMessage);
         }
 

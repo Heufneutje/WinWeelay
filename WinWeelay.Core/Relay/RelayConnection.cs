@@ -58,6 +58,11 @@ namespace WinWeelay.Core
         /// </summary>
         public bool IsConnected => _transport != null && _transport.IsConnected;
 
+        /// <summary>
+        /// Whether an init command has been sent successfully.
+        /// </summary>
+        public bool IsLoggedIn { get; internal set; }
+
         private string _weeChatVersion;
 
         /// <summary>
@@ -150,8 +155,9 @@ namespace WinWeelay.Core
             InputHandler = new RelayInputHandler(this, _transport);
             OutputHandler = new RelayOutputHandler(this, _transport);
 
-            OutputHandler.BeginMessageBatch();
             OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword), true);
+
+            OutputHandler.BeginMessageBatch();
             OutputHandler.RequestBufferList();
             OutputHandler.RequestHotlist();
             OutputHandler.Sync();
@@ -173,13 +179,15 @@ namespace WinWeelay.Core
         public void Disconnect(bool cleanDisconnect)
         {
             WeeChatVersion = null;
+            IsLoggedIn = false;
             NotifyPropertyChanged(nameof(Description));
 
             if (cleanDisconnect)
             {
                 try
                 {
-                    OutputHandler.Quit();
+                    if (IsLoggedIn)
+                        OutputHandler.Quit();
                     _transport.Disconnect();
                 }
                 catch (IOException) { } // Ignore this since we want to disconnect anyway.
