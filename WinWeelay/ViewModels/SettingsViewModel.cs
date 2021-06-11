@@ -51,6 +51,11 @@ namespace WinWeelay
         public IEnumerable<BufferViewTypeWrapper> BufferViewTypes => BufferViewTypeWrapper.GetTypes();
 
         /// <summary>
+        /// Wrapper to display handshake types in a combo box.
+        /// </summary>
+        public IEnumerable<HandshakeTypeWrapper> HandshakeTypes => HandshakeTypeWrapper.GetTypes();
+
+        /// <summary>
         /// List of all languages on the system.
         /// </summary>
         public IEnumerable<CultureInfo> CultureInfos => CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures).OrderBy(x => x.DisplayName);
@@ -85,6 +90,22 @@ namespace WinWeelay
         /// </summary>
         public bool IsDictionaryInstalled => !IsSpellCheckEnabled || _spellingManager.IsDictionaryInstalled(Configuration.Language);
 
+        public string HandshakeTypeDescription
+        {
+            get
+            {
+                switch (Configuration.HandshakeType)
+                {
+                    case HandshakeType.Legacy:
+                        return "Sends the password in plain text. Required if using WeeChat < 2.9.";
+                    case HandshakeType.Modern:
+                        return "Sends a hash of the password using the most secure algorithm supported by the relay. WeeChat >= 2.9 is required.";
+                    default:
+                        return string.Empty;
+                }
+            }
+        }
+
         /// <summary>
         /// The dictionary info text to display for the currently selected language.
         /// </summary>
@@ -113,6 +134,14 @@ namespace WinWeelay
         public void NotifySocketPathVisibleChanged()
         {
             NotifyPropertyChanged(nameof(IsWebSocketPathVisible));
+        }
+
+        /// <summary>
+        /// Update the description of the handshake type.
+        /// </summary>
+        public void NotifyHandshakeTypeChanged()
+        {
+            NotifyPropertyChanged(nameof(HandshakeTypeDescription));
         }
 
         /// <summary>

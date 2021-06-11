@@ -66,6 +66,11 @@ namespace WinWeelay
             ((SettingsViewModel)DataContext).NotifySocketPathVisibleChanged();
         }
 
+        private void HandshakeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ((SettingsViewModel)DataContext).NotifyHandshakeTypeChanged();
+        }
+
         private void NotificationsCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
         {
             ((SettingsViewModel)DataContext).NotifyNotificationsEnabledChanged();

@@ -42,6 +42,11 @@ namespace WinWeelay.Configuration
         public RelayConnectionType ConnectionType { get; set; }
 
         /// <summary>
+        /// The type of handshake for authenticating with the relay.
+        /// </summary>
+        public HandshakeType HandshakeType { get; set; }
+
+        /// <summary>
         /// The path to use when using a WebSocket connection type.
         /// </summary>
         public string WebSocketPath { get; set; }
@@ -167,7 +172,8 @@ namespace WinWeelay.Configuration
         /// Create a new configuration.
         /// </summary>
         public RelayConfiguration()
-        {
+        { 
+            HandshakeType = HandshakeType.Modern;
             Port = 9001;
             WebSocketPath = "weechat";
             BacklogSize = 100;

@@ -52,6 +52,8 @@
     <Compile Include="BufferViewType.cs" />
     <Compile Include="BufferViewTypeWrapper.cs" />
     <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="HandshakeType.cs" />
+    <Compile Include="HandshakeTypeWrapper.cs" />
     <Compile Include="RelayConnectionType.cs" />
     <Compile Include="ConnectionTypeWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
