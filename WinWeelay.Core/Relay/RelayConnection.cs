@@ -155,7 +155,7 @@ namespace WinWeelay.Core
             InputHandler = new RelayInputHandler(this, _transport);
             OutputHandler = new RelayOutputHandler(this, _transport);
 
-            OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword), true);
+            OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
 
             OutputHandler.BeginMessageBatch();
             OutputHandler.RequestBufferList();

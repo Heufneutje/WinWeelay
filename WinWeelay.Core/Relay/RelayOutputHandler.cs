@@ -166,13 +166,9 @@ namespace WinWeelay.Core
         /// Authenticate with the WeeChat host.
         /// </summary>
         /// <param name="password">The relay password.</param>
-        /// <param name="useCompression">Whether to use compression for the message data. Should be true under normal circumstances.</param>
-        public void Init(string password, bool useCompression)
+        public void Init(string password)
         {
-            if (useCompression)
-                SendMessage($"init password={password}");
-            else
-                SendMessage($"init password={password},compression=off");
+            SendMessage($"init password={password}");
         }
 
         /// <summary>
