@@ -155,20 +155,11 @@ namespace WinWeelay.Core
             InputHandler = new RelayInputHandler(this, _transport);
             OutputHandler = new RelayOutputHandler(this, _transport);
 
-            OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
-
-            OutputHandler.BeginMessageBatch();
-            OutputHandler.RequestBufferList();
-            OutputHandler.RequestHotlist();
-            OutputHandler.Sync();
-            OutputHandler.Info("version", MessageIds.CustomGetVersion);
-
-            if (!OptionParser.HasOptionCache)
-                OutputHandler.RequestColorOptions();
+            if (Configuration.HandshakeType == HandshakeType.Legacy)
+                Authenticate();
+            else
+                OutputHandler.Handshake();
             
-            OutputHandler.EndMessageBatch();
-
-            _pingTimer.Start();
             return true;
         }
 
@@ -195,6 +186,23 @@ namespace WinWeelay.Core
 
             _pingTimer.Stop();
             NotifyPropertyChanged(nameof(IsConnected));
+        }
+
+        public void Authenticate()
+        {
+            OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
+            OutputHandler.BeginMessageBatch();
+            OutputHandler.RequestBufferList();
+            OutputHandler.RequestHotlist();
+            OutputHandler.Sync();
+            OutputHandler.Info("version", MessageIds.CustomGetVersion);
+
+            if (!OptionParser.HasOptionCache)
+                OutputHandler.RequestColorOptions();
+
+            OutputHandler.EndMessageBatch();
+
+            _pingTimer.Start();
         }
 
         /// <summary>

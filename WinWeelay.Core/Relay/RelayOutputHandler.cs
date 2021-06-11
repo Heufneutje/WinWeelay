@@ -163,6 +163,14 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
+        /// Perform a handshake with the WeeChat host.
+        /// </summary>
+        public void Handshake()
+        {
+            SendMessage($"handshake", MessageIds.CustomHandshake);
+        }
+
+        /// <summary>
         /// Authenticate with the WeeChat host.
         /// </summary>
         /// <param name="password">The relay password.</param>

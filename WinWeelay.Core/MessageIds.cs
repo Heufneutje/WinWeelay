@@ -45,6 +45,11 @@
         /// </summary>
         public const string CustomGetOptions = "getoptions";
 
+        /// <summary>
+        /// Custom identifier for performing a handshake.
+        /// </summary>
+        public const string CustomHandshake = "handshake";
+
 
         /// <summary>
         /// Default identifier used when a new buffer is opened.
