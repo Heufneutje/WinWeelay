@@ -163,20 +163,21 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
-        /// Perform a handshake with the WeeChat host.
+        /// Perform a handshake with the WeeChat host.        
         /// </summary>
-        public void Handshake()
+        /// <param name="supportedHashAlgorithms">The names of the algorithms that are supported.</param>
+        public void Handshake(string supportedHashAlgorithms)
         {
-            SendMessage($"handshake", MessageIds.CustomHandshake);
+            SendMessage($"handshake password_hash_algo={supportedHashAlgorithms}", MessageIds.CustomHandshake);
         }
 
         /// <summary>
         /// Authenticate with the WeeChat host.
         /// </summary>
-        /// <param name="password">The relay password.</param>
-        public void Init(string password)
+        /// <param name="passwordOption">The parameter to send the password.</param>
+        public void Init(string passwordOption)
         {
-            SendMessage($"init password={password}");
+            SendMessage($"init {passwordOption}");
         }
 
         /// <summary>

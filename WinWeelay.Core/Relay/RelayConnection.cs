@@ -17,6 +17,7 @@ namespace WinWeelay.Core
         private IRelayTransport _transport;
         private IBufferWindow _bufferView;
         private Timer _pingTimer;
+        private HashFactory _hashFactory;
 
         /// <summary>
         /// Whether the buffer list is beimg updated and visual updates should be prevented.
@@ -132,6 +133,7 @@ namespace WinWeelay.Core
             Configuration = configuration;
             OptionParser = new OptionParser(Configuration);
 
+            _hashFactory = new HashFactory();
             _bufferView = view;
             _pingTimer = new Timer(30000) { AutoReset = true };
             _pingTimer.Elapsed += PingTimer_Elapsed;
@@ -156,9 +158,9 @@ namespace WinWeelay.Core
             OutputHandler = new RelayOutputHandler(this, _transport);
 
             if (Configuration.HandshakeType == HandshakeType.Legacy)
-                Authenticate();
+                Authenticate(null);
             else
-                OutputHandler.Handshake();
+                OutputHandler.Handshake(_hashFactory.GetSupportedAlgorithms());
             
             return true;
         }
@@ -188,9 +190,24 @@ namespace WinWeelay.Core
             NotifyPropertyChanged(nameof(IsConnected));
         }
 
-        public void Authenticate()
+        public void Authenticate(WeechatHashtable handshakeResult)
         {
-            OutputHandler.Init(Cipher.Decrypt(Configuration.RelayPassword));
+            try
+            {
+                string commandParam;
+                if (handshakeResult == null)
+                    commandParam = _hashFactory.GetLegacyInitCommand(Configuration.RelayPassword);
+                else
+                    commandParam = _hashFactory.GetInitCommand(Configuration.RelayPassword, handshakeResult);
+
+                OutputHandler.Init(commandParam);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+                return;
+            }
+            
             OutputHandler.BeginMessageBatch();
             OutputHandler.RequestBufferList();
             OutputHandler.RequestHotlist();

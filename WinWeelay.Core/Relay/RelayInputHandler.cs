@@ -38,7 +38,7 @@ namespace WinWeelay.Core
             switch (message.ID)
             {
                 case MessageIds.CustomHandshake:
-                    _connection.Authenticate();
+                    _connection.Authenticate((WeechatHashtable)message.RelayObjects.First());
                     break;
                 case MessageIds.CustomGetVersion:
                     ParseVersion(message);

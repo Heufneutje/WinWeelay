@@ -101,6 +101,15 @@
     <Compile Include="Options\OptionCache.cs" />
     <Compile Include="Options\OptionNames.cs" />
     <Compile Include="Options\OptionParser.cs" />
+    <Compile Include="PasswordHash\BaseHashingAlgorithm.cs" />
+    <Compile Include="PasswordHash\Pbkdf2Algorithm.cs" />
+    <Compile Include="PasswordHash\HashFactory.cs" />
+    <Compile Include="PasswordHash\IHashingAlgorithm.cs" />
+    <Compile Include="PasswordHash\Pbkdf2Sha256Algorithm.cs" />
+    <Compile Include="PasswordHash\Pbkdf2Sha512Algorithm.cs" />
+    <Compile Include="PasswordHash\PlainAlgorithm.cs" />
+    <Compile Include="PasswordHash\Sha256Algorithm.cs" />
+    <Compile Include="PasswordHash\Sha512Algorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Events\RelayBufferMessageEventArgs.cs" />
     <Compile Include="Relay\RelayBuffer.cs" />
