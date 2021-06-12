@@ -70,7 +70,7 @@ namespace WinWeelay.Core
         public override void Disconnect()
         {
             IsConnected = false;
-            _webSocket.Dispose();
+            _webSocket?.Dispose();
         }
 
         /// <summary>
