@@ -118,6 +118,7 @@ namespace WinWeelay
         /// Create a new view model for the options window.
         /// </summary>
         /// <param name="connection">Connection to the WeeChat host.</param>
+        /// <param name="window">The option list window.</param>
         public OptionsListViewModel(RelayConnection connection, OptionsListWindow window)
         {
             Connection = connection;

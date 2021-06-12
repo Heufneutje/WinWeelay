@@ -90,6 +90,9 @@ namespace WinWeelay
         /// </summary>
         public bool IsDictionaryInstalled => !IsSpellCheckEnabled || _spellingManager.IsDictionaryInstalled(Configuration.Language);
 
+        /// <summary>
+        /// A detailed explaination of what the selected handshake type does.
+        /// </summary>
         public string HandshakeTypeDescription
         {
             get
