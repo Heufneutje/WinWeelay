@@ -36,6 +36,9 @@ namespace WinWeelay.CustomControls
             set => SetValue(DescriptionProperty, value);
         }
 
+        /// <summary>
+        /// Create a new instance of the option view.
+        /// </summary>
         public OptionView()
         {
             InitializeComponent();

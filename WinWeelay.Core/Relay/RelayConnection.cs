@@ -190,15 +190,19 @@ namespace WinWeelay.Core
             NotifyPropertyChanged(nameof(IsConnected));
         }
 
+        /// <summary>
+        /// Authenticate with the relay.
+        /// </summary>
+        /// <param name="handshakeResult">The received parameters from the handshake command.</param>
         public void Authenticate(WeechatHashtable handshakeResult)
         {
             try
             {
                 string commandParam;
                 if (handshakeResult == null)
-                    commandParam = _hashFactory.GetLegacyInitCommand(Configuration.RelayPassword);
+                    commandParam = _hashFactory.GetLegacyInitCommandParameter(Configuration.RelayPassword);
                 else
-                    commandParam = _hashFactory.GetInitCommand(Configuration.RelayPassword, handshakeResult);
+                    commandParam = _hashFactory.GetInitCommandParameter(Configuration.RelayPassword, handshakeResult);
 
                 OutputHandler.Init(commandParam);
             }
@@ -207,7 +211,12 @@ namespace WinWeelay.Core
                 HandleException(ex);
                 return;
             }
-            
+
+            RunPostInitCommands();
+        }
+
+        private void RunPostInitCommands()
+        {
             OutputHandler.BeginMessageBatch();
             OutputHandler.RequestBufferList();
             OutputHandler.RequestHotlist();
