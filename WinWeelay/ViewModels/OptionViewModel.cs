@@ -50,7 +50,12 @@ namespace WinWeelay
                     break;
                 case "integer":
                     if (option.PossibleValuesString == null)
-                        EditValue = (option.MinValue > 0 ? option.MinValue : 0).ToString();
+                    {
+                        if (option.ValueIsNull)
+                            EditValue = (option.MinValue > 0 ? option.MinValue : 0).ToString();
+                        else
+                            goto default;
+                    }
                     else
                         goto default;
                     break;
