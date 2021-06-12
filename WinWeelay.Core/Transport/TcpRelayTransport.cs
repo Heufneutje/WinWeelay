@@ -65,7 +65,7 @@ namespace WinWeelay.Core
         public override void Disconnect()
         {
             IsConnected = false;
-            _inputWorker.CancelAsync();
+            _inputWorker?.CancelAsync();
             _networkStream?.Dispose();
             _tcpClient?.Dispose();
             _tcpClient = null;
