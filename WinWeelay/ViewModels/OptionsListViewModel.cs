@@ -13,9 +13,14 @@ namespace WinWeelay
     /// </summary>
     public class OptionsListViewModel : NotifyPropertyChangedBase
     {
-        private RelayConnection _connection;
+        private OptionsListWindow _window;
         private List<RelayOption> _options;
         private bool _isRefreshing;
+
+        /// <summary>
+        /// Connection to the WeeChat host.
+        /// </summary>
+        public RelayConnection Connection;
 
         /// <summary>
         /// The optins editor window.
@@ -53,6 +58,11 @@ namespace WinWeelay
         public bool IsOptionSelected => SelectedOption != null;
 
         /// <summary>
+        /// Whether the currently selected option has a description.
+        /// </summary>
+        public bool HasDescription => !string.IsNullOrEmpty(SelectedOption?.Description);
+
+        /// <summary>
         /// Whether the currently selected option has a parent value.
         /// </summary>
         public bool HasParentValue => SelectedOption?.ParentValue != null;
@@ -66,6 +76,16 @@ namespace WinWeelay
         /// Whether the currently selected option's value differs from its default value.
         /// </summary>
         public bool IsModified => SelectedOption?.IsModified == true;
+
+        /// <summary>
+        /// Whether to show the option list's detail view.
+        /// </summary>
+        public bool IsOptionsDetailViewVisible { get; set; }
+
+        /// <summary>
+        /// The description of the detail view that contains the currently selected option's name if an option is selected.
+        /// </summary>
+        public string SelectedOptionName => SelectedOption?.Name == null ? "No option selected" : SelectedOption.Name;
 
         /// <summary>
         /// Command to execute the defined search.
@@ -83,9 +103,14 @@ namespace WinWeelay
         public DelegateCommand ResetCommand { get; private set; }
 
         /// <summary>
+        /// Command to close the option list window.
+        /// </summary>
+        public DelegateCommand CloseCommand { get; private set; }
+
+        /// <summary>
         /// Empty constructor for the designer.
         /// </summary>
-        public OptionsListViewModel() : this(null)
+        public OptionsListViewModel() : this(null, null)
         {
         }
 
@@ -93,18 +118,23 @@ namespace WinWeelay
         /// Create a new view model for the options window.
         /// </summary>
         /// <param name="connection">Connection to the WeeChat host.</param>
-        public OptionsListViewModel(RelayConnection connection)
+        public OptionsListViewModel(RelayConnection connection, OptionsListWindow window)
         {
-            _connection = connection;
+            Connection = connection;
+            _window = window;
 
             if (connection != null)
-                _connection.OptionsParsed += Connection_OptionsParsed;
+            {
+                Connection.OptionsParsed += Connection_OptionsParsed;
+                IsOptionsDetailViewVisible = Connection.Configuration.IsOptionsDetailViewVisible;
+            }
 
             _options = new List<RelayOption>();
             LoadedOptions = new ObservableCollection<RelayOption>();
             SearchCommand = new DelegateCommand(Search);
             EditCommand = new DelegateCommand(EditOption, CanEditOption);
             ResetCommand = new DelegateCommand(ResetOption, CanResetOption);
+            CloseCommand = new DelegateCommand(Exit);
         }
 
         private void EditOption(object parameter)
@@ -138,14 +168,14 @@ namespace WinWeelay
             }
             else if (window.ShowDialog() == true)
             {
-                _connection.OutputHandler.SetOption(SelectedOption.Name, viewModel.SetToNull ? "null" : viewModel.ValueToSave);
+                Connection.OutputHandler.SetOption(SelectedOption.Name, viewModel.SetToNull ? "null" : viewModel.ValueToSave);
                 Refresh();
             }
         }
 
         private void ResetOption(object parameter)
         {
-            _connection.OutputHandler.SetOption(SelectedOption.Name, SelectedOption.DefaultValueIsNull ? "null" : SelectedOption.DefaultValue);
+            Connection.OutputHandler.SetOption(SelectedOption.Name, SelectedOption.DefaultValueIsNull ? "null" : SelectedOption.DefaultValue);
             Refresh();
         }
 
@@ -159,13 +189,18 @@ namespace WinWeelay
             return IsModified;
         }
 
+        private void Exit(object parameter)
+        {
+            _window.Close();
+        }
+
         /// <summary>
         /// Command handler to execute the defined search.
         /// </summary>
         /// <param name="parameter">Command parameter.</param>
         public void Search(object parameter)
         {
-            _connection.OutputHandler.RequestOptions(SearchFilter);
+            Connection.OutputHandler.RequestOptions(SearchFilter);
         }
 
         private void Refresh()
@@ -175,22 +210,33 @@ namespace WinWeelay
         }
 
         /// <summary>
-        ///  Update the state of all commands which interact with the currently selected option.
+        /// Update the state of all commands which interact with the currently selected option.
         /// </summary>
         public void OnSelectedOptionChanged()
         {
             NotifyPropertyChanged(nameof(SelectedOption));
             NotifyPropertyChanged(nameof(IsOptionSelected));
             NotifyPropertyChanged(nameof(IsModified));
+            NotifyPropertyChanged(nameof(HasDescription));
             NotifyPropertyChanged(nameof(HasParentValue));
             NotifyPropertyChanged(nameof(HasPossibleValues));
+            NotifyPropertyChanged(nameof(SelectedOptionName));
             EditCommand.OnCanExecuteChanged();
             ResetCommand.OnCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Update the state of the option detail view.
+        /// </summary>
+        public void UpdateViewSettings()
+        {
+            Connection.Configuration.IsOptionsDetailViewVisible = IsOptionsDetailViewVisible;
+            NotifyPropertyChanged(nameof(IsOptionsDetailViewVisible));
+        }
+
         private void Connection_OptionsParsed(object sender, EventArgs e)
         {
-            _options = _connection.OptionParser.GetParsedOptions();
+            _options = Connection.OptionParser.GetParsedOptions();
 
             if (_isRefreshing)
             {

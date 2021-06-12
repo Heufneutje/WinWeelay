@@ -392,8 +392,10 @@ namespace WinWeelay
         {
             if (_optionsListWindow == null)
             {
-                OptionsListViewModel viewModel = new OptionsListViewModel(Connection);
-                _optionsListWindow = new OptionsListWindow(viewModel);
+                _optionsListWindow = new OptionsListWindow();
+                OptionsListViewModel viewModel = new OptionsListViewModel(Connection, _optionsListWindow);
+                _optionsListWindow.DataContext = viewModel;
+
                 _optionsListWindow.Closed += OptionsListWindow_Closed;
 
                 viewModel.Owner = _optionsListWindow;
@@ -405,6 +407,13 @@ namespace WinWeelay
         private void OptionsListWindow_Closed(object sender, EventArgs e)
         {
             _optionsListWindow = null;
+
+            if (RelayConfiguration.HasChanges())
+            {
+                ConfigurationHelper.SaveConfiguration(RelayConfiguration);
+                RelayConfiguration.ResetTrackingChanges();
+                RelayConfiguration.StartTrackingChanges();
+            }
         }
 
         private void ShowAboutWindow(object parameter)

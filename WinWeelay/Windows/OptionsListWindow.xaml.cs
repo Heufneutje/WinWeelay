@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MWindowLib;
@@ -13,11 +14,9 @@ namespace WinWeelay
         /// <summary>
         /// Create a new instance of the window.
         /// </summary>
-        /// <param name="viewModel">View model to handle the logic.</param>
-        public OptionsListWindow(OptionsListViewModel viewModel)
+        public OptionsListWindow()
         {
             InitializeComponent();
-            DataContext = viewModel;
         }
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -60,6 +59,11 @@ namespace WinWeelay
                 viewModel.IsChangingScroll = true;
                 viewModel.LoadOptions();
             }
+        }
+
+        private void ViewMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            ((OptionsListViewModel)DataContext).UpdateViewSettings();
         }
 
         /// <summary>

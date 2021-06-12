@@ -142,6 +142,11 @@ namespace WinWeelay.Configuration
         public bool IsFormattingToolbarVisible { get; set; }
 
         /// <summary>
+        /// Whether to show the option list's detail view.
+        /// </summary>
+        public bool IsOptionsDetailViewVisible { get; set; }
+
+        /// <summary>
         /// Cache color/formatting options.
         /// </summary>
         public bool UseOptionCache { get; set; }
@@ -191,6 +196,7 @@ namespace WinWeelay.Configuration
             IsToolbarVisible = true;
             IsStatusBarVisible = true;
             IsFormattingToolbarVisible = true;
+            IsOptionsDetailViewVisible = true;
             UseOptionCache = true;
             OptionCacheDays = 7;
             Language = CultureInfo.CurrentCulture;
