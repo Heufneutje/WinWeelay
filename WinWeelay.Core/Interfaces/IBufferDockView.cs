@@ -17,16 +17,5 @@ namespace WinWeelay.Core
         /// </summary>
         /// <returns>The active buffer.</returns>
         RelayBuffer GetSelectedBuffer();
-
-        /// <summary>
-        /// Select a given buffer as the active buffer.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        void SelectBuffer(RelayBuffer buffer);
-
-        /// <summary>
-        /// Deselect the active buffer.
-        /// </summary>
-        void ClearSelection();
     }
 }

@@ -115,6 +115,24 @@ namespace WinWeelay.Core
         /// </summary>
         public RelayBuffer Parent { get; set; }
 
+        private bool _isActiveBuffer;
+
+        /// <summary>
+        /// Whether this buffer is the currently active buffer in the UI.
+        /// </summary>
+        public bool IsActiveBuffer
+        {
+            get { return _isActiveBuffer; }
+            set
+            {
+                if (value != _isActiveBuffer)
+                {
+                    _isActiveBuffer = value;
+                    NotifyPropertyChanged(nameof(IsActiveBuffer));
+                }
+            }
+        }
+
         #region View Model
         /// <summary>
         /// The counter badge to display in the UI.
@@ -325,7 +343,10 @@ namespace WinWeelay.Core
         /// </summary>
         public void HandleSelected()
         {
-            Connection.ActiveBuffer = this;
+            if (Connection.ActiveBuffer != null && Connection.ActiveBuffer != this)
+                Connection.ActiveBuffer.IsActiveBuffer = false;
+
+            IsActiveBuffer = true;
             if (_hasNicklist)
                 Connection.NotifyNicklistUpdated();
 
@@ -351,7 +372,7 @@ namespace WinWeelay.Core
         /// </summary>
         public void HandleUnselected()
         {
-            Connection.ActiveBuffer = null;
+            IsActiveBuffer = false;
             Connection.NotifyNicklistUpdated();
         }
 

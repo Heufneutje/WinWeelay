@@ -25,29 +25,12 @@ namespace WinWeelay
         }
 
         /// <summary>
-        /// Deselect the active buffer.
-        /// </summary>
-        public void ClearSelection()
-        {
-            _bufferListBox.SelectedItem = null;
-        }
-
-        /// <summary>
         /// Get the buffer that is currently selected.
         /// </summary>
         /// <returns>The active buffer.</returns>
         public RelayBuffer GetSelectedBuffer()
         {
             return (RelayBuffer)_bufferListBox.SelectedItem;
-        }
-
-        /// <summary>
-        /// Select a given buffer as the active buffer.
-        /// </summary>
-        /// <param name="buffer">The buffer.</param>
-        public void SelectBuffer(RelayBuffer buffer)
-        {
-            _bufferListBox.SelectedItem = buffer;
         }
 
         private void BufferListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

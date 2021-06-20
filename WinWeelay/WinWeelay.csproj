@@ -143,7 +143,6 @@
     <Compile Include="RichTextHelper.cs" />
     <Compile Include="SpellingManager.cs" />
     <Compile Include="ThemeManager.cs" />
-    <Compile Include="Extensions\TreeViewExtension.cs" />
     <Compile Include="ViewModels\BufferInputViewModel.cs" />
     <Compile Include="ViewModels\OptionsListViewModel.cs" />
     <Compile Include="ViewModels\OptionViewModel.cs" />
