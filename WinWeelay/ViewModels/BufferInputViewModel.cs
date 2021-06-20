@@ -34,6 +34,24 @@ namespace WinWeelay
         public RelayConfiguration RelayConfiguration => Buffer?.Connection?.Configuration;
 
         /// <summary>
+        /// Representation of the current nickname on the server and the currently set usermodes.
+        /// </summary>
+        public string CurrentNickAndModes
+        {
+            get
+            {
+                if (Buffer != null && !string.IsNullOrEmpty(Buffer.IrcServer.CurrentNick))
+                    return $"{Buffer.IrcServer.CurrentNick} (+{Buffer.IrcServer.CurrentUserModeString})";
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Whether the nickname and modes should be shown in front of the input box.
+        /// </summary>
+        public bool CurrentNickAndModesVisible => CurrentNickAndModes != null;
+
+        /// <summary>
         /// Default constructor for designer.
         /// </summary>
         public BufferInputViewModel() { }

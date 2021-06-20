@@ -163,6 +163,15 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
+        /// Retrieve IRC server capabilites for all connected servers.
+        /// <param name="buffer">The buffer to retrieve the IRC server capabilites for.</param>
+        /// </summary>
+        public void RequestIrcServerCapabilites(RelayBuffer buffer)
+        {
+            Infolist("irc_server", $"/s {buffer.ShortName}", MessageIds.CustomGetIrcServerProperties);
+        }
+
+        /// <summary>
         /// Perform a handshake with the WeeChat host.        
         /// </summary>
         /// <param name="supportedHashAlgorithms">The names of the algorithms that are supported.</param>

@@ -64,6 +64,11 @@ namespace WinWeelay.Core
         /// </summary>
         public bool IsLoggedIn { get; internal set; }
 
+        /// <summary>
+        /// Handler for IRC server capabilities.
+        /// </summary>
+        public IrcServerRegistry IrcServerRegistry { get; set; }
+
         private string _weeChatVersion;
 
         /// <summary>
@@ -120,6 +125,7 @@ namespace WinWeelay.Core
         {
             Buffers = new ObservableCollection<RelayBuffer>();
             OptionParser = new OptionParser(Configuration);
+            IrcServerRegistry = new IrcServerRegistry();
         }
 
         /// <summary>
@@ -132,6 +138,7 @@ namespace WinWeelay.Core
             Buffers = new ObservableCollection<RelayBuffer>();
             Configuration = configuration;
             OptionParser = new OptionParser(Configuration);
+            IrcServerRegistry = new IrcServerRegistry();
 
             _hashFactory = new HashFactory();
             _bufferView = view;
@@ -181,6 +188,7 @@ namespace WinWeelay.Core
                 {
                     if (IsLoggedIn)
                         OutputHandler.Quit();
+                    IrcServerRegistry.Clear();
                     _transport.Disconnect();
                 }
                 catch (IOException) { } // Ignore this since we want to disconnect anyway.

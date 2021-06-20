@@ -69,6 +69,11 @@
     <Compile Include="Events\HighlightEventArgs.cs" />
     <Compile Include="Interfaces\IBufferWindow.cs" />
     <Compile Include="Interfaces\IOptionWindow.cs" />
+    <Compile Include="IRC\IrcMode.cs" />
+    <Compile Include="IRC\IrcModeType.cs" />
+    <Compile Include="IRC\IrcServer.cs" />
+    <Compile Include="IRC\IrcServerRegistry.cs" />
+    <Compile Include="IRC\IrcStatusMode.cs" />
     <Compile Include="MessageHistory.cs" />
     <Compile Include="MessageIds.cs" />
     <Compile Include="NickCompleter.cs" />

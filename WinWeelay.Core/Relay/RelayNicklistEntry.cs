@@ -58,7 +58,7 @@ namespace WinWeelay.Core
             Prefix = entry["prefix"].AsString();
             PrefixColor = entry["prefix_color"].AsString();
 
-            SortIndex = PrefixHelper.GetSortIndex(Prefix);
+            SortIndex = Buffer.IrcServer.GetStatusSortIndex(Prefix);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace WinWeelay.Core
             Prefix = entry.Prefix;
             PrefixColor = entry.PrefixColor;
 
-            SortIndex = PrefixHelper.GetSortIndex(Prefix);
+            SortIndex = Buffer.IrcServer.GetStatusSortIndex(Prefix);
         }
 
         /// <summary>

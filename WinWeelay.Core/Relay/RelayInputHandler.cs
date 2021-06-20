@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace WinWeelay.Core
@@ -59,6 +60,9 @@ namespace WinWeelay.Core
                     break;
                 case MessageIds.CustomGetOptions:
                     ParseOptions(message);
+                    break;
+                case MessageIds.CustomGetIrcServerProperties:
+                    ParseIrcServerCapabilities(message);
                     break;
                 case MessageIds.BufferOpened:
                     ParseBufferOpened(message);
@@ -147,6 +151,9 @@ namespace WinWeelay.Core
 
                     if (parentBuffer != null && !parentBuffer.Children.Contains(buffer))
                         parentBuffer.Children.Add(buffer);
+
+                    if (localVars["plugin"].AsString() == "irc" && localVars["type"].AsString() == "server")
+                        _connection.OutputHandler.RequestIrcServerCapabilites(buffer);
                 }
             }
 
@@ -162,6 +169,13 @@ namespace WinWeelay.Core
 
             _connection.SortBuffers();
             _connection.NotifyBuffersChanged();
+        }
+
+        private void ParseIrcServerCapabilities(RelayMessage message)
+        {
+            WeechatInfoList infoList = (WeechatInfoList)message.RelayObjects.First();
+            Dictionary<string, WeechatRelayObject> items = infoList[0];
+            _connection.IrcServerRegistry.RegisterIrcServer(items);
         }
 
         private void ParseHotlist(RelayMessage message)

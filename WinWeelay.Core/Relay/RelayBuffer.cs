@@ -133,6 +133,22 @@ namespace WinWeelay.Core
             }
         }
 
+        /// <summary>
+        /// IRC server properties for the current buffer or the server buffer that this buffer is linked to.
+        /// </summary>
+        public IrcServer IrcServer
+        {
+            get
+            {
+                if (Parent != null && Connection.IrcServerRegistry.HasIrcServer(Parent.Pointer))
+                    return Connection.IrcServerRegistry[Parent.Pointer];
+                else if (Connection.IrcServerRegistry.HasIrcServer(Pointer))
+                    return Connection.IrcServerRegistry[Pointer];
+                else
+                    return new IrcServer();
+            }
+        }
+
         #region View Model
         /// <summary>
         /// The counter badge to display in the UI.
