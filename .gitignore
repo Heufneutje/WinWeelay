@@ -160,3 +160,4 @@ $RECYCLE.BIN/
 .vs/
 docs/*
 !docs/Doxyfile
+/MigrationBackup/*

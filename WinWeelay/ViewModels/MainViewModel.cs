@@ -1,18 +1,15 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.ComponentModel;
 using System.Timers;
-using WinWeelay.Configuration;
-using WinWeelay.Core;
-using WinWeelay.Utils;
 using System.Windows;
-
-#if WINDOWS10_SDK
 using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
+using WinWeelay.Configuration;
+using WinWeelay.Core;
 using WinWeelay.Properties;
-#endif
+using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -217,7 +214,6 @@ namespace WinWeelay
         {
             args.Message.IsNotified = true;
 
-#if WINDOWS10_SDK
             if (RelayConfiguration.NotificationsEnabled && (RelayConfiguration.NotificationsEnabledWithBufferFocus || args.Buffer != Connection.ActiveBuffer || !_mainWindow.IsActive || _mainWindow.WindowState == WindowState.Minimized))
             {
                 try
@@ -247,7 +243,6 @@ namespace WinWeelay
                     // Ignore the error as it likely means notifications simply aren't available.
                 }
             }
-#endif
         }
 
         private void Connection_ConnectionLost(object sender, ConnectionLostEventArgs args)
