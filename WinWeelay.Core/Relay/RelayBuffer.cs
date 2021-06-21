@@ -212,6 +212,21 @@ namespace WinWeelay.Core
         /// Event fired when all messages in the buffer are cleared.
         /// </summary>
         public event EventHandler MessagesCleared;
+
+        /// <summary>
+        /// Event fired when the current nickname on the server changes.
+        /// </summary>
+        public event EventHandler CurrentNickChanged;
+
+        /// <summary>
+        /// Event fired when the user modes change.
+        /// </summary>
+        public event EventHandler UserModesChanged;
+
+        /// <summary>
+        /// Event fired when the channel modes change.
+        /// </summary>
+        public event EventHandler ChannelModesChanged;
         #endregion
 
         /// <summary>
@@ -515,6 +530,34 @@ namespace WinWeelay.Core
             Nicklist.Clear();
             _hasNicklist = false;
             RequestNicklist();
+        }
+
+        /// <summary>
+        /// Fire an event when the current nick changes.
+        /// </summary>
+        public void OnCurrentNickChanged()
+        {
+            CurrentNickChanged?.Invoke(this, EventArgs.Empty);
+            foreach (RelayBuffer childBuffer in Children)
+                childBuffer.OnCurrentNickChanged();
+        }
+
+        /// <summary>
+        /// Fire an event when the user modes for the user on this server change.
+        /// </summary>
+        public void OnUserModesChanged()
+        {
+            UserModesChanged?.Invoke(this, EventArgs.Empty);
+            foreach (RelayBuffer childBuffer in Children)
+                childBuffer.OnUserModesChanged();
+        }
+
+        /// <summary>
+        /// Fire an event when the channel modes on this channel change.
+        /// </summary>
+        public void OnChannelModesChanged()
+        {
+            ChannelModesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void RequestNicklist()

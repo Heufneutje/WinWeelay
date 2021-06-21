@@ -176,6 +176,10 @@ namespace WinWeelay.Core
             WeechatInfoList infoList = (WeechatInfoList)message.RelayObjects.First();
             Dictionary<string, WeechatRelayObject> items = infoList[0];
             _connection.IrcServerRegistry.RegisterIrcServer(items);
+
+            RelayBuffer relayBuffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == items["buffer"].AsPointer());
+            if (relayBuffer != null)
+                relayBuffer.OnUserModesChanged();
         }
 
         private void ParseHotlist(RelayMessage message)
@@ -251,6 +255,9 @@ namespace WinWeelay.Core
 
                     if (isSingleLineUpdate && bufferMessage.IsHighlighted && !bufferMessage.IsNotified)
                         _connection.OnHighlighted(bufferMessage, buffer);
+
+                    if (message.ID == MessageIds.BufferLineAdded)
+                        HandleIrcTags(bufferMessage.Tags, buffer);
                 }
             }
 
@@ -259,6 +266,41 @@ namespace WinWeelay.Core
 
             foreach (RelayBuffer updateBuffer in updatedBuffers)
                 updateBuffer.NotifyMessageCountUpdated();
+        }
+
+        private void HandleIrcTags(string[] tagsArray, RelayBuffer relayBuffer)
+        {
+            if (tagsArray.Contains("irc_nick"))
+            {
+                string oldNick = GetTagValue(tagsArray, "irc_nick1");
+                string newNick = GetTagValue(tagsArray, "irc_nick2");
+
+                IrcServer ircServer = relayBuffer.IrcServer;
+                if (ircServer.CurrentNick == oldNick)
+                {
+                    ircServer.CurrentNick = newNick;
+
+                    RelayBuffer serverBuffer = relayBuffer;
+                    if (serverBuffer.Parent != null)
+                        serverBuffer = serverBuffer.Parent;
+
+                    serverBuffer.OnCurrentNickChanged();
+                }
+            }
+            else if (tagsArray.Contains("irc_mode"))
+            {
+                if (relayBuffer.BufferType == "channel")
+                {
+
+                }
+                else
+                    _connection.OutputHandler.RequestIrcServerCapabilites(relayBuffer);
+            }
+        }
+
+        private string GetTagValue(string[] tagsArray, string tagName)
+        {
+            return tagsArray.FirstOrDefault(x => x.StartsWith(tagName))?.Substring(tagName.Length + 1);
         }
 
         private void ParseBufferOpened(RelayMessage message)

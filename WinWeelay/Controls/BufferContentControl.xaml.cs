@@ -43,9 +43,27 @@ namespace WinWeelay
             Buffer.MessageBatchAdded += Buffer_MessageBatchAdded;
             Buffer.MessagesCleared += Buffer_MessagesCleared;
             Buffer.TitleChanged += Buffer_TitleChanged;
+            Buffer.CurrentNickChanged += Buffer_CurrentNickChanged;
+            Buffer.UserModesChanged += Buffer_UserModesChanged;
+            Buffer.ChannelModesChanged += Buffer_ChannelModesChanged;
 
             InitBufferMessages();
             UpdateTitle();
+        }
+
+        private void Buffer_ChannelModesChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Buffer_UserModesChanged(object sender, EventArgs e)
+        {
+            _inputViewModel?.UpdateCurrentNickAndModes();
+        }
+
+        private void Buffer_CurrentNickChanged(object sender, EventArgs e)
+        {
+            _inputViewModel?.UpdateCurrentNickAndModes();
         }
 
         private void BufferControl_Loaded(object sender, RoutedEventArgs e)

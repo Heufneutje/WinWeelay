@@ -189,6 +189,14 @@ namespace WinWeelay
             _inputControl.UpdateFont(RelayConfiguration.FontSize, fontFamily, DefaultColor);
         }
 
+        /// <summary>
+        /// Update the current nickname and user modes in the UI.
+        /// </summary>
+        public void UpdateCurrentNickAndModes()
+        {
+            NotifyPropertyChanged(nameof(CurrentNickAndModes));
+        }
+
         private void SetDefaultColor()
         {
             if (App.CurrentTheme == Themes.Dark)

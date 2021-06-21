@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WinWeelay.Core
 {
@@ -61,7 +62,7 @@ namespace WinWeelay.Core
         {
             BufferPointer = items["buffer"].AsPointer();
             CurrentNick = items["nick"].AsString();
-            CurrentUserModeString = items["nick_modes"].AsString();
+            CurrentUserModeString = string.Concat(items["nick_modes"].AsString().OrderBy(c => c));
 
             ParseSupportTokens(items["isupport"].AsString());
             AvailableChannelModes = ParseSupportedModes(items["chanmodes"].AsString());
