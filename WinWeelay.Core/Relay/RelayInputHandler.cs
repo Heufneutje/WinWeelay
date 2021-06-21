@@ -61,6 +61,9 @@ namespace WinWeelay.Core
                 case MessageIds.CustomGetOptions:
                     ParseOptions(message);
                     break;
+                case MessageIds.CustomGetIrcChannelProperties:
+                    ParseIrcChannelProperties(message);
+                    break;
                 case MessageIds.CustomGetIrcServerProperties:
                     ParseIrcServerCapabilities(message);
                     break;
@@ -165,7 +168,10 @@ namespace WinWeelay.Core
             }
 
             foreach (RelayBuffer addedBuffer in newBuffers)
+            {
                 _connection.Buffers.Add(addedBuffer);
+                _connection.OutputHandler.RequestChannelDetails(addedBuffer);
+            }
 
             _connection.SortBuffers();
             _connection.NotifyBuffersChanged();
@@ -180,6 +186,16 @@ namespace WinWeelay.Core
             RelayBuffer relayBuffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == items["buffer"].AsPointer());
             if (relayBuffer != null)
                 relayBuffer.OnUserModesChanged();
+        }
+
+        private void ParseIrcChannelProperties(RelayMessage message)
+        {
+            WeechatInfoList infoList = (WeechatInfoList)message.RelayObjects.First();
+            Dictionary<string, WeechatRelayObject> items = infoList[0];
+
+            RelayBuffer relayBuffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == items["buffer"].AsPointer());
+            if (relayBuffer != null)
+                relayBuffer.IrcChannelModes = items["modes"].AsString();
         }
 
         private void ParseHotlist(RelayMessage message)
@@ -290,9 +306,7 @@ namespace WinWeelay.Core
             else if (tagsArray.Contains("irc_mode"))
             {
                 if (relayBuffer.BufferType == "channel")
-                {
-
-                }
+                    _connection.OutputHandler.RequestChannelDetails(relayBuffer);
                 else
                     _connection.OutputHandler.RequestIrcServerCapabilites(relayBuffer);
             }

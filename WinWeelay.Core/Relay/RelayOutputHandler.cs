@@ -163,12 +163,23 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
-        /// Retrieve IRC server capabilites for all connected servers.
+        /// Retrieve IRC server capabilites for a connected server.
         /// <param name="buffer">The buffer to retrieve the IRC server capabilites for.</param>
         /// </summary>
         public void RequestIrcServerCapabilites(RelayBuffer buffer)
         {
-            Infolist("irc_server", $"/s {buffer.ShortName}", MessageIds.CustomGetIrcServerProperties);
+            if (buffer.BufferType == "server")
+                Infolist("irc_server", $"/s {buffer.ShortName}", MessageIds.CustomGetIrcServerProperties);
+        }
+
+        /// <summary>
+        /// Retrieve IRC channel details for a given channel.
+        /// </summary>
+        /// <param name="buffer">The buffer to retrieve the IRC channel details for.</param>
+        public void RequestChannelDetails(RelayBuffer buffer)
+        {
+            if (buffer.BufferType == "channel")
+                Infolist("irc_channel", $"/s {buffer.Parent.ShortName},{buffer.ShortName}", MessageIds.CustomGetIrcChannelProperties);
         }
 
         /// <summary>

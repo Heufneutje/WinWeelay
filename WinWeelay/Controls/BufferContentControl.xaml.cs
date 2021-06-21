@@ -45,15 +45,9 @@ namespace WinWeelay
             Buffer.TitleChanged += Buffer_TitleChanged;
             Buffer.CurrentNickChanged += Buffer_CurrentNickChanged;
             Buffer.UserModesChanged += Buffer_UserModesChanged;
-            Buffer.ChannelModesChanged += Buffer_ChannelModesChanged;
 
             InitBufferMessages();
             UpdateTitle();
-        }
-
-        private void Buffer_ChannelModesChanged(object sender, EventArgs e)
-        {
-            
         }
 
         private void Buffer_UserModesChanged(object sender, EventArgs e)
@@ -180,7 +174,12 @@ namespace WinWeelay
         public void UpdateTitle()
         {
             _titleDocument.Blocks.Clear();
-            _titleDocument.Blocks.Add(_formattingParser.FormatString(Buffer.Title, Buffer.Connection.Configuration.IsMessageFormattingEnabled));
+
+            string title = Buffer.Title;
+            if (!string.IsNullOrEmpty(Buffer.IrcChannelModes))
+                title = $"\u001a\u0001({Buffer.IrcChannelModes})\u001c {title}";
+
+            _titleDocument.Blocks.Add(_formattingParser.FormatString(title, Buffer.Connection.Configuration.IsMessageFormattingEnabled));
         }
 
         private void CheckScrolledToBottom()

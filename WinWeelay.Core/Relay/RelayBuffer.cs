@@ -100,6 +100,21 @@ namespace WinWeelay.Core
             }
         }
 
+        private string _ircChannelModes;
+
+        /// <summary>
+        /// The channel modes if this buffer is an IRC channel.
+        /// </summary>
+        public string IrcChannelModes
+        {
+            get => _ircChannelModes;
+            set
+            {
+                _ircChannelModes = value;
+                TitleChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         /// <summary>
         /// The loaded list of nicknames in the buffer.
         /// </summary>
@@ -222,11 +237,6 @@ namespace WinWeelay.Core
         /// Event fired when the user modes change.
         /// </summary>
         public event EventHandler UserModesChanged;
-
-        /// <summary>
-        /// Event fired when the channel modes change.
-        /// </summary>
-        public event EventHandler ChannelModesChanged;
         #endregion
 
         /// <summary>
@@ -550,14 +560,6 @@ namespace WinWeelay.Core
             UserModesChanged?.Invoke(this, EventArgs.Empty);
             foreach (RelayBuffer childBuffer in Children)
                 childBuffer.OnUserModesChanged();
-        }
-
-        /// <summary>
-        /// Fire an event when the channel modes on this channel change.
-        /// </summary>
-        public void OnChannelModesChanged()
-        {
-            ChannelModesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void RequestNicklist()
