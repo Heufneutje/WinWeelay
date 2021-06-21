@@ -70,9 +70,9 @@ namespace WinWeelay
         public void FocusEditor()
         {
             if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
-                _editorRichTextBox.Focus();
+                _editorRichTextBox?.Focus();
             else
-                _editorTextBox.Focus();
+                _editorTextBox?.Focus();
         }
 
         /// <summary>
