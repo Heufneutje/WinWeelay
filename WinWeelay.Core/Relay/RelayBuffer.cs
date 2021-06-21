@@ -100,6 +100,21 @@ namespace WinWeelay.Core
             }
         }
 
+        private string _ircChannelModes;
+
+        /// <summary>
+        /// The channel modes if this buffer is an IRC channel.
+        /// </summary>
+        public string IrcChannelModes
+        {
+            get => _ircChannelModes;
+            set
+            {
+                _ircChannelModes = value;
+                TitleChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
         /// <summary>
         /// The loaded list of nicknames in the buffer.
         /// </summary>
@@ -130,6 +145,22 @@ namespace WinWeelay.Core
                     _isActiveBuffer = value;
                     NotifyPropertyChanged(nameof(IsActiveBuffer));
                 }
+            }
+        }
+
+        /// <summary>
+        /// IRC server properties for the current buffer or the server buffer that this buffer is linked to.
+        /// </summary>
+        public IrcServer IrcServer
+        {
+            get
+            {
+                if (Parent != null && Connection.IrcServerRegistry.HasIrcServer(Parent.Pointer))
+                    return Connection.IrcServerRegistry[Parent.Pointer];
+                else if (Connection.IrcServerRegistry.HasIrcServer(Pointer))
+                    return Connection.IrcServerRegistry[Pointer];
+                else
+                    return new IrcServer();
             }
         }
 
@@ -196,6 +227,16 @@ namespace WinWeelay.Core
         /// Event fired when all messages in the buffer are cleared.
         /// </summary>
         public event EventHandler MessagesCleared;
+
+        /// <summary>
+        /// Event fired when the current nickname on the server changes.
+        /// </summary>
+        public event EventHandler CurrentNickChanged;
+
+        /// <summary>
+        /// Event fired when the user modes change.
+        /// </summary>
+        public event EventHandler UserModesChanged;
         #endregion
 
         /// <summary>
@@ -499,6 +540,26 @@ namespace WinWeelay.Core
             Nicklist.Clear();
             _hasNicklist = false;
             RequestNicklist();
+        }
+
+        /// <summary>
+        /// Fire an event when the current nick changes.
+        /// </summary>
+        public void OnCurrentNickChanged()
+        {
+            CurrentNickChanged?.Invoke(this, EventArgs.Empty);
+            foreach (RelayBuffer childBuffer in Children)
+                childBuffer.OnCurrentNickChanged();
+        }
+
+        /// <summary>
+        /// Fire an event when the user modes for the user on this server change.
+        /// </summary>
+        public void OnUserModesChanged()
+        {
+            UserModesChanged?.Invoke(this, EventArgs.Empty);
+            foreach (RelayBuffer childBuffer in Children)
+                childBuffer.OnUserModesChanged();
         }
 
         private void RequestNicklist()

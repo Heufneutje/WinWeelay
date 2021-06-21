@@ -46,6 +46,16 @@
         public const string CustomGetOptions = "getoptions";
 
         /// <summary>
+        /// Custom identifier used to retrieve IRC server capabilites.
+        /// </summary>
+        public const string CustomGetIrcServerProperties = "getircserverprops";
+
+        /// <summary>
+        /// Custom identifier used to retrieve IRC channel details.
+        /// </summary>
+        public const string CustomGetIrcChannelProperties = "getircchanprops";
+
+        /// <summary>
         /// Custom identifier for performing a handshake.
         /// </summary>
         public const string CustomHandshake = "handshake";
