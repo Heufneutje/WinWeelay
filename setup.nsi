@@ -4,10 +4,11 @@
 !define APP_NAME "WinWeelay"
 !define COMP_NAME "Stefan 'Heufneutje' Frijters"
 !define WEB_SITE "https://github.com/Heufneutje/WinWeelay"
-!define VERSION "1.12.0.0"
+!define VERSION "2.0.0.0"
 !define DESCRIPTION "WinWeelay"
 !define LICENSE_TXT "LICENSE.txt"
-!define INSTALLER_NAME "Release\WinWeelaySetup.exe"
+!define FILESDIR "Release\net5.0-windows10.0.17763.0\"
+!define INSTALLER_NAME "${FILESDIR}\WinWeelaySetup.exe"
 !define MAIN_APP_EXE "WinWeelay.exe"
 !define INSTALL_TYPE "SetShellVarContext current"
 !define REG_ROOT "HKCU"
@@ -321,11 +322,11 @@ Section -MainProgram
 ${INSTALL_TYPE}
 SetOverwrite ifnewer
 SetOutPath "$INSTDIR"
-File "Release\*.dll"
-File "Release\*.pdb"
-File "Release\*.txt"
-File "Release\WinWeelay.exe"
-File "Release\WinWeelay.exe.config"
+File "${FILESDIR}\*.dll"
+File "${FILESDIR}\*.pdb"
+File "${FILESDIR}\*.txt"
+File "${FILESDIR}\WinWeelay.exe"
+File "${FILESDIR}\WinWeelay.runtimeconfig.json"
 SectionEnd
 
 ######################################################################
@@ -387,7 +388,7 @@ Delete "$INSTDIR\*.dll"
 Delete "$INSTDIR\*.pdb"
 Delete "$INSTDIR\*.txt"
 Delete "$INSTDIR\WinWeelay.exe"
-Delete "$INSTDIR\WinWeelay.exe.config"
+Delete "$INSTDIR\WinWeelay.runtimeconfig.json"
 Delete "$INSTDIR\uninstall.exe"
 !ifdef WEB_SITE
 Delete "$INSTDIR\${APP_NAME} website.url"
