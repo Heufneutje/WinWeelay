@@ -36,7 +36,7 @@ namespace WinWeelay
         /// <returns>IValueConverter implementation.</returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is FontWeights))
+            if (!(value is FontWeight))
                 return false;
 
             return ((FontWeight)value) == FontWeights.Bold;
