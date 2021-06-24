@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows;
-using Windows.Data.Xml.Dom;
-using Windows.UI.Notifications;
+using Microsoft.Toolkit.Uwp.Notifications;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
 using WinWeelay.Properties;
@@ -218,25 +217,12 @@ namespace WinWeelay
             {
                 try
                 {
-                    XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastImageAndText02);
-                    XmlNodeList stringElements = toastXml.GetElementsByTagName("text");
-                    stringElements[0].AppendChild(toastXml.CreateTextNode(args.Buffer.FullName));
-
                     string prefix = _formattingParser.GetUnformattedString(args.Message.Prefix);
                     if (prefix != "*")
                         prefix = $"<{prefix}>";
 
-                    stringElements[1].AppendChild(toastXml.CreateTextNode($"{prefix} {_formattingParser.GetUnformattedString(args.Message.MessageBody)}"));
-
-                    string tempPath = Path.Combine(Path.GetTempPath(), "weechat.png");
-                    if (!File.Exists(tempPath))
-                        Resources.weechat.Save(tempPath);
-
-                    XmlNodeList imageElements = toastXml.GetElementsByTagName("image");
-                    imageElements[0].Attributes.GetNamedItem("src").NodeValue = tempPath;
-
-                    ToastNotification toast = new ToastNotification(toastXml);
-                    ToastNotificationManager.CreateToastNotifier("WinWeelay").Show(toast);
+                    new ToastContentBuilder()
+                        .AddText(args.Buffer.FullName).AddText($"{prefix} {_formattingParser.GetUnformattedString(args.Message.MessageBody)}").Show();
                 }
                 catch (Exception)
                 {

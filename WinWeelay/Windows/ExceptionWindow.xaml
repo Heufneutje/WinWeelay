@@ -6,7 +6,7 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
         mc:Ignorable="d"
-        Title="Unhandled Error" Height="600" Width="700" ResizeMode="NoResize" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico" WindowStartupLocation="CenterOwner">
+        Title="Unhandled Error" Height="600" Width="700" ResizeMode="NoResize" Icon="/Resources/weechat_qYQ_icon.ico" WindowStartupLocation="CenterOwner">
     <Window.DataContext>
         <sys:Exception />
     </Window.DataContext>

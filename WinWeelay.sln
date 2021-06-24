@@ -1,27 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29009.5
+VisualStudioVersion = 16.0.31410.357
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinWeelay", "WinWeelay\WinWeelay.csproj", "{685F087D-8359-4B19-BCB7-0B35B5AD1572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinWeelay.Utils", "WinWeelay.Utils\WinWeelay.Utils.csproj", "{7F3B34CE-1BB6-4F94-8411-9C55B1AA23C1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6E84F7E2-AF68-4980-959F-DCDA76C773D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinWeelay.Configuration", "WinWeelay.Configuration\WinWeelay.Configuration.csproj", "{3B0E7C07-D34F-4C03-B1C1-ED56F70AA887}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinWeelay.Core", "WinWeelay.Core\WinWeelay.Core.csproj", "{44514806-F9E6-4552-8E44-CFCB225286F6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinWeelay.CustomControls", "WinWeelay.CustomControls\WinWeelay.CustomControls.csproj", "{157B9C16-4C26-4293-9FF1-E6A85A51163F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinWeelay", "WinWeelay\WinWeelay.csproj", "{EA9BA62D-0776-4CBC-9E76-F639BA2218A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA7F52DB-B6CB-4E73-A206-FCD8A201BA0A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 		setup.nsi = setup.nsi
-		SharedAssemblyInfo.cs = SharedAssemblyInfo.cs
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinWeelay.CustomControls", "WinWeelay.CustomControls\WinWeelay.CustomControls.csproj", "{A0525056-7804-4BAD-9CDC-C7C2E078FC14}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinWeelay.Core", "WinWeelay.Core\WinWeelay.Core.csproj", "{B3A2C222-510B-41B8-95B7-DD28E0DFE3B2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinWeelay.Utils", "WinWeelay.Utils\WinWeelay.Utils.csproj", "{F4928B72-C1A5-4E2E-9AE7-9FCDAAFD6B49}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinWeelay.Configuration", "WinWeelay.Configuration\WinWeelay.Configuration.csproj", "{D4DD4DC1-CA91-4B06-B229-3E9BD1C20784}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,31 +28,31 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{685F087D-8359-4B19-BCB7-0B35B5AD1572}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{685F087D-8359-4B19-BCB7-0B35B5AD1572}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{685F087D-8359-4B19-BCB7-0B35B5AD1572}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{685F087D-8359-4B19-BCB7-0B35B5AD1572}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A0525056-7804-4BAD-9CDC-C7C2E078FC14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A0525056-7804-4BAD-9CDC-C7C2E078FC14}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A0525056-7804-4BAD-9CDC-C7C2E078FC14}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A0525056-7804-4BAD-9CDC-C7C2E078FC14}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B3A2C222-510B-41B8-95B7-DD28E0DFE3B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B3A2C222-510B-41B8-95B7-DD28E0DFE3B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B3A2C222-510B-41B8-95B7-DD28E0DFE3B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B3A2C222-510B-41B8-95B7-DD28E0DFE3B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4928B72-C1A5-4E2E-9AE7-9FCDAAFD6B49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4928B72-C1A5-4E2E-9AE7-9FCDAAFD6B49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4928B72-C1A5-4E2E-9AE7-9FCDAAFD6B49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4928B72-C1A5-4E2E-9AE7-9FCDAAFD6B49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4DD4DC1-CA91-4B06-B229-3E9BD1C20784}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4DD4DC1-CA91-4B06-B229-3E9BD1C20784}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4DD4DC1-CA91-4B06-B229-3E9BD1C20784}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4DD4DC1-CA91-4B06-B229-3E9BD1C20784}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F3B34CE-1BB6-4F94-8411-9C55B1AA23C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F3B34CE-1BB6-4F94-8411-9C55B1AA23C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F3B34CE-1BB6-4F94-8411-9C55B1AA23C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F3B34CE-1BB6-4F94-8411-9C55B1AA23C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B0E7C07-D34F-4C03-B1C1-ED56F70AA887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B0E7C07-D34F-4C03-B1C1-ED56F70AA887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B0E7C07-D34F-4C03-B1C1-ED56F70AA887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B0E7C07-D34F-4C03-B1C1-ED56F70AA887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44514806-F9E6-4552-8E44-CFCB225286F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44514806-F9E6-4552-8E44-CFCB225286F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44514806-F9E6-4552-8E44-CFCB225286F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44514806-F9E6-4552-8E44-CFCB225286F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{157B9C16-4C26-4293-9FF1-E6A85A51163F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{157B9C16-4C26-4293-9FF1-E6A85A51163F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{157B9C16-4C26-4293-9FF1-E6A85A51163F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{157B9C16-4C26-4293-9FF1-E6A85A51163F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9BA62D-0776-4CBC-9E76-F639BA2218A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9BA62D-0776-4CBC-9E76-F639BA2218A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9BA62D-0776-4CBC-9E76-F639BA2218A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9BA62D-0776-4CBC-9E76-F639BA2218A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {7B1B568D-9C4E-4B94-A5F4-F3B61EE54B5D}
+		SolutionGuid = {7928FEDE-3A67-4F48-9753-D9752B41C744}
 	EndGlobalSection
 EndGlobal

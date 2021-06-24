@@ -10,22 +10,22 @@
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
     xmlns:customcontrols="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
     mc:Ignorable="d"
-        Title="{Binding Connection.Description}" Height="{Binding Connection.Configuration.WindowHeight, Mode=TwoWay}" Width="{Binding Connection.Configuration.WindowWidth, Mode=TwoWay}" Closing="Window_Closing" Loaded="Window_Loaded" StateChanged="Window_StateChanged" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
+        Title="{Binding Connection.Description}" Height="{Binding Connection.Configuration.WindowHeight, Mode=TwoWay}" Width="{Binding Connection.Configuration.WindowWidth, Mode=TwoWay}" Closing="Window_Closing" Loaded="Window_Loaded" StateChanged="Window_StateChanged" Icon="/Resources/weechat_qYQ_icon.ico">
     <Window.Resources>
-        <BitmapImage x:Key="connectImage" UriSource="/WinWeelay;component/Resources/connect.png" />
-        <BitmapImage x:Key="disconnectImage" UriSource="/WinWeelay;component/Resources/disconnect.png" />
-        <BitmapImage x:Key="exitImage" UriSource="/WinWeelay;component/Resources/Application-cancel.png" />
-        <BitmapImage x:Key="loadMoreMessagesImage" UriSource="/WinWeelay;component/Resources/comments_add.png" />
-        <BitmapImage x:Key="hideBufferTabImage" UriSource="/WinWeelay;component/Resources/tab_delete.png" />
-        <BitmapImage x:Key="closeBufferImage" UriSource="/WinWeelay;component/Resources/table_delete.png" />
-        <BitmapImage x:Key="settingsImage" UriSource="/WinWeelay;component/Resources/cog.png" />
-        <BitmapImage x:Key="aboutImage" UriSource="/WinWeelay;component/Resources/Info.png" />
-        <BitmapImage x:Key="sourceCodeImage" UriSource="/WinWeelay;component/Resources/page_code.png" />
-        <BitmapImage x:Key="issueTrackerImage" UriSource="/WinWeelay;component/Resources/bug.png" />
-        <BitmapImage x:Key="checkForUpdatesImage" UriSource="/WinWeelay;component/Resources/Web-Download.png"/>
-        <BitmapImage x:Key="clearBufferImage" UriSource="/WinWeelay;component/Resources/table_lightning.png"/>
-        <BitmapImage x:Key="reinitBufferImage" UriSource="/WinWeelay;component/Resources/table_refresh.png"/>
-        <BitmapImage x:Key="weechatOptionsImage" UriSource="/WinWeelay;component/Resources/table_gear.png"/>
+        <BitmapImage x:Key="connectImage" UriSource="/Resources/connect.png" />
+        <BitmapImage x:Key="disconnectImage" UriSource="/Resources/disconnect.png" />
+        <BitmapImage x:Key="exitImage" UriSource="/Resources/Application_cancel.png" />
+        <BitmapImage x:Key="loadMoreMessagesImage" UriSource="/Resources/comments_add.png" />
+        <BitmapImage x:Key="hideBufferTabImage" UriSource="/Resources/tab_delete.png" />
+        <BitmapImage x:Key="closeBufferImage" UriSource="/Resources/table_delete.png" />
+        <BitmapImage x:Key="settingsImage" UriSource="/Resources/cog.png" />
+        <BitmapImage x:Key="aboutImage" UriSource="/Resources/Info.png" />
+        <BitmapImage x:Key="sourceCodeImage" UriSource="/Resources/page_code.png" />
+        <BitmapImage x:Key="issueTrackerImage" UriSource="/Resources/bug.png" />
+        <BitmapImage x:Key="checkForUpdatesImage" UriSource="/Resources/Web_Download.png"/>
+        <BitmapImage x:Key="clearBufferImage" UriSource="/Resources/table_lightning.png"/>
+        <BitmapImage x:Key="reinitBufferImage" UriSource="/Resources/table_refresh.png"/>
+        <BitmapImage x:Key="weechatOptionsImage" UriSource="/Resources/table_gear.png"/>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
     <Grid>

@@ -7,7 +7,7 @@
         xmlns:customcontrols="clr-namespace:WinWeelay.CustomControls;assembly=WinWeelay.CustomControls"
         xmlns:MWindow="clr-namespace:MWindowLib;assembly=MWindowLib"
         mc:Ignorable="d"
-        Title="{Binding Option.Name, StringFormat=Edit \&quot;\{0\}\&quot;}" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico" Height="135.655" Width="388.358" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+        Title="{Binding Option.Name, StringFormat=Edit \&quot;\{0\}\&quot;}" Icon="/Resources/weechat_qYQ_icon.ico" Height="135.655" Width="388.358" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <winweelay:IntegerToStringConverter x:Key="IntegerToStringConverter" />
         <winweelay:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />

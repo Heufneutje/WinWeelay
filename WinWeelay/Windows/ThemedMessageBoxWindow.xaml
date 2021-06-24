@@ -6,7 +6,7 @@
         WindowStyle="SingleBorderWindow"
         ShowInTaskbar="False" Topmost="True"
         ResizeMode="NoResize" SizeToContent="WidthAndHeight"
-        MinHeight="155" MaxWidth="470" MinWidth="154" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
+        MinHeight="155" MaxWidth="470" MinWidth="154" Icon="/Resources/weechat_qYQ_icon.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />

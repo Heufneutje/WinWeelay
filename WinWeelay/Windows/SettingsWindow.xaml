@@ -9,7 +9,7 @@
     xmlns:winweelay="clr-namespace:WinWeelay"
     x:Class="WinWeelay.SettingsWindow"
         mc:Ignorable="d"
-        Title="Settings" Height="396.329" Width="544.994" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/WinWeelay;component/Resources/weechat_qYQ_icon.ico">
+        Title="Settings" Height="396.329" Width="544.994" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Icon="/Resources/weechat_qYQ_icon.ico">
     <Window.DataContext>
         <winweelay:SettingsViewModel />
     </Window.DataContext>
