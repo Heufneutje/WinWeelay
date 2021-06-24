@@ -99,11 +99,17 @@ namespace WinWeelay.Core
                 if (tokenPair.Contains("="))
                 {
                     string[] splitPair = tokenPair.Split('=');
-                    SupportTokens.Add(splitPair[0], splitPair[1]);
+                    AddSupportToken(splitPair[0], splitPair[1]);
                 }
                 else
-                    SupportTokens.Add(tokenPair, null);
+                    AddSupportToken(tokenPair, null);
             }
+        }
+
+        private void AddSupportToken(string key, string value)
+        {
+            if (!SupportTokens.ContainsKey(key))
+                SupportTokens.Add(key, value);
         }
 
         private void ParseStatusModes(string modeString, string prefixString)
