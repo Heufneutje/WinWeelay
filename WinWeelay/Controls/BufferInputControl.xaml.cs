@@ -69,10 +69,17 @@ namespace WinWeelay
         /// </summary>
         public void FocusEditor()
         {
-            if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
-                _editorRichTextBox?.Focus();
-            else
-                _editorTextBox?.Focus();
+            try
+            {
+                if (ViewModel.RelayConfiguration.IsFormattingToolbarVisible)
+                    _editorRichTextBox?.Focus();
+                else
+                    _editorTextBox?.Focus();
+            }
+            catch
+            {
+                // This sometimes throws a null reference from some internal component. We can ignore it.
+            }
         }
 
         /// <summary>
