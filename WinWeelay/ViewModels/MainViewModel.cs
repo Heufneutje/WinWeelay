@@ -221,8 +221,9 @@ namespace WinWeelay
                     if (prefix != "*")
                         prefix = $"<{prefix}>";
 
-                    new ToastContentBuilder()
-                        .AddText(args.Buffer.FullName).AddText($"{prefix} {_formattingParser.GetUnformattedString(args.Message.MessageBody)}").Show();
+                    string header = args.Buffer.FullName;
+                    string message = $"{prefix} {_formattingParser.GetUnformattedString(args.Message.MessageBody)}";
+                    new ToastContentBuilder().AddText(header).AddText(message).Show();
                 }
                 catch (Exception)
                 {
