@@ -326,7 +326,7 @@ namespace WinWeelay
                     inline = new Italic(inline);
                 if (_attributes.Contains(AttributeType.Underline))
                     inline = new Underline(inline);
-                
+
                 Color color = GetColor(_foreColor);
                 if (color != default)
                     inline.Foreground = new SolidColorBrush() { Color = color };
@@ -350,7 +350,8 @@ namespace WinWeelay
 
         private void Link_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            ProcessStartInfo psi = new ProcessStartInfo(e.Uri.ToString()) { UseShellExecute = true };
+            Process.Start(psi);
             e.Handled = true;
         }
 
