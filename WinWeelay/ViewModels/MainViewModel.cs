@@ -619,7 +619,7 @@ namespace WinWeelay
                     }
                     catch (Exception ex)
                     {
-                        ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error, _mainWindow);
+                        ThemedMessageBoxWindow.Show($"An error occurred while running the update installer:{Environment.NewLine}{ex.Message}{Environment.NewLine}You can attempt to run the installer located in {updateHelper.InstallerFilePath} manually.", "Error", MessageBoxButton.OK, MessageBoxImage.Error, _mainWindow);
                         updateHelper.Dispose();
                         FinishUpdateCheck();
                     }
