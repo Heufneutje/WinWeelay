@@ -611,6 +611,8 @@ namespace WinWeelay
                     {
                         ProcessStartInfo psi = new ProcessStartInfo(updateHelper.InstallerFilePath);
                         psi.Arguments = $"/S \"/UPDATELOCATION={updateHelper.GetApplicationDirectory()}\"";
+                        psi.UseShellExecute = true;
+                        psi.Verb = "runas";
                         updateHelper.Dispose();
                         Process.Start(psi);
                         Application.Current.Shutdown();
