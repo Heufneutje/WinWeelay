@@ -65,7 +65,7 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding CurrentNickAndModes}" Padding="5,3,5,0" Visibility="{Binding Path=CurrentNickAndModesVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <Label Content="{Binding CurrentNickAndModes}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5,0,5,0" Visibility="{Binding Path=CurrentNickAndModesVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <RichTextBox x:Name="_editorRichTextBox" Grid.Column="1" SelectionChanged="_editorRichTextBox_SelectionChanged" PreviewKeyDown="_editorRichTextBox_PreviewKeyDown" KeyDown="_editorRichTextBox_KeyDown" TextChanged="_editorRichTextBox_TextChanged" FontSize="{Binding RelayConfiguration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding RelayConfiguration.FontFamily, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=RelayConfiguration.IsFormattingToolbarVisible, Converter={StaticResource BoolToVisibilityConverter}}" AcceptsReturn="False"/>
             <TextBox x:Name="_editorTextBox" Grid.Column="1" PreviewKeyDown="_editorTextBox_PreviewKeyDown" KeyDown="_editorTextBox_KeyDown" TextChanged="_editorRichTextBox_TextChanged" FontSize="{Binding RelayConfiguration.FontSize, UpdateSourceTrigger=PropertyChanged}" FontFamily="{Binding RelayConfiguration.FontFamily, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=RelayConfiguration.IsFormattingToolbarVisible, Converter={StaticResource InverseBoolToVisibilityConverter}}" AcceptsReturn="False" TextWrapping="Wrap"/>
         </Grid>
