@@ -452,12 +452,12 @@ namespace WinWeelay
 
         private void OpenSourceCode(object parameter)
         {
-            Process.Start("https://github.com/Heufneutje/WinWeelay");
+            ProcessUtils.StartProcess("https://github.com/Heufneutje/WinWeelay");
         }
 
         private void OpenIssueTracker(object parameter)
         {
-            Process.Start("https://github.com/Heufneutje/WinWeelay/issues");
+            ProcessUtils.StartProcess("https://github.com/Heufneutje/WinWeelay/issues");
         }
 
         private void HandleCheckForUpdate(object parameter)
@@ -609,12 +609,8 @@ namespace WinWeelay
                 {
                     try
                     {
-                        ProcessStartInfo psi = new ProcessStartInfo(updateHelper.InstallerFilePath);
-                        psi.Arguments = $"/S \"/UPDATELOCATION={updateHelper.GetApplicationDirectory()}\"";
-                        psi.UseShellExecute = true;
-                        psi.Verb = "runas";
+                        ProcessUtils.StartProcess(updateHelper.InstallerFilePath, $"/S \"/UPDATELOCATION={updateHelper.GetApplicationDirectory()}\"", true);
                         updateHelper.Dispose();
-                        Process.Start(psi);
                         Application.Current.Shutdown();
                     }
                     catch (Exception ex)

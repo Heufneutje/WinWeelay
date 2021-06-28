@@ -5,6 +5,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using MWindowLib;
 using WinWeelay.Configuration;
+using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -36,7 +37,7 @@ namespace WinWeelay
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            Process.Start(e.Uri.AbsoluteUri);
+            ProcessUtils.StartProcess(e.Uri.AbsoluteUri);
             e.Handled = true;
         }
     }

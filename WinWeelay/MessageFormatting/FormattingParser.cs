@@ -6,6 +6,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Navigation;
 using WinWeelay.Core;
+using WinWeelay.Utils;
 
 namespace WinWeelay
 {
@@ -350,8 +351,7 @@ namespace WinWeelay
 
         private void Link_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
-            ProcessStartInfo psi = new ProcessStartInfo(e.Uri.ToString()) { UseShellExecute = true };
-            Process.Start(psi);
+            ProcessUtils.StartProcess(e.Uri.ToString());
             e.Handled = true;
         }
 
