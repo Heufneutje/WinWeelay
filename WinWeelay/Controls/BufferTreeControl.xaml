@@ -18,7 +18,6 @@
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource MetroTreeViewItem}">
                     <Setter Property="IsExpanded" Value="True"/>
-                    <Setter Property="IsSelected" Value="{Binding IsActiveBuffer}" />
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.ItemTemplate>

@@ -98,7 +98,14 @@ namespace WinWeelay
                 _bufferControls.Remove(buffer);
 
             if (_bufferControl.GetSelectedBuffer() == buffer)
+            {
+                _bufferControl.ClearSelection();
                 buffer.HandleUnselected();
+            }
+
+            LayoutContent selectedContent = _dockingManager.Layout.Descendents().OfType<LayoutDocumentPane>().SingleOrDefault().SelectedContent;
+            if (selectedContent != null)
+                selectedContent.IsActive = true; // Fixes updating of the selected buffer.
 
             ((MainViewModel)DataContext).UpdateBufferCommands();
         }
@@ -109,6 +116,8 @@ namespace WinWeelay
             {
                 RelayBuffer buffer = ((BufferContentControl)_dockingManager.ActiveContent).Buffer;
                 buffer.HandleSelected();
+                if (_bufferControl.GetSelectedBuffer() != buffer)
+                    _bufferControl.SelectBuffer(buffer);
             }
         }
 

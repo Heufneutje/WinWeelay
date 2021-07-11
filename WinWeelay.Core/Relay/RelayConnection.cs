@@ -47,7 +47,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// The buffer that is currently active in the UI.
         /// </summary>
-        public RelayBuffer ActiveBuffer => Buffers.FirstOrDefault(x => x.IsActiveBuffer);
+        public RelayBuffer ActiveBuffer { get; set; }
 
         /// <summary>
         /// Parser to handle WeeChat options.

@@ -3,11 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WinWeelay">
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/MLib;component/Controls/TreeView.xaml" x:Name="TreeViewResources"/>
-                <ResourceDictionary Source="/MLib;component/Controls/ListBox.xaml" x:Name="ListBoxResources"/>
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <ResourceDictionary Source="/MLib;component/Controls/TreeView.xaml" x:Name="TreeViewResources"/>
     </Application.Resources>
 </Application>

@@ -130,23 +130,6 @@ namespace WinWeelay.Core
         /// </summary>
         public RelayBuffer Parent { get; set; }
 
-        private bool _isActiveBuffer;
-
-        /// <summary>
-        /// Whether this buffer is the currently active buffer in the UI.
-        /// </summary>
-        public bool IsActiveBuffer
-        {
-            get { return _isActiveBuffer; }
-            set
-            {
-                if (value != _isActiveBuffer)
-                {
-                    _isActiveBuffer = value;
-                    NotifyPropertyChanged(nameof(IsActiveBuffer));
-                }
-            }
-        }
 
         /// <summary>
         /// IRC server properties for the current buffer or the server buffer that this buffer is linked to.
@@ -384,10 +367,7 @@ namespace WinWeelay.Core
         /// </summary>
         public void HandleSelected()
         {
-            if (Connection.ActiveBuffer != null && Connection.ActiveBuffer != this)
-                Connection.ActiveBuffer.IsActiveBuffer = false;
-
-            IsActiveBuffer = true;
+            Connection.ActiveBuffer = this;
             if (_hasNicklist)
                 Connection.NotifyNicklistUpdated();
 
@@ -413,7 +393,7 @@ namespace WinWeelay.Core
         /// </summary>
         public void HandleUnselected()
         {
-            IsActiveBuffer = false;
+            Connection.ActiveBuffer = null;
             Connection.NotifyNicklistUpdated();
         }
 
