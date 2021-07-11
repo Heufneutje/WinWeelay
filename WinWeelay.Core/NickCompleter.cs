@@ -60,7 +60,7 @@ namespace WinWeelay.Core
                     message = completedNick;
                 else
                     message = message.ReplaceLastOccurrence(_lastNickCompletion ?? lastWord, completedNick).Replace("  ", " ");
-                
+
                 _lastNickCompletion = completedNick.Trim();
 
                 return message;

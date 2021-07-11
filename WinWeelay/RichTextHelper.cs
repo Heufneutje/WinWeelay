@@ -151,7 +151,6 @@ namespace WinWeelay
 
                             return text;
                         }
-
                         else
                             text = current + text;
                     }

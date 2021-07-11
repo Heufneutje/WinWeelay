@@ -36,14 +36,12 @@ namespace WinWeelay
             {
                 new Uri("/MWindowLib;component/Themes/DarkTheme.xaml", UriKind.RelativeOrAbsolute),
                 new Uri("/WinWeelay;component/ResourceDictionaries/DarkLightBrushs.xaml", UriKind.RelativeOrAbsolute)
-
             }, _themeInfos);
 
             _appearanceManager.AddThemeResources(Themes.Light, new List<Uri>
             {
                 new Uri("/MWindowLib;component/Themes/LightTheme.xaml", UriKind.RelativeOrAbsolute),
                 new Uri("/WinWeelay;component/ResourceDictionaries/DarkLightBrushs.xaml", UriKind.RelativeOrAbsolute)
-
             }, _themeInfos);
 
             UpdateTheme(relayConfiguration.Theme, relayConfiguration.AccentColor);

@@ -20,52 +20,52 @@
     </Window.Resources>
     <Grid x:Name="_grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="File">
                 <MenuItem Header="Close" Command="{Binding CloseCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource exitImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource exitImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Close" Description="Close to options list."/>
+                        <customcontrols:RichToolTip Title="Close" Description="Close to options list." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Header="Edit Option" Command="{Binding EditCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource editImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource editImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Edit Option" Description="Change the currently selected option's value."/>
+                        <customcontrols:RichToolTip Title="Edit Option" Description="Change the currently selected option's value." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Reset to Default Value" Command="{Binding ResetCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource resetImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource resetImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Reset to Default Value" Description="Reset the currently selected option to its default value."/>
+                        <customcontrols:RichToolTip Title="Reset to Default Value" Description="Reset the currently selected option to its default value." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Header="Detail view" IsCheckable="True" IsChecked="{Binding IsOptionsDetailViewVisible}" Click="ViewMenuItem_Click">
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Detail view" Description="Show or hide the detail view."/>
+                        <customcontrols:RichToolTip Title="Detail view" Description="Show or hide the detail view." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
         </Menu>
         <Grid Grid.Row="1" Margin="10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="10"/>
-                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="100" />
             </Grid.ColumnDefinitions>
             <TextBox x:Name="searchTextBox" Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0">
                 <TextBox.InputBindings>
@@ -76,32 +76,32 @@
         </Grid>
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <ListView x:Name="_optionsListView" Margin="10,0,10,10" ItemsSource="{Binding LoadedOptions, UpdateSourceTrigger=PropertyChanged}" customcontrols:ControlItemDoubleClick.ItemsDoubleClick="True" Grid.Column="0" SelectedItem="{Binding SelectedOption}" SelectionChanged="ListView_SelectionChanged">
                 <ListView.ContextMenu>
                     <ContextMenu>
                         <MenuItem Header="Edit Option" Command="{Binding EditCommand}">
                             <MenuItem.Icon>
-                                <customcontrols:AutoGreyableImage Source="{StaticResource editImage}"/>
+                                <customcontrols:AutoGreyableImage Source="{StaticResource editImage}" />
                             </MenuItem.Icon>
                             <MenuItem.ToolTip>
-                                <customcontrols:RichToolTip Title="Edit Option" Description="Change the currently selected option's value."/>
+                                <customcontrols:RichToolTip Title="Edit Option" Description="Change the currently selected option's value." />
                             </MenuItem.ToolTip>
                         </MenuItem>
                         <MenuItem Header="Reset to Default Value" Command="{Binding ResetCommand}">
                             <MenuItem.Icon>
-                                <customcontrols:AutoGreyableImage Source="{StaticResource resetImage}"/>
+                                <customcontrols:AutoGreyableImage Source="{StaticResource resetImage}" />
                             </MenuItem.Icon>
                             <MenuItem.ToolTip>
-                                <customcontrols:RichToolTip Title="Reset to Default Value" Description="Reset the currently selected option to its default value."/>
+                                <customcontrols:RichToolTip Title="Reset to Default Value" Description="Reset the currently selected option to its default value." />
                             </MenuItem.ToolTip>
                         </MenuItem>
                     </ContextMenu>
                 </ListView.ContextMenu>
                 <ListView.InputBindings>
-                    <MouseBinding Command="{Binding EditCommand}" MouseAction="LeftDoubleClick"/>
+                    <MouseBinding Command="{Binding EditCommand}" MouseAction="LeftDoubleClick" />
                 </ListView.InputBindings>
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -113,21 +113,21 @@
                         <GridViewColumn Header="Name">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}"/>
+                                    <TextBlock Text="{Binding Name}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Type">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding OptionType}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}"/>
+                                    <TextBlock Text="{Binding OptionType}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
                         <GridViewColumn Header="Value">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding DisplayValue}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}"/>
+                                    <TextBlock Text="{Binding DisplayValue}" FontWeight="{Binding Path=IsModified, Converter={StaticResource BoolToFontWeightConverter}}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
@@ -138,17 +138,17 @@
                 <GroupBox.Content>
                     <Grid Margin="10,0,10,10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <customcontrols:OptionView Title="Description" Description="{Binding SelectedOption.Description}" Grid.Row="0" Visibility="{Binding Path=HasDescription, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <customcontrols:OptionView Title="Current value" Description="{Binding SelectedOption.DescriptionBoxValue}" Grid.Row="1" Visibility="{Binding Path=IsOptionSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <customcontrols:OptionView Title="Default value" Description="{Binding SelectedOption.DefaultValue}" Grid.Row="2" Visibility="{Binding Path=IsModified, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <customcontrols:OptionView Title="Possible values" Description="{Binding SelectedOption.PossibleValuesString}" Grid.Row="3" Visibility="{Binding Path=HasPossibleValues, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <customcontrols:OptionView Title="Parent value" Description="{Binding SelectedOption.ParentValue}" Grid.Row="4" Visibility="{Binding Path=HasParentValue, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <customcontrols:OptionView Title="Description" Description="{Binding SelectedOption.Description}" Grid.Row="0" Visibility="{Binding Path=HasDescription, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <customcontrols:OptionView Title="Current value" Description="{Binding SelectedOption.DescriptionBoxValue}" Grid.Row="1" Visibility="{Binding Path=IsOptionSelected, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <customcontrols:OptionView Title="Default value" Description="{Binding SelectedOption.DefaultValue}" Grid.Row="2" Visibility="{Binding Path=IsModified, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <customcontrols:OptionView Title="Possible values" Description="{Binding SelectedOption.PossibleValuesString}" Grid.Row="3" Visibility="{Binding Path=HasPossibleValues, Converter={StaticResource BoolToVisibilityConverter}}" />
+                        <customcontrols:OptionView Title="Parent value" Description="{Binding SelectedOption.ParentValue}" Grid.Row="4" Visibility="{Binding Path=HasParentValue, Converter={StaticResource BoolToVisibilityConverter}}" />
                     </Grid>
                 </GroupBox.Content>
             </GroupBox>

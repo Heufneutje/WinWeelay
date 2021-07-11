@@ -17,7 +17,7 @@ namespace WinWeelay
         /// Set the current option to null when hitting OK on the dialog.
         /// </summary>
         public bool SetToNull { get; set; }
-        
+
         /// <summary>
         /// The current value of the editor input element.
         /// </summary>

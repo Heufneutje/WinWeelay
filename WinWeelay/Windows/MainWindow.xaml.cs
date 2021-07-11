@@ -6,10 +6,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using MWindowLib;
-using WinWeelay.Core;
 using AvalonDock;
 using AvalonDock.Layout;
+using MWindowLib;
+using WinWeelay.Core;
 
 namespace WinWeelay
 {

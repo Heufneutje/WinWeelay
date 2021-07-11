@@ -12,13 +12,13 @@
         <winweelay:InverseBoolConverter x:Key="InverseBoolConverter" />
     </Window.Resources>
     <Window.DataContext>
-        <winweelay:OptionViewModel/>
+        <winweelay:OptionViewModel />
     </Window.DataContext>
     <Grid>
         <Button x:Name="_okButton" Content="OK" Margin="0,0,90,10" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="74" Click="OkButton_Click" />
         <Button x:Name="_cancelButton" Content="Cancel" Margin="0,0,10,10" HorizontalAlignment="Right" Width="74" Height="25" VerticalAlignment="Bottom" Click="CancelButton_Click" />
-        <Label Content="Value" IsEnabled="{Binding Path=SetToNull, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" Text="{Binding EditValue}" IsEnabled="{Binding SetToNull, Converter={StaticResource InverseBoolConverter}}" VerticalAlignment="Top" Width="300"/>
-        <CheckBox x:Name="_setToNullCheckbox" Content="Set to null" HorizontalAlignment="Left" Margin="15,46,0,0" VerticalAlignment="Top" IsChecked="{Binding SetToNull}" Visibility="{Binding Path=Option.IsNullValueAllowed, Converter={StaticResource BoolToVisibilityConverter}}" Checked="_setToNullCheckbox_CheckedUnchecked" Unchecked="_setToNullCheckbox_CheckedUnchecked"/>
+        <Label Content="Value" IsEnabled="{Binding Path=SetToNull, Converter={StaticResource InverseBoolConverter}, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,13,0,0" VerticalAlignment="Top" />
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="70,10,0,0" TextWrapping="Wrap" Text="{Binding EditValue}" IsEnabled="{Binding SetToNull, Converter={StaticResource InverseBoolConverter}}" VerticalAlignment="Top" Width="300" />
+        <CheckBox x:Name="_setToNullCheckbox" Content="Set to null" HorizontalAlignment="Left" Margin="15,46,0,0" VerticalAlignment="Top" IsChecked="{Binding SetToNull}" Visibility="{Binding Path=Option.IsNullValueAllowed, Converter={StaticResource BoolToVisibilityConverter}}" Checked="_setToNullCheckbox_CheckedUnchecked" Unchecked="_setToNullCheckbox_CheckedUnchecked" />
     </Grid>
 </MWindow:MetroWindow>

@@ -183,7 +183,7 @@ namespace WinWeelay.Core
         }
 
         /// <summary>
-        /// Perform a handshake with the WeeChat host.        
+        /// Perform a handshake with the WeeChat host.
         /// </summary>
         /// <param name="supportedHashAlgorithms">The names of the algorithms that are supported.</param>
         public void Handshake(string supportedHashAlgorithms)

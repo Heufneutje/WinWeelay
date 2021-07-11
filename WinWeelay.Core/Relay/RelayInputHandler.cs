@@ -29,7 +29,7 @@ namespace WinWeelay.Core
             // If this is the first response we receive we can assume that we're now successfully logged.
             // Unfortunately when logging in fails no data is sent back so we can only assume.
             if (!_connection.IsLoggedIn && args.RelayMessage.ID != MessageIds.CustomHandshake)
-                _connection.IsLoggedIn = true; 
+                _connection.IsLoggedIn = true;
 
             ParseMessage(args.RelayMessage);
         }
@@ -265,7 +265,7 @@ namespace WinWeelay.Core
                             newMessages.Add(buffer, new List<RelayBufferMessage>());
                         newMessages[buffer].Add(bufferMessage);
                     }
-                        
+
                     if (!updatedBuffers.Contains(buffer))
                         updatedBuffers.Add(buffer);
 

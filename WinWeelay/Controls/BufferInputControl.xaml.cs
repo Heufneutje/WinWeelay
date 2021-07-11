@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -18,7 +17,7 @@ namespace WinWeelay
         /// The view model for the input control.
         /// </summary>
         public BufferInputViewModel ViewModel => (BufferInputViewModel)DataContext;
-       
+
         /// <summary>
         /// Instantiate the input control.
         /// </summary>

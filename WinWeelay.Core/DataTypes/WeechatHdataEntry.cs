@@ -64,7 +64,7 @@ namespace WinWeelay.Core
         /// Check whether the data entry dictionary contains a given key.
         /// </summary>
         /// <param name="key">A given key.</param>
-        /// <returns>Does the key exists in the dictionary?</returns> 
+        /// <returns>Does the key exists in the dictionary?</returns>
         public bool DataContainsKey(string key)
         {
             return _data.ContainsKey(key);

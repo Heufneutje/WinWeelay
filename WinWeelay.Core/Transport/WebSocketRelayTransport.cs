@@ -16,7 +16,7 @@ namespace WinWeelay.Core
         private WebsocketClient _webSocket;
         private SynchronizationContext _synchronizationContext;
         private bool _useSsl;
-        
+
         /// <summary>
         /// Create a new WebSocket transport instance.
         /// </summary>
@@ -41,7 +41,7 @@ namespace WinWeelay.Core
             {
                 _webSocket = new WebsocketClient(new Uri($"{protocol}://{_configuration.Hostname}:{_configuration.Port}/{_configuration.WebSocketPath}"));
                 _webSocket.MessageReceived.Subscribe(msg => HandleMessage(msg));
-                
+
                 await Task.WhenAny(_webSocket.Start(), Task.Delay(5000));
                 if (!_webSocket.IsRunning)
                     throw new IOException("Connection timed out.");

@@ -9,7 +9,7 @@
         /// Show buffers in a list.
         /// </summary>
         List,
-        
+
         /// <summary>
         /// Show buffers in a tree with channels and users being grouped by server.
         /// </summary>

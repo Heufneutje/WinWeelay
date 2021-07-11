@@ -59,7 +59,7 @@ namespace WinWeelay.Core
 
             return GetHistoryEntry();
         }
-        
+
         /// <summary>
         /// Clear all history entries.
         /// </summary>

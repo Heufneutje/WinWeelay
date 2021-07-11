@@ -71,7 +71,7 @@ namespace WinWeelay
                 _inputControl.DataContext = _inputViewModel;
                 _isInputControlInitialized = true;
             }
-            
+
             UpdateFont();
             _inputControl.FocusEditor();
         }

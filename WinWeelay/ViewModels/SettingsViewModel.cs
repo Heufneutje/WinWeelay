@@ -1,8 +1,8 @@
-﻿using Microsoft.Win32;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Media;
+using Microsoft.Win32;
 using WinWeelay.Configuration;
 using WinWeelay.Utils;
 
@@ -68,7 +68,7 @@ namespace WinWeelay
         /// <summary>
         /// Whether to display the input box for the WebSocked path.
         /// </summary>
-        public bool IsWebSocketPathVisible =>  Configuration.ConnectionType == RelayConnectionType.WebSocket || Configuration.ConnectionType == RelayConnectionType.WebSocketSsl;
+        public bool IsWebSocketPathVisible => Configuration.ConnectionType == RelayConnectionType.WebSocket || Configuration.ConnectionType == RelayConnectionType.WebSocketSsl;
 
         /// <summary>
         /// Whether notifications are enabled.

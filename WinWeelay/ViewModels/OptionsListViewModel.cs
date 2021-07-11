@@ -46,7 +46,7 @@ namespace WinWeelay
         /// The option which is currently selected.
         /// </summary>
         public RelayOption SelectedOption { get; set; }
-        
+
         /// <summary>
         /// The current search string.
         /// </summary>

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using MWindowLib;
@@ -36,14 +35,14 @@ namespace WinWeelay
 
         private ScrollViewer GetScrollViewer(DependencyObject depObj)
         {
-            if (depObj is ScrollViewer) 
+            if (depObj is ScrollViewer)
                 return depObj as ScrollViewer;
 
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
                 ScrollViewer result = GetScrollViewer(child);
-                if (result != null) 
+                if (result != null)
                     return result;
             }
             return null;

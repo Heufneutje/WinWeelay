@@ -22,44 +22,44 @@
         <BitmapImage x:Key="aboutImage" UriSource="/Resources/Info.png" />
         <BitmapImage x:Key="sourceCodeImage" UriSource="/Resources/page_code.png" />
         <BitmapImage x:Key="issueTrackerImage" UriSource="/Resources/bug.png" />
-        <BitmapImage x:Key="checkForUpdatesImage" UriSource="/Resources/Web_Download.png"/>
-        <BitmapImage x:Key="clearBufferImage" UriSource="/Resources/table_lightning.png"/>
-        <BitmapImage x:Key="reinitBufferImage" UriSource="/Resources/table_refresh.png"/>
-        <BitmapImage x:Key="weechatOptionsImage" UriSource="/Resources/table_gear.png"/>
+        <BitmapImage x:Key="checkForUpdatesImage" UriSource="/Resources/Web_Download.png" />
+        <BitmapImage x:Key="clearBufferImage" UriSource="/Resources/table_lightning.png" />
+        <BitmapImage x:Key="reinitBufferImage" UriSource="/Resources/table_refresh.png" />
+        <BitmapImage x:Key="weechatOptionsImage" UriSource="/Resources/table_gear.png" />
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Menu x:Name="menu" Grid.Row="0">
-            <MenuItem Header="File" >
+            <MenuItem Header="File">
                 <MenuItem Header="Connect" Command="{Binding ConnectCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource connectImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource connectImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Connect" Description="Connect to a WeeChat relay with the current settings."/>
+                        <customcontrols:RichToolTip Title="Connect" Description="Connect to a WeeChat relay with the current settings." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Disconnect" Command="{Binding DisconnectCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource disconnectImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource disconnectImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay."/>
+                        <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="Exit" Command="{Binding ExitCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource exitImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource exitImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Exit" Description="Close WinWeelay."/>
+                        <customcontrols:RichToolTip Title="Exit" Description="Close WinWeelay." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
@@ -67,29 +67,29 @@
                 <MenuItem Header="Bars">
                     <MenuItem Header="Main Toolbar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsToolbarVisible}" Click="ViewMenuItem_Click">
                         <MenuItem.ToolTip>
-                            <customcontrols:RichToolTip Title="Main Toolbar" Description="Show or hide the toolbar."/>
+                            <customcontrols:RichToolTip Title="Main Toolbar" Description="Show or hide the toolbar." />
                         </MenuItem.ToolTip>
                     </MenuItem>
                     <MenuItem Header="Text Formatting Toolbar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsFormattingToolbarVisible}" Click="ViewMenuItem_Click">
                         <MenuItem.ToolTip>
-                            <customcontrols:RichToolTip Title="Text Formatting Toolbar" Description="Show or hide the text formatting bar."/>
+                            <customcontrols:RichToolTip Title="Text Formatting Toolbar" Description="Show or hide the text formatting bar." />
                         </MenuItem.ToolTip>
                     </MenuItem>
                     <MenuItem Header="Status Bar" IsCheckable="True" IsChecked="{Binding RelayConfiguration.IsStatusBarVisible}" Click="ViewMenuItem_Click">
                         <MenuItem.ToolTip>
-                            <customcontrols:RichToolTip Title="Status Bar" Description="Show or hide the status bar."/>
+                            <customcontrols:RichToolTip Title="Status Bar" Description="Show or hide the status bar." />
                         </MenuItem.ToolTip>
                     </MenuItem>
                 </MenuItem>
                 <MenuItem Header="Docks">
                     <MenuItem x:Name="_buffersMenuItem" Header="Buffers" IsCheckable="True" IsChecked="True" Click="BuffersMenuItem_Click">
                         <MenuItem.ToolTip>
-                            <customcontrols:RichToolTip Title="Buffers" Description="Show or hide the 'Buffers' dock element."/>
+                            <customcontrols:RichToolTip Title="Buffers" Description="Show or hide the 'Buffers' dock element." />
                         </MenuItem.ToolTip>
                     </MenuItem>
                     <MenuItem x:Name="_nicklistMenuItem" Header="Nicklist" IsCheckable="True" IsChecked="True" Click="NicklistMenuItem_Click">
                         <MenuItem.ToolTip>
-                            <customcontrols:RichToolTip Title="Nicklist" Description="Show or hide the 'Nicklist' dock element."/>
+                            <customcontrols:RichToolTip Title="Nicklist" Description="Show or hide the 'Nicklist' dock element." />
                         </MenuItem.ToolTip>
                     </MenuItem>
                 </MenuItem>
@@ -97,96 +97,96 @@
             <MenuItem Header="Buffer">
                 <MenuItem Header="Load More Messages" Command="{Binding LoadMoreMessagesCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource loadMoreMessagesImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource loadMoreMessagesImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Load More Messages" Description="Retrieve messages that are older than the current backlog. Note: due to a limitation in WeeChat this could be slow due to needing to reprocess all current messages in the buffer."/>
+                        <customcontrols:RichToolTip Title="Load More Messages" Description="Retrieve messages that are older than the current backlog. Note: due to a limitation in WeeChat this could be slow due to needing to reprocess all current messages in the buffer." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Reset Buffer Backlog" Command="{Binding ReinitBufferCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource reinitBufferImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource reinitBufferImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Reset Buffer Backlog" Description="Clear all messages in the active buffer in the relay. The initial backlog will be requested again."/>
+                        <customcontrols:RichToolTip Title="Reset Buffer Backlog" Description="Clear all messages in the active buffer in the relay. The initial backlog will be requested again." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Hide Buffer Tab" Command="{Binding HideBufferCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource hideBufferTabImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource hideBufferTabImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Hide Buffer Tab" Description="Close the active buffer in the relay only. It can be reopened at any time by clicking the buffer in the buffers list."/>
+                        <customcontrols:RichToolTip Title="Hide Buffer Tab" Description="Close the active buffer in the relay only. It can be reopened at any time by clicking the buffer in the buffers list." />
                     </MenuItem.ToolTip>
                 </MenuItem>
-                <Separator/>
+                <Separator />
                 <MenuItem Header="Clear Buffer" Command="{Binding ClearBufferCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource clearBufferImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource clearBufferImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Clear Buffer" Description="Clear all messages in the active buffer in both the relay and WeeChat. The /CLEAR command will be sent to the buffer."/>
+                        <customcontrols:RichToolTip Title="Clear Buffer" Description="Clear all messages in the active buffer in both the relay and WeeChat. The /CLEAR command will be sent to the buffer." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Close Buffer" Command="{Binding CloseBufferCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource closeBufferImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource closeBufferImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Close Buffer" Description="Close the active buffer in both the relay and WeeChat. The /CLOSE command will be sent to the buffer."/>
+                        <customcontrols:RichToolTip Title="Close Buffer" Description="Close the active buffer in both the relay and WeeChat. The /CLOSE command will be sent to the buffer." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Settings" Command="{Binding SettingsCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource settingsImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource settingsImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
+                        <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="WeeChat Options" Command="{Binding WeeChatOptionsCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource weechatOptionsImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource weechatOptionsImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="WeeChat Options" Description="Configure WeeChat's options (fset)."/>
+                        <customcontrols:RichToolTip Title="WeeChat Options" Description="Configure WeeChat's options (fset)." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="Help">
                 <MenuItem Header="Issue Tracker" Command="{Binding IssueTrackerCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource issueTrackerImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource issueTrackerImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Issue Tracker" Description="Open WinWeelay's issue tracker on GitHub."/>
+                        <customcontrols:RichToolTip Title="Issue Tracker" Description="Open WinWeelay's issue tracker on GitHub." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Source Code" Command="{Binding SourceCodeCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource sourceCodeImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource sourceCodeImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub."/>
+                        <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub." />
                     </MenuItem.ToolTip>
                 </MenuItem>
                 <MenuItem Header="Check for Updates" Command="{Binding CheckForUpdateCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource checkForUpdatesImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource checkForUpdatesImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="Check for Updates" Description="Check whether a newer version of WinWeelay is available for download."/>
+                        <customcontrols:RichToolTip Title="Check for Updates" Description="Check whether a newer version of WinWeelay is available for download." />
                     </MenuItem.ToolTip>
                 </MenuItem>
-                <Separator/>
+                <Separator />
                 <MenuItem Header="About" Command="{Binding AboutCommand}">
                     <MenuItem.Icon>
-                        <customcontrols:AutoGreyableImage Source="{StaticResource aboutImage}"/>
+                        <customcontrols:AutoGreyableImage Source="{StaticResource aboutImage}" />
                     </MenuItem.Icon>
                     <MenuItem.ToolTip>
-                        <customcontrols:RichToolTip Title="About" Description="Show information about WinWeelay."/>
+                        <customcontrols:RichToolTip Title="About" Description="Show information about WinWeelay." />
                     </MenuItem.ToolTip>
                 </MenuItem>
             </MenuItem>
@@ -194,87 +194,87 @@
         <ToolBarTray VerticalAlignment="Top" Grid.Row="1" IsLocked="True" Visibility="{Binding RelayConfiguration.IsToolbarVisible, Converter={StaticResource BoolToVisibilityConverter}}">
             <ToolBar Name="Connection">
                 <Button Command="{Binding ConnectCommand}">
-                    <Image Source="{StaticResource connectImage}"/>
+                    <Image Source="{StaticResource connectImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Connect" Description="Connect to a WeeChat relay with the current settings."/>
+                        <customcontrols:RichToolTip Title="Connect" Description="Connect to a WeeChat relay with the current settings." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding DisconnectCommand}">
-                    <Image Source="{StaticResource disconnectImage}"/>
+                    <Image Source="{StaticResource disconnectImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay."/>
+                        <customcontrols:RichToolTip Title="Disconnect" Description="Disconnect from the current WeeChat relay." />
                     </Button.ToolTip>
                 </Button>
             </ToolBar>
             <ToolBar Name="Buffer">
                 <Button Command="{Binding LoadMoreMessagesCommand}">
-                    <Image Source="{StaticResource loadMoreMessagesImage}"/>
+                    <Image Source="{StaticResource loadMoreMessagesImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Load More Messages" Description="Retrieve messages that are older than the current backlog. Note: due to a limitation in WeeChat this could be slow due to needing to reprocess all current messages in the buffer."/>
+                        <customcontrols:RichToolTip Title="Load More Messages" Description="Retrieve messages that are older than the current backlog. Note: due to a limitation in WeeChat this could be slow due to needing to reprocess all current messages in the buffer." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding ReinitBufferCommand}">
-                    <Image Source="{StaticResource reinitBufferImage}"/>
+                    <Image Source="{StaticResource reinitBufferImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Reset Buffer Backlog" Description="Clear all messages in the active buffer in the relay. The initial backlog will be requested again."/>
+                        <customcontrols:RichToolTip Title="Reset Buffer Backlog" Description="Clear all messages in the active buffer in the relay. The initial backlog will be requested again." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding HideBufferCommand}">
-                    <Image Source="{StaticResource hideBufferTabImage}"/>
+                    <Image Source="{StaticResource hideBufferTabImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Hide Buffer Tab" Description="Close the active buffer in the relay only. It can be reopened at any time by clicking the buffer in the buffers list."/>
+                        <customcontrols:RichToolTip Title="Hide Buffer Tab" Description="Close the active buffer in the relay only. It can be reopened at any time by clicking the buffer in the buffers list." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding ClearBufferCommand}">
-                    <Image Source="{StaticResource clearBufferImage}"/>
+                    <Image Source="{StaticResource clearBufferImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Clear Buffer" Description="Clear all messages in the active buffer in both the relay and WeeChat. The /CLEAR command will be sent to the buffer."/>
+                        <customcontrols:RichToolTip Title="Clear Buffer" Description="Clear all messages in the active buffer in both the relay and WeeChat. The /CLEAR command will be sent to the buffer." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding CloseBufferCommand}">
-                    <Image Source="{StaticResource closeBufferImage}"/>
+                    <Image Source="{StaticResource closeBufferImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Close Buffer" Description="Close the active buffer in both the relay and WeeChat. The /CLOSE command will be sent to the buffer."/>
+                        <customcontrols:RichToolTip Title="Close Buffer" Description="Close the active buffer in both the relay and WeeChat. The /CLOSE command will be sent to the buffer." />
                     </Button.ToolTip>
                 </Button>
             </ToolBar>
             <ToolBar Name="Tools">
                 <Button Command="{Binding SettingsCommand}">
-                    <Image Source="{StaticResource settingsImage}"/>
+                    <Image Source="{StaticResource settingsImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings."/>
+                        <customcontrols:RichToolTip Title="Settings" Description="Configure WinWeelay's connection, content and theme settings." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding WeeChatOptionsCommand}">
-                    <Image Source="{StaticResource weechatOptionsImage}"/>
+                    <Image Source="{StaticResource weechatOptionsImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="WeeChat Options" Description="Configure WeeChat's options (fset)."/>
+                        <customcontrols:RichToolTip Title="WeeChat Options" Description="Configure WeeChat's options (fset)." />
                     </Button.ToolTip>
                 </Button>
             </ToolBar>
             <ToolBar Name="Help">
                 <Button Command="{Binding IssueTrackerCommand}">
-                    <Image Source="{StaticResource issueTrackerImage}"/>
+                    <Image Source="{StaticResource issueTrackerImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Issue Tracker" Description="Open WinWeelay's issue tracker on GitHub."/>
+                        <customcontrols:RichToolTip Title="Issue Tracker" Description="Open WinWeelay's issue tracker on GitHub." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding SourceCodeCommand}">
-                    <Image Source="{StaticResource sourceCodeImage}"/>
+                    <Image Source="{StaticResource sourceCodeImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub."/>
+                        <customcontrols:RichToolTip Title="Source Code" Description="Open WinWeelay's source code repository on GitHub." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding CheckForUpdateCommand}">
-                    <Image Source="{StaticResource checkForUpdatesImage}"/>
+                    <Image Source="{StaticResource checkForUpdatesImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="Check for Updates" Description="Check whether a newer version of WinWeelay is available for download."/>
+                        <customcontrols:RichToolTip Title="Check for Updates" Description="Check whether a newer version of WinWeelay is available for download." />
                     </Button.ToolTip>
                 </Button>
                 <Button Command="{Binding AboutCommand}">
-                    <Image Source="{StaticResource aboutImage}"/>
+                    <Image Source="{StaticResource aboutImage}" />
                     <Button.ToolTip>
-                        <customcontrols:RichToolTip Title="About" Description="Show information about WinWeelay."/>
+                        <customcontrols:RichToolTip Title="About" Description="Show information about WinWeelay." />
                     </Button.ToolTip>
                 </Button>
             </ToolBar>
@@ -292,7 +292,7 @@
                 <xcad:LayoutPanel Orientation="Horizontal">
                     <xcad:LayoutAnchorablePaneGroup DockWidth="125">
                         <xcad:LayoutAnchorablePane>
-                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True"/>
+                            <xcad:LayoutAnchorable ContentId="buffers" Title="Buffers" CanDockAsTabbedDocument="False" CanHide="True" />
                         </xcad:LayoutAnchorablePane>
                     </xcad:LayoutAnchorablePaneGroup>
                     <xcad:LayoutDocumentPaneGroup>

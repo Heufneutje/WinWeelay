@@ -28,7 +28,7 @@ namespace WinWeelay.Utils
         /// Event for checking the download progress.
         /// </summary>
         public event DownloadProgressChangedEventHandler ProgressChanged;
-        
+
         /// <summary>
         /// Event signaling that the download is complete.
         /// </summary>
@@ -93,7 +93,7 @@ namespace WinWeelay.Utils
 
             _client.DownloadProgressChanged += Client_DownloadProgressChanged;
             _client.DownloadFileCompleted += Client_DownloadFileCompleted;
-            _client.DownloadFileAsync(new Uri(downloadUrl), filePath); 
+            _client.DownloadFileAsync(new Uri(downloadUrl), filePath);
         }
 
         private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -145,6 +145,7 @@ namespace WinWeelay.Utils
         }
 
         #region IDisposable Support
+
         private bool _disposedValue = false;
 
         /// <summary>
@@ -169,6 +170,7 @@ namespace WinWeelay.Utils
         {
             Dispose(true);
         }
-        #endregion
+
+        #endregion IDisposable Support
     }
 }

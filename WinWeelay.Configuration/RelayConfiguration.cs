@@ -177,7 +177,7 @@ namespace WinWeelay.Configuration
         /// Create a new configuration.
         /// </summary>
         public RelayConfiguration()
-        { 
+        {
             HandshakeType = HandshakeType.Modern;
             Port = 9001;
             WebSocketPath = "weechat";

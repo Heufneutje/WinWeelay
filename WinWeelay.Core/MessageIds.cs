@@ -60,7 +60,6 @@
         /// </summary>
         public const string CustomHandshake = "handshake";
 
-
         /// <summary>
         /// Default identifier used when a new buffer is opened.
         /// </summary>

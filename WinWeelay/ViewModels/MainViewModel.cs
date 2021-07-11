@@ -1,13 +1,11 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows;
 using Microsoft.Toolkit.Uwp.Notifications;
 using WinWeelay.Configuration;
 using WinWeelay.Core;
-using WinWeelay.Properties;
 using WinWeelay.Utils;
 
 namespace WinWeelay
@@ -234,7 +232,7 @@ namespace WinWeelay
 
         private void Connection_ConnectionLost(object sender, ConnectionLostEventArgs args)
         {
-            _mainWindow.Dispatcher.Invoke(() => 
+            _mainWindow.Dispatcher.Invoke(() =>
             {
                 bool wasConnected = Connection.IsConnected || _isRetryingConnection;
                 bool wasLoggedIn = Connection.IsLoggedIn;
@@ -347,7 +345,7 @@ namespace WinWeelay
                     System.Threading.Thread.CurrentThread.CurrentUICulture = RelayConfiguration.Language;
                     _spellingManager.SetDictionaryPaths();
                 }
-                    
+
                 if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.IsSpellCheckEnabled)))
                     _mainWindow.ToggleSpellChecker(RelayConfiguration.IsSpellCheckEnabled);
 

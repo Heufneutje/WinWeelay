@@ -76,7 +76,7 @@
                         <CustomControls:NumericUpDown Margin="306,32,0,0" VerticalAlignment="Top" Value="{Binding Configuration.AccentColor.BlueValue, Mode=TwoWay}" Width="45" MaxValue="255" MinValue="0" HorizontalAlignment="Left" ValueChanged="AccentColor_ValueChanged" />
                         <Rectangle Margin="382,32,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="94" Height="22">
                             <Rectangle.Fill>
-                                <SolidColorBrush Color="{Binding AccentColorExample}"/>
+                                <SolidColorBrush Color="{Binding AccentColorExample}" />
                             </Rectangle.Fill>
                         </Rectangle>
                         <ComboBox x:Name="_fontComboBox" Margin="155,59,0,0" VerticalAlignment="Top" SelectedValue="{Binding Configuration.FontFamily}">

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using WinWeelay.Utils;
 
 namespace WinWeelay.Core
 {
@@ -12,7 +11,7 @@ namespace WinWeelay.Core
         /// Whether the entry is a group (unused?).
         /// </summary>
         public bool IsGroup { get; set; }
-        
+
         /// <summary>
         /// The nickname of the user.
         /// </summary>
@@ -22,7 +21,7 @@ namespace WinWeelay.Core
         /// The color of the user in chat.
         /// </summary>
         public string Color { get; set; }
-        
+
         /// <summary>
         /// The prefix on the user in chat.
         /// </summary>

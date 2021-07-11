@@ -55,7 +55,7 @@ namespace WinWeelay
 
             treeView.Focus();
             TreeViewItem tvi = ContainerFromItem(treeView, selected) as TreeViewItem;
-            if (tvi != null) 
+            if (tvi != null)
                 tvi.IsSelected = false;
         }
 

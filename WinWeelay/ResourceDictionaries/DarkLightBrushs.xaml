@@ -1,11 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    
-                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-                    xmlns:reskeys="clr-namespace:MWindowLib.Themes;assembly=MWindowLib"
-                    
                     xmlns:MLib_reskeys="clr-namespace:MLib.Themes;assembly=MLib"
-                    >
+                    xmlns:reskeys="clr-namespace:MWindowLib.Themes;assembly=MWindowLib">
     <!-- Accent Color Brush Definition
              - Look for references on ControlAccentBrushKey to find where this is being set in code -->
     <Color x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type reskeys:ResourceKeys},
@@ -24,11 +20,11 @@
 
     <SolidColorBrush x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type reskeys:ResourceKeys},
                      ResourceId=ControlNormalForegroundBrushKey}"
-                     Color="{DynamicResource {x:Static MLib_reskeys:ResourceKeys.ControlNormalForegroundKey}}"/>
+                     Color="{DynamicResource {x:Static MLib_reskeys:ResourceKeys.ControlNormalForegroundKey}}" />
 
     <SolidColorBrush x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type reskeys:ResourceKeys},
                      ResourceId=ControlNormalBackgroundBrushKey}"
-                     Color="{DynamicResource {x:Static MLib_reskeys:ResourceKeys.ControlNormalBackgroundKey}}"/>
+                     Color="{DynamicResource {x:Static MLib_reskeys:ResourceKeys.ControlNormalBackgroundKey}}" />
 
     <!-- MouseOver Keys -->
     <Color x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type reskeys:ResourceKeys},
@@ -36,6 +32,5 @@
 
     <SolidColorBrush x:Key="{ComponentResourceKey TypeInTargetAssembly={x:Type reskeys:ResourceKeys},
                      ResourceId=ControlMouseOverBackgroundBrushKey}"
-                     Color="{DynamicResource {x:Static MLib_reskeys:ResourceKeys.ControlMouseOverBackgroundKey}}"/>
-
+                     Color="{DynamicResource {x:Static MLib_reskeys:ResourceKeys.ControlMouseOverBackgroundKey}}" />
 </ResourceDictionary>

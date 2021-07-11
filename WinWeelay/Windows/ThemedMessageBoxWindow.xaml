@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" MinHeight="69">
             <DockPanel>
-                <Image Name="_messageBoxImage" Width="32" Height="32" HorizontalAlignment="Left" DockPanel.Dock="Left" Margin="30,0,0,0" Visibility="Collapsed"/>
+                <Image Name="_messageBoxImage" Width="32" Height="32" HorizontalAlignment="Left" DockPanel.Dock="Left" Margin="30,0,0,0" Visibility="Collapsed" />
                 <TextBlock Name="_messageTextBlock" TextWrapping="Wrap" MaxWidth="500" Width="Auto" VerticalAlignment="Center" Margin="12,20,41,15" />
             </DockPanel>
         </Grid>

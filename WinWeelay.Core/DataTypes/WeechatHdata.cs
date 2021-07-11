@@ -10,7 +10,7 @@ namespace WinWeelay.Core
     public class WeechatHdata : WeechatRelayObject, IEnumerable<WeechatHdataEntry>
     {
         private List<WeechatHdataEntry> _items;
-        
+
         /// <summary>
         /// Collection of all keys present in the Hdata object.
         /// </summary>

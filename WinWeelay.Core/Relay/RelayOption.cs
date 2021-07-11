@@ -139,7 +139,7 @@ namespace WinWeelay.Core
             MaxValue = item["max"].AsInt();
             IsNullValueAllowed = item["null_value_allowed"].AsBoolean();
             ValueIsNull = item["value_is_null"].AsBoolean();
-            DefaultValueIsNull = item["default_value_is_null"].AsBoolean();           
+            DefaultValueIsNull = item["default_value_is_null"].AsBoolean();
             OptionType = item["type"].AsString();
 
             string possibleValues = item["string_values"].AsString();

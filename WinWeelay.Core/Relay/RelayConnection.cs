@@ -23,7 +23,7 @@ namespace WinWeelay.Core
         /// Whether the buffer list is beimg updated and visual updates should be prevented.
         /// </summary>
         public bool IsRefreshingBuffers { get; internal set; }
-        
+
         /// <summary>
         /// The parser for incoming messages on this connection.
         /// </summary>
@@ -168,7 +168,7 @@ namespace WinWeelay.Core
                 Authenticate(null);
             else
                 OutputHandler.Handshake(_hashFactory.GetSupportedAlgorithms());
-            
+
             return true;
         }
 

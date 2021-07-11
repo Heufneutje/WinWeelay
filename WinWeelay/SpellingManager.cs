@@ -23,7 +23,7 @@ namespace WinWeelay
         private Uri _mainDictionary;
         private Uri _customDictionary;
         private List<TextBoxBase> _subscribedTextBoxes;
-        
+
         private bool _isEnabled;
 
         /// <summary>

@@ -130,7 +130,6 @@ namespace WinWeelay.Core
         /// </summary>
         public RelayBuffer Parent { get; set; }
 
-
         /// <summary>
         /// IRC server properties for the current buffer or the server buffer that this buffer is linked to.
         /// </summary>
@@ -148,6 +147,7 @@ namespace WinWeelay.Core
         }
 
         #region View Model
+
         /// <summary>
         /// The counter badge to display in the UI.
         /// </summary>
@@ -220,7 +220,8 @@ namespace WinWeelay.Core
         /// Event fired when the user modes change.
         /// </summary>
         public event EventHandler UserModesChanged;
-        #endregion
+
+        #endregion View Model
 
         /// <summary>
         /// Constructor for designer.
@@ -271,7 +272,7 @@ namespace WinWeelay.Core
                 ShortName = entry["short_name"].AsString();
             else if (localVars.ContainsKey("short_vars") && !string.IsNullOrEmpty(localVars["short_name"].AsString()))
                 ShortName = localVars["short_name"].AsString();
-            
+
             Number = entry["number"].AsInt();
             Title = entry["title"].AsString();
             Pointer = entry.GetPointer();

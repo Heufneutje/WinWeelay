@@ -20,6 +20,7 @@ namespace WinWeelay.CustomControls
             // Override the metadata of the IsEnabled property.
             IsEnabledProperty.OverrideMetadata(typeof(AutoGreyableImage), new FrameworkPropertyMetadata(true, new PropertyChangedCallback(OnAutoGreyScaleImageIsEnabledPropertyChanged)));
         }
+
         /// <summary>
         /// Called when [auto grey scale image is enabled property changed].
         /// </summary>
