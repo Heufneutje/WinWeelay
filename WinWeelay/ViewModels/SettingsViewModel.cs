@@ -58,7 +58,7 @@ namespace WinWeelay
         /// <summary>
         /// List of all languages on the system.
         /// </summary>
-        public IEnumerable<CultureInfo> CultureInfos => CultureInfo.GetCultures(CultureTypes.InstalledWin32Cultures).OrderBy(x => x.DisplayName);
+        public IEnumerable<CultureInfo> CultureInfos => CultureInfo.GetCultures(CultureTypes.AllCultures).OrderBy(x => x.DisplayName);
 
         /// <summary>
         /// Color create from the chosen accent color values.
