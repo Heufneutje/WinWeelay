@@ -33,10 +33,18 @@ namespace WinWeelay
             if (!File.Exists(_layoutPath))
                 return;
 
-            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(dockingManager);
-            layoutSerializer.LayoutSerializationCallback += LayoutSerializer_LayoutSerializationCallback;
-            using (StreamReader reader = new StreamReader(_layoutPath))
-                layoutSerializer.Deserialize(reader);
+            try
+            {
+                XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(dockingManager);
+                layoutSerializer.LayoutSerializationCallback += LayoutSerializer_LayoutSerializationCallback;
+                using (StreamReader reader = new StreamReader(_layoutPath))
+                    layoutSerializer.Deserialize(reader);
+            }
+            catch (InvalidOperationException)
+            {
+                // If the file is not a valid XML for some reason, assume it was corrupted and remove it.
+                File.Delete(_layoutPath);
+            }
         }
 
         private static void LayoutSerializer_LayoutSerializationCallback(object sender, LayoutSerializationCallbackEventArgs e)
