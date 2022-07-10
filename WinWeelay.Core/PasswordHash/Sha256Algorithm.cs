@@ -26,7 +26,7 @@ namespace WinWeelay.Core
         {
             string salt = serverNonce + GenerateClientNonce();
             byte[] data = HexStringUtils.ConvertHexStringToBytes(salt).Concat(Encoding.UTF8.GetBytes(password)).ToArray();
-            using (SHA256 sha256 = new SHA256Managed())
+            using (SHA256 sha256 = SHA256.Create())
                 return GenerateHashParts(AlgorithmName, salt, HexStringUtils.ConvertBytesToHexString(sha256.ComputeHash(data)));
         }
     }

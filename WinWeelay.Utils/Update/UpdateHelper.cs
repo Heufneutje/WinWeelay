@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace WinWeelay.Utils
 {
@@ -22,12 +23,17 @@ namespace WinWeelay.Utils
         /// </summary>
         public string InstallerFilePath { get; private set; } = Path.Combine(Path.GetTempPath(), "WinWeelaySetup.exe");
 
-        private WebClient _client;
+        private HttpClient _client;
+
+        /// <summary>
+        /// Delegate for checking the download progress.
+        /// </summary>
+        public delegate void ProgressChangedHandler(long? totalFileSize, long totalBytesDownloaded, int? progressPercentage);
 
         /// <summary>
         /// Event for checking the download progress.
         /// </summary>
-        public event DownloadProgressChangedEventHandler ProgressChanged;
+        public event ProgressChangedHandler ProgressChanged;
 
         /// <summary>
         /// Event signaling that the download is complete.
@@ -39,7 +45,7 @@ namespace WinWeelay.Utils
         /// </summary>
         public UpdateHelper()
         {
-            _client = new WebClient();
+            _client = new HttpClient();
             SetHeaders(_client);
         }
 
@@ -47,13 +53,17 @@ namespace WinWeelay.Utils
         /// Check whether a new release exists.
         /// </summary>
         /// <returns>Whether a new release exists.</returns>
-        public UpdateCheckResult CheckForUpdate()
+        public async Task<UpdateCheckResult> CheckForUpdateAsync()
         {
             try
             {
-                string json = _client.DownloadString($"{_GITHUB_BASE_URL}/repos/heufneutje/winweelay/releases");
+                HttpResponseMessage response = await _client.GetAsync($"{_GITHUB_BASE_URL}/repos/heufneutje/winweelay/releases");  
+                string content = await response.Content.ReadAsStringAsync();
 
-                IEnumerable<GitHubRelease> releases = JsonUtils.DeserializeObject<List<GitHubRelease>>(json).Where(x => !x.Prerelease);
+                if (!response.IsSuccessStatusCode)
+                    return new UpdateCheckResult(UpdateResultType.Error, $"An error occurred while downloading the update file.{Environment.NewLine}{content ?? response.ReasonPhrase}", "Error", null);
+                
+                IEnumerable<GitHubRelease> releases = JsonUtils.DeserializeObject<List<GitHubRelease>>(content).Where(x => !x.Prerelease);
                 if (!releases.Any())
                     return null;
 
@@ -85,25 +95,14 @@ namespace WinWeelay.Utils
         /// Download the release from the given URL.
         /// </summary>
         /// <param name="downloadUrl">The URL to download the update from.</param>
-        public void DownloadUpdate(string downloadUrl)
+        public async Task DownloadUpdateAsync(string downloadUrl)
         {
             string filePath = InstallerFilePath;
             if (File.Exists(filePath))
                 File.Delete(filePath);
 
-            _client.DownloadProgressChanged += Client_DownloadProgressChanged;
-            _client.DownloadFileCompleted += Client_DownloadFileCompleted;
-            _client.DownloadFileAsync(new Uri(downloadUrl), filePath);
-        }
-
-        private void Client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
-        {
-            DownloadCompleted?.Invoke(sender, e);
-        }
-
-        private void Client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            ProgressChanged?.Invoke(sender, e);
+            using (HttpResponseMessage response = await _client.GetAsync(downloadUrl, HttpCompletionOption.ResponseHeadersRead))
+                await DownloadFileFromHttpResponseMessageAsync(response);
         }
 
         /// <summary>
@@ -139,9 +138,73 @@ namespace WinWeelay.Utils
             return true;
         }
 
-        private void SetHeaders(WebClient client)
+        private void SetHeaders(HttpClient client)
         {
-            client.Headers.Add(HttpRequestHeader.UserAgent, "Mozilla/5.0");
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
+        }
+
+        private async Task DownloadFileFromHttpResponseMessageAsync(HttpResponseMessage response)
+        {
+            response.EnsureSuccessStatusCode();
+
+            long? totalBytes = response.Content.Headers.ContentLength;
+
+            using (Stream contentStream = await response.Content.ReadAsStreamAsync())
+                await ProcessContentStreamAsync(totalBytes, contentStream);
+        }
+
+        private async Task ProcessContentStreamAsync(long? totalDownloadSize, Stream contentStream)
+        {
+            Exception exception = null;
+
+            try
+            {
+                long totalBytesRead = 0L;
+                long readCount = 0L;
+                byte[] buffer = new byte[8192];
+                bool isMoreToRead = true;
+
+                using (FileStream fileStream = new FileStream(InstallerFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                {
+                    do
+                    {
+                        int bytesRead = await contentStream.ReadAsync(buffer, 0, buffer.Length);
+                        if (bytesRead == 0)
+                        {
+                            isMoreToRead = false;
+                            TriggerProgressChanged(totalDownloadSize, totalBytesRead);
+                            continue;
+                        }
+
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+
+                        totalBytesRead += bytesRead;
+                        readCount += 1;
+
+                        if (readCount % 100 == 0)
+                            TriggerProgressChanged(totalDownloadSize, totalBytesRead);
+                    }
+                    while (isMoreToRead);
+                }
+            }
+            catch (Exception ex)
+            {
+                exception = ex;
+            }
+
+            DownloadCompleted?.Invoke(this, new AsyncCompletedEventArgs(exception, false, null));
+        }
+
+        private void TriggerProgressChanged(long? totalDownloadSize, long totalBytesRead)
+        {
+            if (ProgressChanged == null)
+                return;
+
+            int? progressPercentage = null;
+            if (totalDownloadSize.HasValue)
+                progressPercentage = Convert.ToInt32((Math.Round((double)totalBytesRead / totalDownloadSize.Value * 100, 2)));
+
+            ProgressChanged(totalDownloadSize, totalBytesRead, progressPercentage);
         }
 
         #region IDisposable Support

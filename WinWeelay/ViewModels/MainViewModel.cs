@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using Microsoft.Toolkit.Uwp.Notifications;
@@ -552,29 +553,20 @@ namespace WinWeelay
             SetStatusText($"Connected to {RelayConfiguration.ConnectionAddress}{(RelayConfiguration.ConnectionType == RelayConnectionType.WeechatSsl || RelayConfiguration.ConnectionType == RelayConnectionType.WebSocketSsl ? " (secure connection)" : "")}.");
         }
 
-        private void CheckForUpdate(bool shouldPopUp)
+        private async void CheckForUpdate(bool shouldPopUp)
         {
             _isDownloadingUpdate = true;
             CheckForUpdateCommand.OnCanExecuteChanged();
 
             SetStatusText("Checking for updates...");
 
-            BackgroundWorker updateCheckerBackgroundWorker = new BackgroundWorker();
-            UpdateHelper updateHelper = new UpdateHelper();
-            updateCheckerBackgroundWorker.DoWork += (sender, args) =>
+            using (UpdateHelper updateHelper = new UpdateHelper())
             {
-                args.Result = updateHelper.CheckForUpdate();
-            };
-            updateCheckerBackgroundWorker.RunWorkerCompleted += (sender, args) =>
-            {
-                UpdateCheckResult result = (UpdateCheckResult)args.Result;
+                UpdateCheckResult result = await updateHelper.CheckForUpdateAsync();
                 if (result.ResultType == UpdateResultType.UpdateAvailable)
                 {
                     if (ThemedMessageBoxWindow.Show(result.Message, result.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Question, _mainWindow) == MessageBoxResult.Yes)
-                    {
-                        DownloadUpdate(updateHelper, result.DownloadUrl);
-                        return;
-                    }
+                        await DownloadUpdate(updateHelper, result.DownloadUrl);
                 }
                 else
                 {
@@ -583,19 +575,17 @@ namespace WinWeelay
                 }
 
                 FinishUpdateCheck();
-                updateHelper.Dispose();
-            };
-            updateCheckerBackgroundWorker.RunWorkerAsync();
+            }
         }
 
-        private void DownloadUpdate(UpdateHelper updateHelper, string downloadUrl)
+        private async Task DownloadUpdate(UpdateHelper updateHelper, string downloadUrl)
         {
             SetStatusText("Downloading update files...");
             _mainWindow.SetProgressBarVisibility(true);
 
-            updateHelper.ProgressChanged += (sender, args) =>
+            updateHelper.ProgressChanged += (totalFileSize, totalBytesDownloaded, progressPercentage) =>
             {
-                _mainWindow.SetProgress(args.ProgressPercentage);
+                _mainWindow.SetProgress(progressPercentage.GetValueOrDefault());
             };
             updateHelper.DownloadCompleted += (sender, args) =>
             {
@@ -619,7 +609,7 @@ namespace WinWeelay
                     }
                 }
             };
-            updateHelper.DownloadUpdate(downloadUrl);
+            await updateHelper.DownloadUpdateAsync(downloadUrl);
         }
 
         private void FinishUpdateCheck()
