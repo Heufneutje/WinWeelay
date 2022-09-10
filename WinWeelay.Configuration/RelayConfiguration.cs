@@ -188,7 +188,7 @@ namespace WinWeelay.Configuration
             WindowWidth = 800;
             WindowHeight = 500;
             TimestampFormat = "HH:mm";
-            Theme = Themes.Light;
+            Theme = Themes.MatchSystem;
             AutoCheckUpdates = true;
             IsSpellCheckEnabled = true;
             NotificationsEnabled = true;

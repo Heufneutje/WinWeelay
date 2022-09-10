@@ -65,6 +65,7 @@
                         <Label Content="Timestamp format" HorizontalAlignment="Left" Margin="6,116,0,0" VerticalAlignment="Top" />
                         <Label Content="Buffer list type" HorizontalAlignment="Left" Margin="6,143,0,0" VerticalAlignment="Top" />
                         <ComboBox Margin="155,5,0,0" VerticalAlignment="Top" SelectedValue="{Binding Configuration.Theme, NotifyOnSourceUpdated=True}" HorizontalAlignment="Left" Width="126">
+                            <sys:String>Match system</sys:String>
                             <sys:String>Light</sys:String>
                             <sys:String>Dark</sys:String>
                         </ComboBox>

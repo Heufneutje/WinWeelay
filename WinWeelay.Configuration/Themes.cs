@@ -14,5 +14,10 @@
         /// Default dark theme name.
         /// </summary>
         public const string Dark = "Dark";
+
+        /// <summary>
+        /// Automatically set theme to match system theme.
+        /// </summary>
+        public const string MatchSystem = "Match system";
     }
 }

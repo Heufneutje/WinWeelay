@@ -54,6 +54,9 @@ namespace WinWeelay
         /// <param name="accentColor">The accent color to use with the theme.</param>
         public void UpdateTheme(string theme, AccentColor accentColor)
         {
+            if (theme == Themes.MatchSystem)
+                theme = WindowsThemeManager.GetSystemTheme();
+
             (Application.Current as App).ChangeTheme(theme);
             _appearanceManager.SetTheme(_themeInfos, theme, Color.FromRgb(accentColor.RedValue, accentColor.GreenValue, accentColor.BlueValue));
         }
