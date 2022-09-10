@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 
 namespace WinWeelay.Utils
 {
@@ -15,14 +16,24 @@ namespace WinWeelay.Utils
         /// <param name="runWithElevation">Whether the process that is to be started should request elevation.</param>
         public static void StartProcess(string path, string arguments = null, bool runWithElevation = false)
         {
-            ProcessStartInfo psi = new ProcessStartInfo(path) { UseShellExecute = true };
-            if (!string.IsNullOrEmpty(arguments))
-                psi.Arguments = arguments;
+            try
+            {
+                ProcessStartInfo psi = new ProcessStartInfo(path) { UseShellExecute = true };
+                if (!string.IsNullOrEmpty(arguments))
+                    psi.Arguments = arguments;
 
-            if (runWithElevation)
-                psi.Verb = "runas";
+                if (runWithElevation)
+                    psi.Verb = "runas";
 
-            Process.Start(psi);
+                Process.Start(psi);
+            }
+            catch (Win32Exception ex)
+            {
+                if (ex.NativeErrorCode == 1223) // Canceled by user.
+                    return;
+
+                throw ex;
+            }
         }
     }
 }
