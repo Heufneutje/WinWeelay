@@ -10,10 +10,10 @@ namespace WinWeelay.Core
     /// </summary>
     public class RelayOutputHandler
     {
-        private RelayConnection _connection;
-        private IRelayTransport _transport;
+        private readonly RelayConnection _connection;
+        private readonly IRelayTransport _transport;
         private bool _useBatch;
-        private List<byte> _messageBatch;
+        private readonly List<byte> _messageBatch;
 
         /// <summary>
         /// Create a new handler for a given connection's outgoing messages.
@@ -317,7 +317,7 @@ namespace WinWeelay.Core
 
         private string GetSignals(WeechatSignalType signalType)
         {
-            List<string> signals = new List<string>();
+            List<string> signals = new();
             if ((signalType & WeechatSignalType.Buffer) != WeechatSignalType.None)
                 signals.Add("buffer");
             if ((signalType & WeechatSignalType.Buffers) != WeechatSignalType.None)

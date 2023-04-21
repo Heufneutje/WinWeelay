@@ -15,9 +15,9 @@ namespace WinWeelay.Core
     public class RelayConnection : NotifyPropertyChangedBase
     {
         private IRelayTransport _transport;
-        private IBufferWindow _bufferView;
-        private Timer _pingTimer;
-        private HashFactory _hashFactory;
+        private readonly IBufferWindow _bufferView;
+        private readonly Timer _pingTimer;
+        private readonly HashFactory _hashFactory;
 
         /// <summary>
         /// Whether the buffer list is beimg updated and visual updates should be prevented.
@@ -101,7 +101,7 @@ namespace WinWeelay.Core
         /// <summary>
         /// The buffers which have no parent (core, plugins and servers).
         /// </summary>
-        public ObservableCollection<RelayBuffer> RootBuffers => new ObservableCollection<RelayBuffer>(Buffers.Where(x => x.Parent == null));
+        public ObservableCollection<RelayBuffer> RootBuffers => new(Buffers.Where(x => x.Parent == null));
 
         /// <summary>
         /// Event fired when the connection is terminated.

@@ -9,8 +9,8 @@ namespace WinWeelay.Core
     /// </summary>
     public class WeechatHdataEntry : WeechatRelayObject
     {
-        private List<string> _pointers = new List<string>();
-        private Dictionary<string, WeechatRelayObject> _data = new Dictionary<string, WeechatRelayObject>();
+        private readonly List<string> _pointers = new();
+        private readonly Dictionary<string, WeechatRelayObject> _data = new();
 
         /// <summary>
         /// Add a new pointer to the data entry.
@@ -76,7 +76,7 @@ namespace WinWeelay.Core
         /// <returns>A hashtable of local variables.</returns>
         public WeechatHashtable GetLocalVariables()
         {
-            WeechatHashtable localVars = new WeechatHashtable();
+            WeechatHashtable localVars = new();
             if (DataContainsKey("local_variables"))
                 localVars = (WeechatHashtable)this["local_variables"];
 

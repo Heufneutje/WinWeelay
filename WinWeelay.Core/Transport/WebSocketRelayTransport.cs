@@ -14,8 +14,8 @@ namespace WinWeelay.Core
     public class WebSocketRelayTransport : BaseRelayTransport
     {
         private WebsocketClient _webSocket;
-        private SynchronizationContext _synchronizationContext;
-        private bool _useSsl;
+        private readonly SynchronizationContext _synchronizationContext;
+        private readonly bool _useSsl;
 
         /// <summary>
         /// Create a new WebSocket transport instance.
@@ -59,7 +59,7 @@ namespace WinWeelay.Core
         {
             if (message.MessageType == WebSocketMessageType.Binary)
             {
-                RelayMessage relayMessage = new RelayMessage(message.Binary);
+                RelayMessage relayMessage = new(message.Binary);
                 _synchronizationContext.Post(delegate { OnRelayMessageReceived(relayMessage); }, null);
             }
         }

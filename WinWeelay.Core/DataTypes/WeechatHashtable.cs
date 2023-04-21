@@ -7,7 +7,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class WeechatHashtable : WeechatRelayObject
     {
-        private Dictionary<string, WeechatRelayObject> _dict;
+        private readonly Dictionary<string, WeechatRelayObject> _dict;
 
         public WeechatHashtable()
         {

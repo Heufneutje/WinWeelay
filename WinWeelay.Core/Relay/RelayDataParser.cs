@@ -43,7 +43,7 @@ namespace WinWeelay.Core
         /// <returns>A list of relay objects.</returns>
         public List<WeechatRelayObject> GetObjects()
         {
-            List<WeechatRelayObject> objects = new List<WeechatRelayObject>();
+            List<WeechatRelayObject> objects = new();
             while (_pointer < _data.Length)
                 objects.Add(GetObject());
 
@@ -83,35 +83,22 @@ namespace WinWeelay.Core
         /// <returns>A relay object.</returns>
         private WeechatRelayObject GetObject(WeechatType type)
         {
-            switch (type)
+            return type switch
             {
-                case WeechatType.CHR:
-                    return new WeechatSimpleValue<char>(GetChar(), WeechatType.CHR);
-                case WeechatType.INT:
-                    return new WeechatSimpleValue<int>(GetUnsignedInt(), WeechatType.INT);
-                case WeechatType.LON:
-                    return new WeechatSimpleValue<long>(GetLong(), WeechatType.LON);
-                case WeechatType.STR:
-                    return new WeechatSimpleValue<string>(GetString(), WeechatType.STR);
-                case WeechatType.BUF:
-                    return new WeechatSimpleValue<byte[]>(GetBuffer(), WeechatType.BUF);
-                case WeechatType.PTR:
-                    return new WeechatSimpleValue<string>(GetPointer(), WeechatType.PTR);
-                case WeechatType.TIM:
-                    return new WeechatSimpleValue<long>(GetTime(), WeechatType.TIM);
-                case WeechatType.ARR:
-                    return GetArray();
-                case WeechatType.HTB:
-                    return GetHashtable();
-                case WeechatType.HDA:
-                    return GetHdata();
-                case WeechatType.INF:
-                    return GetInfo();
-                case WeechatType.INL:
-                    return GetInfolist();
-                default:
-                    return null;
-            }
+                WeechatType.CHR => new WeechatSimpleValue<char>(GetChar(), WeechatType.CHR),
+                WeechatType.INT => new WeechatSimpleValue<int>(GetUnsignedInt(), WeechatType.INT),
+                WeechatType.LON => new WeechatSimpleValue<long>(GetLong(), WeechatType.LON),
+                WeechatType.STR => new WeechatSimpleValue<string>(GetString(), WeechatType.STR),
+                WeechatType.BUF => new WeechatSimpleValue<byte[]>(GetBuffer(), WeechatType.BUF),
+                WeechatType.PTR => new WeechatSimpleValue<string>(GetPointer(), WeechatType.PTR),
+                WeechatType.TIM => new WeechatSimpleValue<long>(GetTime(), WeechatType.TIM),
+                WeechatType.ARR => GetArray(),
+                WeechatType.HTB => GetHashtable(),
+                WeechatType.HDA => GetHdata(),
+                WeechatType.INF => GetInfo(),
+                WeechatType.INL => GetInfolist(),
+                _ => null,
+            };
         }
 
         /// <summary>
@@ -221,7 +208,7 @@ namespace WinWeelay.Core
                 throw new IndexOutOfRangeException("Not enough data");
 
             if (length == 0)
-                return new byte[0];
+                return Array.Empty<byte>();
 
             if (length == -1)
                 return null;
@@ -269,7 +256,7 @@ namespace WinWeelay.Core
             WeechatType valueType = GetWeechatType();
             int count = GetUnsignedInt();
 
-            WeechatHashtable hta = new WeechatHashtable();
+            WeechatHashtable hta = new();
             for (int i = 0; i < count; i++)
             {
                 string key = GetObject(keyType).AsString();
@@ -286,7 +273,7 @@ namespace WinWeelay.Core
         /// <returns>An Hdata.</returns>
         private WeechatHdata GetHdata()
         {
-            WeechatHdata whd = new WeechatHdata();
+            WeechatHdata whd = new();
 
             string hpath = GetString();
             string keys = GetString();
@@ -300,7 +287,7 @@ namespace WinWeelay.Core
 
             for (int i = 0; i < count; i++)
             {
-                WeechatHdataEntry hde = new WeechatHdataEntry();
+                WeechatHdataEntry hde = new();
                 for (int j = 0; j < whd.PathList.Length; j++)
                     hde.AddPointer(GetPointer());
 
@@ -335,12 +322,12 @@ namespace WinWeelay.Core
             string name = GetString();
             int count = GetUnsignedInt();
 
-            WeechatInfoList wil = new WeechatInfoList(name);
+            WeechatInfoList wil = new(name);
 
             for (int i = 0; i < count; i++)
             {
                 int numItems = GetUnsignedInt();
-                Dictionary<string, WeechatRelayObject> variables = new Dictionary<string, WeechatRelayObject>();
+                Dictionary<string, WeechatRelayObject> variables = new();
                 for (int j = 0; j < numItems; j++)
                 {
                     string itemName = GetString();
@@ -361,7 +348,7 @@ namespace WinWeelay.Core
         {
             WeechatType arrayType = GetWeechatType();
             int arraySize = GetUnsignedInt();
-            WeechatArray arr = new WeechatArray(arrayType, arraySize);
+            WeechatArray arr = new(arrayType, arraySize);
             for (int i = 0; i < arraySize; i++)
                 arr.Add(GetObject(arrayType));
 

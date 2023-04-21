@@ -13,8 +13,8 @@ namespace WinWeelay
     /// </summary>
     public class ThemeManager
     {
-        private IAppearanceManager _appearanceManager;
-        private IThemeInfos _themeInfos;
+        private readonly IAppearanceManager _appearanceManager;
+        private readonly IThemeInfos _themeInfos;
 
         /// <summary>
         /// Create a new theme manager.

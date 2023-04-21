@@ -29,7 +29,7 @@ namespace WinWeelay.Core
         /// <returns>A random nonce.</returns>
         protected string GenerateClientNonce(int size = 16)
         {
-            Random random = new Random();
+            Random random = new();
             byte[] nonceBytes = new byte[size];
             random.NextBytes(nonceBytes);
             return HexStringUtils.ConvertBytesToHexString(nonceBytes);

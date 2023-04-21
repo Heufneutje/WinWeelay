@@ -15,8 +15,8 @@ namespace WinWeelay.Utils
         /// <returns>A list of font names.</returns>
         public static List<string> GetInstalledFonts()
         {
-            List<string> fonts = new List<string>();
-            using (InstalledFontCollection fontsCollection = new InstalledFontCollection())
+            List<string> fonts = new();
+            using (InstalledFontCollection fontsCollection = new())
             {
                 System.Drawing.FontFamily[] fontFamilies = fontsCollection.Families;
                 foreach (System.Drawing.FontFamily font in fontFamilies.Where(x => !string.IsNullOrEmpty(x.Name)))

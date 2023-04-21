@@ -18,7 +18,7 @@ namespace WinWeelay.Utils
         {
             try
             {
-                ProcessStartInfo psi = new ProcessStartInfo(path) { UseShellExecute = true };
+                ProcessStartInfo psi = new(path) { UseShellExecute = true };
                 if (!string.IsNullOrEmpty(arguments))
                     psi.Arguments = arguments;
 

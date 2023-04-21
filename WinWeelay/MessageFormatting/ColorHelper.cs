@@ -8,9 +8,9 @@ namespace WinWeelay
     /// </summary>
     public class ColorHelper
     {
-        private int[] _basicColors;
-        private int[] _extendedColors;
-        private int[] _weechatColors;
+        private readonly int[] _basicColors;
+        private readonly int[] _extendedColors;
+        private readonly int[] _weechatColors;
 
         /// <summary>
         /// Create a new instance of the helper.

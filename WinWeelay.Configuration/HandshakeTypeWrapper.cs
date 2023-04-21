@@ -34,7 +34,7 @@ namespace WinWeelay.Configuration
         /// <returns>A list of all handshake types.</returns>
         public static IEnumerable<HandshakeTypeWrapper> GetTypes()
         {
-            List<HandshakeTypeWrapper> types = new List<HandshakeTypeWrapper>();
+            List<HandshakeTypeWrapper> types = new();
             types.Add(new HandshakeTypeWrapper(HandshakeType.Legacy, "Legacy"));
             types.Add(new HandshakeTypeWrapper(HandshakeType.Modern, "Modern"));
             return types;

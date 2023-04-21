@@ -14,8 +14,8 @@ namespace WinWeelay
     /// </summary>
     public class FormattingParser
     {
-        private ColorHelper _colorHelper;
-        private OptionParser _optionParser;
+        private readonly ColorHelper _colorHelper;
+        private readonly OptionParser _optionParser;
         private bool _parseFormatting;
 
         private int _index;
@@ -25,7 +25,7 @@ namespace WinWeelay
         private List<AttributeType> _attributes;
         private int _foreColor;
         private int _backColor;
-        private Regex _urlRegex;
+        private readonly Regex _urlRegex;
 
         /// <summary>
         /// Create a new instance of the parser.
@@ -55,7 +55,7 @@ namespace WinWeelay
             if (message.IsHighlighted)
                 highlightFormatting = $"\u001a\u0001\u0019{_optionParser.GetOptionColorCode(OptionNames.WeechatColorChatHighlight)}";
 
-            Paragraph paragraph = new Paragraph();
+            Paragraph paragraph = new();
 
             if (message.IsHighlighted)
                 paragraph.Inlines.AddRange(HandleFormatting($"{highlightFormatting}{formattedDate}"));
@@ -87,7 +87,7 @@ namespace WinWeelay
         {
             _parseFormatting = parseFormatting;
 
-            Paragraph paragraph = new Paragraph();
+            Paragraph paragraph = new();
             paragraph.Inlines.AddRange(HandleFormatting(ParseUrls(formattedString)));
             return paragraph;
         }
@@ -120,36 +120,11 @@ namespace WinWeelay
             return _formattedString[_index];
         }
 
-        private AttributeType GetAttribute(char attributeChar)
-        {
-            switch (attributeChar)
-            {
-                case '*':
-                case '\u0001':
-                    return AttributeType.Bold;
-                case '!':
-                case '\u0002':
-                    return AttributeType.Reverse;
-                case '/':
-                case '\u0003':
-                    return AttributeType.Italic;
-                case '_':
-                case '\u0004':
-                    return AttributeType.Underline;
-                case '\u0010': // Custom, might need to be replaced with something better.
-                    return AttributeType.Hyperlink;
-                case '|':
-                    return AttributeType.KeepExistingAttributes;
-                default:
-                    return AttributeType.None;
-            }
-        }
-
         private void AddAttributes()
         {
             while (true)
             {
-                AttributeType attribute = GetAttribute(CheckCharacter());
+                AttributeType attribute =  AttributeTypeFactory.GetAttribute(CheckCharacter());
                 if (attribute == AttributeType.None)
                     return;
                 if (attribute != AttributeType.KeepExistingAttributes && !_attributes.Contains(attribute))
@@ -161,7 +136,7 @@ namespace WinWeelay
         private void AddAttribute()
         {
             char attributeChar = CheckCharacter();
-            AttributeType attribute = GetAttribute(attributeChar);
+            AttributeType attribute = AttributeTypeFactory.GetAttribute(attributeChar);
             if (attribute == AttributeType.None)
                 return; // Not actually a formatting character so don't consume anything.
 
@@ -176,7 +151,7 @@ namespace WinWeelay
         private void RemoveAttribute()
         {
             char attributeChar = CheckCharacter();
-            AttributeType attribute = GetAttribute(attributeChar);
+            AttributeType attribute = AttributeTypeFactory.GetAttribute(attributeChar);
             if (attribute == AttributeType.None)
                 return; // Not actually a formatting character so don't consume anything.
 
@@ -338,8 +313,7 @@ namespace WinWeelay
 
             if (_attributes.Contains(AttributeType.Hyperlink) && IsValidUri())
             {
-                Hyperlink link = new Hyperlink(inline);
-                link.NavigateUri = new Uri(_messagePart);
+                Hyperlink link = new(inline) { NavigateUri = new Uri(_messagePart) };
                 link.RequestNavigate += Link_RequestNavigate;
                 inline = link;
             }
@@ -358,7 +332,7 @@ namespace WinWeelay
         {
             try
             {
-                new Uri(_messagePart);
+                _ = new Uri(_messagePart);
                 return true;
             }
             catch

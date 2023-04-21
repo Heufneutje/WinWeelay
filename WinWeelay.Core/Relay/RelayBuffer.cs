@@ -11,7 +11,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class RelayBuffer : NotifyPropertyChangedBase
     {
-        private List<RelayBufferMessage> _messages;
+        private readonly List<RelayBufferMessage> _messages;
         private bool _hasBacklog;
         private bool _hasNicklist;
 

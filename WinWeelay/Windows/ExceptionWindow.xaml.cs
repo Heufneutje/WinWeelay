@@ -23,7 +23,7 @@ namespace WinWeelay
             DataContext = ex;
 
             // TODO: Properly fix theming to make read-only text boxes actually readable.
-            SolidColorBrush brush = new SolidColorBrush(App.CurrentTheme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
+            SolidColorBrush brush = new(App.CurrentTheme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
             _document.Foreground = brush;
             _messageTextBox.Foreground = brush;
             _sourceTextBox.Foreground = brush;

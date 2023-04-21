@@ -35,7 +35,7 @@ namespace WinWeelay.CustomControls
                 if (!isEnable)
                 {
                     // Get the source bitmap
-                    BitmapImage bitmapImage = new BitmapImage(new Uri(autoGreyScaleImg.Source.ToString()));
+                    BitmapImage bitmapImage = new(new Uri(autoGreyScaleImg.Source.ToString()));
                     // Convert it to Gray
                     autoGreyScaleImg.Source = new FormatConvertedBitmap(bitmapImage, PixelFormats.Gray32Float, null, 0);
                     // Create Opacity Mask for greyscale image as FormatConvertedBitmap does not keep transparency info

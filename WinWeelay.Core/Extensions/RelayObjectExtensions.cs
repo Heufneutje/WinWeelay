@@ -118,7 +118,7 @@ namespace WinWeelay.Core
         public static DateTime AsTime(this WeechatRelayObject obj)
         {
             CheckType(obj, WeechatType.TIM);
-            DateTime unixDate = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime unixDate = new(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             return unixDate.AddSeconds((obj as WeechatSimpleValue<long>).Value).ToLocalTime();
         }
     }

@@ -34,7 +34,7 @@ namespace WinWeelay.Configuration
         /// <returns>A list of all buffer types.</returns>
         public static IEnumerable<BufferViewTypeWrapper> GetTypes()
         {
-            List<BufferViewTypeWrapper> types = new List<BufferViewTypeWrapper>();
+            List<BufferViewTypeWrapper> types = new();
             types.Add(new BufferViewTypeWrapper(BufferViewType.List, "List view"));
             types.Add(new BufferViewTypeWrapper(BufferViewType.Tree, "Tree view"));
             return types;

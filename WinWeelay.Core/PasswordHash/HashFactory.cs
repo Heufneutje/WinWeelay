@@ -10,7 +10,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class HashFactory
     {
-        private List<IHashingAlgorithm> _hashingAlgorithms;
+        private readonly List<IHashingAlgorithm> _hashingAlgorithms;
 
         /// <summary>
         /// Create an instance of the factory.

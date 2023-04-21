@@ -27,8 +27,8 @@ namespace WinWeelay
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SetupExceptionHandling();
 
-            MainWindow window = new MainWindow();
-            MainViewModel model = new MainViewModel(window);
+            MainWindow window = new();
+            MainViewModel model = new(window);
             window.DataContext = model;
             window.Show();
         }
@@ -58,7 +58,7 @@ namespace WinWeelay
 
         private void ApplyResources(string src)
         {
-            ResourceDictionary dict = new ResourceDictionary() { Source = new Uri(src, UriKind.Relative) };
+            ResourceDictionary dict = new() { Source = new Uri(src, UriKind.Relative) };
             foreach (ResourceDictionary mergeDict in dict.MergedDictionaries)
                 Resources.MergedDictionaries.Add(mergeDict);
 
@@ -77,7 +77,7 @@ namespace WinWeelay
         {
             try
             {
-                ExceptionWindow exceptionWindow = new ExceptionWindow(exception);
+                ExceptionWindow exceptionWindow = new(exception);
                 exceptionWindow.ShowDialog();
             }
             catch (Exception ex)

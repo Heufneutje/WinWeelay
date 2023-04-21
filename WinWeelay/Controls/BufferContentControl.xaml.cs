@@ -13,9 +13,9 @@ namespace WinWeelay
     /// </summary>
     public partial class BufferContentControl : UserControl
     {
-        private SpellingManager _spellingManager;
+        private readonly SpellingManager _spellingManager;
         private BufferInputViewModel _inputViewModel;
-        private FormattingParser _formattingParser;
+        private readonly FormattingParser _formattingParser;
         private bool _isScrolledToBottom;
         private bool _isInputControlInitialized;
 
@@ -162,7 +162,7 @@ namespace WinWeelay
         /// </summary>
         public void UpdateFont()
         {
-            FontFamily fontFamily = new FontFamily(Buffer.Connection.Configuration.FontFamily);
+            FontFamily fontFamily = new(Buffer.Connection.Configuration.FontFamily);
             _titleDocument.UpdateFont(Buffer.Connection.Configuration.FontSize, fontFamily, true);
             _conversationDocument.UpdateFont(Buffer.Connection.Configuration.FontSize, fontFamily, true);
             _inputViewModel.UpdateFont();

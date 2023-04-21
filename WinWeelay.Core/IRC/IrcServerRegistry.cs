@@ -7,7 +7,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class IrcServerRegistry
     {
-        private Dictionary<string, IrcServer> _servers;
+        private readonly Dictionary<string, IrcServer> _servers;
 
         /// <summary>
         /// Instantiate the registry.
@@ -24,7 +24,7 @@ namespace WinWeelay.Core
         public void RegisterIrcServer(Dictionary<string, WeechatRelayObject> infoListItems)
         {
             string bufferPointer = infoListItems["buffer"].AsPointer();
-            IrcServer handler = new IrcServer();
+            IrcServer handler = new();
             if (_servers.ContainsKey(bufferPointer))
                 handler = _servers[bufferPointer];
             else

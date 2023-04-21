@@ -12,11 +12,11 @@ namespace WinWeelay
     /// </summary>
     public class BufferInputViewModel : NotifyPropertyChangedBase
     {
-        private BufferInputControl _inputControl;
-        private NickCompleter _nickCompleter;
-        private MessageHistory _history;
-        private SpellingManager _spellingManager;
-        private IrcMessageBuilder _messageBuilder;
+        private readonly BufferInputControl _inputControl;
+        private readonly NickCompleter _nickCompleter;
+        private readonly MessageHistory _history;
+        private readonly SpellingManager _spellingManager;
+        private readonly IrcMessageBuilder _messageBuilder;
 
         /// <summary>
         /// The default text color based on the current theme.
@@ -185,7 +185,7 @@ namespace WinWeelay
         public void UpdateFont()
         {
             SetDefaultColor();
-            FontFamily fontFamily = new FontFamily(RelayConfiguration.FontFamily);
+            FontFamily fontFamily = new(RelayConfiguration.FontFamily);
             _inputControl.UpdateFont(RelayConfiguration.FontSize, fontFamily, DefaultColor);
         }
 

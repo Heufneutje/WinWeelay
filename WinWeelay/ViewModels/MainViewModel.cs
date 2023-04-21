@@ -16,13 +16,13 @@ namespace WinWeelay
     /// </summary>
     public class MainViewModel : NotifyPropertyChangedBase
     {
-        private MainWindow _mainWindow;
+        private readonly MainWindow _mainWindow;
         private OptionsListWindow _optionsListWindow;
-        private Timer _retryTimer;
+        private readonly Timer _retryTimer;
         private bool _isRetryingConnection;
-        private ThemeManager _themeManager;
-        private SpellingManager _spellingManager;
-        private FormattingParser _formattingParser;
+        private readonly ThemeManager _themeManager;
+        private readonly SpellingManager _spellingManager;
+        private readonly FormattingParser _formattingParser;
         private bool _isDownloadingUpdate;
 
         /// <summary>
@@ -204,8 +204,7 @@ namespace WinWeelay
 
         private void MainWindow_Closed(object sender, EventArgs e)
         {
-            if (_optionsListWindow != null)
-                _optionsListWindow.Close();
+            _optionsListWindow?.Close();
         }
 
         private void Connection_Highlighted(object sender, HighlightEventArgs args)
@@ -332,7 +331,7 @@ namespace WinWeelay
 
         private void ShowSettingsWindow(object parameter)
         {
-            SettingsWindow settingsWindow = new SettingsWindow(new SettingsViewModel(RelayConfiguration, _spellingManager)) { Owner = _mainWindow };
+            SettingsWindow settingsWindow = new(new SettingsViewModel(RelayConfiguration, _spellingManager)) { Owner = _mainWindow };
             if (settingsWindow.ShowDialog() == true)
             {
                 if (RelayConfiguration.HasPropertyChanged(nameof(RelayConfiguration.Theme)) || RelayConfiguration.AccentColor.HasChanges())
@@ -374,7 +373,7 @@ namespace WinWeelay
             if (_optionsListWindow == null)
             {
                 _optionsListWindow = new OptionsListWindow();
-                OptionsListViewModel viewModel = new OptionsListViewModel(Connection, _optionsListWindow);
+                OptionsListViewModel viewModel = new(Connection, _optionsListWindow);
                 _optionsListWindow.DataContext = viewModel;
 
                 _optionsListWindow.Closed += OptionsListWindow_Closed;
@@ -399,7 +398,7 @@ namespace WinWeelay
 
         private void ShowAboutWindow(object parameter)
         {
-            AboutWindow aboutWindow = new AboutWindow() { Owner = _mainWindow };
+            AboutWindow aboutWindow = new() { Owner = _mainWindow };
             aboutWindow.ShowDialog();
         }
 
@@ -560,7 +559,7 @@ namespace WinWeelay
 
             SetStatusText("Checking for updates...");
 
-            using (UpdateHelper updateHelper = new UpdateHelper())
+            using (UpdateHelper updateHelper = new())
             {
                 UpdateCheckResult result = await updateHelper.CheckForUpdateAsync();
                 if (result.ResultType == UpdateResultType.UpdateAvailable)

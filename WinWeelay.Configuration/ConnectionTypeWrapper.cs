@@ -34,7 +34,7 @@ namespace WinWeelay.Configuration
         /// <returns>A list of all connection types.</returns>
         public static IEnumerable<ConnectionTypeWrapper> GetTypes()
         {
-            List<ConnectionTypeWrapper> types = new List<ConnectionTypeWrapper>();
+            List<ConnectionTypeWrapper> types = new();
             types.Add(new ConnectionTypeWrapper(RelayConnectionType.PlainText, "Plain connection"));
             types.Add(new ConnectionTypeWrapper(RelayConnectionType.WeechatSsl, "WeeChat SSL"));
             types.Add(new ConnectionTypeWrapper(RelayConnectionType.WebSocket, "WebSocket (Plain)"));

@@ -15,7 +15,7 @@ namespace WinWeelay.Utils
         /// <param name="path">The file path the serialized object should be saved to.</param>
         public static void SaveSerializedObject(object objectToSerialize, string path)
         {
-            JsonSerializer serializer = new JsonSerializer { Formatting = Formatting.Indented };
+            JsonSerializer serializer = new() { Formatting = Formatting.Indented };
             using (StreamWriter writer = File.CreateText(path))
                 serializer.Serialize(writer, objectToSerialize);
         }

@@ -13,7 +13,7 @@ namespace WinWeelay
     /// </summary>
     public class OptionsListViewModel : NotifyPropertyChangedBase
     {
-        private OptionsListWindow _window;
+        private readonly OptionsListWindow _window;
         private List<RelayOption> _options;
         private bool _isRefreshing;
 
@@ -141,7 +141,7 @@ namespace WinWeelay
         private void EditOption(object parameter)
         {
             IOptionWindow window = null;
-            OptionViewModel viewModel = new OptionViewModel(SelectedOption);
+            OptionViewModel viewModel = new(SelectedOption);
 
             switch (SelectedOption.OptionType)
             {
@@ -243,7 +243,7 @@ namespace WinWeelay
             {
                 bool hasChanges = false;
                 _isRefreshing = false;
-                List<RelayOption> optionsToRemove = new List<RelayOption>();
+                List<RelayOption> optionsToRemove = new();
                 for (int i = 0; i < LoadedOptions.Count; i++)
                 {
                     RelayOption option = LoadedOptions[i];

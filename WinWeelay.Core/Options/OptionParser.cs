@@ -10,11 +10,11 @@ namespace WinWeelay.Core
     /// </summary>
     public class OptionParser
     {
-        private Dictionary<int, string> _colorOptions;
-        private Dictionary<string, int> _reverseColorOptions;
-        private OptionCache _optionCache;
-        private RelayConfiguration _relayConfiguration;
-        private List<RelayOption> _weechatOptions;
+        private readonly Dictionary<int, string> _colorOptions;
+        private readonly Dictionary<string, int> _reverseColorOptions;
+        private readonly OptionCache _optionCache;
+        private readonly RelayConfiguration _relayConfiguration;
+        private readonly List<RelayOption> _weechatOptions;
 
         /// <summary>
         /// Are there currently options in the cache?

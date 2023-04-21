@@ -19,8 +19,8 @@ namespace WinWeelay
         /// <param name="dockingManager">The element which managers the UI docks.</param>
         public static void SaveLayout(this DockingManager dockingManager)
         {
-            XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(dockingManager);
-            using (StreamWriter writer = new StreamWriter(_layoutPath))
+            XmlLayoutSerializer layoutSerializer = new(dockingManager);
+            using (StreamWriter writer = new(_layoutPath))
                 layoutSerializer.Serialize(writer);
         }
 
@@ -35,9 +35,9 @@ namespace WinWeelay
 
             try
             {
-                XmlLayoutSerializer layoutSerializer = new XmlLayoutSerializer(dockingManager);
+                XmlLayoutSerializer layoutSerializer = new(dockingManager);
                 layoutSerializer.LayoutSerializationCallback += LayoutSerializer_LayoutSerializationCallback;
-                using (StreamReader reader = new StreamReader(_layoutPath))
+                using (StreamReader reader = new(_layoutPath))
                     layoutSerializer.Deserialize(reader);
             }
             catch (InvalidOperationException)

@@ -37,7 +37,7 @@ namespace WinWeelay
             }
 
             clipboardText = clipboardText.Replace("\r", string.Empty).Replace("\n", string.Empty);
-            DataObject dataObject = new DataObject();
+            DataObject dataObject = new();
             dataObject.SetText(clipboardText);
             e.DataObject = dataObject;
         }

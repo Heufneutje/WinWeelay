@@ -185,7 +185,7 @@ namespace WinWeelay
         /// <param name="owner">The parent window.</param>
         public static MessageBoxResult Show(string message, string caption, MessageBoxButton button, MessageBoxImage image, Window owner)
         {
-            ThemedMessageBoxWindow window = new ThemedMessageBoxWindow(message, caption, button, image) { Owner = owner };
+            ThemedMessageBoxWindow window = new(message, caption, button, image) { Owner = owner };
             window.ShowDialog();
             return window.Result;
         }

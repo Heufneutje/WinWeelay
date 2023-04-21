@@ -122,7 +122,7 @@ namespace WinWeelay.Core
 
         private List<IrcMode> ParseSupportedModes(string modeString)
         {
-            List<IrcMode> modes = new List<IrcMode>();
+            List<IrcMode> modes = new();
             string[] modeParts = modeString.Split(',');
             for (int i = 0; i < modeParts.Length; i++)
                 foreach (char modeChar in modeParts[i])

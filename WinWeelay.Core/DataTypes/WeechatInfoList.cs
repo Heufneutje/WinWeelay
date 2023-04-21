@@ -8,7 +8,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class WeechatInfoList : WeechatRelayObject, IEnumerable
     {
-        private List<Dictionary<string, WeechatRelayObject>> _items;
+        private readonly List<Dictionary<string, WeechatRelayObject>> _items;
 
         /// <summary>
         /// Name of the info list.

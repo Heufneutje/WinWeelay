@@ -8,8 +8,8 @@ namespace WinWeelay.Core
     /// </summary>
     public class MessageHistory
     {
-        private List<string> _messageHistory;
-        private RelayConfiguration _configuration;
+        private readonly List<string> _messageHistory;
+        private readonly RelayConfiguration _configuration;
         private int _historyIndex;
 
         /// <summary>

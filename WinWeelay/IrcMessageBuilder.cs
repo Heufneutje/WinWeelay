@@ -12,7 +12,7 @@ namespace WinWeelay
     public class IrcMessageBuilder
     {
         private FlowDocument _document;
-        private StringBuilder _stringBuilder;
+        private readonly StringBuilder _stringBuilder;
         private Color _defaultColor;
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace WinWeelay
 
             foreach (Inline inline in (block as Paragraph).Inlines)
             {
-                TextRange textRange = new TextRange(inline.ContentStart, inline.ContentEnd);
+                TextRange textRange = new(inline.ContentStart, inline.ContentEnd);
                 AddFormattingChars(inline, true);
                 _stringBuilder.Append(textRange.Text);
                 AddFormattingChars(inline, false);

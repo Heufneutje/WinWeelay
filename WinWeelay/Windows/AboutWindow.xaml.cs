@@ -21,14 +21,14 @@ namespace WinWeelay
         public AboutWindow()
         {
             InitializeComponent();
-            Paragraph paragraph = new Paragraph();
+            Paragraph paragraph = new();
 
             string licenseFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "LICENSE.txt");
             if (File.Exists(licenseFilePath))
                 paragraph.Inlines.Add(File.ReadAllText(licenseFilePath));
             else
                 paragraph.Inlines.Add("Licenses file is missing.");
-            FlowDocument document = new FlowDocument(paragraph);
+            FlowDocument document = new(paragraph);
             document.Foreground = new SolidColorBrush(App.CurrentTheme == Themes.Dark ? Color.FromRgb(255, 255, 255) : Color.FromRgb(0, 0, 0));
             _richTextBox.Document = document;
 

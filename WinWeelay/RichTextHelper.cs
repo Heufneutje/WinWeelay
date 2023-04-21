@@ -22,8 +22,8 @@ namespace WinWeelay
         /// <returns>A XAML string containing the document.</returns>
         public static string GetXaml(this RichTextBox textBox)
         {
-            TextRange range = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
-            MemoryStream stream = new MemoryStream();
+            TextRange range = new(textBox.Document.ContentStart, textBox.Document.ContentEnd);
+            MemoryStream stream = new();
             range.Save(stream, DataFormats.Xaml);
             string xamlText = Encoding.UTF8.GetString(stream.ToArray());
             return xamlText;
@@ -36,10 +36,10 @@ namespace WinWeelay
         /// <param name="xamlText">The XAML containing the exported document.</param>
         public static void SetXaml(this RichTextBox textBox, string xamlText)
         {
-            FlowDocument doc = new FlowDocument();
+            FlowDocument doc = new();
             if (!string.IsNullOrEmpty(xamlText))
             {
-                StringReader stringReader = new StringReader(xamlText);
+                StringReader stringReader = new(xamlText);
                 XmlReader xmlReader = XmlReader.Create(stringReader);
                 Section sec = XamlReader.Load(xmlReader) as Section;
                 while (sec.Blocks.Count > 0)
@@ -67,7 +67,7 @@ namespace WinWeelay
         /// <returns>Plain text.</returns>
         public static string GetPlainText(this RichTextBox textBox)
         {
-            TextRange textRange = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd);
+            TextRange textRange = new(textBox.Document.ContentStart, textBox.Document.ContentEnd);
             return textRange.Text.TrimEnd();
         }
 
@@ -161,7 +161,7 @@ namespace WinWeelay
                         {
                             int length = current.Length;
                             if (spaceIndex <= length)
-                                text += current.Substring(0, spaceIndex);
+                                text += current[..spaceIndex];
 
                             return text;
                         }

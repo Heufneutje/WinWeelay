@@ -22,7 +22,7 @@ namespace WinWeelay
         private string _customDictPath;
         private Uri _mainDictionary;
         private Uri _customDictionary;
-        private List<TextBoxBase> _subscribedTextBoxes;
+        private readonly List<TextBoxBase> _subscribedTextBoxes;
 
         private bool _isEnabled;
 
@@ -187,7 +187,7 @@ namespace WinWeelay
             else
                 return;
 
-            MenuItem spellingItem = new MenuItem()
+            MenuItem spellingItem = new()
             {
                 Header = "Spelling",
                 Tag = controlTag
@@ -197,7 +197,7 @@ namespace WinWeelay
 
             foreach (string str in spellingError.Suggestions)
             {
-                MenuItem item = new MenuItem
+                MenuItem item = new()
                 {
                     Header = str,
                     FontWeight = FontWeights.Bold,
@@ -216,7 +216,7 @@ namespace WinWeelay
                 cmdIndex++;
             }
 
-            MenuItem ignoreAllItem = new MenuItem
+            MenuItem ignoreAllItem = new()
             {
                 Header = "Ignore All",
                 Command = EditingCommands.IgnoreSpellingError,
@@ -225,7 +225,7 @@ namespace WinWeelay
             };
             spellingItem.Items.Insert(cmdIndex, ignoreAllItem);
 
-            MenuItem addToDictionarylItem = new MenuItem
+            MenuItem addToDictionarylItem = new()
             {
                 Header = "Add to Dictionary",
                 Tag = controlTag

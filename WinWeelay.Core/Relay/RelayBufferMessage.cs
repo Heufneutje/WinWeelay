@@ -79,11 +79,11 @@ namespace WinWeelay.Core
             string[] tags = entry["tags_array"].AsArray().ToStringArray();
             string nickTag = tags.FirstOrDefault(x => x.StartsWith("nick_"));
             if (nickTag != null)
-                Nick = nickTag.Substring(5);
+                Nick = nickTag[5..];
 
             string messageTypeTag = tags.LastOrDefault(x => x.StartsWith("irc_"));
             if (messageTypeTag != null)
-                MessageType = messageTypeTag.Substring(4);
+                MessageType = messageTypeTag[4..];
 
             if (!showNotifications)
                 IsNotified = true;
@@ -107,10 +107,7 @@ namespace WinWeelay.Core
         /// <returns>Hash code.</returns>
         public override int GetHashCode()
         {
-            int hashCode = 1910936884;
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(LinePointer);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BufferPointer);
-            return hashCode;
+            return HashCode.Combine(LinePointer, BufferPointer);
         }
 
         /// <summary>

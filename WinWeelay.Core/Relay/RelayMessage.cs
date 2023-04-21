@@ -24,7 +24,7 @@ namespace WinWeelay.Core
         /// <param name="data">Data array received from the relay input stream.</param>
         public RelayMessage(byte[] data)
         {
-            RelayDataParser parser = new RelayDataParser(data);
+            RelayDataParser parser = new(data);
             Header = parser.GetHeader();
             RelayObjects = parser.GetObjects();
         }

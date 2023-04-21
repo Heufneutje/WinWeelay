@@ -10,7 +10,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class NickCompleter
     {
-        private RelayBuffer _buffer;
+        private readonly RelayBuffer _buffer;
         private int _nickCompleteIndex;
         private string _lastNickCompletion;
         private string _lastSearch;

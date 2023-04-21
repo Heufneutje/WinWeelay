@@ -9,8 +9,8 @@ namespace WinWeelay.Core
     /// </summary>
     public class RelayInputHandler
     {
-        private RelayConnection _connection;
-        private IRelayTransport _transport;
+        private readonly RelayConnection _connection;
+        private readonly IRelayTransport _transport;
 
         /// <summary>
         /// Create a new parser for a given connection's incoming messages.
@@ -122,7 +122,7 @@ namespace WinWeelay.Core
 
         private void ParseBufferList(RelayMessage message)
         {
-            List<RelayBuffer> newBuffers = new List<RelayBuffer>();
+            List<RelayBuffer> newBuffers = new();
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
             for (int i = 0; i < hdata.Count; i++)
             {
@@ -184,8 +184,7 @@ namespace WinWeelay.Core
             _connection.IrcServerRegistry.RegisterIrcServer(items);
 
             RelayBuffer relayBuffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == items["buffer"].AsPointer());
-            if (relayBuffer != null)
-                relayBuffer.OnUserModesChanged();
+            relayBuffer?.OnUserModesChanged();
         }
 
         private void ParseIrcChannelProperties(RelayMessage message)
@@ -236,13 +235,13 @@ namespace WinWeelay.Core
             if (!hdata.Any())
                 return;
 
-            List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
-            Dictionary<RelayBuffer, List<RelayBufferMessage>> newMessages = new Dictionary<RelayBuffer, List<RelayBufferMessage>>();
+            List<RelayBuffer> updatedBuffers = new();
+            Dictionary<RelayBuffer, List<RelayBufferMessage>> newMessages = new();
             int linePointerIndex = hdata.PathList.ToList().IndexOf("line_data");
             for (int i = 0; i < hdata.Count; i++)
             {
                 bool isSingleLineUpdate = message.Header.ID == MessageIds.BufferLineAdded;
-                RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], isSingleLineUpdate, linePointerIndex);
+                RelayBufferMessage bufferMessage = new(hdata[i], isSingleLineUpdate, linePointerIndex);
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
                 if (buffer != null && !buffer.HasMessage(bufferMessage))
                 {
@@ -288,8 +287,8 @@ namespace WinWeelay.Core
         {
             if (tagsArray.Contains("irc_nick"))
             {
-                string oldNick = GetTagValue(tagsArray, "irc_nick1");
-                string newNick = GetTagValue(tagsArray, "irc_nick2");
+                string oldNick = GetTagValue("irc_nick1");
+                string newNick = GetTagValue("irc_nick2");
 
                 IrcServer ircServer = relayBuffer.IrcServer;
                 if (ircServer.CurrentNick == oldNick)
@@ -310,11 +309,11 @@ namespace WinWeelay.Core
                 else
                     _connection.OutputHandler.RequestIrcServerCapabilites(relayBuffer);
             }
-        }
 
-        private string GetTagValue(string[] tagsArray, string tagName)
-        {
-            return tagsArray.FirstOrDefault(x => x.StartsWith(tagName))?.Substring(tagName.Length + 1);
+            string GetTagValue(string tagName)
+            {
+                return tagsArray.FirstOrDefault(x => x.StartsWith(tagName))?[(tagName.Length + 1)..];
+            }
         }
 
         private void ParseBufferOpened(RelayMessage message)
@@ -399,14 +398,14 @@ namespace WinWeelay.Core
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
 
             bool nicklistCleared = message.Header.ID != MessageIds.Nicklist;
-            List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
+            List<RelayBuffer> updatedBuffers = new();
             for (int i = 0; i < hdata.Count; i++)
             {
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == hdata[i].GetPointer(0));
                 if (buffer == null)
                     continue;
 
-                RelayNicklistEntry nicklistEntry = new RelayNicklistEntry(hdata[i], buffer);
+                RelayNicklistEntry nicklistEntry = new(hdata[i], buffer);
                 if (nicklistEntry.IsGroup)
                     continue;
 
@@ -433,8 +432,7 @@ namespace WinWeelay.Core
                         break;
                     case '*':
                         RelayNicklistEntry entryToUpdate = buffer.Nicklist.FirstOrDefault(x => x.Name == nicklistEntry.Name);
-                        if (entryToUpdate != null)
-                            entryToUpdate.Update(nicklistEntry);
+                        entryToUpdate?.Update(nicklistEntry);
                         break;
                 }
 

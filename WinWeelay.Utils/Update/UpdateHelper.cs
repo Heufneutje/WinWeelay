@@ -23,7 +23,7 @@ namespace WinWeelay.Utils
         /// </summary>
         public string InstallerFilePath { get; private set; } = Path.Combine(Path.GetTempPath(), "WinWeelaySetup.exe");
 
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         /// <summary>
         /// Delegate for checking the download progress.
@@ -68,13 +68,13 @@ namespace WinWeelay.Utils
                     return null;
 
                 GitHubRelease latestVersion = releases.First();
-                string latestVersionStr = latestVersion.TagName.Substring(1);
+                string latestVersionStr = latestVersion.TagName[1..];
                 FileVersionInfo fvi = GetCurrentVersion();
                 string currentVersion = string.Join(".", new int[3] { fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart });
                 if (VersionsEqual(fvi.FileMajorPart, fvi.FileMinorPart, fvi.FileBuildPart, latestVersionStr))
                     return new UpdateCheckResult(UpdateResultType.NoUpdateAvailable, $"Current version: {currentVersion}{Environment.NewLine}{Environment.NewLine}You're running the latest version of WinWeelay.", "No update available", null);
 
-                StringBuilder updateTextBuilder = new StringBuilder();
+                StringBuilder updateTextBuilder = new();
                 updateTextBuilder.AppendLine($"Current version: {currentVersion}");
                 updateTextBuilder.AppendLine($"Latest version: {latestVersionStr}");
                 updateTextBuilder.AppendLine();
@@ -164,7 +164,7 @@ namespace WinWeelay.Utils
                 byte[] buffer = new byte[8192];
                 bool isMoreToRead = true;
 
-                using (FileStream fileStream = new FileStream(InstallerFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
+                using (FileStream fileStream = new(InstallerFilePath, FileMode.Create, FileAccess.Write, FileShare.None, 8192, true))
                 {
                     do
                     {

@@ -29,7 +29,7 @@ namespace WinWeelay.Core
         {
             HashAlgorithmName hashAlgorithm = (HashAlgorithmName)typeof(HashAlgorithmName).GetProperty($"SHA{ShaSize}").GetValue(null, null);
             string salt = serverNonce + GenerateClientNonce();
-            using (Rfc2898DeriveBytes rfc2898DeriveBytes = new Rfc2898DeriveBytes(password, HexStringUtils.ConvertHexStringToBytes(salt), iterations, hashAlgorithm))
+            using (Rfc2898DeriveBytes rfc2898DeriveBytes = new(password, HexStringUtils.ConvertHexStringToBytes(salt), iterations, hashAlgorithm))
                 return GenerateHashParts(AlgorithmName, salt, iterations, HexStringUtils.ConvertBytesToHexString(rfc2898DeriveBytes.GetBytes(ShaSize / 8)));
         }
     }

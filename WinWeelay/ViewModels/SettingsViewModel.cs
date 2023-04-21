@@ -13,7 +13,7 @@ namespace WinWeelay
     /// </summary>
     public class SettingsViewModel : NotifyPropertyChangedBase
     {
-        private SpellingManager _spellingManager;
+        private readonly SpellingManager _spellingManager;
 
         /// <summary>
         /// The main configuration loaded from the config file.
@@ -178,7 +178,7 @@ namespace WinWeelay
         /// </summary>
         public void InstallDictionary()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog() { CheckFileExists = true, Filter = "Lexicon files (*.lex)|*.lex|All files (*.*)|*.*", Title = "Select a dictionary" };
+            OpenFileDialog openFileDialog = new() { CheckFileExists = true, Filter = "Lexicon files (*.lex)|*.lex|All files (*.*)|*.*", Title = "Select a dictionary" };
             if (openFileDialog.ShowDialog() == true)
             {
                 _spellingManager.InstallDictionary(Configuration.Language, openFileDialog.FileName);

@@ -90,10 +90,10 @@ namespace WinWeelay.Core
 
         private void InputWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (!(e.UserState is byte[]))
+            if (e.UserState is not byte[])
                 return;
 
-            RelayMessage relayMessage = new RelayMessage((byte[])e.UserState);
+            RelayMessage relayMessage = new((byte[])e.UserState);
             OnRelayMessageReceived(relayMessage);
         }
 
@@ -115,7 +115,7 @@ namespace WinWeelay.Core
             {
                 try
                 {
-                    List<byte> bytes = new List<byte>();
+                    List<byte> bytes = new();
 
                     byte[] buffer = new byte[4];
                     int read = reader.Read(buffer, 0, buffer.Length);
