@@ -28,7 +28,7 @@ namespace WinWeelay.Core
         {
             // If this is the first response we receive we can assume that we're now successfully logged.
             // Unfortunately when logging in fails no data is sent back so we can only assume.
-            if (!_connection.IsLoggedIn && args.RelayMessage.ID != MessageIds.CustomHandshake)
+            if (!_connection.IsLoggedIn && args.RelayMessage.Header.ID != MessageIds.CustomHandshake)
                 _connection.IsLoggedIn = true;
 
             ParseMessage(args.RelayMessage);
@@ -36,7 +36,7 @@ namespace WinWeelay.Core
 
         private void ParseMessage(RelayMessage message)
         {
-            switch (message.ID)
+            switch (message.Header.ID)
             {
                 case MessageIds.CustomHandshake:
                     _connection.Authenticate((WeechatHashtable)message.RelayObjects.First());
@@ -241,7 +241,7 @@ namespace WinWeelay.Core
             int linePointerIndex = hdata.PathList.ToList().IndexOf("line_data");
             for (int i = 0; i < hdata.Count; i++)
             {
-                bool isSingleLineUpdate = message.ID == MessageIds.BufferLineAdded;
+                bool isSingleLineUpdate = message.Header.ID == MessageIds.BufferLineAdded;
                 RelayBufferMessage bufferMessage = new RelayBufferMessage(hdata[i], isSingleLineUpdate, linePointerIndex);
                 RelayBuffer buffer = _connection.Buffers.FirstOrDefault(x => x.Pointer == bufferMessage.BufferPointer);
                 if (buffer != null && !buffer.HasMessage(bufferMessage))
@@ -272,13 +272,13 @@ namespace WinWeelay.Core
                     if (isSingleLineUpdate && bufferMessage.IsHighlighted && !bufferMessage.IsNotified)
                         _connection.OnHighlighted(bufferMessage, buffer);
 
-                    if (message.ID == MessageIds.BufferLineAdded)
+                    if (message.Header.ID == MessageIds.BufferLineAdded)
                         HandleIrcTags(bufferMessage.Tags, buffer);
                 }
             }
 
             foreach (KeyValuePair<RelayBuffer, List<RelayBufferMessage>> pair in newMessages)
-                pair.Key.AddMessageBatch(pair.Value, message.ID == MessageIds.CustomGetBufferBacklogExtra);
+                pair.Key.AddMessageBatch(pair.Value, message.Header.ID == MessageIds.CustomGetBufferBacklogExtra);
 
             foreach (RelayBuffer updateBuffer in updatedBuffers)
                 updateBuffer.NotifyMessageCountUpdated();
@@ -398,7 +398,7 @@ namespace WinWeelay.Core
         {
             WeechatHdata hdata = (WeechatHdata)message.RelayObjects.First();
 
-            bool nicklistCleared = message.ID != MessageIds.Nicklist;
+            bool nicklistCleared = message.Header.ID != MessageIds.Nicklist;
             List<RelayBuffer> updatedBuffers = new List<RelayBuffer>();
             for (int i = 0; i < hdata.Count; i++)
             {
@@ -417,7 +417,7 @@ namespace WinWeelay.Core
                 }
 
                 char diffChar = '+';
-                if (hdata.KeyList.Contains("_diff"))
+                if (hdata.ContainsKey("_diff"))
                     diffChar = hdata[i]["_diff"].AsChar();
 
                 switch (diffChar)

@@ -26,15 +26,7 @@ namespace WinWeelay.Core
         {
             Name = name;
             Value = value;
-        }
-
-        /// <summary>
-        /// Override for debug purposes.
-        /// </summary>
-        /// <returns>The key and value of the pair.</returns>
-        public override string ToString()
-        {
-            return $"[WInfo]:{Environment.NewLine}  " + Name + " -> " + Value;
+            Type = WeechatType.INF;
         }
     }
 }

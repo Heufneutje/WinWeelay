@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace WinWeelay.Core
 {
@@ -8,16 +7,22 @@ namespace WinWeelay.Core
     /// </summary>
     public class WeechatHashtable : WeechatRelayObject
     {
-        private Dictionary<string, WeechatRelayObject> _dict = new Dictionary<string, WeechatRelayObject>();
+        private Dictionary<string, WeechatRelayObject> _dict;
+
+        public WeechatHashtable()
+        {
+            Type = WeechatType.HTB;
+            _dict = new Dictionary<string, WeechatRelayObject>();
+        }
 
         /// <summary>
         /// Add a new item to the hashtable.
         /// </summary>
         /// <param name="key">The key of the element to add.</param>
         /// <param name="value">The value of the element to add.</param>
-        public void Add(WeechatRelayObject key, WeechatRelayObject value)
+        public void Add(string key, WeechatRelayObject value)
         {
-            _dict.Add(key.ToString(), value);
+            _dict.Add(key, value);
         }
 
         /// <summary>
@@ -35,23 +40,6 @@ namespace WinWeelay.Core
         public bool ContainsKey(string key)
         {
             return _dict.ContainsKey(key);
-        }
-
-        /// <summary>
-        /// Override for debug purposes.
-        /// </summary>
-        /// <returns>All values in the hashtable.</returns>
-        public override string ToString()
-        {
-            StringBuilder map = new StringBuilder();
-            foreach (KeyValuePair<string, WeechatRelayObject> pair in _dict)
-            {
-                map.Append(pair.Key);
-                map.Append(" -> ");
-                map.Append(pair.Value);
-                map.Append(", ");
-            }
-            return map.ToString();
         }
     }
 }

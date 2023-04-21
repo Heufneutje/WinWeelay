@@ -82,25 +82,5 @@ namespace WinWeelay.Core
 
             return localVars;
         }
-
-        /// <summary>
-        /// Override for debug purposes.
-        /// </summary>
-        /// <param name="indent">A given intent.</param>
-        /// <returns>All values in the Hdata entry.</returns>
-        public string ToString(int indent)
-        {
-            string tmp = "";
-            for (int i = 0; i < indent; i++)
-                tmp += " ";
-
-            string ret = $"{tmp}[HdataEntry]{Environment.NewLine}";
-            ret += $"{tmp}  Pointers: {string.Join(", ", _pointers)}{Environment.NewLine}";
-
-            foreach (KeyValuePair<string, WeechatRelayObject> pair in _data)
-                ret += $"{tmp}  {pair.Key}={pair.Value}{Environment.NewLine}";
-
-            return ret;
-        }
     }
 }

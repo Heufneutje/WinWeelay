@@ -14,19 +14,9 @@ namespace WinWeelay.Core
         public List<WeechatRelayObject> RelayObjects { get; private set; }
 
         /// <summary>
-        /// True if the message is zlib compressed, false if the message is not compressed.
+        /// Header containing ID and length.
         /// </summary>
-        public bool Compressed { get; private set; }
-
-        /// <summary>
-        /// The number of bytes in the data array.
-        /// </summary>
-        public int Length { get; private set; }
-
-        /// <summary>
-        /// ID of the relay message.
-        /// </summary>
-        public string ID { get; private set; }
+        public RelayMessageHeader Header { get; private set; }
 
         /// <summary>
         /// Initialize a new relay message.
@@ -34,25 +24,9 @@ namespace WinWeelay.Core
         /// <param name="data">Data array received from the relay input stream.</param>
         public RelayMessage(byte[] data)
         {
-            RelayObjects = new List<WeechatRelayObject>();
-
-            WeechatData wd = new WeechatData(data);
-
-            Length = wd.GetUnsignedInt();
-
-            int c = wd.GetByte();
-            if (c == 0x00)
-                Compressed = false;
-            else if (c == 0x01)
-            {
-                Compressed = true;
-                wd = new WeechatData(ZlibStream.UncompressBuffer(wd.GetByteArray()));
-            }
-
-            ID = wd.GetString();
-
-            while (!wd.IsEmpty)
-                RelayObjects.Add(wd.GetObject());
+            RelayDataParser parser = new RelayDataParser(data);
+            Header = parser.GetHeader();
+            RelayObjects = parser.GetObjects();
         }
     }
 }

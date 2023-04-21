@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace WinWeelay.Core
 {
@@ -16,11 +14,6 @@ namespace WinWeelay.Core
         /// Name of the info list.
         /// </summary>
         public string Name { get; private set; }
-
-        /// <summary>
-        /// The number of items in the info list.
-        /// </summary>
-        public int Count => _items.Count;
 
         /// <summary>
         /// Create a new list of info objects.
@@ -48,23 +41,6 @@ namespace WinWeelay.Core
         /// <param name="index">A given index.</param>
         /// <returns>A dictionary of info values</returns>
         public Dictionary<string, WeechatRelayObject> this[int index] => _items[index];
-
-        /// <summary>
-        /// Override for debug purposes.
-        /// </summary>
-        /// <returns>The key and value of the pair.</returns>
-        public override string ToString()
-        {
-            StringBuilder sb = new StringBuilder(Name + $":{Environment.NewLine}");
-            foreach (Dictionary<string, WeechatRelayObject> item in _items)
-            {
-                foreach (KeyValuePair<string, WeechatRelayObject> pair in item)
-                    sb.Append($"  {pair.Key}->{pair.Value}, ");
-
-                sb.Append($"{Environment.NewLine}{Environment.NewLine}");
-            }
-            return sb.ToString();
-        }
 
         /// <summary>
         /// IEnumerable implementation.
