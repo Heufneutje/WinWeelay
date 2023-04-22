@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Net.WebSockets;
-using System.Threading;
 using System.Threading.Tasks;
 using Websocket.Client;
 using WinWeelay.Configuration;

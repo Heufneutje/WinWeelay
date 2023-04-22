@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace WinWeelay.Core
+﻿namespace WinWeelay.Core
 {
     /// <summary>
     /// Type of relay objects.

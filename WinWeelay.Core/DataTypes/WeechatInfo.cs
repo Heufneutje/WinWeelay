@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WinWeelay.Core
+﻿namespace WinWeelay.Core
 {
     /// <summary>
     /// Info representation of a relay object.
