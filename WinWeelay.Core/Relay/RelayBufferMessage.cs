@@ -57,7 +57,6 @@ namespace WinWeelay.Core
         /// <summary>
         /// Whether a notification for this message has been displayed when it triggers a highlight.
         /// </summary>
-        /// <seealso cref="IsHighlighted"/>
         public bool IsNotified { get; set; }
 
         /// <summary>
