@@ -21,5 +21,17 @@
             Value = value;
             Type = type;
         }
+
+        /// <summary>
+        /// Override to return the ToString() value of the contained value type.
+        /// </summary>
+        /// <returns>A string representation of the value.</returns>
+        public override string ToString()
+        {
+            if (Value is string str)
+                return str;
+
+            return Value.ToString();
+        }
     }
 }
