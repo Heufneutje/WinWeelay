@@ -4,7 +4,7 @@
 !define APP_NAME "WinWeelay"
 !define COMP_NAME "Stefan 'Heufneutje' Frijters"
 !define WEB_SITE "https://github.com/Heufneutje/WinWeelay"
-!define VERSION "2.2.0.0"
+!define VERSION "2.2.1.0"
 !define DESCRIPTION "WinWeelay"
 !define LICENSE_TXT "LICENSE.txt"
 !define FILESDIR "Release\net6.0-windows10.0.17763.0\"
@@ -327,6 +327,9 @@ File "${FILESDIR}\*.pdb"
 File "${FILESDIR}\*.txt"
 File "${FILESDIR}\WinWeelay.exe"
 File "${FILESDIR}\WinWeelay.runtimeconfig.json"
+File "${FILESDIR}\WinWeelay.deps.json"
+SetOutPath "$INSTDIR\runtimes"
+File /nonfatal /a /r "${FILESDIR}\runtimes\"
 SectionEnd
 
 ######################################################################
@@ -389,12 +392,15 @@ Delete "$INSTDIR\*.pdb"
 Delete "$INSTDIR\*.txt"
 Delete "$INSTDIR\WinWeelay.exe"
 Delete "$INSTDIR\WinWeelay.runtimeconfig.json"
+Delete "$INSTDIR\WinWeelay.deps.json"
 Delete "$INSTDIR\uninstall.exe"
+RMDir /r "$INSTDIR\runtimes\"
+
 !ifdef WEB_SITE
 Delete "$INSTDIR\${APP_NAME} website.url"
 !endif
 
-RmDir "$INSTDIR"
+RMDir $INSTDIR
 
 !ifdef REG_START_MENU
 !insertmacro MUI_STARTMENU_GETFOLDER "Application" $SM_Folder
