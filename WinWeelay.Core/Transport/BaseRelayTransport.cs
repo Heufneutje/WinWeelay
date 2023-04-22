@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using WinWeelay.Configuration;
 
@@ -9,6 +10,8 @@ namespace WinWeelay.Core
     /// </summary>
     public abstract class BaseRelayTransport : IRelayTransport
     {
+        private readonly SynchronizationContext _synchronizationContext;
+
         /// <summary>
         /// Main configuration.
         /// </summary>
@@ -28,6 +31,14 @@ namespace WinWeelay.Core
         /// Event fired when an error occurs.
         /// </summary>
         public event RelayErrorHandler ErrorReceived;
+
+        /// <summary>
+        /// Base constructor.
+        /// </summary>
+        protected BaseRelayTransport()
+        {
+            _synchronizationContext = SynchronizationContext.Current;
+        }
 
         /// <summary>
         /// Connect to a WeeChat instance with the given configuration.
@@ -53,7 +64,10 @@ namespace WinWeelay.Core
         /// <param name="relayMessage">The received message.</param>
         protected void OnRelayMessageReceived(RelayMessage relayMessage)
         {
-            RelayMessageReceived?.Invoke(this, new RelayMessageEventArgs(relayMessage));
+            _synchronizationContext.Post(delegate
+            {
+                RelayMessageReceived?.Invoke(this, new RelayMessageEventArgs(relayMessage));
+            }, null);
         }
 
         /// <summary>

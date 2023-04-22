@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Net.Sockets;
+using System.Threading;
 using System.Threading.Tasks;
 using WinWeelay.Configuration;
 using WinWeelay.Utils;
@@ -14,7 +14,7 @@ namespace WinWeelay.Core
     /// </summary>
     public class TcpRelayTransport : BaseRelayTransport
     {
-        private BackgroundWorker _inputWorker;
+        private CancellationTokenSource _cancellationTokenSource;
 
         /// <summary>
         /// The TCP client for the relay connection.
@@ -43,10 +43,8 @@ namespace WinWeelay.Core
 
                 IsConnected = true;
 
-                _inputWorker = new BackgroundWorker() { WorkerReportsProgress = true, WorkerSupportsCancellation = true };
-                _inputWorker.DoWork += InputWorker_DoWork;
-                _inputWorker.ProgressChanged += InputWorker_ProgressChanged;
-                _inputWorker.RunWorkerAsync();
+                _cancellationTokenSource = new CancellationTokenSource();
+                _ = Task.Run(ReadDataStream,_cancellationTokenSource.Token);
             }
             catch (Exception ex)
             {
@@ -63,7 +61,7 @@ namespace WinWeelay.Core
         public override void Disconnect()
         {
             IsConnected = false;
-            _inputWorker?.CancelAsync();
+            _cancellationTokenSource.Cancel();
             _networkStream?.Dispose();
             _tcpClient?.Dispose();
             _tcpClient = null;
@@ -88,16 +86,7 @@ namespace WinWeelay.Core
             return Task.FromResult(default(object));
         }
 
-        private void InputWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.UserState is not byte[])
-                return;
-
-            RelayMessage relayMessage = new((byte[])e.UserState);
-            OnRelayMessageReceived(relayMessage);
-        }
-
-        private void InputWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void ReadDataStream()
         {
             BufferedStream reader;
             try
@@ -111,12 +100,11 @@ namespace WinWeelay.Core
                 return;
             }
 
-            while (true)
+            while (!_cancellationTokenSource.IsCancellationRequested)
             {
                 try
                 {
                     List<byte> bytes = new();
-
                     byte[] buffer = new byte[4];
                     int read = reader.Read(buffer, 0, buffer.Length);
 
@@ -136,7 +124,8 @@ namespace WinWeelay.Core
                             length -= 1;
                         }
 
-                        _inputWorker.ReportProgress(0, bytes.ToArray());
+                        RelayMessage relayMessage = new(bytes.ToArray());
+                        OnRelayMessageReceived(relayMessage);
                     }
                 }
                 catch (Exception ex)
@@ -145,13 +134,9 @@ namespace WinWeelay.Core
                         OnErrorReceived(ex);
                     break;
                 }
-
-                if (_inputWorker.CancellationPending)
-                {
-                    reader.Dispose();
-                    break;
-                }
             }
+
+            reader.Dispose();
         }
     }
 }
