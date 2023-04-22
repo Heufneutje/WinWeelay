@@ -20,7 +20,7 @@ namespace WinWeelay.Core
 
         /// <summary>
         /// Extract character value.
-        /// </summary>
+        /// </summary>  
         /// <param name="obj">The base relay object.</param>
         /// <returns>A character.</returns>
         public static char AsChar(this WeechatRelayObject obj)

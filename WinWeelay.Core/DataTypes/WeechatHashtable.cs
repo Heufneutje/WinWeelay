@@ -33,7 +33,7 @@ namespace WinWeelay.Core
         public WeechatRelayObject this[string key] => _dict[key];
 
         /// <summary>
-        /// Checker whether a given key is present in the hashtabel.
+        /// Checker whether a given key is present in the hashtable.
         /// </summary>
         /// <param name="key">The key to check.</param>
         /// <returns>Whether or not the key is present in the hashtable.</returns>

@@ -60,7 +60,12 @@ namespace WinWeelay.Core
         {
             return GetEnumerator();
         }
-        
+
+        /// <summary>
+        /// Checker whether a given key is present in the keys of the hdata entries.
+        /// </summary>
+        /// <param name="key">The key to check.</param>
+        /// <returns>Whether or not the key is present iin the keys of the hdata entries</returns>
         public bool ContainsKey(string key)
         {
             return _items.Any(x => x.DataContainsKey(key));
