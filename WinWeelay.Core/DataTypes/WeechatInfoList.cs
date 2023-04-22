@@ -23,7 +23,7 @@ namespace WinWeelay.Core
         {
             _items = new List<Dictionary<string, WeechatRelayObject>>();
             Name = name;
-            Type = WeechatType.INL;
+            Type = WeechatType.Infolist;
         }
 
         /// <summary>

@@ -85,18 +85,18 @@ namespace WinWeelay.Core
         {
             return type switch
             {
-                WeechatType.CHR => new WeechatSimpleValue<char>(GetChar(), WeechatType.CHR),
-                WeechatType.INT => new WeechatSimpleValue<int>(GetUnsignedInt(), WeechatType.INT),
-                WeechatType.LON => new WeechatSimpleValue<long>(GetLong(), WeechatType.LON),
-                WeechatType.STR => new WeechatSimpleValue<string>(GetString(), WeechatType.STR),
-                WeechatType.BUF => new WeechatSimpleValue<byte[]>(GetBuffer(), WeechatType.BUF),
-                WeechatType.PTR => new WeechatSimpleValue<string>(GetPointer(), WeechatType.PTR),
-                WeechatType.TIM => new WeechatSimpleValue<long>(GetTime(), WeechatType.TIM),
-                WeechatType.ARR => GetArray(),
-                WeechatType.HTB => GetHashtable(),
-                WeechatType.HDA => GetHdata(),
-                WeechatType.INF => GetInfo(),
-                WeechatType.INL => GetInfolist(),
+                WeechatType.Char => new WeechatSimpleValue<char>(GetChar(), WeechatType.Char),
+                WeechatType.Int32 => new WeechatSimpleValue<int>(GetUnsignedInt(), WeechatType.Int32),
+                WeechatType.Int64 => new WeechatSimpleValue<long>(GetLong(), WeechatType.Int64),
+                WeechatType.String => new WeechatSimpleValue<string>(GetString(), WeechatType.String),
+                WeechatType.Buffer => new WeechatSimpleValue<byte[]>(GetBuffer(), WeechatType.Buffer),
+                WeechatType.Pointer => new WeechatSimpleValue<string>(GetPointer(), WeechatType.Pointer),
+                WeechatType.Time => new WeechatSimpleValue<long>(GetTime(), WeechatType.Time),
+                WeechatType.Array => GetArray(),
+                WeechatType.Hashtable => GetHashtable(),
+                WeechatType.Hdata => GetHdata(),
+                WeechatType.Info => GetInfo(),
+                WeechatType.Infolist => GetInfolist(),
                 _ => null,
             };
         }
@@ -294,7 +294,7 @@ namespace WinWeelay.Core
                 for (int j = 0; j < keyList.Length; j++)
                 {
                     string[] keyParams = keyList[j].Split(':');
-                    hde.AddObject(keyParams[0], GetObject(Enum.Parse<WeechatType>(keyParams[1].ToUpper())));
+                    hde.AddObject(keyParams[0], GetObject(WeechatTypeFactory.GetWeechatType(keyParams[1])));
                 }
 
                 whd.AddItem(hde);
@@ -361,9 +361,7 @@ namespace WinWeelay.Core
         /// <returns>A data type.</returns>
         private WeechatType GetWeechatType()
         {
-            string typeStr = new(GetCharArray(3));
-            WeechatType type = Enum.Parse<WeechatType>(typeStr.ToUpper());
-            return type;
+            return WeechatTypeFactory.GetWeechatType(new(GetCharArray(3)));
         }        
     }
 }

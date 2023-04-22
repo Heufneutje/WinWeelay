@@ -26,7 +26,7 @@ namespace WinWeelay.Core
         {
             Name = name;
             Value = value;
-            Type = WeechatType.INF;
+            Type = WeechatType.Info;
         }
     }
 }

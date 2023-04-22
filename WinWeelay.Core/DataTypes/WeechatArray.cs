@@ -25,7 +25,7 @@ namespace WinWeelay.Core
         {
             _arrayType = arrayType;
             _array = new List<WeechatRelayObject>();
-            Type = WeechatType.ARR;
+            Type = WeechatType.Array;
             Length = size;
         }
 
@@ -51,7 +51,7 @@ namespace WinWeelay.Core
         /// <returns>A string representation of the array values.</returns>
         public string[] ToStringArray()
         {
-            if (_arrayType != WeechatType.STR)
+            if (_arrayType != WeechatType.String)
                 return new string[0];
 
             return _array.Select(x => x.ToString()).ToArray();

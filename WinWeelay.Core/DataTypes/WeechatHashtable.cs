@@ -11,7 +11,7 @@ namespace WinWeelay.Core
 
         public WeechatHashtable()
         {
-            Type = WeechatType.HTB;
+            Type = WeechatType.Hashtable;
             _dict = new Dictionary<string, WeechatRelayObject>();
         }
 

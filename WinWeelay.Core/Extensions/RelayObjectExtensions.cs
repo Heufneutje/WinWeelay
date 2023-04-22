@@ -25,7 +25,7 @@ namespace WinWeelay.Core
         /// <returns>A character.</returns>
         public static char AsChar(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.CHR);
+            CheckType(obj, WeechatType.Char);
             return (obj as WeechatSimpleValue<char>).Value;
         }
 
@@ -36,7 +36,7 @@ namespace WinWeelay.Core
         /// <returns>A 32-bit integer.</returns>
         public static int AsInt(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.INT);
+            CheckType(obj, WeechatType.Int32);
             return (obj as WeechatSimpleValue<int>).Value;
         }
 
@@ -47,7 +47,7 @@ namespace WinWeelay.Core
         /// <returns>A 64-bit integer.</returns>
         public static long AsLong(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.LON);
+            CheckType(obj, WeechatType.Int64);
             return (obj as WeechatSimpleValue<long>).Value;
         }
 
@@ -58,7 +58,7 @@ namespace WinWeelay.Core
         /// <returns>A string.</returns>
         public static string AsString(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.STR);
+            CheckType(obj, WeechatType.String);
             return (obj as WeechatSimpleValue<string>).Value;
         }
 
@@ -69,7 +69,7 @@ namespace WinWeelay.Core
         /// <returns>A byte array.</returns>
         public static byte[] AsBuffer(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.BUF);
+            CheckType(obj, WeechatType.Buffer);
             return (obj as WeechatSimpleValue<byte[]>).Value;
         }
 
@@ -80,7 +80,7 @@ namespace WinWeelay.Core
         /// <returns>An array.</returns>
         public static WeechatArray AsArray(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.ARR);
+            CheckType(obj, WeechatType.Array);
             return obj as WeechatArray;
         }
 
@@ -91,7 +91,7 @@ namespace WinWeelay.Core
         /// <returns>A pointer.</returns>
         public static string AsPointer(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.PTR);
+            CheckType(obj, WeechatType.Pointer);
             return (obj as WeechatSimpleValue<string>).Value;
         }
 
@@ -102,9 +102,9 @@ namespace WinWeelay.Core
         /// <returns>A boolean.</returns>
         public static bool AsBoolean(this WeechatRelayObject obj)
         {
-            if (obj.Type == WeechatType.CHR)
+            if (obj.Type == WeechatType.Char)
                 return AsChar(obj) == '\u0001';
-            else if (obj.Type == WeechatType.INT)
+            else if (obj.Type == WeechatType.Int32)
                 return AsInt(obj) == 1;
 
             return false;
@@ -117,7 +117,7 @@ namespace WinWeelay.Core
         /// <returns>A time value converted to local time.</returns>
         public static DateTime AsTime(this WeechatRelayObject obj)
         {
-            CheckType(obj, WeechatType.TIM);
+            CheckType(obj, WeechatType.Time);
             DateTime unixDate = new(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             return unixDate.AddSeconds((obj as WeechatSimpleValue<long>).Value).ToLocalTime();
         }

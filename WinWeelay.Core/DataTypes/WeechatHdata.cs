@@ -27,7 +27,7 @@ namespace WinWeelay.Core
         /// </summary>
         public WeechatHdata()
         {
-            Type = WeechatType.HDA;
+            Type = WeechatType.Hdata;
             _items = new List<WeechatHdataEntry>();
         }
 

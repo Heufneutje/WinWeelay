@@ -8,6 +8,6 @@
         /// <summary>
         /// Type of the relay object.
         /// </summary>
-        public WeechatType Type { get; set; } = WeechatType.UNKNOWN;
+        public WeechatType Type { get; set; } = WeechatType.Unknown;
     }
 }

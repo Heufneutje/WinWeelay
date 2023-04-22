@@ -1,4 +1,6 @@
-﻿namespace WinWeelay.Core
+﻿using System.ComponentModel;
+
+namespace WinWeelay.Core
 {
     /// <summary>
     /// Type of relay objects.
@@ -6,68 +8,68 @@
     public enum WeechatType
     {
         /// <summary>
+        /// Unknown data type.
+        /// </summary>
+        Unknown = 0,
+
+        /// <summary>
         /// Character data type.
         /// </summary>
-        CHR,
+        Char = 1,
 
         /// <summary>
         /// 32-bit integer data type.
         /// </summary>
-        INT,
+        Int32 = 2,
 
         /// <summary>
         /// 64-bit integer data type.
         /// </summary>
-        LON,
+        Int64 = 3,
 
         /// <summary>
         /// String data type.
         /// </summary>
-        STR,
+        String = 4,
 
         /// <summary>
         /// Buffer data type.
         /// </summary>
-        BUF,
+        Buffer = 5,
 
         /// <summary>
         /// Pointer data type.
         /// </summary>
-        PTR,
+        Pointer = 6,
 
         /// <summary>
         /// Time data type.
         /// </summary>
-        TIM,
+        Time = 7,
 
         /// <summary>
         /// Hashtable data table.
         /// </summary>
-        HTB,
+        Hashtable = 8,
 
         /// <summary>
         /// Hdata data type.
         /// </summary>
-        HDA,
+        Hdata = 9,
 
         /// <summary>
         /// Info data type.
         /// </summary>
-        INF,
+        Info = 10,
 
         /// <summary>
         /// Info list data type.
         /// </summary>
-        INL,
+        Infolist = 11,
 
         /// <summary>
         /// Array data type.
         /// </summary>
-        ARR,
-
-        /// <summary>
-        /// Unknown data type.
-        /// </summary>
-        UNKNOWN
+        Array = 12
     }
 }
