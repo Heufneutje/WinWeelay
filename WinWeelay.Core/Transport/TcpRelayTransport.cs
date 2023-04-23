@@ -61,7 +61,7 @@ namespace WinWeelay.Core
         public override void Disconnect()
         {
             IsConnected = false;
-            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Cancel();
             _networkStream?.Dispose();
             _tcpClient?.Dispose();
             _tcpClient = null;
