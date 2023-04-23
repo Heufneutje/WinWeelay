@@ -4,7 +4,7 @@
 !define APP_NAME "WinWeelay"
 !define COMP_NAME "Stefan 'Heufneutje' Frijters"
 !define WEB_SITE "https://github.com/Heufneutje/WinWeelay"
-!define VERSION "2.2.1.0"
+!define VERSION "2.2.2.0"
 !define DESCRIPTION "WinWeelay"
 !define LICENSE_TXT "LICENSE.txt"
 !define FILESDIR "Release\net6.0-windows10.0.17763.0\"
