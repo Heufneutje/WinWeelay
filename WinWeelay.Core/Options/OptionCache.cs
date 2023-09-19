@@ -56,18 +56,25 @@ namespace WinWeelay.Core
         /// <returns>The cached options or an empty cache if it has expired.</returns>
         public static OptionCache Load(RelayConfiguration relayConfiguration)
         {
-            if (relayConfiguration == null || !relayConfiguration.UseOptionCache)
-                return new OptionCache();
+            try
+            {
+                if (relayConfiguration == null || !relayConfiguration.UseOptionCache)
+                    return new OptionCache();
 
-            OptionCache optionCache;
-            if (!File.Exists(_optionCachePath))
-                return new OptionCache();
+                OptionCache optionCache;
+                if (!File.Exists(_optionCachePath))
+                    return new OptionCache();
 
-            optionCache = JsonUtils.DeserializeObject<OptionCache>(File.ReadAllText(_optionCachePath));
-            if (optionCache.CacheDate.AddDays(relayConfiguration.OptionCacheDays) < DateTime.Now)
-                return new OptionCache();
+                optionCache = JsonUtils.DeserializeObject<OptionCache>(File.ReadAllText(_optionCachePath));
+                if (optionCache.CacheDate.AddDays(relayConfiguration.OptionCacheDays) < DateTime.Now)
+                    return new OptionCache();
 
-            return optionCache;
+                return optionCache;
+            }
+            catch
+            {
+                return new OptionCache();
+            }
         }
 
         /// <summary>
