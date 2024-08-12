@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows</TargetFramework>
     <Version>2.2.3.0</Version>
     <Product>WinWeelay</Product>
     <Company />
@@ -13,8 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetZip" Version="1.16.0" />
-    <PackageReference Include="Websocket.Client" Version="5.0.0" />
+    <PackageReference Include="Websocket.Client" Version="5.1.2" />
   </ItemGroup>
 
   <ItemGroup>

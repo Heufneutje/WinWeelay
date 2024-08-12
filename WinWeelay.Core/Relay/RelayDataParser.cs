@@ -1,6 +1,7 @@
-﻿using Ionic.Zlib;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using WinWeelay.Core.DataTypes;
@@ -61,7 +62,15 @@ namespace WinWeelay.Core
 
             if (GetByte() == 0x01)
             {
-                _data = ZlibStream.UncompressBuffer(_data.CopyOfRange(_pointer, _data.Length));
+                byte[] zlibData = _data.CopyOfRange(_pointer, _data.Length);                
+                using (MemoryStream memoryStream = new(zlibData, 2, zlibData.Length - 6))
+                using (DeflateStream deflateStream = new(memoryStream, CompressionMode.Decompress))
+                using (MemoryStream resultStream = new())
+                {
+                    deflateStream.CopyTo(resultStream);
+                    _data = resultStream.ToArray();
+                }
+
                 _pointer = 0;
             }
         }

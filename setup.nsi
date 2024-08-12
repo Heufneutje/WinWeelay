@@ -7,7 +7,7 @@
 !define VERSION "2.2.3.0"
 !define DESCRIPTION "WinWeelay"
 !define LICENSE_TXT "LICENSE.txt"
-!define FILESDIR "Release\net6.0-windows10.0.17763.0\"
+!define FILESDIR "Release\net8.0-windows10.0.17763.0\"
 !define INSTALLER_NAME "${FILESDIR}\WinWeelaySetup.exe"
 !define MAIN_APP_EXE "WinWeelay.exe"
 !define INSTALL_TYPE "SetShellVarContext current"
