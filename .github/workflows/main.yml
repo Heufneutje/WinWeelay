@@ -9,17 +9,15 @@ jobs:
     - name: Checkout Code
       uses: actions/checkout@v4.2.2
      
-    - name: Setup MSBuild path
-      uses: microsoft/setup-msbuild@v2
-       
-    - name: Setup NuGet
-      uses: NuGet/setup-nuget@v2.0.0
-     
-    - name: Restore NuGet Packages
-      run: nuget restore WinWeelay.sln
- 
-    - name: Build Project
-      run: msbuild WinWeelay.sln /p:Configuration=Release
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 9.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore
         
     - name: Create Installer
       uses: joncloud/makensis-action@v4
