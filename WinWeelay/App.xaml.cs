@@ -24,7 +24,6 @@ namespace WinWeelay
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SetupExceptionHandling();
 
             MainWindow window = new();

@@ -32,7 +32,7 @@ namespace WinWeelay.Utils
                 if (ex.NativeErrorCode == 1223) // Canceled by user.
                     return;
 
-                throw ex;
+                throw;
             }
         }
     }
