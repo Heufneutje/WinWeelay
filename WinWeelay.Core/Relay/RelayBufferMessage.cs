@@ -50,9 +50,9 @@ namespace WinWeelay.Core
         public string Nick { get; private set; }
 
         /// <summary>
-        /// The type of the message (privmsg or notice).
+        /// Whether the message contains the irc_privmsg tag.
         /// </summary>
-        public string MessageType { get; private set; }
+        public bool IsPrivmsg { get; private set; }
 
         /// <summary>
         /// Whether a notification for this message has been displayed when it triggers a highlight.
@@ -80,9 +80,7 @@ namespace WinWeelay.Core
             if (nickTag != null)
                 Nick = nickTag[5..];
 
-            string messageTypeTag = tags.LastOrDefault(x => x.StartsWith("irc_"));
-            if (messageTypeTag != null)
-                MessageType = messageTypeTag[4..];
+            IsPrivmsg = tags.Contains("irc_privmsg");
 
             if (!showNotifications)
                 IsNotified = true;

@@ -63,7 +63,7 @@ namespace WinWeelay
                 paragraph.Inlines.Add(new Run(formattedDate));
 
             string prefix = message.Prefix;
-            if (message.MessageType == "privmsg")
+            if (message.IsPrivmsg)
             {
                 if (message.IsHighlighted)
                     prefix = $"{highlightFormatting}<{GetUnformattedString(message.Prefix)}>\u0019\u0001\u001a";
@@ -124,7 +124,7 @@ namespace WinWeelay
         {
             while (true)
             {
-                AttributeType attribute =  AttributeTypeFactory.GetAttribute(CheckCharacter());
+                AttributeType attribute = AttributeTypeFactory.GetAttribute(CheckCharacter());
                 if (attribute == AttributeType.None)
                     return;
                 if (attribute != AttributeType.KeepExistingAttributes && !_attributes.Contains(attribute))
