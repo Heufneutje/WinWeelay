@@ -52,7 +52,12 @@ namespace WinWeelay.Core
         /// <summary>
         /// Whether the message contains the irc_privmsg tag.
         /// </summary>
-        public bool IsPrivmsg { get; private set; }
+        public bool IsPrivmsg => Tags.Contains("irc_privmsg");
+
+        /// <summary>
+        /// Whether the message contains the irc_action tag.
+        /// </summary>
+        public bool IsAction => Tags.Contains("irc_action");
 
         /// <summary>
         /// Whether a notification for this message has been displayed when it triggers a highlight.
@@ -79,8 +84,6 @@ namespace WinWeelay.Core
             string nickTag = tags.FirstOrDefault(x => x.StartsWith("nick_"));
             if (nickTag != null)
                 Nick = nickTag[5..];
-
-            IsPrivmsg = tags.Contains("irc_privmsg");
 
             if (!showNotifications)
                 IsNotified = true;
