@@ -156,6 +156,7 @@ namespace WinWeelay
                     window = new OptionBooleanWindow(viewModel) { Owner = Owner };
                     break;
                 case "integer":
+                case "enum":
                     if (SelectedOption.PossibleValuesString == null)
                         window = new OptionIntegerWindow(viewModel) { Owner = Owner };
                     else
