@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path="LICENSE.txt" />
+    <File Path="README.md" />
+    <File Path="setup.nsi" />
+  </Folder>
+  <Project Path="WinWeelay.Configuration/WinWeelay.Configuration.csproj" />
+  <Project Path="WinWeelay.Core/WinWeelay.Core.csproj" />
+  <Project Path="WinWeelay.CustomControls/WinWeelay.CustomControls.csproj" />
+  <Project Path="WinWeelay.Utils/WinWeelay.Utils.csproj" />
+  <Project Path="WinWeelay/WinWeelay.csproj" />
+</Solution>
